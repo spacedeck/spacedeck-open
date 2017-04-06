@@ -1,0 +1,72 @@
+<div class="toolbar toolbar-text in" v-cloak v-show="(active_space && (active_view == 'space' && !is_active_space_role('viewer') && editing_artifact_id!=null))">
+  <div class="btn-group dark">
+
+    <div class="dropdown bottomleft light center" v-bind:class="{open:opened_dialog=='text-formats'}">
+      <div v-bind:class="{in:selection_metrics.contains_text}">
+        <button class="btn btn-transparent" v-on:click="open_dialog('text-formats')" v-bind:class="open : opened_dialog=='text-formats'">
+          {{active_text_format_name}}
+        </button>
+      </div>
+
+      <div class="dialog">
+          {% include "./text-formats.html" %}
+      </div>
+    </div>
+
+    <button class="btn btn-divider"></button>
+
+    <div class="dropdown bottom light center" v-bind:class="{open:opened_dialog=='text-settings'}">
+      <button class="btn btn-transparent btn-icon-labeled hover" v-on:click="open_dialog('text-settings')" v-bind:class="{open : opened_dialog=='text-settings'}">
+        <span class="text-medium">{{active_style.font_family}}</span>
+        <span class="slash">/</span>
+        <span class="text-medium">{{active_style.font_size}}px</span>
+      </button>
+
+      <div class="dialog">
+        {% include "./text-digits.html" %}
+      </div>
+    </div>
+
+    <button class="btn btn-divider"></button>
+
+    <div class="dropdown bottom light center" v-bind:class="{open:opened_dialog=='text-align'}">
+      <button class="btn btn-transparent btn-icon-labeled hover" v-on:click="open_dialog('text-align')" v-bind:class="{open : opened_dialog=='text-align'}">
+        <span class="icon icon-text-align-left-alt"></span>
+        <span class="icon-label">Align</span>
+      </button>
+
+      <div class="dialog">
+        {% include "./text-align.html" %}
+      </div>
+    </div>
+
+    <div class="dropdown bottom light center" v-bind:class="{open:opened_dialog=='text-styles'}">
+      <button class="btn btn-transparent btn-icon-labeled hover" v-on:click="open_dialog('text-styles')" v-bind:class="{open : opened_dialog=='text-styles'}">
+        <span class="icon icon-text-styles"></span>
+        <span class="icon-label">styles</span>
+      </button>
+
+      <div class="dialog">
+        {% include "./text-styles.html" %}
+      </div>
+    </div>
+  </div>
+
+  <div class="btn-group dark">
+    <button class="btn btn-transparent btn-icon-labeled hover" v-on="click : apply_formatting($event,'insertUnorderedList')">
+      <span class="icon icon-text-list-bullet"></span>
+          <span class="icon-label">Bullets</span>
+    </button>
+    <button class="btn btn-transparent btn-icon-labeled hover" v-on="click : apply_formatting($event,'insertOrderedList')">
+      <span class="icon icon-text-list-numbered"></span>
+          <span class="icon-label">Number</span>
+    </button>
+  </div>
+  
+  <div class="btn-group dark">
+    <button class="btn btn-transparent btn-icon-labeled hover" v-on:click=" toggle_selected_artifact_editing()">
+      <span class="icon icon-cross-1"></span>
+      <span class="icon-label">Cancel</span>
+    </button>
+  </div>
+</div>

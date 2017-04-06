@@ -1,0 +1,91 @@
+<div id="team" class="dialog in" style="padding:100px;z-index:20000;position:absolute;width:100%;min-height:100%;background-color:#fafafa" v-if="active_view == 'team' && user" v-cloak>
+
+  <a href="/spaces" class="btn btn-round btn-icon btn-stroke-darken btn-md pull-right" style="position:absolute;top:30px;right:30px"><span class="icon icon-cross-0"></span></a>
+
+  <h4>Spacedeck Team Management</h4>
+
+  <div v-if="!user.team" class="dialog-section text-left">
+    You are not in a team yet. Please upgrade first.</h2>
+  </div>
+
+  <div v-if="user.team">
+    <div class="dialog-section">
+      <h4 class="text-left">[[__("team_name")]]</h4>
+      <div class="input-group org-add-form">
+        <input id="org-member-emails" v-model="user.team.name" class="form-control input input-lg" type="text">
+        <span class="input-group-btn">
+          <span id="org-add-member" class="btn btn-lg btn-primary" v-on:click=" team_save()">
+            [[__("save")]]
+          </span>
+        </span>
+      </div>
+    </div>
+    
+    <div class="dialog-section">
+      <h4 class="text-left">[[__("subdomain")]]</h4>
+      <div class="input-group org-add-form">
+        <input v-model="user.team.subdomain" class="form-control input input-lg" type="text">
+        <span class="input-group-btn">
+          <span id="org-add-member" class="btn btn-lg btn-primary" v-on:click=" team_save()">
+            [[__("save")]]
+          </span>
+        </span>
+      </div>
+    </div>
+
+    <div class="dialog-section text-left">
+      <h4>Members</h4>
+
+      <p>
+        New members will get an invitation email. After the invitation was used, the member is active. The number of active members in your team will affect your monthly charge.
+      </p>
+
+      <div class="input-group org-add-form">
+        <input id="org-member-emails" v-model="team_emails" class="form-control input input-lg" type="email" placeholder="[[__("team_adresses")]]">
+        <span class="input-group-btn">
+          <span id="org-add-member" class="btn btn-lg btn-primary org-save" v-on:click=" team_invite_members(team_emails)">
+            <span v-if="!team_email_invited">[[__("add")]]</span>
+            <span v-if="team_email_invited">✓ [[__("invited")]]</span>
+          </span>
+        </span>
+      </div>
+
+      <table class="table table-striped table-condensed" v-if="team_members.length">
+        <thead>
+          <tr>
+            <th> [[__("email")]] </th>
+            <th> [[__("name")]] </th>
+            <th> [[__("role")]] </th>
+            <th></th>
+          </tr>
+        </thead>
+
+        <tbody class="members-list">
+
+          <tr v-for="u in team_members">
+
+            <td class="email">
+              <span>{{u.email}}</span>
+            </td>
+
+            <td class="display_name">
+              <span>{{u.nickname}}</span>
+            </td>
+
+            <td>
+              <span v-if="is_admin(u)">[[__("role_admin")]]</span>
+              <span v-if="!is_admin(u)">[[__("role_member")]]</span>
+            </td>
+
+            <td>
+              <span v-if="u._id != user._id" class="btn btn-sm btn-danger" v-on:click="team_remove_member(u)">[[__("remove")]]</span>
+              <span v-if="(u._id != user._id) && !is_admin(u)" class="btn btn-sm" v-on:click="team_promote_member(u)">[[__("promote")]]</span>
+              <span v-if="(u._id != user._id) && is_admin(u)" class="btn btn-sm" v-on:click="team_demote_member(u)">[[__("demote")]]</span>
+            </td>
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

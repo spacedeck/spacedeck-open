@@ -1,0 +1,189 @@
+@import "vars";
+@import "../public/fonts/font";
+@import "../public/fonts/unicode";
+
+@import "normalize";
+@import "mixins";
+@import "helper";
+@import "type";
+
+@import "form";
+@import "form-checkbox";
+@import "form-file";
+@import "form-input-group";
+@import "form-range";
+@import "form-select";
+@import "table";
+
+@import "icon";
+@import "button";
+@import "dropdown";
+@import "dialog";
+@import "overflow";
+@import "alerts";
+@import "close";
+@import "modal";
+@import "search";
+
+@import "select-list";
+@import "row";
+
+@import "header";
+@import "login";
+@import "updates";
+@import "profile";
+@import "folder";
+@import "editors";
+@import "team";
+
+@import "toolbar";
+@import "color";
+@import "typography";
+@import "layout";
+@import "filter";
+@import "canvas";
+@import "margin-columns";
+@import "pattern";
+@import "metrics";
+
+@import "lasso";
+@import "section";
+@import "column";
+@import "annotation";
+
+@import "chat";
+@import "space-sections";
+
+@import "sidebar";
+
+@import "artifact";
+@import "handles";
+
+@import "smoke";
+@import "landing";
+
+html,
+body {
+  height:100%;
+  -webkit-tap-highlight-color: transparent;
+  background-color: white;
+  background-color: $light;
+  color: $darker;
+}
+
+*[contenteditable="true"] {
+  outline: none;
+}
+
+*,
+*:before,
+*:after {
+  @include box-sizing(border-box);
+}
+
+body {
+  max-width: 100%;
+  padding: 0px;
+  text-rendering: optimizeLegibility;
+  //@include user-select(none);
+  cursor: default;
+}
+
+.img img {
+  max-width: 100%;
+  height: auto;
+}
+
+.plan {
+  color: $medium;
+  border-radius: $radius;
+  display: inline-block;
+  padding: 30px;
+
+  background-color: transparent;
+  border: 2px solid rgba(0,0,0,0.05);
+  width: 100%;
+
+  &.active {
+    background-color: white;
+    border: none;
+  }
+
+  h4 {
+    color: black;
+    margin-bottom: 0px;
+  }
+
+  p {
+    font-size: 13px;
+    line-height: 1.4;
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+
+  ul {
+    list-style: none;
+    font-size: 10px;
+    margin: 0px;
+    padding: 0px;
+    border-top: 2px solid rgba(0,0,0,0.05);
+    padding-top: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    li {padding-top: 2px; }
+  }
+}
+
+#startup {
+  background-position: center;
+  background-image:url(/images/diamond.svg);
+  background-repeat: no-repeat;
+}
+
+#home {
+  background-color: white;
+}
+
+.layer {
+  @include transition( all 0.2s ease-in-out);
+  @include backface-visibility(hidden);
+  position: absolute;
+  width: auto;
+  height: auto;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+  pointer-events: none;
+  // @include scale(0.95,0.95);
+  display: none;
+  z-index: 1000;
+  &.top-layer {
+   z-index: 3500;
+  }
+  &.in {
+    display: block;
+    &.top-layer {
+     z-index: 3500;
+    }
+    z-index: 2000;
+    // @include scale(1,1);
+    pointer-events: auto;
+    opacity: 1;
+  }
+}
+
+[draggable] {
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+  /* Required to make elements draggable in old WebKit */
+  -khtml-user-drag: element;
+  -webkit-user-drag: element;
+}
+
+[v-cloak] {
+  display: none !important;
+}

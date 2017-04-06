@@ -1,0 +1,152 @@
+<div id="colors" class="relative">
+  <div class="color-picker" v-bind:class="{invis : color_mode=='palette'}">
+    <div class="color" id="fg-color-picker" v-bind:style="{'background-color': 'hsl(' + color_picker_hue/255*360 + ', 100%, 50%)'}" 
+      v-sd-fader="true" 
+      sd-fader-var-x="color_picker_saturation"
+      sd-fader-var-y="color_picker_value"
+      sd-fader-max-x="255"
+      sd-fader-max-y="255">
+      <div class="fader-constraint mask" style="pointer-events:none" ></div>
+      <button class="fader-selector" style="pointer-events:none"></button>
+    </div>
+
+    <div class="color-hue"
+      v-sd-fader="true" 
+      sd-fader-var-x="color_picker_hue">
+      <button class="fader-selector" style="pointer-events:none"></button>
+    </div>
+
+    <div class="color-opacity"
+      v-sd-fader="true" 
+      sd-fader-var-x="color_picker_opacity">
+      <div class="fit"></div>
+      <button class="fader-selector" style="pointer-events:none"></button>
+    </div>
+    
+    <div class="dialog-section no-p" id="color-rgba">
+      <div class="input-row">
+        <div>
+          <label class="color-hsva-hue">H</label>
+          <input class="input input-md input-nude text-center" v-model="color_picker_hue" spellcheck="false" maxlength="3" type="number">
+        </div>
+        <div>
+          <label class="color-hsva-saturation">S</label>
+          <input class="input input-md input-nude text-center" v-model="color_picker_saturation" spellcheck="false" maxlength="3" type="number">
+        </div>
+        <div>
+          <label class="color-hsva-brightness">V</label>
+          <input class="input input-md input-nude text-center" v-model="color_picker_value" spellcheck="false" maxlength="3" type="number">
+        </div>
+        <div>
+          <label class="color-hsva-alpha">A</label>
+          <input class="input input-md input-nude text-center" v-model="color_picker_opacity" spellcheck="false" maxlength="3" type="number">
+        </div>
+      </div>
+    </div>
+
+   <!--  <div class="dialog-section no-p" id="color-hex">
+      <button id="add-remove-color" class="btn btn-toggle btn-transparent btn-icon" >
+        <span class="btn-option">
+          <span class="icon icon-circle-check"></span>
+        </span>
+
+        <span class="btn-option" >
+          <span class="icon icon-trash"></span>
+        </span>
+      </button>
+
+      <div id="color-hash">
+        <label class="hash">#</label>
+        <input class="input" v-model="color_picker_rgb" spellcheck="false" maxlength="6" type="text">
+      </div>
+    </div> -->
+  </div>
+
+  <div class="color-palette r-10" v-bind:class="{invis:color_mode!='palette'}">
+    <div class="adapt overflow-y-scroll">
+      <button class="btn btn-round btn-darken" 
+        v-on:click="apply_swatch_color(s)"
+        v-for="s in swatches"
+        v-bind:style="{'background-color': s.hex}">
+        <span class="icon" v-bind:class="{'icon-cross-0':s.hex=='rgba(0,0,0,0)'}"></span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!--div class="dialog-section no-b" style="margin-top:-10px">
+  <div class="tab-switch round options-2" v-bind:class="{'option-2':color_mode=='picker'}">
+    <div class="options">
+      <span class="option" v-on:click="activate_color_mode('palette')">[[__("palette")]]</span>
+      <span class="option" v-on:click="activate_color_mode('picker')">
+        <span>[[__("picker")]]</span>
+      </span>
+    </div>
+    <span class="option-highlight"></span>
+  </div>
+</div-->
+
+<!--div class="dialog-section no-p-h no-p-b" v-show="opened_dialog=='color-fill'">
+  <div class="form-group no-m">
+    <label class="label label-sm">Padding</label> 
+    <input class="input no-b no-p text-center text-large" spellcheck="false" type="number" pattern="[0-9]" maxlength="64" value="250" v-model="active_style.padding">
+    <button tabindex="-1" class="input-drag btn btn-transparent btn-icon" style="cursor: ns-resize;" v-sd-fader="true" sd-fader-var-y="active_style.padding" sd-fader-min-y="0" sd-fader-max-y="500" sd-fader-step="1">
+      <span class="icon icon-triangles-vertical"></span>
+    </button>
+    <span class="input-unit">px</span>
+  </div>
+</div-->
+
+<div class="dialog-section no-p-h no-p-b" v-show="opened_dialog=='color-stroke'">
+  <div class="input-row">
+    <div class="form-group no-m">
+      <label class="label label-sm">Stroke</label>
+      <input class="input no-b no-p text-center text-large" spellcheck="false" type="number" v-model="active_style.stroke">
+      <button tabindex="-1" class="input-drag btn btn-transparent btn-icon" v-sd-fader="true" sd-fader-var-y="active_style.stroke" sd-fader-min-y="0" sd-fader-max-y="100" sd-fader-step="1">
+        <span class="icon icon-triangles-vertical"></span>
+      </button>
+      <span class="input-unit">px</span>
+    </div>
+    
+    <div class="form-group no-m">
+      <label class="label label-sm">Border Radius</label>
+      <input class="input no-b no-p text-center text-large" spellcheck="false" type="number" v-model="active_style.border_radius">
+      <button tabindex="-1" class="input-drag btn btn-transparent btn-icon" v-sd-fader="true" sd-fader-var-y="active_style.border_radius" sd-fader-min-y="0" sd-fader-max-y="500" sd-fader-step="1">
+        <span class="icon icon-triangles-vertical"></span>
+      </button>
+      <span class="input-unit">px</span>
+    </div>
+  </div>
+</div>
+
+
+<div class="dialog-section no-p-b no-p-h" v-show="opened_dialog=='color-text'">
+  <div class="input-row">
+    <div class="form-group no-m">
+      <label class="label label-sm text-center">[[__("font_size")]]</label>
+      <input class="input no-b no-p text-center text-large" spellcheck="false" type="text" pattern="[0-9]" maxlength="64" v-model="active_style.font_size">
+      
+      <!--button tabindex="-1" class="input-drag btn btn-transparent btn-icon" style="cursor: ns-resize;" v-sd-fader="true" sd-fader-var-y="active_style.font_size" sd-fader-min-y="8" sd-fader-max-y="400" sd-fader-sens="0.2">
+        <span class="icon icon-triangles-vertical"></span>
+      </button-->
+      <span class="input-unit">px</span>
+    </div>
+
+    <div class="form-group no-m">
+      <span class="font-size-swatches" v-show="opened_dialog=='color-text'">
+        <button class="btn  btn-sm" v-on:click="apply_font_size(64)" style="font-size:32px">Big</button>
+        <button class="btn  btn-sm" v-on:click="apply_font_size(32)" style="font-size:24px">Medium</button>
+        <button class="btn  btn-sm" v-on:click="apply_font_size(18)" style="font-size:14px">Small</button>
+      </span>
+    </div>
+    
+    <!--div class="form-group no-m">
+      <label class="label label-sm text-center">[[__("line_height")]]</label>
+      <input disabled class="input no-b no-p text-center text-large" spellcheck="false" type="text" pattern="[0-9\.]" maxlength="64" v-model="active_style.line_height">
+      <button tabindex="-1" class="input-drag btn btn-transparent btn-icon" style="cursor: ns-resize;" v-sd-fader="true" sd-fader-var-y="active_style.line_height" sd-fader-min-y="0.5" sd-fader-max-y="4" sd-fader-step="0.1">
+        <span class="icon icon-triangles-vertical"></span>
+      </button>
+      <span class="input-unit">em</span>
+    </div-->
+  </div>
+</div>

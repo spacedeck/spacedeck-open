@@ -1,0 +1,9 @@
+{
+  "endpoint": "http://localhost:9000",
+  "storage_bucket": "my_spacedeck_s3_bucket",
+  "storage_cdn": "xyz.cloudfront.net",
+  "google_access" : "",
+  "google_secret" : "",
+  "admin_pass": "very_secret_admin_password",
+  "phantom_api_secret": "very_secret_phantom_password"
+}

@@ -1,0 +1,80 @@
+@import "vars";
+@import "mixins";
+
+#pages {
+  #pages-actions {
+    display: inline-block;
+    padding-left: 25px;
+    margin: 20px 0;
+  }
+  
+  #pages-options {
+    position: relative;
+    display: inline-block;
+    margin-right: -4px;
+    padding-right: 0px;
+    margin: 10px 0;
+
+  }
+  
+  .pages-wrapper {
+    counter-reset: pages-counter;
+  }
+
+  .page {
+    counter-increment: pages-counter;
+    display: block;
+    position: relative;
+    
+    .dropdown {
+      position: absolute;
+      bottom: 0;
+      right: -15px;
+      margin: 10px 25px;
+    }
+
+    &.active {
+      img {
+        border: 2px solid white;
+      }
+      .page-thumbnail:before  {
+        background-color: white;
+      }
+    }
+
+    .page-thumbnail {
+      position: relative;
+      width: 100%;
+      margin-top: 25px;
+      padding: 0 25px;
+
+      img {
+        border-radius: $radius;
+        display: block;
+        width: 100%;
+      }
+
+      &:before {
+        z-index: 100;
+        content: counter(pages-counter);
+        right: 0px;
+        margin-right: 5px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        font-size: 15px;
+        background-color: white;
+        border-radius: 100%;
+        margin: -15px;
+        line-height: 30px;
+        width: 30px;
+        height: 30px;
+        text-align: center;
+
+        background-color: $light;
+        background-color: $dark;
+        color: $medium;;
+      }
+    }
+  }
+}

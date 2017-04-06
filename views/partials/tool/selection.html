@@ -1,0 +1,31 @@
+<div id="sections">
+  <h4 class="dialog-title">Selection</h4>
+  
+  <div class="dialog-section no-p no-b">
+    <button class="btn btn-transparent btn-block" v-on:click="toggle_selected_artifact_editing()" v-bind:class="active:editing_artifact_id">
+      <span style="margin: 7px" class="icon absolute-left icon-md icon-pencil"></span>
+      <span class="icon-label">Edit</span>
+    </button>
+  </div>
+
+  <div class="dialog-section no-p">
+    <button class="btn btn-transparent btn-block">
+      <span style="margin: 7px" class="icon absolute-left icon-md icon-group"></span>
+      <span class="icon-label">Group</span>
+    </button>
+  </div>
+
+  <div class="dialog-section no-p">
+    <button class="btn btn-transparent btn-block" >
+      <span style="margin: 7px" class="icon absolute-left icon-md icon-duplicate"></span>
+      <span class="icon-label">Copy</span>
+    </button>
+  </div>
+
+  <div class="dialog-section no-p">
+    <button class="btn btn-transparent btn-block" v-on:click="delete_selected_artifacts()">
+      <span style="margin: 7px" class="icon absolute-left icon-md icon-trash"></span>
+      <span class="icon-label">Delete</span>
+    </button>
+  </div>
+</div>

@@ -1,0 +1,13 @@
+<div id="typography" class="relative">
+
+  <div id="font">
+    <ul class="select-list overflow-y-scroll" style="max-height:315px;width:240px">
+      <li v-bind:class="{checked:active_font==font}" 
+        v-for="font in fonts" 
+          v-on:mousedown="apply_font($event,font)"
+          v-on:touchstart="apply_font($event,font)">
+          <span v-bind:style="{'font-family': font}">{{font}}</span>
+        </li>
+    </ul>
+  </div>
+</div>

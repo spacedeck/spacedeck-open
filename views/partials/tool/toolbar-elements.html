@@ -1,0 +1,110 @@
+<div class="toolbar toolbar-elements" v-bind:class="{in:toolbar_artifacts_in,out:!toolbar_artifacts_in}" v-show="!is_active_space_role('viewer') && active_space_loaded" v-bind:style="{left:toolbar_artifacts_x,top:toolbar_artifacts_y}">
+
+  <div class="btn-group dark">
+
+    <!--div id="search-dialog" class="dropdown bottom light center static" v-bind:class="{open:opened_dialog=='search'}">
+      <div class="btn-collapse in">
+        <button class="btn btn-transparent btn-icon-labeled" v-bind:class="{open:opened_dialog=='search'}"  v-on:click="open_dialog('search')" >
+          <span class="icon icon-search"></span>
+          <span class="icon-label">[[__("tool_search")]]</span>
+        </button>
+      </div>
+
+      <div class="dialog dialog-search">
+         xinclude "./search.html" 
+      </div>
+    </div-->
+
+    <div class="dropdown bottom light center" v-bind:class="{open:opened_dialog=='shapes'}">
+      <div class="btn-collapse in">
+        <button class="btn btn-transparent btn-icon-labeled" v-bind:class="{open:opened_dialog=='shapes'}" v-on:click="open_dialog('shapes')">
+          <span class="icon icon-shapes"></span>
+          <span class="icon-label">[[__("tool_shape")]]</span>
+        </button>
+      </div>
+
+      <div class="dialog">
+        {% include "./shapes.html" %}
+      </div>
+    </div>
+
+    <button class="btn btn-icon-labeled btn-transparent" v-on:click="start_drawing_scribble()">
+      <span class="icon icon-tool-scribble"></span>
+      <span class="icon-label">[[__("tool_scribble")]]</span>
+    </button>
+    
+    <div class="dropdown bottom light center">
+      <div class="btn-collapse in">
+        <button class="btn btn-transparent btn-icon-labeled" v-on:click="handle_insert_image_url()" v-on:touchstart="handle_insert_image_url()">
+          <span class="icon icon-upload"></span>
+          <span class="icon-label" >[[__("tool_upload")]]</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="dropdown bottom light center">
+      <div class="btn-collapse in">
+        <button class="btn btn-transparent btn-icon-labeled" v-on:click=" add_artifact(active_space, 'text', null, $event)">
+          <span class="icon icon-tool-text"></span>
+          <span class="icon-label">[[__("tool_text")]]</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="dropdown bottom light center">
+      <div class="btn-collapse">
+        <button class="btn btn-transparent btn-icon-labeled" v-bind:class="{open:opened_dialog=='image'}" v-on:click="open_dialog('image')">
+          <span class="icon icon-picture"></span>
+          <span class="icon-label">[[__("image")]]</span>
+        </button>
+      </div>
+
+      <div class="dialog">
+        {% include "./image.html" %}
+      </div>
+    </div>
+
+    <div class="dropdown bottom light center" v-bind:class="{open:opened_dialog=='zones'}">
+      <div class="btn-collapse in">
+        <button class="btn btn-transparent btn-icon-labeled" v-bind:class="{open:opened_dialog=='zones'}" v-on:click="open_dialog('zones')">
+          <span class="icon icon-zone"></span>
+          <span class="icon-label">[[__("tool_zones")]]</span>
+        </button>
+      </div>
+
+      <div class="dialog">
+        {% include "./zones.html" %}
+      </div>
+    </div>
+
+    <div id="mobile-dialog" class="dropdown bottom light center static" v-bind:class="{open:opened_dialog=='mobile'}">
+      <div class="btn-collapse in">
+        <button class="btn btn-transparent btn-icon-labeled" v-bind:class="{open:opened_dialog=='mobile'}" v-on:click="open_dialog('mobile')" >
+          <span class="icon icon-device-mobile"></span>
+          <span class="icon-label">[[__("mobile")]]</span>
+        </button>
+      </div>
+
+      <div class="dialog mobile-search">
+        {% include "./pick-mobile.html" %}
+      </div>
+    </div>
+
+    <button class="btn btn-divider" v-show="logged_in"></button>
+
+    <div class="dropdown bottom light center" v-show="logged_in" v-bind:class="{open:opened_dialog=='background'}">
+      <div class="btn-collapse in">
+        <button class="btn btn-transparent btn-icon-labeled" v-bind:class="{open:opened_dialog=='background'}" v-on:click="open_dialog('background')">
+          <span class="letter">bg</span>
+          <span class="icon-label">[[__("tool_canvas")]]</span>
+        </button>
+      </div>
+
+      <div class="dialog">
+        {% include "./background.html" %}
+      </div>
+    </div>
+
+
+  </div>
+</div>

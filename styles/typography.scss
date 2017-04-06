@@ -1,0 +1,314 @@
+@import "vars";
+@import "mixins";
+
+
+#font,
+#style { 
+  top: 0px;
+  .select-list {background-color: transparent; }
+}
+
+#font { 
+  .font-header {
+    background: rgba(0,0,0,0.025);
+  }
+  #font-search {border-bottom: 2px solid rgba(0,0,0,0.0125); 
+    .input {padding-left: 25px; }
+    position: relative;
+  }
+  .select-list {
+    li {
+      font-size: 20px;
+
+      > a,
+      > span {
+      }
+
+      &:hover {
+        
+        > span {padding-right: 40px; }
+        .fav-toggle {
+          display: block;
+          &:hover {opacity: 1;
+            color: white; 
+          }
+        }
+      }
+      .fav-toggle {
+        color: $medium;
+        display: none;
+        position: absolute;
+        right: 10px;
+        top: 0;
+        &:before {
+          height: 38px !important;
+          line-height: 38px !important;
+        }
+      }
+    }
+  }
+  //.overflow-y-scroll {top: 93px; }
+  
+  .tabs-switcher {
+    padding: 15px 20px;
+    padding-bottom: 0;
+
+    ul {
+      display: table;
+      width: 100%;
+      padding: 0;
+    }
+
+    li {
+      display: table-cell;
+
+      span {
+        padding: 8px 10px;
+        text-align: center;
+        text-transform: uppercase;
+        font-size: 10px;
+        display: block;
+        cursor: pointer;
+      }
+
+      color: $dark;
+      border-right: 2px solid transparent;
+      background-color: rgba(0,0,0,0.1);
+      -webkit-background-clip: padding-box;
+         -moz-background-clip: padding-box;
+              background-clip: padding-box;
+
+      &:first-child {
+        border-top-left-radius: 30px;
+        border-bottom-left-radius: 30px;
+        padding-left: 6px;
+      }
+      &:last-child {
+        padding-right: 6px;
+        border-top-right-radius: 30px;
+        border-bottom-right-radius: 30px;
+        border: none;
+      }
+
+      &.active {
+        background-color: rgba(0,0,0,0.25);
+        color: $light;
+      }
+    }
+  }
+}
+
+#typography {
+  #format { 
+    top: 54px;
+
+    /*  As of August 2012, only supported in Chrome 21+ */
+    display: -webkit-flex;
+    flex-direction: column;
+    .select-list {background-color: transparent; }
+    .overflow-y-scroll {
+      flex: 1;
+      position: relative;
+    }
+    .actions {
+      padding: 15px 20px;
+      height: 80px;
+    }
+  }
+  .btn-more,
+  .btn-less {
+    position: absolute;
+    &:active .icon {
+      opacity: 1;
+    }
+    .icon {
+      color: white;
+      opacity: 0.2;
+    }
+  }
+
+  #alignment {padding-top: 10px; }
+  #styles{padding-bottom: 10px; }
+
+  #font-style,
+  #font-face {
+    padding: 10px;
+  }
+  
+  #font-face {padding-bottom: 0; }
+  #font-style {padding-top: 0; }
+
+  #type-ratio {
+    @include clearfix();
+    margin: auto;
+    padding-top: 20px;
+    width: 100%;
+    text-align: center;
+    position: relative;
+
+    #type-ratio-toggle {
+      position: absolute;
+      bottom: 0px;
+      left: 50%;
+      margin-left: -30px;
+      opacity: 0.25;
+      &:hover {
+        opacity: 0.4;
+      }
+    }
+
+    #font-size {
+      > label {right: 0px; text-align: center; }
+      > .icon {right: 0px; }
+      .btn-more, .btn-less { left: 0px;}
+    }
+
+    #line-height {
+      > label { left: 0px; text-align: center; }
+      > .icon { left: 0px; }
+      .btn-more, .btn-less { right: 0px;}
+    }
+
+    #font-size {text-align: right; }
+    #font-size .form-group {padding-right: 0px;}
+
+    #line-height {text-align: left; }
+    #line-height .form-group {padding-left: 0px;}
+
+    #font-size,
+    #line-height {
+      display: inline-block;
+      width: 50%;
+
+      .fader {
+        position: relative;
+        height: 140px;
+        width: 40px;
+        display: inline-block;
+        background-color: rgba(0,0,0,0.25);
+        border-radius: 30px;
+        margin: 2px;
+        margin-bottom: 15px;
+        
+        .fader-constraint {
+          width: 100%;
+          height: auto;
+          position: absolute;
+          top: 20px;
+          bottom: 20px;
+          cursor: -webkit-grab; cursor: -moz-grab;
+          &:active {
+            cursor: -webkit-grabbing; cursor: -moz-grabbing;
+          } 
+          
+        }
+
+        .fader-indicator {
+          background-color: rgba(40,140,215,1);
+          border-radius: 30px;
+          width: 40px;
+          position: absolute;
+          bottom: 0px;
+          margin: 0px;
+          // min-height: 40px;
+          padding-bottom: 40px;
+          pointer-events: none;
+          @include box-sizing(content-box);
+        }
+
+        .fader-selector {
+          cursor: ns-resize; 
+          position: absolute;
+          margin-top: -22px;
+          pointer-events: none;
+        }
+        .fader-selector:active {
+          .value {color: $light; }
+        }
+      }
+
+      .form-group {
+        margin-bottom: 7px;
+      }
+
+
+      .btn-more {top: 0px; }
+      .btn-less {bottom: 60px; }
+
+      .value {
+        cursor: ns-resize;
+        height: 44px;
+        line-height: 44px;
+        display: block;
+        width: 100px;
+        padding: 0 16px;
+        font-size: 16px;
+        font-size: 22px;
+        color: $medium;
+        position: absolute;
+        text-align: center;
+        top: 0px;
+      }
+    }
+  }
+
+  #tracking {
+    text-align: center;
+    white-space: nowrap;
+    position: relative;
+    
+    .a,
+    .b {
+      font-size: 22px;
+      display: inline-block;
+      color: $medium;
+      width: 32px;
+      height: 60px;
+      line-height: 60px;
+      vertical-align: middle;
+      opacity: 0.4;
+    }
+    .arrow-left,
+    .arrow-right {
+      background-color: $medium;
+      height: 2px;
+      width: 20px;
+      display: inline-block;
+      vertical-align: middle;
+      opacity: 0.4;
+      position: relative;
+      &:after {
+        content: "";
+        position: absolute;
+        top: -4px;
+        right: 0;
+        margin: 0;
+        width: 0; 
+        height: 0; 
+        border-width: 5px;
+        border-style: solid;
+        border-color: transparent;
+        pointer-events: none !important;
+      }
+    }
+
+    .arrow-left:after { right: 100%; border-right-color: $medium; }
+    .arrow-right:after { left: 100%; border-left-color: $medium; }
+
+    .value {
+      background-color: $dark;
+      cursor: ew-resize;
+      height: 60px;
+      width: 26px;
+      left: 50%;
+      margin-left: -13px;
+      line-height: 60px;
+      display: inline-block;
+      font-size: 22px;
+      color: $medium;
+      position: absolute;
+      bottom: 0px;
+      &:active {color: $light; }
+    }
+  }
+}

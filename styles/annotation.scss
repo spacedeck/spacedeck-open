@@ -1,0 +1,84 @@
+@import "vars";
+@import "mixins";
+
+.article-annotations {
+  display: none;
+  .disclaimer {
+    opacity: 0.5; 
+    font-size: 13px;
+    line-height: 20px;
+  }
+  
+  position: absolute;
+  top: 0;
+  left: 100%;
+  font-size: 13px;
+  line-height: 20px;
+  margin-left: 100px;
+
+  [contentEditable=true]{font-size: 13px; line-height: 20px; }
+
+  .annotation-item-body,
+  .annotation-reply-body {
+     /* Non standard for webkit */
+     word-break: break-word;
+
+    -webkit-hyphens: auto;
+       -moz-hyphens: auto;
+            hyphens: auto;
+  }
+
+  .annotation-group {
+    width: 250px;
+    margin-top: -2px;
+    .annotation-group-toggle {
+      position: absolute;
+      top: -15px;
+      right: 100%;
+      margin-right: 20px;
+      opacity: 0.25;
+    }
+
+    .annotation-item {
+      // border-bottom: 1px solid rgba(0,0,0,0.05);
+      margin-bottom: $gutter-a/3;
+      padding-bottom: $gutter-a/4;
+    }
+    .annotation-create-item,
+    .annotation-item {
+
+      .annotation-replies,
+      .annotation-item-body {
+        position: relative; 
+        margin-left: 44px;
+      }
+
+      .annotation-link { position: absolute; right: 0; top: 0; margin: -7px; opacity: 0.5;} 
+
+      .annotation-author { 
+        position: relative;
+        color: $dark;
+        font-weight: bold;
+        img { position: absolute; top: 0; right: 100%; margin-right: 11px; margin-top: 2px; pointer-events: none;}
+      }
+
+      .annotation-replies {
+        font-size: 11px;
+        line-height: 15px;
+
+        .annotation-create-reply,
+        .annotation-reply { 
+          margin-bottom: $gutter-a/3;
+
+          &:first-child {margin-top: $gutter-a/3; }
+          &:last-of-type {margin-bottom: 0px; }
+
+          .annotation-reply-body {
+            position: relative; 
+            margin-left: 37px;
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,12 @@
+<div id="pick-mobile" v-if="active_space" class="dialog-section" v-show="opened_dialog=='mobile'">
+  <h4 class="dialog-title">Mobile Upload</h4>
+
+  <img v-if="active_space.edit_hash" v-bind:src="'/api/helper/qrcode/'+ active_space._id" />
+  
+  <p class="text-center">
+    Install the Spacedeck App on your phone and scan this QR code to upload photos, sound, video or text.
+  <p>
+  <p class="text-center">
+    Access Code: {{active_space.edit_hash}}
+  </p>
+</div>

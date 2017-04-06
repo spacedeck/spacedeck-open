@@ -1,0 +1,374 @@
+
+// Responsive image
+//
+// Keep images from scaling beyond the width of their parents.
+ 
+
+@mixin blur($blur) {
+  -webkit-filter: blur($blur);
+     -moz-filter: blur($blur);
+       -o-filter: blur($blur);
+      -ms-filter: blur($blur);
+          filter: blur($blur);
+}
+
+@mixin img-responsive($display: block) {
+  display: $display;
+  max-width: 100%; // Part 1: Set a maximum relative to the parent
+  height: auto; // Part 2: Scale the height according to the width, otherwise you get stretching
+}
+
+// Box sizing
+@mixin box-sizing($boxmodel) {
+  -webkit-box-sizing: $boxmodel;
+     -moz-box-sizing: $boxmodel;
+          box-sizing: $boxmodel;
+}
+
+// User select
+// For selecting text on the page
+@mixin user-select($select) {
+  -webkit-user-select: $select;
+     -moz-user-select: $select;
+      -ms-user-select: $select; // IE10+
+       -o-user-select: $select;
+          user-select: $select;
+}
+
+// Drop shadows
+//
+// Note: Deprecated `.box-shadow()` as of v3.1.0 since all of Bootstrap's
+//   supported browsers that have box shadow capabilities now support the
+//   standard `box-shadow` property.
+@mixin box-shadow($shadow...) {
+  -webkit-box-shadow: $shadow; // iOS <4.3 & Android <4.1
+          box-shadow: $shadow;
+}
+
+// Placeholder text
+@mixin placeholder($color: rgba(136,136,136,0.5)) {
+  &:-moz-placeholder            { color: $color; } // Firefox 4-18
+  &::-moz-placeholder           { color: $color;   // Firefox 19+
+                                  opacity: 1; } // See https://github.com/twbs/bootstrap/pull/11526
+  &:-ms-input-placeholder       { color: $color; } // Internet Explorer 10+
+  &::-webkit-input-placeholder  { color: $color; } // Safari and Chrome
+  // &:hover {
+  //   &:-moz-placeholder            { color: #aaa; } // Firefox 4-18
+  //   &::-moz-placeholder           { color: #aaa;   // Firefox 19+
+  //                                   opacity: 1; } // See https://github.com/twbs/bootstrap/pull/11526
+  //   &:-ms-input-placeholder       { color: #aaa; } // Internet Explorer 10+
+  //   &::-webkit-input-placeholder  { color: #aaa; } // Safari and Chrome
+  // }
+}
+
+// Placeholder text
+@mixin placeholder_inverted($color: $blue-lighter) {
+  &:-moz-placeholder            { color: $color; } // Firefox 4-18
+  &::-moz-placeholder           { color: $color;   // Firefox 19+
+                                  opacity: 1; } // See https://github.com/twbs/bootstrap/pull/11526
+  &:-ms-input-placeholder       { color: $color; } // Internet Explorer 10+
+  &::-webkit-input-placeholder  { color: $color; } // Safari and Chrome
+  &:focus {
+    &:-moz-placeholder            { color: white; } // Firefox 4-18
+    &::-moz-placeholder           { color: white;   // Firefox 19+
+                                    opacity: 1; } // See https://github.com/twbs/bootstrap/pull/11526
+    &:-ms-input-placeholder       { color: white; } // Internet Explorer 10+
+    &::-webkit-input-placeholder  { color: white; } // Safari and Chrome
+  }
+}
+
+@mixin input-focus($color: #aaa) {
+  $color-rgba: rgba(red($color), green($color), blue($color), .6);
+  &:focus {
+    outline: 0;
+    // @include box-shadow(inset 0 0 3px rgba(255,255,255,.075), 0 0 3px $color-rgba);
+  }
+}
+
+// Transitions
+@mixin transition($transition...) {
+  -webkit-transition: $transition;
+          transition: $transition;
+}
+@mixin transition-property($transition-property...) {
+  -webkit-transition-property: $transition-property;
+          transition-property: $transition-property;
+}
+@mixin transition-delay($transition-delay) {
+  -webkit-transition-delay: $transition-delay;
+          transition-delay: $transition-delay;
+}
+@mixin transition-duration($transition-duration...) {
+  -webkit-transition-duration: $transition-duration;
+          transition-duration: $transition-duration;
+}
+@mixin transition-transform($transition...) {
+  -webkit-transition: -webkit-transform $transition;
+     -moz-transition: -moz-transform $transition;
+       -o-transition: -o-transform $transition;
+          transition: transform $transition;
+}
+
+// Transformations
+@mixin rotate($degrees) {
+  -webkit-transform: rotate($degrees);
+      -ms-transform: rotate($degrees); // IE9 only
+          transform: rotate($degrees);
+}
+@mixin scale($ratio, $ratio-y...) {
+  -webkit-transform: scale($ratio, $ratio-y);
+      -ms-transform: scale($ratio, $ratio-y); // IE9 only
+          transform: scale($ratio, $ratio-y);
+}
+@mixin translate($x, $y) {
+  -webkit-transform: translate($x, $y);
+      -ms-transform: translate($x, $y); // IE9 only
+          transform: translate($x, $y);
+}
+@mixin translateX($x) {
+  -webkit-transform: translateX($x);
+      -ms-transform: translateX($x); // IE9 only
+          transform: translateX($x);
+}
+@mixin translateY($y) {
+  -webkit-transform: translateY($y);
+      -ms-transform: translateY($y); // IE9 only
+          transform: translateY($y);
+}
+@mixin skew($x, $y) {
+  -webkit-transform: skew($x, $y);
+      -ms-transform: skewX($x) skewY($y); // See https://github.com/twbs/bootstrap/issues/4885; IE9+
+          transform: skew($x, $y);
+}
+@mixin translate3d($x, $y, $z) {
+  -webkit-transform: translate3d($x, $y, $z);
+          transform: translate3d($x, $y, $z);
+}
+
+@mixin rotateX($degrees) {
+  -webkit-transform: rotateX($degrees);
+      -ms-transform: rotateX($degrees); // IE9 only
+          transform: rotateX($degrees);
+}
+@mixin rotateY($degrees) {
+  -webkit-transform: rotateY($degrees);
+      -ms-transform: rotateY($degrees); // IE9 only
+          transform: rotateY($degrees);
+}
+@mixin perspective($perspective) {
+  -webkit-perspective: $perspective;
+     -moz-perspective: $perspective;
+          perspective: $perspective;
+}
+@mixin perspective-origin($perspective) {
+  -webkit-perspective-origin: $perspective;
+     -moz-perspective-origin: $perspective;
+          perspective-origin: $perspective;
+}
+@mixin transform-origin($origin) {
+  -webkit-transform-origin: $origin;
+     -moz-transform-origin: $origin;
+      -ms-transform-origin: $origin; // IE9 only
+          transform-origin: $origin;
+}
+
+// Animations
+@mixin animation($animation) {
+  -webkit-animation: $animation;
+          animation: $animation;
+}
+@mixin animation-name($name) {
+  -webkit-animation-name: $name;
+          animation-name: $name;
+}
+@mixin animation-duration($duration) {
+  -webkit-animation-duration: $duration;
+          animation-duration: $duration;
+}
+@mixin animation-timing-function($timing-function) {
+  -webkit-animation-timing-function: $timing-function;
+          animation-timing-function: $timing-function;
+}
+@mixin animation-delay($delay) {
+  -webkit-animation-delay: $delay;
+          animation-delay: $delay;
+}
+@mixin animation-iteration-count($iteration-count) {
+  -webkit-animation-iteration-count: $iteration-count;
+          animation-iteration-count: $iteration-count;
+}
+@mixin animation-direction($direction) {
+  -webkit-animation-direction: $direction;
+          animation-direction: $direction;
+}
+@mixin animation-fill-mode($fill-mode) {
+  -webkit-animation-fill-mode: $fill-mode;
+          animation-fill-mode: $fill-mode;
+}
+
+// Backface visibility
+// Prevent browsers from flickering when using CSS 3D transforms.
+// Default value is `visible`, but can be changed to `hidden`
+@mixin backface-visibility($visibility){
+  -webkit-backface-visibility: $visibility;
+     -moz-backface-visibility: $visibility;
+          backface-visibility: $visibility;
+}
+
+// Opacity
+@mixin opacity($opacity) {
+  opacity: $opacity;
+  // IE8 filter
+  $opacity-ie: ($opacity * 100);
+  filter: #{alpha(opacity=$opacity-ie)};
+}
+
+// Clearfix
+// Source: http://nicolasgallagher.com/micro-clearfix-hack/
+//
+// For modern browsers
+// 1. The space content is one way to avoid an Opera bug when the
+//    contenteditable attribute is included anywhere else in the document.
+//    Otherwise it causes space to appear at the top and bottom of elements
+//    that are clearfixed.
+// 2. The use of `table` rather than `block` is only necessary if using
+//    `:before` to contain the top-margins of child elements.
+
+@mixin clearfix() {
+  &:before,
+  &:after {
+    content: " "; // 1
+    display: table; // 2
+  }
+  &:after {
+    clear: both;
+  }
+}
+
+// WebKit-style focus
+@mixin tab-focus() {
+  // Default
+  outline: thin dotted;
+  // WebKit
+  outline: 5px auto #298041;
+  outline-offset: -2px;
+}
+
+
+@mixin icon-xxs {
+  font-size: 9px; 
+  height: 16px;
+  width: 16px;
+  line-height: 16px;
+  &:after,
+  &:before {
+    height: 16px;
+    width: 16px;
+    line-height: 12px;
+  }
+}
+
+@mixin icon {
+  font-size: 20px; 
+  height: 60px;
+  width: 60px;
+  display: inline-block;
+  font-family: 'icon';
+  text-align: center;
+  font-style: normal;
+  font-weight: normal;
+  vertical-align: middle;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  @include transition(all 0s 0s ease-in-out);
+
+  &:after,
+  &:before {
+    @include backface-visibility(hidden);
+    position: absolute;
+    height: 60px;
+    width: 60px;
+    line-height: 60px;
+    text-align: center;
+    left: 0px;
+    top: 0px;
+  }
+
+  &:hover {
+    text-decoration: none;
+  } 
+}
+
+@mixin icon-xs {
+  font-size: 9px; 
+  height: 24px;
+  width: 24px;
+  line-height: 24px;
+  &:after,
+  &:before {
+    height: 24px;
+    width: 24px;
+    line-height: 24px;
+  }
+}
+
+
+@mixin icon-sm {
+  font-size: 14px; 
+  height: 32px;
+  width: 32px;
+  line-height: 32px;
+
+  &:after,
+  &:before {
+    height: 32px;
+    width: 32px;
+    line-height: 32px;
+  }
+}
+
+@mixin icon-md {
+  font-size: 16px; 
+  height: 44px;
+  width: 44px;
+  line-height: 43px;
+  
+  &:after,
+  &:before {
+    height: 44px;
+    width: 44px;
+    line-height: 43px;
+  }
+}
+
+
+
+@mixin icon-xl {
+  font-size: 28px; 
+  height: 80px;
+  width: 80px;
+  line-height: 80px;
+  
+  &:after,
+  &:before {
+    height: 80px;
+    width: 80px;
+    line-height: 75px;
+  }
+}
+
+
+
+@mixin icon-xxl {
+  font-size: 50px; 
+  height: 140px;
+  width: 140px;
+  line-height: 130px;
+  
+  &:after,
+  &:before {
+    height: 140px;
+    width: 140px;
+    line-height: 130px;
+  }
+}

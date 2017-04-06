@@ -1,0 +1,303 @@
+@import "vars";
+@import "mixins";
+
+//
+// Modals
+// --------------------------------------------------
+
+// .modal-open      - body class for killing the scroll
+// .modal           - container to scroll within
+// .modal-dialog    - positioning shell for the actual modal
+// .modal-content   - actual modal w/ bg and corners etc
+
+// Kill the scroll on the body
+.modal-open {overflow: hidden; }
+
+.modal-prev, 
+.modal-next  {
+  color: $dark !important;
+  position: fixed;
+  top: 50%;
+  margin: 0 34px;
+  margin-top: -30px;
+  opacity: 0.5;
+  z-index: 2000;
+}
+.modal-prev { left: 0;}
+.modal-next { right: 0;}
+
+
+// Container that the modal scrolls within
+.modal {
+  overflow: auto;
+  overflow-y: scroll;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 35000;
+  -webkit-overflow-scrolling: touch;
+
+  // Prevent Chrome on Windows from adding a focus outline. For details, see
+  // https://github.com/twbs/bootstrap/pull/10951.
+  outline: 0;
+
+  // When fading in the modal, animate it to slide down
+  &.fade .modal-dialog {
+    // @include translate(0, -25%);
+    @include transition-transform(0.1s ease-out);
+    @include scale(0.98,0.98);
+  }
+
+  &.in {
+    pointer-events: auto;
+    .modal-dialog { 
+      // @include translate(0, 0)
+      @include scale(1,1);
+    }
+  }
+  
+  .close {
+    position: fixed;
+    margin: 44px 44px;
+    .icon {display: block; }
+  }
+  
+  figure {
+    margin: 0;
+    img {
+      display: block;
+      margin: auto;
+    }
+  }
+}
+
+// Shell div to position the modal with bottom padding
+
+.modal-wrapper {
+  position: relative;
+  margin: 0px;
+  display: table;
+  height: 100%;
+  width: 100%;
+
+  background-color: rgba(0,0,0, 0.7);
+}
+.modal-appendix {
+  position: relative;
+  margin: 0px;
+  display: table;
+  width: 100%;
+
+  text-align: center;
+  background-color: $light;
+  color: $medium;
+  vertical-align: top;
+  height: auto;
+
+  .modal-section {
+    max-width: 600px;
+    margin: auto;
+    text-align: left;
+  }
+}
+
+.modal-dialog {
+  position: relative;
+  width: auto;
+  margin: 0px;
+  display: table-cell;
+  vertical-align: middle;
+  height: 100%;
+  width: 100%;
+  margin: auto;
+  text-align: center;
+  padding: 40px;
+  &.top {vertical-align: top; }
+}
+
+.modal-medium {
+  max-height: 100%;
+  > * {
+    max-width: 100%;
+    max-height: 100%;
+  }
+}
+
+// Actual modal
+.modal-content {
+  width: 600px;
+  position: relative;
+  // @include box-shadow(0 0px 10px 5px rgba(0,0,0,0.05));
+  background-clip: padding-box;
+  // Remove focus outline from opened modal
+  outline: none;
+  display: inline-block;
+  text-align: left;
+  @include user-select(none);
+
+  border-radius: $radius*3;
+  background-color: $light !important;
+  box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.05), 0 2px 7px rgba(0, 0, 0, 0.1);
+}
+
+
+.modal-header {
+  padding: 30px 40px;
+  position: relative;
+  color: $medium;
+}
+
+.close-search {
+  position: fixed;
+  top: 0;
+  right: 0;
+  margin: 40px 35px;
+}
+
+
+
+// Title text within header
+.modal-title {
+  color: $dark;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  text-indent: 4px;
+  text-align: center;
+  padding-top: 30px;
+}
+
+.modal-side-tabs {
+  position: absolute;
+  right: 0;
+  top: 0;
+  list-style: none;
+  padding: 0;
+  height: 100%;
+  padding: 15px;
+  border-left: 2px solid rgba(0,0,0,0.025); 
+  z-index: 100;
+  border-top-right-radius: $radius*3;
+  border-bottom-right-radius: $radius*3;
+}
+
+
+.modal-tabs-wrapper {
+  overflow: hidden;
+  border-top-left-radius: $radius*3;
+  border-top-right-radius: $radius*3;
+}
+
+.modal-tabs {
+  display: table;
+  width: 100%;
+  table-layout: auto;
+  background-color: $lightish;
+
+  .dialog-tab {
+    display: table-cell;
+    text-align: center; 
+    &:hover span {color: $dark; }
+
+    &.open span {
+      background-color: $light;
+      color: $dark;
+      opacity: 1;
+      box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.05), 0 2px 7px rgba(0, 0, 0, 0.1) !important;
+      border-bottom-right-radius: 0px !important;
+      border-bottom-left-radius: 0px !important;
+      border-top-left-radius: $radius*3;
+      border-top-right-radius: $radius*3;
+
+    }
+
+    &:first-child span { 
+      box-shadow: inset 0px -4px 1px -4px rgba(0, 0, 0, 0.05), inset 0px -4px 7px -4px rgba(0, 0, 0, 0.1); 
+      // border-top-left-radius: $radius*3;
+      // border-bottom-right-radius: $radius*3;
+    }
+
+    &:last-child  span { 
+      // box-shadow: inset 0 -4px 1px -4px rgba(0, 0, 0, 0.05), inset 0 -4px 7px -4px rgba(0, 0, 0, 0.1); 
+      // border-top-right-radius: $radius*3;
+      // border-bottom-left-radius: $radius*3;
+    }
+
+    span {
+      box-shadow: inset 0 -4px 1px -4px rgba(0, 0, 0, 0.05), inset 0 -4px 7px -4px rgba(0, 0, 0, 0.1); 
+      cursor: pointer;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      text-indent: 4px;
+      display: block;
+      width: 100%;
+      height: 44px;
+      line-height: 44px;
+    }
+  }
+}
+
+
+// Modal body
+// Where all modal content resides (sibling of .modal-header and .modal-footer)
+.modal-body {
+  position: relative;
+  @include clearfix();
+}
+
+.modal {
+  .modal-section {
+    // overflow: hidden;
+    border-bottom: 2px solid rgba(0,0,0,0.04);
+    padding: 40px;
+    display: block;
+    @include clearfix();
+  
+    &:first-child {
+      border-top-left-radius: $radius*3 !important;
+      border-top-right-radius: $radius*3 !important;
+    }
+
+    &.dark {background-color: $dark; }
+    &.light {background-color: $light; }
+      
+    .modal-section-title {
+      margin: 0;
+      padding-top: 15px;
+      color: $dark;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      text-indent: 4px;
+      text-align: center;
+    }
+  }
+}
+
+// Footer (for actions)
+.modal-footer {
+  // border-bottom-left-radius: $radius;
+  // border-bottom-right-radius: $radius;
+  // background-color: $dark !important;
+  // padding: 40px;
+  // padding-top: 0px;
+  // text-align: right; // right align buttons
+  @include clearfix(); // clear it in case folks use .pull-* classes on buttons
+
+  // Properly space out buttons
+  // .btn + .btn {
+  //   margin-left: 5px;
+  //   margin-bottom: 0; // account for input[type="submit"] which gets the bottom margin like all other inputs
+  // }
+  // // but override that for button groups
+  // .btn-group .btn + .btn {
+  //   margin-left: -1px;
+  // }
+  // // and override it for block buttons as well
+  // .btn-block + .btn-block {
+  //   margin-left: 0;
+  // }
+}

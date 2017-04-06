@@ -1,0 +1,70 @@
+<div id="search" class="relative w-8" style="height:350px">
+  <ul class="dialog-side-tabs">
+    <li>
+      <button class="btn btn-xl btn-transparent btn-icon-labeled hover" v-class="active:media_search_target=='google'" v-on="click:search_google(generic_search_query)">
+        <span class="icon icon-social-google"></span>
+        <span class="icon-label">Google</span>
+      </button>
+    </li>
+    <li>
+      <button class="btn btn-xl btn-transparent btn-icon-labeled hover" v-class="active:media_search_target=='youtube'" v-on="click:search_youtube(generic_search_query)">
+        <span class="icon icon-social-youtube"></span>
+        <span class="icon-label">Youtube</span>
+      </button>
+    </li>
+    <li>
+      <button class="btn btn-xl btn-transparent btn-icon-labeled hover" v-class="active:media_search_target=='tumblr'" v-on="click:search_tumblr(generic_search_query)">
+        <span class="icon icon-social-tumblr"></span>
+        <span class="icon-label">Tumblr</span>
+      </button>
+    </li>
+    <li>
+      <button class="btn btn-xl btn-transparent btn-icon-labeled hover" v-class="active:media_search_target=='soundcloud'" v-on="click:search_soundcloud(generic_search_query)">
+        <span class="icon icon-social-soundcloud"></span>
+        <span class="icon-label">Soundcloud</span>
+      </button>
+    </li>
+  </ul>
+
+  <div class="dialog-search-input">
+    <!-- generic search box placeholder -->
+    <div class="relative">
+      <span class="icon icon-zoom absolute-top-left no-events" style="margin-top: -2px;"></span>
+      <input type="text" v-model="generic_search_query" v-focus class="input input-white input-round input-block no-b p-l-60" placeholder="[[__("search_media_placeholder")]]" v-on="keyup: search_generic(generic_search_query) | key enter">
+    </div>
+
+    <!-- <button type="button" class="btn btn-sm btn-icon btn-round btn-darken absolute-top-right clear-search" style="margin-right: 42px; margin-top: 40px;">
+      <span class="icon icon-cross-1"></span>
+    </button> -->
+  </div>
+
+  <div class="overflow-y-scroll fit dialog-search-results dialog-section" v-if="search_loading">
+    <span class="middle">Searching...</span>
+  </div>
+
+
+  <!-- search results audio -->
+  <div class="overflow-y-scroll fit dialog-search-results dialog-section" v-if="audio_search_results.length">
+    <div class="search-result search-result-audio relative" v-repeat="r : audio_search_results" v-on="click:create_artifact_via_embed_url(r.permalink_url)">
+      <iframe frameborder="0" seamless width="100%" v-attr="src:r.embed_url"></iframe>
+    </div>
+  </div>
+
+  <!-- search results images -->
+  <div class="overflow-y-scroll fit dialog-search-results dialog-section" v-if="image_search_results.length">
+    <div class="search-result search-result-image" v-repeat="r : image_search_results" v-on="click:handle_insert_image_url(r.link)">
+      <img v-attr="src:r.thumb"/>
+    </div>
+  </div>
+
+  <!-- search results video -->
+  <div class="overflow-y-scroll fit dialog-search-results dialog-section" v-if="video_search_results.length">
+    <div class="search-result search-result-video relative" v-repeat="r : video_search_results"  v-on="click:create_artifact_via_embed_url('https://youtube.com/?v='+r.id.videoId)">
+
+      <div class="thumbnail" v-style="background-image: 'url(https://img.youtube.com/vi/'+r.id.videoId+'/hqdefault.jpg)'"> </div>
+      <span>{{r.snippet.title}}</span>
+      <!-- <span>{{r.snippet.description}}</span> -->
+      <!-- <span>{{r.snippet.thumbnails.medium.url}}</span> -->
+    </div>
+  </div>
+</div>

@@ -1,0 +1,22 @@
+@import "vars";
+
+#filter {
+
+  .icon {
+    position: absolute;
+    opacity: 0.5;
+    color: $medium;
+    left: 0;
+    top: -4px;
+    display: none;
+  }
+
+  .form-group {
+    .btn-less { bottom: 0; left: 0px; }
+    .btn-more { bottom: 0; right: 0px;}
+
+    .label {
+      margin-bottom: -5px;
+    }
+  }
+}

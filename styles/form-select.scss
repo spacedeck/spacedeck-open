@@ -1,0 +1,26 @@
+@import "vars";
+@import "mixins";
+
+.input-select {
+  // background-color: rgba(255,255,255,0.04);
+  // background-image: url('images/select_arrow.gif');
+  border-radius: $radius;
+  display: inline-block;
+  width: 100%;
+}
+
+@-moz-document url-prefix() {
+  select.input{
+    background-repeat: no-repeat;
+    background-position: right center;
+    cursor: pointer;
+  }
+}
+
+select {
+  -webkit-appearance:none;
+  // -moz-appearance:window;
+  appearance:none;
+  padding-left: 0px;
+  width: 100%;
+}

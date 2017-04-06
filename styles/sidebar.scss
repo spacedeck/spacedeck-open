@@ -1,0 +1,231 @@
+@import "vars";
+@import "mixins";
+
+// .sidebar-open {
+//   #sidebar #sidebar-content {
+//   @include translate3d (0%,0,0);
+//   }
+// }
+// body:not(.sidebar-open) {
+//   #sidebar-content:hover {
+//     @include translateX($sidebar-width);
+//   }
+// }
+
+#sidebar {
+  @include opacity (0);
+  //@include translateX($sidebar-width);
+  @include transition( all 0.25s ease-in-out);
+
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  -ms-backface-visibility: hidden;
+  backface-visibility: hidden;
+  
+  z-index: 20001;
+  position: absolute;
+  top: 0px;
+  max-height: 50%;
+  width: $sidebar-width;
+  font-size: 14px;
+  color: $medium;
+  background-color: $light !important;
+  right: 0px;
+  overflow-y: auto;
+
+  pointer-events: none;
+  
+  @include user-select(none);
+
+  &.folder-sidebar {
+    height: 100%;
+    max-height: 100%;
+  }
+  
+  small,
+  p {color: $medium; }
+
+  &.in {
+    //@include translateX(0);
+    @include opacity(1);
+    pointer-events: all;
+  }
+  
+  #sidebar-options {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 1100;
+    height: auto;
+    padding: 7px 20px;
+    border-bottom: 2px solid rgba(0,0,0,0.1);
+    background-color: $darker;
+  }
+
+  #sidebar-rim {
+    position: absolute;
+    top: 0%;
+    margin-top: -30px;
+    height: 100%;
+    left: 100%;
+    z-index: 4000;
+    font-size: 40px;
+    background-color: $darker;
+    opacity: 0.1;
+    width: 1px !important;
+    padding: 0px;
+    min-width: 0px;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+  }
+
+  .sidebar-footer {
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    z-index: 1000;
+    padding: 0px 25px;
+    padding-bottom: 10px;
+    background-color: $darker;
+  }
+
+  .sidebar-header {
+    display: block;
+    width: 100%;
+    background-color: $darker;
+    min-height: 62px;
+    border-bottom: 2px solid rgba(0,0,0,0.1);
+
+    .btn-group {
+      margin: 10px;
+    }
+
+    .sidebar-title {
+      font-size: 13px;
+      height: 60px;
+      line-height: 30px;
+      padding: 15px 55px;
+      display: block;
+      margin: 0px;
+      z-index: 0;
+      text-align: center;
+      width: 100%;
+      position: absolute;
+
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      &:first-letter {text-transform: capitalize; }
+    }
+  }
+
+  .sidebar-section {
+    padding: 25px;
+    border-bottom: 2px solid rgba(0,0,0,0.1);
+    h4 {
+      .btn {
+        margin-right: -10px;
+        margin-top: -10px;
+      }
+    }
+  }
+
+  .sidebar-menu {
+    position: absolute;
+    top: 60px;
+    width: 100%;
+    min-height: 60px;
+    text-align: center;
+    background-color: $darker;
+    background-color: #242424;
+    border-bottom: 2px solid rgba(0,0,0,0.1);
+    font-size: 0;
+    z-index: 900;
+    @include backface-visibility(hidden);
+
+    .btn {
+      width: 50%;
+    }
+
+    &#file-create {
+      .icon {
+        opacity: 0.25;
+        position: absolute;
+        pointer-events: none;
+        top: 6px;
+        left: 8px;
+      }
+
+      .input {
+        background-color: transparent;
+        border: none;
+        display: block;
+        height: 60px !important;
+        min-height: 58px !important;
+        line-height: 30px;
+        font-size: 15px !important;
+        color: $light;
+        position: absolute;
+        z-index: 1000;
+        top: -1px;
+        width: 100%;
+        padding-left: 50px;
+        &:first-letter {text-transform: capitalize; }
+      }
+    }
+    
+    pointer-events: none;
+    @include transition( all 0.2s ease-in-out);
+    @include translateY (-15px);
+    &.in {
+      background-color: $darker;
+      pointer-events: auto;
+      opacity: 1;
+      @include translateY (0px);
+    }
+    &.disabled {
+      .btn {
+        @include opacity(0.125);
+        pointer-events: none;
+      }
+    }
+  }
+
+  .sidebar-menu-backdrop {
+    @include transition( all 0.2s ease-in-out);
+    position: absolute;
+    z-index: 800;
+    top: 60px;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0);
+    pointer-events: none;
+    &.in {
+      pointer-events: auto;
+      background-color: rgba(30,30,30,0.5);
+    }
+  }
+
+  #search-input {
+    padding: 15px 25px;
+    font-size: 14px;
+
+    &:-moz-placeholder,
+    &::-moz-placeholder,
+    &:-ms-input-placeholder { 
+      font-family: $main-font;
+      // text-transform: uppercase;
+    }
+
+    &::-webkit-input-placeholder  { 
+      font-family: $main-font;
+      // text-transform: uppercase;
+    }
+  }
+
+  #online-members {
+    > div:not(.in) {
+      display: none;
+    }
+  }
+}

@@ -1,0 +1,231 @@
+@import "vars";
+@import "mixins";
+
+.separate {
+  .icon {display: block; }
+  .icon:after, 
+  .icon:before {
+    font-size: 20px;
+  }
+
+  h4 {padding: 0px !important; padding-top: 21px !important; }
+
+  .label {
+    display: none !important;
+  }
+  .form-group {
+    width: 33.3333%;
+    height: 60px;
+  }
+  
+  .axis-center {
+    border: 2px solid rgba(0,0,0,0.025); 
+  }
+
+  .axis-left,
+  .axis-right {
+    border-top: 2px solid rgba(0,0,0,0.025); 
+    border-bottom: 2px solid rgba(0,0,0,0.025); 
+  }
+
+  .axis-left,
+  .axis-center,
+  .axis-right {
+    float: left;
+    height: 63px;
+  }
+
+
+  .axis-top,
+  .axis-bottom {
+    border-left: 2px solid rgba(0,0,0,0.025); 
+    border-right: 2px solid rgba(0,0,0,0.025); 
+    margin-left: 33.33333% !important;
+  }
+
+  .axis-top .input-drag ,
+  .axis-left .input-drag ,
+  .axis-right .input-drag ,
+  .axis-bottom .input-drag {
+  }
+
+  .axis-top .input-drag {
+    top: 100%;
+    left: 50%;
+    margin-left: -22px;
+    margin-top: -22px;
+  }
+  
+  .axis-left .input-drag {
+    left: 100%;
+    top: 50%;
+    margin-left: -22px;
+    margin-top: -22px;
+  }
+
+  .axis-right .input-drag {
+    right: 100%;
+    top: 50%;
+    margin-right: -22px;
+    margin-top: -22px;
+    left: auto;
+
+  }
+
+  .axis-bottom .input-drag {
+    bottom: 100%;
+    left: 50%;
+    margin-left: -22px;
+    margin-bottom: -22px;
+  }
+}
+
+
+
+.dialog-side-tabs {
+  position: absolute;
+  right: 0;
+  top: 0;
+  list-style: none;
+  padding: 0;
+  height: 100%;
+  padding: 15px;
+  border-left: 2px solid rgba(0,0,0,0.025); 
+  z-index: 100;
+  border-top-right-radius: $radius*3;
+  border-bottom-right-radius: $radius*3;
+}
+
+
+.dialog {
+
+  font-size: 13px;
+  
+  ol, ul, p {
+    font-size: inherit;
+  }
+
+  > .btn-block:last-child {
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    border-bottom-left-radius: $radius*3;
+    border-bottom-right-radius: $radius*3;
+  }
+  
+  min-width: 200px;
+
+  @include backface-visibility(hidden);
+  white-space: normal;
+  z-index: 1000;
+  position: absolute;
+  // white-space: normal;
+  
+  opacity: 0;
+  @include user-select(none);
+  @include transition( all 0.125s ease-in-out);
+  pointer-events: none; 
+  background-color: $light;
+  color: $medium;
+  &.dark {background-color: $dark; }
+  
+  border-radius: $radius*3;
+  box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.05), 0 2px 7px rgba(0, 0, 0, 0.1);
+
+  .dialog-tabs-wrapper {
+    overflow: hidden;
+    border-top-left-radius: $radius*3;
+    border-top-right-radius: $radius*3;
+  }
+
+  .dialog-tabs {
+    display: table;
+    width: 100%;
+    max-width: 800px;
+    table-layout: auto;
+    background-color: $lightish;
+
+    .dialog-tab {
+      display: table-cell;
+      text-align: center; 
+      &:hover span {color: $dark; }
+
+      &.open span {
+        background-color: $light;
+        color: $dark;
+        opacity: 1;
+        box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.05), 0 2px 7px rgba(0, 0, 0, 0.1) !important;
+        border-bottom-right-radius: 0px !important;
+        border-bottom-left-radius: 0px !important;
+        border-top-left-radius: $radius*3;
+        border-top-right-radius: $radius*3;
+
+      }
+
+      &:first-child span { 
+        box-shadow: inset 0px -4px 4px -4px rgba(0, 0, 0, 0.1); 
+        // border-top-left-radius: $radius*3;
+        // border-bottom-right-radius: $radius*3;
+      }
+
+      &:last-child  span { 
+        // box-shadow: inset 0 -4px 1px -4px rgba(0, 0, 0, 0.05), inset 0 -4px 7px -4px rgba(0, 0, 0, 0.1); 
+        // border-top-right-radius: $radius*3;
+        // border-bottom-left-radius: $radius*3;
+      }
+
+      span {
+        box-shadow: inset 0 -4px 1px -4px rgba(0, 0, 0, 0.05), inset 0 -4px 7px -4px rgba(0, 0, 0, 0.1); 
+        cursor: pointer;
+        //font-size: 12px;
+        //text-transform: uppercase;
+        //letter-spacing: 0.2em;
+        text-indent: 4px;
+        display: block;
+        width: 100%;
+        height: 44px;
+        line-height: 44px;
+      }
+    }
+  }
+  
+  .dialog-title {
+    margin: 0;
+    padding: 15px;
+    padding-bottom: 0px;
+    color: $dark;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    text-indent: 4px;
+    text-align: center;
+  }
+
+
+  .dialog-section {
+    &:first-child {border: none !important; }
+    border-top: 2px solid rgba(0,0,0,0.1);
+    border-top: 2px solid rgba(0,0,0,0.025); 
+    padding: 15px 20px;
+    position: relative;
+    text-align: center;
+    max-width: 800px;
+    margin: auto;
+    
+    .label-sm { margin-bottom: 0px; pointer-events: none;}
+    .label-sm + input {margin-top: -8px !important; }
+    .label-sm + .btn-group {margin-top: -8px !important; }
+    // .input {height: 45px; line-height: 45px; }
+      
+    &.btn-transparent {
+      &:hover {color: $dark !important; }
+    }
+
+    &.section-tall {
+      height: 200px;
+    }
+  }
+
+  h4 .icon {
+    height: 38px;
+  }
+}

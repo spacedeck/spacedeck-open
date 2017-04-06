@@ -1,0 +1,148 @@
+@import "vars";
+@import "mixins";
+#short-profile {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 300px;
+  height: 200px;
+  border-radius: $radius;
+  background-color: white;
+  box-shadow: 0 1px 10px rgba(0,0,0,0.05);
+  z-index: 5000;
+
+  #short-profile-header {
+    height: 100px;
+    width: 300px;
+    border-top-left-radius: $radius;
+    border-top-right-radius: $radius;
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    background-color: rgba(0,0,0,0.1);
+  }
+
+  #short-profile-image {
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    margin-left: -40px;
+  }
+  #short-profile-actions {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 10px;
+  }
+  #short-profile-details {
+    padding-top: 40px;
+    .nickname,
+    .bio {
+      text-align: center;
+      display: block;
+    }
+    .bio { color: $medium;}
+    .nickname {color: $darker; font-size: 18px;}
+  }
+}
+
+
+
+#profile-details {
+  padding: 30px 40px;
+  background-color: white;
+  @include clearfix();
+  text-align: center;
+  position: relative;
+  .profile-head {
+    margin-bottom: 20px;
+  }
+  .profile-image {
+    position: relative;
+    margin: auto;
+    display: inline-block;
+    margin-bottom: 20px;
+    line-height: 200px;
+    width: 200px;
+    height: 200px;
+    border: 4px solid white;
+    border-radius: 8px;
+    box-shadow: 0 1px 10px rgba(0,0,0,0.05);
+  }
+
+  .profile-cover {
+    position: absolute;
+    height: 200px;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background-size: cover;
+    background-position: center;
+    z-index: 0;
+  }
+  .profile-username {
+    margin: 0;
+    font-size: 20px;
+    color: $darker;
+  }
+  .profile-description {
+    margin: 0;
+    font-size: 20px;
+  }
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    // text-align: center;
+    margin-top: -3px;
+
+    li {
+      vertical-align: middle;
+      display: inline-block;
+      // margin: 0px 7px;
+      margin-right: 3px;
+      color: $medium;
+      text-transform: uppercase;
+      font-family: $main-font;
+      font-size: 11px;
+      opacity: 0.5;
+      &:hover {opacity: 1; }
+      > .icon {margin-right: 3px; }
+      a {
+        color: $medium;
+        &:hover {color: $blue; }
+      }
+    }
+  }
+}
+
+
+#account {
+  padding-top: 64px;
+  #cover-image {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0.2;
+    background-size: cover;
+    background-position: center;
+  }
+  #profile-image {
+    position: relative;
+
+    img {
+      border-radius: $radius;
+      overflow: hidden;
+    }
+    #remove-profile-image {
+      position: absolute;
+      top: 0;
+      left: 0;
+      margin: -16px;
+    }
+  }
+}
+

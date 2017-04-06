@@ -1,0 +1,112 @@
+
+<div class="dialog-tabs-wrapper">
+  <div class="dialog-tabs">
+    <div class="dialog-tab" v-bind:class="{open:background_mode=='image'}" v-on:click="background_mode='image'"><span>[[__("background_image_caption")]]</span></div>
+    <div class="dialog-tab" v-bind:class="{open:background_mode=='color'}" v-on:click="background_mode='color'"><span>[[__("background_color_caption")]]</span></div>
+  </div>
+</div>
+
+<div id="background" class="relative">
+  <div id="colors" class="relative" v-show="background_mode!='image'">
+    <div class="color-picker" v-show="color_mode=='picker'">
+      <div class="color" id="background-color-picker" v-bind:style="{'background-color': 'hsl(' +color_picker_hue/255*360 + ', 100%, 50%)'}" 
+           v-sd-fader="true" 
+           sd-fader-var-x="color_picker_saturation"
+           sd-fader-var-y="color_picker_value"
+           sd-fader-max-x="255"
+           sd-fader-max-y="255">
+        <div class="fader-constraint mask" style="pointer-events:none" ></div>
+        <button class="fader-selector" style="pointer-events:none"></button>
+      </div>
+
+      <div class="color-hue"
+           v-sd-fader="true" 
+           sd-fader-var-x="color_picker_hue">
+        <button class="fader-selector" style="pointer-events:none"></button>
+      </div>
+
+      <div class="color-opacity"
+           v-sd-fader="true" 
+           sd-fader-var-x="color_picker_opacity">
+        <div class="fit"></div>
+        <button class="fader-selector" style="pointer-events:none"></button>
+      </div>
+      
+      <div class="dialog-section no-p" id="color-rgba">
+        <div class="input-row">
+          <div>
+            <label class="color-hsva-hue">H</label>
+            <input class="input input-md input-nude text-center" v-model="color_picker_hue" spellcheck="false" maxlength="3" type="number">
+          </div>
+          <div>
+            <label class="color-hsva-saturation">S</label>
+            <input class="input input-md input-nude text-center" v-model="color_picker_saturation" spellcheck="false" maxlength="3" type="number">
+          </div>
+          <div>
+            <label class="color-hsva-brightness">V</label>
+            <input class="input input-md input-nude text-center" v-model="color_picker_value" spellcheck="false" maxlength="3" type="number">
+          </div>
+          <div>
+            <label class="color-hsva-alpha">A</label>
+            <input class="input input-md input-nude text-center" v-model="color_picker_opacity" spellcheck="false" maxlength="3" type="number">
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="color-palette" v-show="color_mode=='palette'">
+      <div class="adapt overflow-y-scroll">
+        <button class="btn btn-round btn-darken" 
+          v-on:click="apply_swatch_color(s)"
+          v-for="s in swatches"
+          v-bind:style="{'background-color': s.hex}">
+          <span class="icon"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!--div class="dialog-section" v-show="background_mode=='color'">
+    <div class="tab-switch round options-2"  v-bind:class="{'option-2':color_mode=='picker'}">
+      <div class="options">
+        <span class="option" v-on:click="activate_color_mode('palette')">[[__("palette")]]</span>
+        <span class="option" v-on:click="activate_color_mode('picker')">
+          <span>[[__("picker")]]</span>
+        </span>
+      </div>
+      <span class="option-highlight"></span>
+    </div>
+  </div-->
+
+  <div class="" v-show="background_mode=='image'" v-if="active_space">
+    <div class="background-image" v-bind:style="{height: '233px', 'background-image':'url('+active_space.advanced.background_uri+')', 'margin': '6px', 'border-radius': '3px'}" v-if="active_space.advanced.background_uri && !space_background_uploading">
+    </div>
+        
+    <div class="progress state-processing" v-if="space_background_uploading"> 
+      <div class="spinner"></div>
+    </div>
+
+    <div class="dialog-section no-b adapt" v-if="!active_space.advanced.background_uri && !space_background_uploading" v-on:touchstart="handle_touch_select_background_image()">
+      <label class="btn btn-xxl btn-transparent btn-icon">
+        <span class="icon icon-picture-upload"></span>
+        <input id="background-uploader" type="file" accept="image/*" v-on:change="handle_section_background_upload($event)">
+      </label>
+      <p>[[__("upload_background_caption")]]</p>
+    </div>
+
+    <div class="dialog-section no-p no-flex" v-if="active_space.advanced.background_uri">
+      <div class="btn-cluster">
+        <label class="btn btn-transparent btn-block text-center" v-if="active_space.advanced.background_uri" v-on:touchstart="handle_touch_select_background_image()"> 
+          <input id="background-uploader" type="file" accept="image/*" v-on:chang="handle_section_background_upload($event)">
+          <span class="icon icon-picture-upload"></span>
+          <!-- Upload -->
+        </label>
+        <button class="btn btn-transparent text-center" v-on:click="remove_section_background()" > 
+          <span class="icon icon-trash"></span>
+          <!-- Remove -->
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>

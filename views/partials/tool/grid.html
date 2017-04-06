@@ -1,0 +1,29 @@
+<div id="grid">
+  <div class="dialog-section no-p-b no-p-h">
+    <div class="form-group no-m">
+      <label class="label label-sm">Grid</label>
+      <input class="input no-b no-p text-center" spellcheck="false" type="text" pattern="[0-9]" maxlength="64" ng-model="grid.spacing" value="50">
+      <button tabindex="-1" class="input-drag btn btn-transparent btn-icon" sd-fader="y-encoder" sd-fader-var-y="grid.spacing" sd-fader-min-y="4" sd-fader-max-y="500" sd-fader-step="1">
+        <span class="icon icon-triangles-vertical"></span>
+      </button>
+      <span class="input-unit">px</span>
+    </div>
+  </div>
+  
+  <div class="dialog-section no-p-b no-p-h">
+    <div class="form-group no-m">
+      <label class="label label-sm">Subdivision</label>
+      <input class="input no-b no-p text-center" spellcheck="false" type="text" pattern="[0-9]" maxlength="64" ng-model="grid.subdivisions" value="4">
+ 
+      <button class="btn-more btn btn-icon btn-transparent" ng-click="increase_grid_subdivisions()"> </button>
+      <button class="btn-less btn btn-icon btn-transparent" ng-click="decrease_grid_subdivisions()"> </button>
+    </div>
+  </div>
+
+  <div class="dialog-section">
+    <button class="btn btn-md btn-block btn-darker" ng-click="open_dialog('canvas')">
+      Close
+    </button>
+  </div>
+
+</div>

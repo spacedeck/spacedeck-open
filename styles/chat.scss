@@ -1,0 +1,125 @@
+@import "vars";
+@import "mixins";
+
+#chat-functions {
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  .btn {
+    display: block;
+    margin-top: -10px;
+    margin-left: -10px;
+  }
+}
+#chat {
+  #chat-message-new {
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    display: table;
+    min-height: 60px;
+    label {
+      vertical-align: middle;
+      display: table-cell;
+      font-size: 0px;
+      textarea {
+        display: inline-block;
+        width: 100%;
+        min-height: 90px;
+        padding-right: 50px;
+        font-size: 14px;
+        line-height: 1.5 !important;
+        font-weight: 300;
+      }
+    }
+  }
+
+  .overflow-y-scroll {
+    bottom: 100px !important;
+  }
+
+  #chat-messages {
+    width: 100%;
+    padding: 0px;
+    li {
+      display: block;
+      padding-bottom: 10px;
+      padding-left: 25px;
+      padding-right: 25px;
+      padding-left: 60px;
+      min-height: 60px;
+      @include transition( all 0.2s ease-in-out);
+    }
+  }
+}
+
+
+#post-comment {}
+#new-comment {margin-bottom: 20px; }
+
+.comments {
+  padding: 0;
+  padding-top: 10px;
+  margin-bottom: 0;
+  //background-color: $light;
+  font-size: 16px !important;
+  font-family: $main-font !important;
+  list-style: none;
+
+  border-top-left-radius: $radius;
+  border-top-right-radius: $radius;
+
+  > li {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 40px;
+    padding-right: 0px;
+    &:last-child {border: none; }
+  }
+
+  .comment-author {
+    pointer-events: none;
+    position: relative;
+    display: block;
+    color: $darker;
+    font-size: 11px;
+    .btn-icon {
+      position: absolute;
+      left: -40px;
+      top: -20px;
+    }
+  }
+  .comment-body {}
+  
+  .comment-meta {
+    display: block;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    font-size: 11px !important;
+    
+    li {
+      margin-right: 10px;
+      display: inline-block;
+
+      &.pull-right {
+        margin-right: 0px;
+        margin-left: 10px;
+      }
+
+      > a {
+        vertical-align: middle;
+        display: inline-block;
+        color: $lighter;
+      }
+
+      a {
+        &:hover {
+          color: $blue;
+        }
+        opacity: 0.5;
+      }
+    }
+  }
+}

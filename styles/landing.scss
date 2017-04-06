@@ -1,0 +1,257 @@
+@import "vars";
+
+#landing-header {
+  background-color: rgba(255,255,255,0.3);
+  height: 64px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.landing-keyvisual-wrapper {
+  background-image: url("../images/sd5-keyvisual-compressed.jpg");
+  background-size: cover;
+  background-position: center;
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+.landing-plans-wrapper {
+  background-image: url("../images/sd5-hero2-compressed.jpg");
+  background-size: cover;
+  background-position: center;
+  padding-top: 80px;
+  padding-bottom: 100px;
+}
+
+.landing-box {
+  width: 800px;
+  margin: auto;
+  max-width: 90%;
+  background-color: white;
+  padding: 40px;
+  margin-bottom: 80px;
+  margin-top: 80px;
+  position: relative;
+
+  box-shadow: 0px 0px 50px rgba(0,0,0,0.2);
+
+  h1 {
+    margin-bottom: 20px;
+  }
+
+  &.black {
+    background-color: #222;
+    color: white;
+    padding: 20px;
+    text-align: center;
+  }
+
+  &.overlap {
+    position: absolute;
+    z-index: 2;
+    margin-top: -65px;
+    left: 50%;
+    top: 0px;
+    margin-left: -250px;
+    width: 500px;
+  }
+
+  &.screenshot {
+    width: 90%;
+    max-width: 90%;
+    padding: 20px;
+    box-shadow: none;
+    background-color: transparent;
+
+    img {
+      width: 100%;
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      opacity: 0.3;
+    }
+  }
+
+  &.landing-box-left {
+    margin-left: 30px;
+  }
+}
+
+.lead-xxl {
+}
+
+.lead {
+  margin-bottom: 20px;
+}
+
+.lead-xl {
+}
+
+.plans-box {
+  background: linear-gradient(to bottom, #FEFFFF 25%,#D0D8E2 100%);
+  padding: 40px;
+  border-radius: 9px;
+}
+
+.landing-box.plans-box {
+  margin-top: 200px;
+  width: 900px;
+}
+
+.plans-table {
+  tr {
+    vertical-align: top;
+  }
+
+  th {
+    font-size: 42px;
+    padding-top: 40px;
+    text-align: center;
+  }
+
+  th.best-plan {
+    padding-top: 20px;
+    font-size: 48px;
+    padding-bottom: 0px;
+  }
+
+  td {
+    padding: 20px;
+    width: 30%;
+    p, li {
+      font-size: 18px;
+    }
+    li {
+      margin-bottom: 10px;
+    }
+  }
+
+  td.best-plan {
+    width: 40%;
+    p {
+      font-size: 22px;
+    }
+  }
+
+  td li {
+    list-style-type: none;
+    text-align: center;
+  }
+
+  ul {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .upgrade-buttons {
+    text-align:center;
+    margin-top:20px;
+  }
+}
+
+.logo-row {
+  position: relative;
+  padding: 80px;
+  background-color: white;
+  text-align: center;
+  width: 100%;
+
+  &.blue {
+    background-color: $blue;
+    color: white;
+  }
+}
+
+.logo-row div {
+  display: inline-block;
+  width: 200px;
+}
+
+.landing-row {
+  background-color: white;
+  padding-bottom: 80px;
+  padding-top: 40px;
+}
+
+#keyvisual {
+  border-radius: 20px;
+  box-shadow: 0px 0px 20px #eee;
+
+  width: 640px;
+  height: 420px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-image: url('/images/landing/spacedeck-screenshot1.jpg');
+  background-color: white;
+  margin: auto;
+  margin-top: 40px;
+  margin-bottom: 40px;
+  border: 1px solid #eee;
+}
+
+#legal {
+  .landing-box {
+    width: 800px;
+  }
+}
+
+.footer {
+  padding: 40px;
+  padding-bottom: 80px;
+  text-align: center;
+  color: $medium;
+
+  a {
+    margin-right: 20px;
+  }
+}
+
+
+@media screen and (min-width: 801px)  {
+  .plans-table-mobile {
+    display: none;
+  }
+}
+  
+@media screen and (max-width: 800px)  {
+
+  ul.lead.lead-xl, p.lead.lead-xl, ol.lead.lead-xl {
+    font-size: 20px !important;
+  }
+
+  .header-right {
+    > span:first-child {
+      display: none;
+    }
+  }
+  
+  .plans-table {
+    display: none;
+  }
+  
+  .plans-table-mobile {
+    display: block;
+
+    tbody {
+      display: block;
+      width: 100%;
+    }
+
+    tr {
+      display: block;
+      width: 100%;
+    }
+
+    td, th {
+      display: block;
+      width: 100%;
+    }
+
+    ul, li {
+      width: 100%;
+    }
+  }
+}

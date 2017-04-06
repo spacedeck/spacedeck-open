@@ -1,0 +1,101 @@
+<h4 class="dialog-title">Textframe</h4>
+
+<div id="text-frame">
+  <div class="dialog-section no-p-b">
+    <label class="label label-sm">Vertical Alignment</label>
+    <div class="btn-group">
+      <button class="btn btn-transparent btn-icon" v-on="click:set_artifact_style_prop('valign','top')" ng-class="{active:selected_artifact.align=='top'}">
+        <span class="icon icon-align-vertical-top"></span>
+      </button>
+      <button class="btn btn-transparent btn-icon" v-on="click:set_artifact_style_prop('valign','middle')" ng-class="{active:selected_artifact.align=='middle'}">
+        <span class="icon icon-align-vertical-middle"></span>
+      </button>
+      <button class="btn btn-transparent btn-icon" v-on="click:set_artifact_style_prop('valign','bottom')" ng-class="{active:selected_artifact.align=='bottom'}">
+        <span class="icon icon-align-vertical-bottom"></span>
+      </button>
+    </div>
+  </div>
+
+  <div class="dialog-section no-p-b no-p-h">
+    <div class="form-group no-m">
+      <label class="label label-sm">Padding</label>
+      <input class="input no-b no-p text-center" spellcheck="false" type="text" pattern="[0-9]" maxlength="64" value="250" v-model="active_style.padding">
+      <button tabindex="-1" class="input-drag btn btn-transparent btn-icon" style="cursor: ns-resize;" v-sd-fader="true" sd-fader-var-y="active_style.padding" sd-fader-min-y="0" sd-fader-max-y="500" sd-fader-step="1">
+        <span class="icon icon-triangles-vertical"></span>
+      </button>
+      <span class="input-unit">px</span>
+    </div>
+  </div>
+
+
+  <div class="dialog-section">
+    <label class="btn btn-sm btn-round color-indicator" style="background-color:{{active_style.fill_color}};pointer-events:all"><input type="color" v-model="active_style.fill_color" style="display:block;visibility:hidden;position:absolute;"></label>
+  </div>
+
+  <!--div class="dialog-section no-p-b no-p-h">
+    <div class="form-group no-m">
+      <label class="label label-sm">Columns</label>
+      <input class="input no-b no-p text-center" spellcheck="false" type="text" pattern="[0-9]" maxlength="64" value="5">
+
+      <button class="btn-more btn btn-icon btn-transparent"> </button>
+      <button class="btn-less btn btn-icon btn-transparent"> </button>
+    </div>
+  </div-->
+
+  <!--div class="dialog-section no-p-b no-p-h">
+    <div class="form-group no-m">
+      <label class="label label-sm">Gutter</label>
+      <input class="input no-b no-p text-center" spellcheck="false" type="text" pattern="[0-9]" maxlength="64" value="50">
+      <button tabindex="-1" class="input-drag btn btn-transparent btn-icon" style="cursor: ns-resize;">
+        <span class="icon icon-triangles-vertical"></span>
+      </button>
+      <span class="input-unit">px</span>
+    </div>
+  </div-->
+
+  <!-- <div id="padding" class="dialog-section">
+    <label class="label label-sm">Padding</label>
+
+    <div class="padding-icon">
+      
+      <button id="padding-link" class="btn btn-md btn-toggle btn-dark btn-icon" ng-class="{alt:!padding_locked}" ng-click="toggle_padding_locked()">
+        <span class="btn-option">
+          <span class="icon icon-link-closed"></span>
+        </span>
+
+        <span class="btn-option">
+          <span class="icon icon-link-open"></span>
+        </span>
+      </button>
+      
+      <div class="left">
+        <input class="input" spellcheck="false" type="text" v-model="active_style.padding_left" value="0" style="cursor: ew-resize;">
+        <button class="input-drag btn btn-md btn-transparent btn-icon" sd-fader="y-encoder" sd-fader-var-y="active_style.padding_left" sd-fader-min-y="0" sd-fader-max-y="500" sd-fader-step="0.1">
+          <span class="icon icon-triangles-vertical"></span>
+        </button>
+      </div>
+
+      <div class="right">
+        <input class="input" spellcheck="false" type="text" v-model="active_style.padding_right" value="0" style="cursor: ew-resize;">
+        <button class="input-drag btn btn-md btn-transparent btn-icon" sd-fader="y-encoder" sd-fader-var-y="active_style.padding_left" sd-fader-min-y="0" sd-fader-max-y="500" sd-fader-step="0.1">
+          <span class="icon icon-triangles-vertical"></span>
+        </button>
+      </div>
+
+      <div class="top">
+        <input class="input" spellcheck="false" type="text" v-model="active_style.padding_top" value="0" style="cursor: ns-resize;">
+        <button class="input-drag btn btn-md btn-transparent btn-icon" sd-fader="y-encoder" sd-fader-var-y="active_style.padding_top" sd-fader-min-y="0" sd-fader-max-y="500" sd-fader-step="0.1">
+          <span class="icon icon-triangles-vertical"></span>
+        </button>
+      </div>
+
+      <div class="bottom">
+        <input class="input" spellcheck="false" type="text" v-model="active_style.padding_bottom" value="0" style="cursor: ns-resize;">
+        <button class="input-drag btn btn-md btn-transparent btn-icon" sd-fader="y-encoder" sd-fader-var-y="active_style.padding_bottom" sd-fader-min-y="0" sd-fader-max-y="500" sd-fader-step="0.1">
+          <span class="icon icon-triangles-vertical"></span>
+        </button>
+      </div>
+    </div>
+  </div> -->
+
+</div>

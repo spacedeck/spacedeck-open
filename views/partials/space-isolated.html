@@ -1,0 +1,135 @@
+<div id="space" class="section board active mouse-{{mouse_state}} tool-{{active_tool}}">
+
+  <div class="space-bounds" style="width:{{active_space.advanced.width*bounds_zoom}}px;height:{{active_space.advanced.height*bounds_zoom}}px;"></div>
+
+  <div class="wrapper"
+    style="transform:scale({{viewport_zoom}});transform-origin:0 0;width:{{active_space.advanced.width}}px;height:{{active_space.advanced.height}}px;background-image:url('{{active_space.advanced.background_uri}}');background-color:{{active_space.advanced.background_color}};margin-left:{{bounds_margin_horiz}}px;margin-top:{{bounds_margin_vert}}px" >
+
+    <div v-repeat="a : active_space_artifacts"
+      v-class="text-editing:(editing_artifact_id==a._id && (a.view.major_type=='text' || a.view.major_type=='shape'))"
+      style="{{a.view.style}}"
+      class="{{a.view.classes}}"
+      id="artifact-{{a._id}}">
+
+      <div v-if="a.view && a.view.major_type" style="height:100%; width:100%">
+        <!-- text -->
+        <div v-if="a.view.major_type == 'text'" class="text" style="{{a.view.inner_style}}">
+          <div class="text-table">
+            <div class="text-cell" style="{{a.view.text_cell_style}}">
+              <div class="text-column" class="text-editing" v-sd-richtext="obj:a" v-if="editing_artifact_id==a._id">{{{a.description}}}</div>
+              <div class="text-column" v-if="editing_artifact_id!=a._id">{{{a.description|urls_to_links}}}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- drawing (annotation) -->
+        <div v-if="a.view.major_type == 'vector'" class="clip" style="{{a.view.inner_style}}">
+          <div>{{{a.view.vector_svg}}}</div>
+        </div>
+
+        <!-- svg shape -->
+        <div v-if="a.view.major_type == 'shape'" class="clip" style="{{a.view.inner_style}}">
+          <div class="shape">{{{a.view.vector_svg}}}</div>
+          <div class="text-table">
+            <div class="text-cell" style="{{a.view.text_cell_style}}">
+              <div class="text-column" v-sd-richtext="obj:a" v-class="text-editing:editing_artifact_id==a._id">{{{a.description}}}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- svg image -->
+        <div v-if="a.view.major_type == 'svg'" class="svg" style="{{a.view.inner_style}}">
+          <img v-attr="src : a.view.payload_uri"></img>
+        </div>
+
+        <!-- image -->
+        <div v-if="a.view.major_type == 'image'" class="image" style="{{a.view.inner_style}};background-image: url('{{a.view.thumbnail_uri}}');">
+          <span class="title">{{a.title}}</span>
+          <div class="spinner"></div>
+          <div class="progress" style="width:{{a.view.progress}}%">{{a.description}}</div>
+
+          <video v-if="a.mime == 'image/gif' && a.payload_alternatives && a.payload_alternatives.length > 0" preload autoplay loop>
+            <source v-repeat="rep : a.payload_alternatives" v-attr="src : rep.payload_uri, type : rep.mime" />
+          </video>
+
+          <!--span v-if="a.meta" class="link-wrapper"><a class="link btn btn-round btn-primary btn-sm" v-if="a.meta.link_uri" v-attr="href:a.meta.link_uri">{{a.view.link_caption}}</a></span-->
+        </div>
+
+        <!-- video -->
+        <div v-if="a.view.major_type == 'video'" v-videoplayer="a" class="video" style="{{a.view.inner_style}};background-image: url('{{a.view.thumbnail_uri}}');">
+          <video controls preload="metadata" v-attr="poster: a.view.thumbnail_uri">
+            <source v-repeat="rep : a.payload_alternatives" v-attr="src : rep.payload_uri, type : rep.mime" />
+            <source v-if="a.payload_uri && a.mime" v-attr="src : a.payload_uri, type : a.mime" />
+          </video>
+
+          <div class="spinner"></div>
+          <div class="progress" style="width:{{a.view.progress}}%">{{a.description}}</div>
+        </div>
+
+        <!-- audio -->
+        <div v-if="a.view.major_type == 'audio'" v-audioplayer="a" class="audio" style="{{a.view.inner_style}};">
+
+          <audio>
+            <source v-repeat="alt: a.payload_alternatives | orderBy 'mime' -1" v-attr="src: alt.payload_uri, type: alt.mime"/>
+            <source v-attr="src: a.payload_uri, type:a.mime" v-if="a.payload_uri"/>
+          </audio>
+
+          <div class="timeline" style="background-image: url('{{a.payload_thumbnail_web_uri}}')">
+            <div class="tl-current-time" style="width: {{a.player_view.current_time_float*100}}%"></div>
+            <div class="tl-inpoint" style="left: {{a.player_view.inpoint_float*100}}%" v-if="a.player_view.inpoint_float>0.0"></div>
+            <div class="tl-outpoint" style="left: {{a.player_view.outpoint_float*100}}%"></div>
+          </div>
+
+          <div class="tl-controls">
+            <div class="btn btn-md btn-toggle btn-round" v-class="alt:a.player_view.state=='playing'" v-show="a.board.w>=200 || a.player_view.state!='playing'">
+              <span class="btn-option play">
+                <span class="icon icon-controls-play"></span>
+              </span>
+
+              <span class="btn-option pause">
+                <span class="icon icon-controls-pause"></span>
+              </span>
+            </div>
+
+            <span class="btn btn-md btn-round btn-icon stop" v-show="a.player_view.state=='playing' || a.player_view.state=='paused'">
+              <span class="icon icon-controls-stop"></span>
+            </span>
+
+            <span class="tl-title" v-show="a.board.w>=250 && a.board.h>=150">{{a.view.filename}}</span>
+            <span class="tl-times" class="btn-group" v-show="a.board.w>=400 && a.board.h>=150">
+              <span class="btn btn-md btn-transparent no-p set-inpoint">{{a.player_view.current_time_string}} /</span>
+              <span class="btn btn-md btn-transparent no-p set-outpoint">{{a.player_view.total_time_string}}</span>
+            </span>
+          </div>
+
+          <div class="spinner"></div>
+          <div class="progress" style="width:{{a.view.progress}}%">{{a.description}}</div>
+        </div>
+
+        <!-- zone -->
+        <div v-if="a.view.major_type == 'zone'" class="zone" style="{{a.view.inner_style}}">
+          <div class="text-cell">
+            <div class="text-column" v-sd-richtext="obj:a" v-class="text-editing:editing_artifact_id==a._id">{{{a.description}}}</div>
+          </div>
+        </div>
+
+        <!-- embed -->
+        <div v-if="a.view.major_type == 'oembed'" class="oembed" style="{{a.view.inner_style}};background-color: #3d9ee9;padding:10px;word-wrap: break-word; text-align: center; color:white">
+          <span class="icon icon-video-camera"></span>
+          <a href="{{a.meta.link_uri}}" style="color: white;">{{a.meta.link_uri}}</a></p><!--v-html-->
+        </div>
+
+        <!-- file -->
+        <div v-if="a.view.major_type == 'file'" class="text" style="{{a.view.inner_style}}">
+          <span class="icon icon-page-vertical-double"></span>
+          {{a.view.filename}}
+          <div class="spinner"></div>
+        </div>
+
+      </div>
+    </div>
+    <!-- board artifacts end -->
+
+  </div>
+  <!-- wrapper end -->
+</div>

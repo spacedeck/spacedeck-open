@@ -1,0 +1,169 @@
+<div id="team" class="dialog in" style="padding:100px;z-index:20000;position:absolute;width:100%;min-height:100%;background-color:#eee" v-if="active_view == 'account' && user" v-cloak>
+
+  <a href="/spaces" class="btn btn-round btn-icon btn-stroke-darken btn-md pull-right" style="position:absolute;top:30px;right:30px"><span class="icon icon-cross-0"></span></a>
+
+  <div class="dialog-tabs" style="margin:auto">
+    <div class="dialog-tab" v-bind:class="{open:account=='profile'}" v-on:click="account='profile'"><span>[[__("profile_caption")]]</span></div>
+    <div class="dialog-tab" v-bind:class="{open:account=='language'}" v-on:click="account='language'"><span>[[__("language_caption")]]</span></div>
+    <div class="dialog-tab" v-bind:class="{open:account=='notifications'}" v-on:click="account='notifications'"><span>[[__("notifications_caption")]]</span></div>
+    <div class="dialog-tab" v-if="user.account_type=='email'" v-bind:class="{open:account=='password'}" v-on:click="account='password'"><span>[[__("password_caption")]]</span></div>
+    <div class="dialog-tab" v-bind:class="{open:account=='terminate'}" v-on:click="account='terminate'"><span>[[__("terminate_caption")]]</span></div>
+  </div>
+
+  <div class="dialog-section text-left" style="background-color:#f5f5f5;padding-top:40px;padding-bottom:40px">
+    <div class="collapse" v-bind:class="{in:account=='profile'}">
+      <div class="labels-inline relative" style="margin-bottom:40px">
+        <div class="form-group">
+          <div id="profile-image" class="img loaded pull-left" style="margin-right: 50px;">
+
+            <span id="profile-thumbnail" class="btn btn-xl btn-darken btn-icon btn-round" v-bind:style="{'background-image':'url('+user.avatar_thumb_uri+')'}">
+              <span class="icon icon-user" v-if="!user.avatar_thumb_uri"></span>
+            </span>
+
+            <span class="spinner"></span>
+            <button id="remove-profile-image" class="btn btn-xs btn-dark btn-round btn-icon" v-on:click="delete_user_avatar_image()" v-if="has_avatar_image(user)">
+              <span class="icon icon-cross-3"></span>
+            </button>
+          </div>
+
+          <div class="pull-left">
+            <div class="form-group">
+              <label class="file btn btn-md btn-darken" style="margin-right: 5px;">
+                <input type="file" v-on:change="save_user_avatar_image(this)">
+                <span v-if="!uploading_avatar">[[__("upload_avatar")]]</span>
+                <span v-if="uploading_avatar">[[__("uploading_avatar")]]</span>
+              </label>
+
+              <p class="message">[[__("avatar_dimensions")]]</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+
+        <div class="form-group">
+          <label class="label" >[[__("profile_name")]]</label>
+          <input type="text" id="user-nickname"
+          pattern=".{3,}"
+          required title="3 characters minimum"
+          class="input input-white no-b" data-i18n="[placeholder]account.username.input"
+          v-model="user.nickname" placeholder="Choose a username">
+        </div>
+
+        <div class="form-group">
+          <label class="label">[[__("profile_email")]]</label>
+
+          <input
+          id="new-email"
+          v-bind:class="{disabled: user.account_type=='google'}"
+          v-bind:disabled="user.account_type=='google'"
+          class="input input-white no-b"
+          type="email"
+          v-model="user.email"
+          v-on:change="user.email_changed=true"
+          placeholder="mail@example.com">
+
+          <button class="btn btn-md btn-darken" v-if="user.account_type=='email'" v-on:click=" save_user()" style="margin-top:20px">[[__("ok")]]</button>
+        </div>
+
+        <div class="form-group" v-if="!user.confirmed_at">
+          <p v-if="!user.confirmed_at && !account_confirmed_sent">[[__("confirmation_sent_long")]]</p>
+
+          <span
+          class="btn btn-xs btn-stroke-darken btn-round"
+          v-on:click=" confirm_again()"
+          v-if="!user.confirmed_at && !account_confirmed_sent"
+          >[[__("send_again")]]</span>
+
+          <p v-if="account_confirmed_sent">
+            <span class="icon icon-check"></span> <span>[[__("confirmation_sent_another")]]</span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="collapse" v-bind:class="{in:account=='language'}">
+      <div class="modal-section">
+        <label class="radio" v-bind:class="{checked
+        : user.preferences.language=='en'}" v-on:click="save_user_language('en')">
+          <input type="radio" id="user-preferences_language" name="language" value="en"><span>English</span>
+        </label>
+        <hr/>
+        <label class="radio" v-bind:class="{checked: user.preferences.language=='de'}" v-on:click="save_user_language('de')">
+          <input type="radio" id="user-preferences_language" name="language" value="de"><span>Deutsch</span>
+        </label>
+        <hr/>
+        <label class="radio" v-bind:class="{checked: user.preferences.language=='fr'}" v-on:click="save_user_language('fr')">
+          <input type="radio" id="user-preferences_language" name="language" value="fr"><span>Français</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="collapse" v-bind:class="{in:account=='notifications'}">
+      <div class="modal-section labels-inline">
+        <div class="form-group">
+          <label class="checkbox"
+            v-bind:class="{checked: user.preferences.email_notifications}"
+            v-on:click="account_save_user_notifications(!user.preferences.email_notifications);">
+            <span>[[__('notifications_option_chat')]]</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="collapse" v-bind:class="{in:account=='password'}">
+      <h4 class="modal-title">Change Password</h4>
+      <div class="modal-section labels-inline">
+        <div class="form-group">
+          <label class="label">[[__("current_password")]]</label>
+          <input id="current-password" class="input input-white no-b" v-model="password_change_current" type="password">
+        </div>
+        <div class="form-group">
+          <label class="label">[[__("new_password")]]</label>
+          <input id="new-password" class="input input-white no-b" v-model="password_change_new" type="password">
+        </div>
+        <div class="form-group">
+          <label class="label">[[__("verify_password")]]</label>
+          <input id="new-password-confirmation" class="input input-white no-b" v-model="password_change_new_confirmation" type="password">
+        </div>
+
+        <div class="center alert alert-danger" v-if="password_change_error">{{password_change_error}}</div>
+      </div>
+
+      <div class="modal-footer">
+        <div class="btn-cluster">
+          <button
+          class="btn btn-transparent btn-block"
+          v-on:click="save_user_password(password_change_current, password_change_new, password_change_new_confirmation);" >
+            [[__("change_password")]]
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="collapse" v-bind:class="{in:account=='terminate'}">
+      <div class="">
+        <p>[[__("terminate_warning")]]</p>
+        <p>[[__("terminate_warning2")]]</p>
+      </div>
+
+      <div class="labels-inline" v-if="user.account_type == 'email'">
+        <div class="form-group">
+          <label class="label">[[__("current_password")]]</label>
+          <input v-model="account_remove_password" class="input input-white no-b" type="password">
+        </div>
+
+        <div class="form-group">
+          <label class="label">[[__("terminate_reason")]]</label>
+          <textarea class="input input-white no-b" v-model="account_remove_feedback"></textarea>
+          <p class="message">[[__("terminate_reason_caption")]]</p>
+        </div>
+        <div class="center alert alert-danger" v-if="account_remove_error">{{account_remove_error}}</div>
+      </div>
+
+      <button class="btn btn-transparent btn-block" v-on:click="remove_account(account_remove_password, account_remove_feedback)">[[__("terminate_terminate")]]</button>
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,36 @@
+<div class="modal" v-if="active_modal == 'pdfoptions'" v-cloak>
+  <div class="modal-wrapper">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="btn btn-icon btn-light btn-round close" v-on:click=" close_modal()">
+            <span class="icon icon-cross-1"></span>
+          </button>
+        </div>
+
+        <div class="modal-body">
+          <p class="lead text-center">PDF Import</p>
+          <div class="plans-box">
+            <table class="plans-table">
+              <tr>
+                <td>
+                  <p>Thumbnail and Download Link</p>
+
+                  <button class="btn btn-primary btn-round btn-sm" v-on:click=" approve_pdf_upload($event, null, 'classic')">Classic Import</button>
+
+                </td>
+                <td>
+                  <p>Each Page as Image, displayed as Grid</p>
+                  <button class="btn btn-primary btn-round btn-sm" v-on:click=" approve_pdf_upload($event, pdf_export_with_zones, 'grid')">Grid Import</button><br>
+                  <input type="checkbox" v-model="pdf_export_with_zones" /> With Zones?
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,65 @@
+<div id="layout" class="relative">
+  <div class="dialog-section no-p-b">
+    <div class="btn-group">
+      <button class="btn btn-transparent btn-icon" v-on:click="layout_stack_top()">
+        <span class="icon icon-stack-3d-top"></span>
+      </button>
+      <button class="btn btn-transparent btn-icon" v-on:click="layout_stack_bottom()">
+        <span class="icon icon-stack-3d-bottom"></span>
+      </button>
+      <button class="left btn btn-transparent btn-icon" v-on:click="layout_align_left()">
+        <span class="icon icon-align-left"></span>
+      </button>
+      <button class="right btn btn-transparent btn-icon" v-on:click="layout_align_right()">
+        <span class="icon icon-align-right"></span>
+      </button>
+      <button class="top btn btn-transparent btn-icon" v-on:click="layout_align_top()">
+        <span class="icon icon-align-top"></span>
+      </button>
+      <button class="bottom btn btn-transparent btn-icon" v-on:click="layout_align_bottom()">
+        <span class="icon icon-align-bottom"></span>
+      </button>
+    </div>
+    <div class="btn-group">
+      <button class="btn btn-transparent btn-icon" v-on:click="layout_align_center()">
+        <span class="icon icon-align-center-horizontal"></span>
+      </button>
+      <button class="btn btn-transparent btn-icon" v-on:click="layout_align_middle()">
+        <span class="icon icon-align-center-vertical"></span>
+      </button>
+      <button class="btn btn-transparent btn-icon" v-on:click="layout_distribute_horizontal()">
+        <span class="icon icon-distribute-horizontal"></span>
+      </button>
+      <button class="btn btn-transparent btn-icon" v-on:click="layout_distribute_vertical()">
+        <span class="icon icon-distribute-vertical"></span>
+      </button>
+      <button class="btn btn-transparent btn-icon" v-on:click="layout_distribute_horizontal_spacing()">
+        <span class="icon icon-spacing-horizontal"></span>
+      </button>
+      <button class="btn btn-transparent btn-icon" v-on:click="layout_distribute_vertical_spacing()">
+        <span class="icon icon-spacing-vertical"></span>
+      </button>
+      <button class="btn btn-transparent btn-icon" v-on:click="layout_auto()">
+        <span class="icon icon-cluster"></span>
+      </button>
+    </div>
+
+  <!--div class="dialog-section no-p-b no-p-h" v-if="selection_metrics.count>1">
+    <label class="label label-sm">Match Size</label>
+    <div class="btn-group">
+      <button class="btn btn-transparent btn-icon" v-on:click="layout_match_size_vert()">
+        <span class="icon icon-size-vertical"></span>
+      </button>
+
+      <button class="btn btn-transparent btn-icon" v-on:click="layout_match_size_both()">
+        <span class="icon icon-size-both"></span>
+      </button>
+
+      <button class="btn btn-transparent btn-icon" v-on:click="layout_match_size_horiz()">
+        <span class="icon icon-size-horizontal"></span>
+      </button>
+    </div>
+  </div-->
+
+  </div>
+</div>

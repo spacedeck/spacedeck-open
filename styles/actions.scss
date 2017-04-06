@@ -1,0 +1,188 @@
+@import "vars";
+@import "mixins";
+
+#header {
+  top: 0;
+  position: fixed;
+  width: 100%;
+  z-index: 1000;
+  padding: $gutter-b;
+  pointer-events: none;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+
+  .home {
+    margin-top: -20px;
+    margin-left: -20px;
+    .icon {
+      color: $dark;
+    }
+  }
+  .header-left,
+  .header-right {
+    pointer-events: auto;
+    position: relative;
+    z-index: 10;
+    > * {
+      display: inline-block;
+      vertical-align: middle;
+    }
+  }
+
+
+  .header-center {
+    width: 100%;
+    left: 0;
+    position: absolute;
+    text-align: center;
+    pointer-events: none;
+    > * {
+      pointer-events: auto;
+
+      font-size: 20px;
+      line-height: 44px;
+      color: $darker;
+      padding: 0 10px;
+    }
+  }
+
+  .header-left > * { margin-right: 10px; }
+  .header-right > * { margin-left: 5px; }
+
+  .title {
+    width: 100%;
+    left: 0;
+    position: absolute;
+    text-align: center;
+    pointer-events: none;
+  }
+
+  h1 {
+    margin: 0;
+    height: 60px;
+    line-height: 60px;
+    font-size: $font-size*0.75;
+    font-weight: bold;
+    color: $medium;
+    display: inline-block;
+    margin-top: -14px;
+    pointer-events: all;
+    font-weight: normal;
+  }
+
+  .author {
+    float: left;
+    .btn {
+      margin-right: 10px;
+    }
+    .author-date {
+      opacity: 0.5;
+    }
+  }
+}
+
+.actions {
+  position: absolute;
+  top: 0;
+  @include transition( all 0.25s ease-in-out);
+  @include backface-visibility(hidden);
+  z-index: 3000;
+  opacity: 0;
+  pointer-events: none;
+  
+  .actions {
+    margin: 0;
+  }
+  
+  @include scale(0,0);
+  
+  &.left { left: 0;}
+  &.right { right: 0;}
+
+  &.in {
+    @include scale(1,1);
+    opacity: 1;
+    * {
+      pointer-events: auto;
+    }  
+  }
+}
+
+
+#global-actions {
+  margin: 10px;
+  text-align: center;
+  display: inline-block;
+  position: absolute;
+  white-space: nowrap;
+  left: 54px;
+  top: 0;
+  .btn {
+    padding: 0 8px;
+    &:first-child {padding-left: 20px; }
+    &:last-child {padding-right: 20px; }
+  }
+}
+
+#search-wrapper {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  .icon {
+    position: absolute;
+    right: 5px;
+    top: 0;
+  }
+  #search-input {
+    text-align: left;
+    @include transition( width 0.25s ease-in-out, background-color 0.25s ease-in-out);
+      width: 100px;
+    &:focus {
+      width: 250px;
+    }
+  }
+}
+
+#home-actions {
+  width: 100%;
+  img {
+    margin: auto;
+    display: block;
+    opacity: 0.1;
+    margin-top: 6px;
+  }
+}
+
+#no-profile-actions,
+#profile-actions {
+  right: 0;
+}
+
+#user-actions {
+  #profile-toggle {
+    background-size: cover;
+    background-position: center;
+  }
+}
+
+#space-actions {
+  right: 0;
+  .btn {
+    text-transform: uppercase;
+  }
+  #space-version {
+    position: absolute;
+    right: 50px;
+  }
+  #space-pub-save {
+    display: inline-block;
+    position: relative;
+    vertical-align: middle;
+    height: 44px;
+    .btn {
+      position: absolute;
+      right: 0;
+      top: 0;
+      @include perspective-origin(center right);
+    }
+  }
+}

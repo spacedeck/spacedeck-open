@@ -1,0 +1,69 @@
+<h4 class="dialog-title">[[__("tool_shape")]]</h4>
+
+<div id="shapes">
+  <div class="dialog-section no-p-h" style="white-space: normal;">
+    <button class="btn btn-icon-labeled btn-transparent" v-on:click="add_shape('ellipse',$event)">
+    <span class="icon icon-shape-circle"></span>
+    <span class="icon-label">[[__("tool_circle")]]</span>
+    </button>
+
+    <button class="btn btn-icon-labeled btn-transparent" v-on:click="add_shape('hexagon',$event)">
+    <span class="icon icon-shape-hexagon"></span>
+    <span class="icon-label">[[__("tool_hexagon")]]</span>
+    </button>
+
+    <button class="btn btn-icon-labeled btn-transparent" v-on:click="add_shape('square',$event)">
+    <span class="icon icon-shape-square"></span>
+    <span class="icon-label">[[__("tool_square")]]</span>
+    </button>
+
+    <!--button class="btn btn-icon-labeled btn-transparent rot45" v-on:click="add_shape('diamond',$event)">
+    <span class="icon icon-shape-square"></span>
+    <span class="icon-label">[[__("tool_diamond")]]</span>
+    </button-->
+
+    <button class="btn btn-icon-labeled btn-transparent" v-on:click="add_shape('speechbubble',$event)">
+    <span class="icon icon-shape-bubble"></span>
+    <span class="icon-label">[[__("tool_bubble")]]</span>
+    </button>
+
+    <button class="btn btn-icon-labeled btn-transparent" v-on:click="add_shape('cloud',$event)">
+    <span class="icon icon-shape-cloud"></span>
+    <span class="icon-label">[[__("tool_cloud")]]</span>
+    </button>
+
+    <button class="btn btn-icon-labeled btn-transparent" v-on:click="add_shape('burst',$event)">
+    <span class="icon icon-shape-burst"></span>
+    <span class="icon-label">[[__("tool_burst")]]</span>
+    </button>
+
+    <button class="btn btn-icon-labeled btn-transparent" v-on:click="add_shape('star',$event)">
+    <span class="icon icon-shape-star"></span>
+    <span class="icon-label">[[__("tool_star")]]</span>
+    </button>
+
+    <button class="btn btn-icon-labeled btn-transparent" v-on:click="add_shape('heart',$event)">
+    <span class="icon icon-shape-heart"></span>
+    <span class="icon-label">[[__("tool_heart")]]</span>
+    </button>
+
+    <button class="btn btn-icon-labeled btn-transparent" v-on:click="start_drawing_arrow()">
+      <span class="icon icon-tool-arrow"></span>
+      <span class="icon-label">[[__("tool_arrow")]]</span>
+    </button>
+
+    <button class="btn btn-icon-labeled btn-transparent" v-on:click="start_drawing_line()">
+    <span class="icon icon-tool-line"></span>
+    <span class="icon-label">[[__("tool_line")]]</span>
+    </button>
+  </div>
+</div>
+
+<!--
+<div class="dialog-section no-p">
+    <div class="btn-cluster">
+        <button class="btn btn-transparent text-center"> Upload </button>
+        <button class="btn btn-transparent text-center" v-on:click="start_drawing_scribble()"> Draw </button>
+    </div>
+</div>
+-->

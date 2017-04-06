@@ -1,0 +1,72 @@
+@import "vars";
+@import "mixins";
+
+
+#files-empty,
+#favorites-empty {
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  width: 100%;
+  height: 100%;
+  display: table;
+  pointer-events: none;
+  color: $medium;
+  > div {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+    padding: 20px;
+    .btn {
+      pointer-events: auto;
+    }
+  }
+}
+
+.files-wrapper {
+  overflow: hidden;
+  position: absolute;
+  top: 120px;
+  bottom: 0px;
+  width: 100%;
+  height: auto;
+}
+
+.in-from-left,
+.in-from-right,
+.out-to-left,
+.out-to-right {
+
+  @include backface-visibility(hidden);
+  
+  @include animation-duration(0.225s);
+  @include animation-iteration-count(1);
+  @include animation-timing-function(ease-out);
+  @include animation-fill-mode(forwards);
+  // overflow: hidden !important;
+}
+
+.in-from-left  { @include animation-name(in-from-left); }
+.in-from-right { @include animation-name(in-from-right); }
+.out-to-left   { @include animation-name(out-to-left); }
+.out-to-right  { @include animation-name(out-to-right); }
+
+@-webkit-keyframes in-from-left {
+  from { @include translateX (-100%); opacity: 0;}
+  to   { @include translateX (0%); opacity: 1; }
+}
+
+@-webkit-keyframes in-from-right {
+  from { @include translateX (100%); opacity: 0; }
+  to   { @include translateX (0%); opacity: 1; }
+}
+
+@-webkit-keyframes out-to-left {
+  from { @include translateX (0%); opacity: 1; }
+  to   { @include translateX (-100%); }
+}
+
+@-webkit-keyframes out-to-right {
+  from { @include translateX (0%); opacity: 1; }
+  to   { @include translateX (100%); opacity: 0; }
+}

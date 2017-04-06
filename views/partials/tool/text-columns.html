@@ -1,0 +1,25 @@
+<h4 class="dialog-title">Columns</h4>
+
+<div id="type-columns" class="relative">
+  <div class="dialog-section no-p">
+    <div class="form-group no-m">
+      <!-- <label class="label label-sm">Columns</label> -->
+      <input class="input no-b no-p text-center text-large" spellcheck="false" type="text" pattern="[0-9]" maxlength="10" v-model="active_style.columns">
+
+      <button class="btn-more btn btn-icon btn-transparent" v-on="click:increase_columns()"> </button>
+      <button class="btn-less btn btn-icon btn-transparent" v-on="click:decrease_columns()"> </button>
+    </div>
+  </div>
+
+  <div class="dialog-section no-p-b no-p-h">
+    <div class="form-group no-m">
+      <label class="label label-sm text-center">Gutter</label>
+      <input class="input no-b no-p text-center" spellcheck="false" type="text" pattern="[0-9\.]" maxlength="3" v-model="active_style.gutter">
+      <button tabindex="-1" class="input-drag btn btn-transparent btn-icon" style="cursor: ns-resize;" v-sd-fader="true" sd-fader-var-y="active_style.gutter" sd-fader-min-y="0" sd-fader-max-y="200" sd-fader-step="1">
+        <span class="icon icon-triangles-vertical"></span>
+      </button>
+      <span class="input-unit">px</span>
+    </div>
+  </div>
+</div>
+

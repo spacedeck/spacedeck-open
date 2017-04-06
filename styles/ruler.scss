@@ -1,0 +1,65 @@
+@import "vars";
+@import "mixins";
+
+.ruler {
+    position: absolute;
+    width: 100%;
+    border-bottom:1px dotted #e17878;
+    background-clip: padding-box;
+
+    z-index: 5;
+    cursor: ns-resize;
+    .ruler-value {
+        display: inline-block;
+        background-color: $blue;
+        background-color: #e17878;
+        color: white;
+        font-size: 11px;
+        line-height: 1;
+        position: absolute;
+        text-align: center;  
+        opacity: 0;
+    }
+    &:hover {
+        .ruler-value {
+            opacity: 1;
+        }
+    }
+    &.horz {
+        top: 50px;
+        width: 100%;
+        border-bottom:1px dotted #e17878;
+        height: 1px;
+        cursor: ns-resize;
+        &:hover {
+            border-bottom-style: solid; 
+        }
+        .ruler-value {
+            left: 250px;
+            top: 0;
+            border-bottom-left-radius: 60px;
+            border-bottom-right-radius: 60px;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+        }
+    }
+
+    &.vert {
+        left: 50px;
+        height: 100%;
+        border-left:1px dotted #e17878;
+        width: 1px;
+        cursor: ew-resize;
+        &:hover {border-left-style: solid; }
+        .ruler-value {
+            left: 0;
+            top: 250px;
+            border-top-right-radius: 60px;
+            border-bottom-right-radius: 60px;
+            height: 40px;
+            width: 40px;
+            line-height: 40px;
+        }
+    }
+}

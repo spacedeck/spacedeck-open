@@ -1,0 +1,140 @@
+<header id="landing-header" class="header" v-cloak v-if="(active_view == 'login' || active_view == 'signup' || active_view == 'password-reset' || active_view == 'password-confirm')">
+  <div class="header-left">
+    <a class="btn btn-transparent btn-nude" href="/"><img src="/images/sd5-logo.svg" width="190"></a>
+  </div>
+
+  <div class="header-right pull-right">
+    <span class="btn-group dark round">
+      {% if (locale != "de") %}<a href="/t/de?r={{active_view}}" class="btn btn-transparent btn-md">Deutsch</a>{% endif %}
+      {% if (locale != "en") %}<a href="/t/en?r={{active_view}}" class="btn btn-transparent btn-md">English</a>{% endif %}
+      {% if (locale != "fr") %}<a href="/t/fr?r={{active_view}}" class="btn btn-transparent btn-md">Français</a>{% endif %}
+    </span>
+
+    <a class="btn btn-md btn-dark btn-round" href="/login">[[__("login")]]</a>
+    <a class="btn btn-md btn-blue btn-round" href="/signup">[[__("signup")]]</a>
+  </div>
+</header>
+
+<div id="account-forms"
+  v-bind:class="{'got-user':logged_in}"
+  v-cloak
+  v-if="(active_view == 'login' || active_view == 'signup' || active_view == 'password-reset' || active_view == 'password-confirm')">
+
+  <div id="login" v-bind:class="{active : active_view == 'login'}">
+    <div class="content">
+      <form v-on:submit="login_submit(user_forms_email, login_password, $event)">
+
+        <span class="btn btn-xs btn-darken pull-right" v-on:click="login_google();">[[__("login_google")]]</span>
+
+        <h4>[[__("login")]]</h4>
+
+        <div class="tight">
+          <div class="form-group">
+            <input class="input" name="email" type="email" required v-model="user_forms_email" placeholder="[[__("email")]]">
+          </div>
+          <div class="form-group">
+            <input class="input" name="password" type="password" required v-model="login_password" placeholder="[[__("password")]]">
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block">
+          <span v-show="!loading_user">[[__("login")]]</span>
+          <span v-show="loading_user">[[__("logging_in")]]</span>
+        </button>
+
+        <div class="center alert alert-danger" v-if="login_error">{{login_error}}</div>
+
+        <div class="pull-right">
+          <a class="btn btn-xs btn-darken" href="/signup">[[__("signup")]]</a>&nbsp;
+          <a class="btn btn-xs btn-darken" href="/password-reset">[[__("reset_password")]]</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="signup" v-bind:class="{active : active_view == 'signup'}">
+    <div class="content">
+      <form v-on:submit="signup_submit($event, user_forms_name, user_forms_email, signup_password, signup_password_confirmation)">
+        <span class="btn btn-xs btn-darken pull-right" v-on:click="login_google();">[[__("login_google")]]</span>
+
+        <h4>[[__("signup")]]</h4>
+
+        <div class="tight">
+
+          <div class="form-group">
+            <input class="input" type="text" id="user-name" v-model="user_forms_name" placeholder="[[__("name")]]" v-focus autofocus>
+          </div>
+
+        </div>
+
+        <div class="tight">
+
+          <div class="form-group">
+            <input class="input" type="email" required id="user-email" v-model="user_forms_email" placeholder="[[__("email")]]">
+          </div>
+
+          <div class="form-group">
+            <input class="input" id="user-password" required type="password" v-model="signup_password" placeholder="[[__("password")]]">
+          </div>
+
+          <div class="form-group">
+            <input class="input" id="user-password-confirmation" required type="password" v-model="signup_password_confirmation" placeholder="[[__("password_confirmation")]]">
+          </div>
+        </div>
+
+        <div style="margin-top: -7px; margin-bottom: 7px;"><small>By signing up you agree to our <a href="/terms" target="_blank">TOS</a> and <a href="/privacy" target="_blank">Privacy Policy.</a></small><br/>
+       </div>
+
+        <button class="btn btn-primary btn-block">
+          <span v-if="!creating_user">[[__("signup")]]</span>
+          <span v-if="creating_user">[[__("signing_up")]]</span>
+        </button>
+
+        <div class="center alert alert-danger" style="width:100%;" v-if="signup_error">{{signup_error}}</div>
+
+        <a class="btn btn-link btn-block" href="/login" style="margin-top: 20px">[[__("login")]]</a>
+      </form>
+    </div>
+  </div>
+
+  <div id="password-reset" v-bind:class="{active : active_view == 'password-reset'}">
+    <div class="content" v-if="!password_reset_send">
+      <form>
+        <h4>Password Recovery</h4>
+        <div class="tight">
+          <div class="form-group">
+            <input class="input" type="email" id="user-email" v-model="reset_email" placeholder="[[__("email")]]">
+          </div>
+        </div>
+        <div class="text-center alert alert-danger" v-if="password_reset_error">{{password_reset_error}}</div>
+        <button class="btn btn-primary btn-block" v-on:click="password_reset_submit($event, reset_email)">[[__("reset_password")]]</button>
+      </form>
+    </div>
+    <div class="content" v-if="password_reset_send==true">
+      <h4>[[__("password_confirmation")]]</h4>
+      [[__("password_check_inbox")]]
+    </div>
+  </div>
+
+  <div id="password-confirm" v-bind:class="{active : active_view == 'password-confirm'}">
+    <div class="content">
+      <form>
+        <h4>Password Recovery</h4>
+
+        <div class="tight">
+          <div class="form-group">
+            <input class="input" id="user-password" type="password" v-model="signup_password" placeholder="[[__("password")]]">
+          </div>
+
+          <div class="form-group">
+            <input class="input" id="user-password" type="password" v-model="signup_password_confirmation" placeholder="[[__("password_confirmation")]]">
+          </div>
+        </div>
+
+        <div class="text-center alert alert-danger" v-if="password_reset_confirm_error">{{password_reset_confirm_error}}</div>
+        <button class="btn btn-primary btn-block" v-on:click="password_reset_confirm($event, signup_password, signup_password_confirmation)">[[__("save")]]</button>
+      </form>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,30 @@
+@import "vars";
+@import "mixins";
+
+$grid-color-1: rgba(60,60,60,0.125);
+$grid-color-2: rgba(60,60,60,0.075);
+
+.edge {
+  width: 100%;
+  height: 100%;
+  border:1px dotted $light;
+  pointer-events:none;
+  opacity: 0.5;
+  position:absolute;
+  z-index: 100000;
+  display: none;
+}
+
+.space-grid {
+  pointer-events:none;
+  position:absolute;
+  width:100%;
+  height:100%;
+  top:0;
+  left:0;
+  opacity: 0.5;
+}
+
+.grid-active #space-helpers {
+  display: block !important;
+}

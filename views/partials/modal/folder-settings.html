@@ -1,0 +1,43 @@
+<div class="modal" v-if="active_modal == 'folder-settings'" v-cloak>
+<div class="modal-wrapper">
+  <div class="modal-dialog top">
+    <div class="modal-content">
+      <div class="modal-header no-p">
+        <button type="button" class="btn btn-icon btn-light btn-round close" v-on:click="close_modal()">
+          <span class="icon icon-cross-1"></span>
+        </button>
+        <h4 class="modal-title">[[__("folder_settings")]]</h4>
+      </div>
+
+      <div class="modal-body">
+        <div class="modal-section">
+          <div class="form-group">
+            <label class="label">[[__("title")]]</label>
+            <input type="text" class="input" v-model="active_folder.name">
+          </div>
+
+          <div style="margin:auto;background-size:cover;background-position:50% 50%;border-radius:10px;margin-bottom:10px;width:200px;height:100px;background-image:url({{active_folder.avatar_thumb_uri}})" v-if="active_folder.avatar_thumb_uri">
+          </div>
+
+          <div class="progress state-processing" v-if="uploading_folder_avatar">
+            <div class="spinner"></div>
+          </div>
+
+          <div class="form-group text-center">
+            <label class="file btn btn-sm btn-round btn-stroke-darken">
+              <input type="file" id="file" v-on:change="save_folder_avatar_image(this);">
+              <span>[[__("upload_cover_image")]]</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="modal-section">
+          <h4 class="modal-title" style="padding-top:0px">[[__("access_caption")]]</h4>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+</div>

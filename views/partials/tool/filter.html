@@ -1,0 +1,73 @@
+<h4 class="dialog-title">Filters</h4>
+
+<div id="filter">
+  <div class="dialog-section">
+    <span class="icon icon-lightbulb"></span>
+    <div class="form-group">
+      <label class="label label-range">Brightness</label>
+      <div class="range-wrapper">
+        <output for="brightness">{{active_style.brightness}}</output>
+        <input type="range" name="brightness" min="0" max="200" value="100" v-model="active_style.brightness">
+      </div>
+    </div>
+  </div>
+
+  <div class="dialog-section">
+    <span class="icon icon-contrast"></span>
+    <div class="form-group">
+      <label class="label label-range">Contrast</label>
+      <div class="range-wrapper">
+        <output for="contrast">{{active_style.contrast}}</output>
+        <input type="range" name="contrast" min="0" max="200" value="100" v-model="active_style.contrast">
+      </div>
+    </div>
+  </div>
+
+  <div class="dialog-section">
+    <span class="icon icon-certificate"></span>
+    <div class="form-group">
+      <label class="label label-range">Saturation</label>
+      <div class="range-wrapper">
+        <output for="saturation">{{active_style.saturation}}</output>
+        <input type="range" name="saturation" min="0" max="200" value="100" v-model="active_style.saturation">
+      </div>
+    </div>
+  </div>
+
+  <div class="dialog-section">
+    <span class="icon icon-circle-subtract"></span>
+    <div class="form-group">
+      <label class="label label-range">Opacity</label>
+      <div class="range-wrapper">
+        <output for="opacity">{{active_style.opacity}}</output>
+        <input type="range" name="opacity" min="0" max="100" value="100" v-model="active_style.opacity">
+      </div>
+    </div>
+  </div>
+
+  <div class="dialog-section">
+    <span class="icon icon-leave"></span>
+    <div class="form-group">
+      <label class="label label-range">Hue</label>
+      <div class="range-wrapper">
+        <output for="hue">{{active_style.hue}}</output>
+        <input type="range" name="hue" min="0" max="360" value="0" v-model="active_style.hue">
+      </div>
+    </div>
+  </div>
+
+  <div class="dialog-section">
+    <span class="icon icon-tint"></span>
+    <div class="form-group">
+      <label class="label label-range">Blur</label>
+      <div class="range-wrapper">
+        <output for="blur">{{active_style.blur}}</output>
+        <input type="range" name="blur" min="0" max="100" value="0" v-model="active_style.blur">
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="dialog-section no-p">
+  <button class="btn btn-transparent btn-block text-center" v-on:click="reset_artifact_filters()">Reset</button>
+</div>

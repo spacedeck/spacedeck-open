@@ -1,0 +1,87 @@
+@import "vars";
+@import "mixins";
+
+.number,
+.letter {
+  height: 60px;
+  width: 60px;
+  display: inline-block;
+
+  font-family: $main-font;
+  font-size: 30px; 
+  font-size: 25px; 
+  line-height: 60px;
+  text-align: center;
+  font-style: normal;
+  font-weight: bold;
+  letter-spacing: -0.04em;
+
+  vertical-align: middle;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  @include transition(all 0s 0s ease-in-out);
+  white-space: nowrap;
+  span {font-weight: normal; opacity: 0.5;}
+  &.number-md {
+    font-size: 16px; 
+    height: 44px;
+    width: 44px;
+    line-height: 43px;
+  }
+}
+
+.btn-md .letter {
+  font-size: 16px; 
+  height: 44px;
+  width: 44px;
+  line-height: 43px;
+}
+
+
+.icon {
+  position: relative;
+  @include icon;
+}
+
+
+.icon-soft {
+  opacity: 0.5;
+}
+
+.icon-xxs {
+  @include icon-xxs;
+}
+
+.icon-xs {
+  @include icon-xs;
+}
+
+.icon-sm {
+  @include icon-sm;
+}
+
+.icon-md {
+  @include icon-md;
+}
+
+.icon-xl {
+  @include icon-xl;
+}
+
+.icon-xxl {
+  @include icon-xxl;
+}
+
+.rot45 > .icon {
+  transform: rotateZ(45deg);
+  transition: all 0.1s 0s ease-in-out !important;
+}
+
+.rot45 > .icon::before {
+  transition: all 0.1s 0s ease-in-out !important;
+}
+
+.rot45:hover > .icon {
+  transform: rotateZ(45deg) translateX(-8px);
+}
+

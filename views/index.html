@@ -1,0 +1,62 @@
+{% extends 'layouts/outer.html' %}
+
+{% block title %}[[ __("welcome") ]]{% endblock %}
+
+{% block content %}
+
+<div id="landing">
+  <div class="landing-keyvisual-wrapper">
+    <div class="landing-box">
+      <h2>[[__("landing_title")]]</h2>
+
+      <p class="lead">
+        <a href="/signup" class="btn btn-primary btn-block btn-xl">[[__("signup")]]</a>
+      </p>
+      
+      <p class="lead">
+        <a href="/login" class="btn btn-primary btn-block btn-xl">[[__("login")]]</a>
+      </p>
+
+      <p class="lead">
+        [[__("landing_claim")]]
+      </p>
+      
+      <p class="lead">
+        [[__("landing_example")]]
+      </p>
+      
+      <ul>
+        <li class="lead">
+          [[__("landing_features_1") | safe ]]
+        </li>
+
+        <li class="lead">
+          [[__("landing_features_2") | safe ]]
+        </li>
+
+        <li class="lead">
+          [[__("landing_features_3") | safe ]]
+        </li>
+
+        <li class="lead">
+          [[__("landing_features_4") | safe ]]
+        </li>
+
+        <li class="lead">
+          [[__("landing_features_5") | safe ]]
+        </li>
+
+        <li class="lead">
+          [[__("landing_features_6") | safe ]]
+        </li>
+
+        <li class="lead">
+          [[__("landing_features_7") | safe ]]
+        </li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,90 @@
+@import "vars";
+@import "mixins";
+
+#margins {
+  .btn-more,
+  .btn-less {
+    &:active .icon {
+      opacity: 1;
+    }
+    .icon {
+      color: white;
+      opacity: 0.2;
+    }
+  }
+
+
+  #margin {
+    height: 200px;
+    position: relative;
+
+    .btn-toggle {
+      margin: -22px;
+    }
+    
+    label {
+      pointer-events: none;
+      margin-top: 62px;
+    }
+
+    .margin-icon {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 140px;
+      height: 140px;
+      border: 2px solid rgba(0,0,0,0.1);
+      border-radius: 4px;
+      margin: -70px -70px;
+
+      > div {
+        position: absolute;
+        display: inline-block;
+        height: 30px;
+        width: 30px;
+
+        .input {
+          padding: 0px;
+          width: 30px;
+          height: 30px;
+          line-height: 30px;
+          border: none;
+          font-size: 22px;
+          text-align: center;
+          display: block;
+          background-color: $light;
+        }
+
+
+        &.top    { 
+          top: -15px; left: 50%; margin-left: -15px;
+
+          .btn-more { right: -30px; top: 15px; }
+          .btn-less { left: -30px; top: 15px; }
+        }
+        
+        &.bottom { 
+          bottom: -15px; left: 50%; margin-left: -15px;
+
+          .btn-more { right: -30px; bottom: 15px; }
+          .btn-less { left: -30px; bottom: 15px; }
+        }
+        
+        &.left   { 
+          left: -16px; top: 50%; margin-top: -15px;
+
+          .btn-more { left: 15px; top: -30px; }
+          .btn-less { left: 15px; bottom: -30px; }
+        }
+        
+        &.right  { 
+          right: -16px; top: 50%; margin-top: -15px;
+
+          .btn-more { right: 15px; top: -30px; }
+          .btn-less { right: 15px; bottom: -30px; }
+        }
+      }
+    }
+
+  }
+}

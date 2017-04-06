@@ -1,0 +1,84 @@
+<div class="modal" v-if="active_modal == 'login'" v-cloak>
+  <div class="modal-wrapper">
+    <div class="modal-dialog">
+
+      <button type="button" class="btn btn-icon btn-light btn-round close" v-on:click="close_modal()">
+        <span class="icon icon-cross-1"></span> 
+      </button>
+
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="modal-section no-b">
+
+            <div id="account-forms-modal">
+              <div v-show="active_modal_view != 'signup'">
+                <div class="content">
+                  <form>
+                    <h4>Login</h4>
+
+                    <div class="tight">
+                      <div class="form-group">
+                        <input class="input" type="text" focus-me="true" v-model="login_email" placeholder="Email">
+                      </div>
+                      <div class="form-group">
+                        <input class="input" type="password" v-model="login_password" placeholder="Password">
+                      </div>
+                    </div>
+
+                    <span type="submit" class="btn btn-primary btn-xl btn-block btn-round" v-on:click="login_submit_modal(login_email, login_password, $event)">
+                      <span v-show="!loading_user">Log In</span>
+                      <span v-show="loading_user">Logging in…</span>
+                    </span>  
+
+                    <div class="center alert alert-danger" v-if="login_error" v-model="login_error"></div>
+
+                    <span class="btn btn-link btn-block" v-on:click="active_modal_view='signup'">Create a new account</span>
+                  </form>
+                </div>
+              </div>
+
+              <div v-show="active_modal_view == 'signup'">
+                <div class="content">
+                  <form>
+                    <h4>Sign Up</h4>
+
+                    <div class="tight">
+                      <div class="form-group">
+                        <input class="input" type="text" id="user-name" v-model="name" placeholder="Name">
+                      </div>
+
+                      <div class="form-group">
+                        <input class="input" type="email" id="user-email" v-model="email" placeholder="Email">
+                      </div>
+
+                      <div class="form-group">
+                        <input class="input" id="user-password" type="password" v-model="password" placeholder="Password">
+                      </div>
+
+                      <div class="form-group">
+                        <input class="input" id="user-password-confirmation" type="password" v-model="password_confirmation" placeholder="Repeat Password">
+                      </div>
+                    </div>
+
+                    <div class="text-center" style="margin-top: -7px; margin-bottom: 30px;"><small>By signing up you agree to our <a href="/terms.html" target="_blank">TOS</a> and <a href="/privacy.html" target="_blank">Privacy Policy.</a></small><br/>
+                    </div>
+
+                    <span class="btn btn-primary btn-xl btn-round btn-block" v-on:click="signup_submit_modal($event, name, email, password, password_confirmation)">
+                      <span v-if="!creating_user">Sign Up</span>
+                      <span v-if="creating_user">Signing Up…</span>
+                    </span>
+                    
+                    <div class="center alert alert-danger" v-if="signup_error">{{signup_error}}</div>
+
+                    <span class="btn btn-link btn-block" v-on:click="active_modal_view='login'">I already have an account</span>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

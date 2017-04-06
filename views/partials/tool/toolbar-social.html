@@ -1,0 +1,29 @@
+<div class="toolbar toolbar-social"
+     v-bind:class="{in : active_space_role=='viewer' || (present_mode && active_space.access_mode=='public')}"
+     v-if="social_bar && active_space_loaded">
+  <div class="btn-group dark">
+
+    <div id="share-dialog" class="dropdown bottomleft light center static" v-bind:class="{open:opened_dialog=='share'}">
+      <button class="btn btn-primary btn-icon-labeled" v-on:click="open_dialog('share')">
+        <span class="icon icon-share" style="color:white"></span>
+        <span class="icon-label" style="color:white"> Share </span>
+      </button>
+
+      <div class="dialog">
+          {% include "./share.html" %}
+      </div>
+    </div>
+
+    <div id="share-dialog" class="dropdown bottom light center static" v-bind:class="{open:opened_dialog=='embed'}">
+      <button class="btn btn-transparent btn-icon-labeled" v-on:click="open_dialog('embed')">
+        <span class="icon icon-embed"></span>
+        <span class="icon-label"> Embed </span>
+      </button>
+
+      <div class="dialog">
+          {% include "./embed.html" %}
+      </div>
+    </div>
+
+  </div>
+</div>

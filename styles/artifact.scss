@@ -1,0 +1,656 @@
+@import "vars";
+@import "mixins";
+
+.artifact {
+  position: relative;
+  //-webkit-transform: translate3d(0,0,0); // hw accel
+
+  iframe {
+    width: 100% !important;
+    display: block;
+    max-height: 100%;
+  }
+
+  &.hide-text .text { opacity: 0 }
+
+  &.locked.selected {
+    box-shadow: 0px 0px 0px 3px rgba(0,0,0,0.5) !important;
+  }
+
+  .placeholder {
+    .btn {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin: -22px;
+    }
+  }
+
+  /*&.artifact-text.text-blank [contentEditable=true]:not(.text-editing) p:first-child::after {
+    content: "Double click to edit";
+    opacity: 0.25;
+  }
+
+  &.artifact-text.text-blank [contentEditable=true].text-editing p:first-child::after {
+    content: "Type here";
+    opacity: 0.25;
+  }*/
+
+  &.artifact-text.text-blank p:first-child br {
+    display: none;
+  }
+
+  .link-wrapper {
+    position: absolute;
+    width: 100%;
+    top: 100%;
+    display: block;
+    text-align: center;
+    max-width: 100%;
+    overflow-x: hidden;
+    margin-top: -3em;
+  }
+
+  .edit {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+
+  .ios-focuser {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 20px;
+    opacity: 0;
+    z-index: 0;
+  }
+
+  .text {
+    overflow: hidden;
+    width: auto;
+    height: auto;
+    height: 100%;
+    //pointer-events: none;
+
+    // handle glyphs that go beyond text box sides
+    // padding-left: 20px; margin-left: -20px;
+    // padding-right: 20px; margin-right: -20px;
+
+    //> * {pointer-events: auto; }
+
+  }
+
+  &:not(.artifact-text) {
+    // this collapses empty captions of images, media etc
+    // but doesn't collapse empty notes
+    .text-column:not(.text-editing):empty {
+      display: none !important;
+    }
+  }
+
+  &.x-spacedeck-shape .clip {
+    height: 100%;
+  }
+
+  .shape {
+    position: absolute;
+  }
+
+  .text-table {
+    display: table;
+    width: 100%;
+    height: 100%;
+    .text-cell {
+      display: table-cell;
+      position: relative;
+      height: 100%;
+
+      .text-column {
+        width: 100%;
+        -webkit-line-break: after-white-space;
+        display: block;
+        word-wrap: break-word;
+
+        line-height: 1.5em;
+        font-size: $font-size;
+
+        &.text-editing {
+          min-height: $font-size;
+
+          // without this, there is no text editing in safari
+          -webkit-user-select: auto;
+          -moz-user-select: auto;
+          user-select: auto;
+          pointer-events: auto;
+
+          * {
+            -webkit-user-select: auto;
+            -moz-user-select: auto;
+            user-select: auto;
+          }
+        }
+
+        p:last-child,
+        ul:last-child {
+          margin-bottom: 0em !important;
+        }
+
+        h1,
+        h2,
+        li {
+          margin-top: 0;
+          margin-bottom: 0.5em;
+          &:last-child {margin-bottom: 0em !important; }
+        }
+
+        h1 {
+          line-height: 1.1; // legacy
+        }
+
+        h2 {
+          font-size: 40px; // legacy
+          line-height: 1.1;
+        }
+
+        h3 {
+          font-size: 30px; // legacy
+          line-height: 1.1;
+        }
+
+        h4 {
+          font-size: 20px; // legacy
+          line-height: 1.1;
+        }
+
+        blockquote {
+          // legacy
+          font-size: inherit;
+          font-weight: inherit;
+          margin-left: 20px;
+          margin-right: 20px;
+        }
+
+        h3,
+        h4,
+        h5,
+        ul,
+        p {
+          margin-top: 0;
+          margin-bottom: 0.5em; // compatibility to old system
+          &:last-child {margin-bottom: 0em !important; }
+        }
+
+        a {pointer-events: none; }
+
+        ol {
+          padding: 0;
+          counter-reset: list-counter;
+
+          li {
+            list-style: none;
+            position: relative;
+            padding-left: 1em;
+            counter-increment: list-counter;
+            font-size: inherit;
+
+            &:before {
+              color: inherit;
+              top: 0;
+              left: 0;
+              content: counter(list-counter);
+              position: absolute;
+            }
+          }
+        }
+
+        ul {
+          padding: 0;
+          li {
+            list-style: none;
+            position: relative;
+            padding-left: 1em;
+            font-size: inherit;
+
+            &:before {
+              color: inherit;
+              top: 0;
+              left: 0;
+              content: "\2022";
+              position: absolute;
+            }
+          }
+        }
+
+        li,
+        p {
+          -webkit-hyphens: auto;
+          -moz-hyphens: auto;
+          -ms-hyphens: auto;
+          -o-hyphens: auto;
+          hyphens: auto;
+        }
+
+        * {
+          -webkit-backface-visibility: visible;
+          -moz-backface-visibility: visible;
+          -ms-backface-visibility: visible;
+          backface-visibility: visible;
+        }
+
+        > * {
+          display: block;
+        }
+      }
+    }
+  }
+
+  .oembed,
+  div[class*='oembed-'] {
+    height: 100%;
+    .play {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin: -30px;
+      z-index: 100;
+      background-color: $light !important;
+      color: $darker !important;
+    }
+    .meta {
+      padding-top: 10px;
+      font-size: 10px;
+      display: block;
+      position: absolute;
+      top: 100%;
+      width: 100%;
+      z-index: 100;
+      color: $medium;
+      text-align: left;
+
+      .link {
+        position: absolute;
+        left: -12px;
+        bottom: -4px;
+      }
+      .description {
+        padding-left: 28px;
+        display: block;
+      }
+    }
+    iframe {
+      width: 100% !important;
+      height: 100% !important;
+    }
+
+    &:not(.interactive) {
+      iframe {
+        pointer-events: none;
+      }
+    }
+    
+    .title {font-size: 20px; }
+    .image {
+      height: auto;
+      top: 0;
+      bottom: 0px;
+      position: absolute;
+      width: 100%;
+    }
+    .interact {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin-left: -30px;
+      margin-top: -30px;
+    }
+  }
+
+  .image {
+    height: 100%;
+    background-position: center top;
+    background-size: cover;
+    background-repeat: no-repeat;
+
+    video {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .video   {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+
+    .title {
+      position: absolute;
+      bottom: 0px;
+      left: 0px;
+      z-index: 1;
+      color: $medium;
+      background-color: white;
+      display: block;
+      width: 100%;
+      padding: 10px 15px;
+      font-size: 10px;
+    }
+    
+    video {
+      width: 100%;
+      height: 100%;
+    }
+
+    .tl-controls {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      right: 10px;
+      text-align: center;
+
+      .btn {
+        margin-top: 20px;
+
+      }
+    }
+
+  }
+
+  // FIXME: fix later
+  /*&.vector {
+    pointer-events: none;
+    div, svg {
+      pointer-events: none;
+    }
+
+    svg * {
+      pointer-events: painted;
+    }
+  }*/
+
+  .audio {
+    height: 100%;
+    .timeline {
+      position: absolute;
+      left:0;
+      top:0;
+      width: 100%;
+      bottom: 54px;
+      background-size: 100% 100%;
+      cursor: crosshair;
+      margin-bottom: 10px;
+      overflow: hidden;
+
+      .tl-current-time {
+        height:100%;
+        background: white;
+        opacity: 0.5;
+        border-right: 1px solid #888;
+
+        //transition: width 0.05s linear;
+      }
+
+      .tl-inpoint {
+        width: 1px;
+        bottom: 0px;
+        background: #333;
+        position: absolute;
+        top: 0px;
+        z-index: 1;
+      }
+
+      .tl-outpoint {
+        width: 1px;
+        bottom: 0px;
+        background: #333;
+        position: absolute;
+        top: 0px;
+        z-index: 2;
+      }
+    }
+
+    .tl-controls {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      right: 10px;
+      text-align: center;
+
+      .btn {
+        margin-top: 20px;
+
+      }
+    }
+
+    .tl-title {
+      margin-left:10px;
+      max-width: 55%;
+      overflow: hidden;
+      display: inline-block;
+      max-height: 2em;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      margin-top: -18px;
+      margin-bottom: -18px;
+      margin-right: 10px;
+    }
+
+    .tl-times {
+    }
+  }
+
+  img {
+    // pointer-events:none;
+    width: 100%;
+    height: 100%;
+  }
+
+  &.bold          { font-weight: bold;}
+  &.italic        { font-style: italic;}
+  &.underline     { text-decoration: underline;}
+  &.strike        { text-decoration: line-through;}
+
+  &.align-top     .text-cell {vertical-align: top;}
+  &.align-middle  .text-cell {vertical-align: middle;}
+  &.align-bottom  .text-cell {vertical-align: bottom;}
+
+  &.align-left    { text-align: left; }
+  &.align-center  { text-align: center; }
+  &.align-right   { text-align: right; }
+  &.align-justify { text-align: justify; }
+
+  audio {
+    width: 100%;
+  }
+}
+
+.board .artifact {
+  position: absolute;
+  color: black;
+  //@include user-select(none);
+  white-space: normal;
+  font-size: 18px;
+
+  &.artifact-zone {
+    border: 1px solid rgba(46,204,113,1);
+    background-color: rgba(46,204,113,0.025);
+    border-radius: 10px;
+    &:after {display: none; }
+    .shape {display: none; }
+    .zone {
+      height: 100%;
+    }
+  }
+}
+
+body.present-mode {
+  #space {
+    .artifact-zone {
+      display: none;
+    }
+    .artifact  {
+      cursor: default !important;
+      .text a { pointer-events: auto !important; }
+    }
+  }
+}
+
+body:not(.present-mode) {
+
+  #space {
+
+    .Medium {
+      cursor: text;
+    }
+    
+    .artifact {
+
+      &.selected.text-editing,
+      &.text-editing {
+        cursor: text;
+
+        &:before {
+          border: 1px solid rgba(255,255,255,0.25);
+        }
+        &:after {
+          border: 1px dotted rgba(40,140,215,0.5);
+          background-color: transparent !important;
+        }
+      }
+
+      &.selected {
+        cursor: -webkit-grab;
+        cursor: -moz-grab;
+        &:active {
+          cursor: -webkit-grabbing;
+          cursor: -moz-grabbing;
+        }
+
+        &:not(.artifact-vector):after {
+          border: 1px solid rgba(40,140,215,1);
+          // overlay color removed for now (messes with colors)
+          //background-color: rgba(40,140,215,0.35);
+        }
+      }
+
+    }
+  }
+}
+
+.mouse-scribble, .tool-scribble, .tool-line, .tool-arrow {
+  cursor: crosshair !important;
+
+  .artifact {
+    pointer-events: none !important;
+  }
+
+  .artifact:after, .artifact:before {
+    display: none !important;
+  }
+}
+
+.tool-pan {
+  cursor: grab !important;
+}
+
+.artifact.state-idle {
+  .progress, .progress-text {
+    display: none;
+  }
+}
+
+.artifact.state-processing, .artifact.state-uploading {
+  .progress {
+    height: 100%;
+    padding: 10px;
+    
+    background-color: $blue;
+    opacity: 0.9;
+    text-align: center;
+  }
+  .progress-text {
+    text-align: center;
+    padding: 8px;
+    width: 100%;
+    
+    position: absolute;
+    left: 0px;
+    top: 0px;
+
+    color: #888;
+    font-size: 10px;
+  }
+  video, audio, .tl-controls, .timeline {
+    display: none;
+  }
+  
+  
+  background-color: white;
+}
+
+.state-processing .spinner {
+  opacity: 1;
+  background-image: url('/images/hourglass.gif');
+}
+
+.state-uploading .spinner {
+  opacity: 0.8;
+  background-image: url('/images/hourglass.gif');
+}
+
+.state-idle .spinner {
+  display: none;
+}
+
+
+.artifact.image {
+  background-color: transparent;
+  &.state-loading { background-color: rgba(40,140,215,0.05);}
+  &.state-processing { background-color: rgba(107,195,111,0.05);}
+}
+
+.spinner {
+  height:44px;
+  width:44px;
+  position:absolute;
+  top: 50%;
+  left: 50%;
+  margin: -22px;
+  border-radius:100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+#pick-mobile {
+  img {
+    width: 200px;
+  }
+  
+  .artifact {
+    display: block;
+    width: 200px;
+    height: 150px;
+    float: left;
+
+    font-size: 14px;
+    line-height: 20px;
+
+    .text {
+      padding: 10px;
+    }
+  }
+
+  .spinner {
+    display: none !important;
+  }
+
+  .video {
+    height: 100%;
+  }
+}
+
+// fix player button offset
+.icon-controls-play:before {
+  line-height: 40px !important;
+  left: 1px !important;
+}

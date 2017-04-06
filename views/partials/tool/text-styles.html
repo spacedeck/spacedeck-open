@@ -1,0 +1,29 @@
+
+<div class="dialog-section no-b no-p">
+  <div class="btn-group">
+    <!-- <button class="btn btn-transparent btn-icon" ng-click="apply_formatting('caps')">
+      <span class="icon icon-text-allcaps"></span>
+    </button> -->
+    <button class="btn btn-transparent btn-icon-labeled" v-on:click="apply_formatting($event,'bold')">
+      <span class="icon icon-text-bold"></span>
+      <span class="icon-label">Bold</span>
+    </button>
+    <button class="btn btn-transparent btn-icon-labeled" v-on:click="apply_formatting($event,'italic')">
+      <span class="icon icon-text-italic"></span>
+      <span class="icon-label">Italic</span>
+    </button>
+    <button class="btn btn-transparent btn-icon-labeled" v-on:click="apply_formatting($event,'underline')">
+      <span class="icon icon-text-underline"></span>
+      <span class="icon-label">Underl.</span>
+    </button>
+    <button class="btn btn-transparent btn-icon-labeled" v-on:click="apply_formatting($event,'strikeThrough')">
+      <span class="icon icon-text-strike"></span>
+      <span class="icon-label">Strike</span>
+    </button>
+    
+    <!--button class="btn btn-transparent btn-icon-labeled" v-on:click="apply_formatting($event,'insertUnorderedList')">
+      <span class="icon icon-text-list-bullet"></span>
+      <span class="icon-label">Bullets</span>
+    </button-->
+  </div>
+</div>

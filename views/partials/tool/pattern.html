@@ -1,0 +1,48 @@
+<h4 class="dialog-title">Pattern</h4>
+
+<div id="pattern">
+  <div class="dialog-section">
+    <label class="file btn btn-md btn-block btn-transparent" style="margin-bottom:2px">
+      <input type="file" >
+      Upload Image
+    </label>
+    <div class="dropdown dropdown-block" drop-down>
+      <button type="button" class="btn btn-transparent btn-md btn-block btn-dropdown" data-toggle="dropdown">Repeat X-Axis</button>
+      <div class="dropdown-menu center" role="menu">
+        <ul class="select-list medium">
+          <li><span>Repeat X-Axis</span></li>
+          <li><span>Repeat Y-Axis</span></li>
+          <li><span>Repeat Both-Axis</span></li>
+          <li><span>Don't Repeat</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div id="background-position" class="dialog-section">
+    <label class="label">Pattern Position</label>
+
+    <div class="position-icon">
+      <label ng-class="{checked:pattern_position=='absolute-top-left'}" ng-click="set_pattern_position($event,'absolute-top-left')" class="radio only absolute-top-left"> <input type="radio" value="absolute-top-left"> </label>
+      <label ng-class="{checked:pattern_position=='top-center'}" ng-click="set_pattern_position($event,'top-center')" class="radio only top-center"> <input type="radio" value="top-center"> </label>
+      <label ng-class="{checked:pattern_position=='absolute-top-right'}" ng-click="set_pattern_position($event,'absolute-top-right')" class="radio only absolute-top-right"> <input type="radio" value="absolute-top-right"> </label>
+      <label ng-class="{checked:pattern_position=='center-left'}" ng-click="set_pattern_position($event,'center-left')" class="radio only center-left"> <input type="radio" value="center-left"> </label>
+      <label ng-class="{checked:pattern_position=='center-center'}" ng-click="set_pattern_position($event,'center-center')" class="radio only center-center"> <input type="radio" value="center-center"> </label>
+      <label ng-class="{checked:pattern_position=='center-right'}" ng-click="set_pattern_position($event,'center-right')" class="radio only center-right"> <input type="radio" value="center-right"> </label>
+      <label ng-class="{checked:pattern_position=='absolute-bottom-left'}" ng-click="set_pattern_position($event,'absolute-bottom-left')" class="radio only absolute-bottom-left"> <input type="radio" value="absolute-bottom-left"> </label>
+      <label ng-class="{checked:pattern_position=='bottom-center'}" ng-click="set_pattern_position($event,'bottom-center')" class="radio only bottom-center"> <input type="radio" value="bottom-center"> </label>
+      <label ng-class="{checked:pattern_position=='absolute-bottom-right'}" ng-click="set_pattern_position($event,'absolute-bottom-right')" class="radio only absolute-bottom-right"> <input type="radio" value="absolute-bottom-right"> </label>
+    </div>
+  </div>
+
+  <div class="dialog-section p-20">
+    <div class="form-group">
+      <label class="label label-range">Size</label>
+      <div class="range-wrapper">
+        <output for="crop" value="50">50</output>
+        <input type="range" name="crop" min="0" max="100" value="50">
+      </div>
+    </div>
+  </div>
+  
+</div>

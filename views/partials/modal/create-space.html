@@ -1,0 +1,35 @@
+<div class="modal" v-if="active_modal == 'create-space'" v-cloak>
+  <div class="modal-wrapper">
+    <div class="modal-dialog">
+
+      <button type="button" class="btn btn-icon btn-light btn-round close" v-on="click : close_modal()">
+        <span class="icon icon-cross-1"></span> 
+      </button>
+
+      <div class="modal-content">
+        <div class="modal-body labels-inline">
+          <div class="modal-section p-5">
+            What would you like to create?
+
+            <div>
+              <input type="text" v-model="create_space_title" placeholder="Title">
+            </div>
+
+            <div>
+              <button class="btn" v-on="click: create_space('space','whiteboard')">Whiteboard</button>
+            </div>
+
+            <div>
+              <button class="btn" v-on="click: create_space('space','collection')">Note Collection</button>
+            </div>
+
+            <div>
+              <button class="btn" v-on="click: create_space('space','article')">Article</button>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

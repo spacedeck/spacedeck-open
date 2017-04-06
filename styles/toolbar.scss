@@ -1,0 +1,232 @@
+@import "vars";
+@import "mixins";
+@import "bounce";
+
+.toolbar {
+  &.toolbar-meta {
+    @include translate3d(0, -100%, 0);
+    width: auto !important; 
+    top: 0 !important;
+    right: 0 !important;
+    bottom: auto !important;
+  }
+
+  &.toolbar-undo {
+    width: auto !important; 
+    top: auto !important;
+    left: 0 !important;
+    bottom: 0 !important;
+  }
+
+  margin: auto;
+  //text-align: center;
+  position: fixed;
+  bottom: 0px;
+  //width: 100%;
+  z-index: 3000;
+  padding: $gutter-b;
+  font-size: 0;
+  line-height: 0;
+
+  transition-duration: 0.15s;
+  transition-timing-function: ease-in-out;
+  transition-delay: initial;
+  transition-property: opacity, transform;
+  @include backface-visibility(hidden);
+  
+  @include translate3d(0, 10px, 0);
+  pointer-events: none !important; 
+  opacity: 0;
+  
+  &.out {
+    @include translate3d(0, 10px, 0);
+    * {pointer-events: none !important; }
+    button, input, .dialog {
+      display: none;
+    }
+  }
+
+  &.in {
+    @include translate3d(0, 0, 0);
+
+    &.out {
+      @include translate3d(0, 10px, 0);
+      * {pointer-events: none !important; }
+    }
+  }
+  
+  > * {
+    margin: 0 2px;
+    margin-top: 4px;
+    pointer-events: auto !important; 
+    &.out {
+      margin: 0;
+      opacity: 0;
+    }
+  }
+
+  &.toolbar-vertical {
+    width: auto !important;
+
+    &.toolbar-left  { 
+      left: 0px; 
+      .panel-wrap {
+        left: 0px;
+        @include transform-origin(center left);
+        .panel {@include perspective-origin(center left); 
+
+          > div {
+            @include rotateY(90deg);
+            @include transform-origin(center left);
+          }
+        }
+      } 
+    }
+
+    &.toolbar-right { 
+      right: 0px; 
+      .panel-wrap {
+        right: 0px; 
+        @include transform-origin(center right);
+        .panel {@include perspective-origin(center right); 
+
+          > div {
+            @include rotateY(-90deg);
+            @include transform-origin(center right);
+          }
+        }
+      }
+    }
+
+    font-size: 0px;
+    height: 100%;
+    pointer-events: none;
+    @include transition( all 0.25s ease-in-out);
+    @include translate3d(0, 0, 0);
+    
+    -webkit-perspective: 1000;
+       -moz-perspective: 1000;
+        -ms-perspective: 1000;
+            perspective: 1000;
+            
+    .panel-toggles {
+      @include transition( all 0.15s ease-in-out);
+      display: inline-block;
+      vertical-align: middle;
+      .btn-group { 
+        display: block;
+        margin: 4px 0;
+      }
+      // > div > * {
+      //   height: 0px;
+      //   // pointer-events: auto;
+      //   display: block !important;
+      //   overflow: hidden;
+      //   @include transition( height 0.125s ease-in-out);
+      // }
+
+      // > div > .in {
+      //   pointer-events: auto;
+      //   cursor: pointer;
+      //   height: 60px;
+      // }
+    }
+
+    .panels {
+      @include transition( all 0.15s ease-in-out);
+      height: 100%;
+      display: inline-block;
+      vertical-align: middle;
+      position: relative;
+      margin: 10px;
+
+      .panel-wrap {
+        display: table;
+        position: absolute;
+        height: 100%;
+        pointer-events: none; 
+        @include scale(0,0);
+        @include user-select(none);
+        @include transition( all 0.125s ease-in-out);
+
+        &.open {
+          @include scale(1,1);
+          .panel > div {
+            @include rotateX(0deg);
+            opacity: 1 !important;
+            pointer-events: auto !important;
+          }
+        }
+
+        .panel {
+
+          display: table-cell;
+          vertical-align: middle;
+          // @include backface-visibility(hidden);
+          -webkit-perspective: 1000;
+             -moz-perspective: 1000;
+              -ms-perspective: 1000;
+                  perspective: 1000;
+    
+          z-index: 1000;
+
+          pointer-events: none;
+
+          > div {
+            @include backface-visibility(hidden);
+            /* Other transform properties here */
+            pointer-events: none;
+            @include transition(all 0.2s ease-in-out);
+            position: relative;
+
+          }
+        }
+      }
+    }
+  }
+}
+
+.toolbar-properties {
+  bottom: 64px;
+  z-index: 0;
+
+  &.in {
+    z-index: 3000;
+  }
+
+  .icon-sm {
+    z-index: 110;
+    background-color: #222;
+    border-radius: 50px;
+  }
+
+  .jewel {
+    border: 2px solid rgba(255,255,255,0.5);
+    background-color: transparent;
+    color: #989898;
+    width: 36px;
+    height: 36px;
+    border-top-left: 0px;
+    border-top-right: 0px;
+    
+    font-size: 13px;
+    line-height: 26px;
+    top: 10px;
+    right: 2px;
+
+    box-shadow: 0px 0px 1px;
+  }
+
+  .jewel-stroke {
+    border-width: 10px;
+  }
+
+  .dropdown-toggle.open .jewel {
+    color: white;
+  }
+}
+
+.toolbar-elements > .btn-group,
+.toolbar-properties > .btn-group {
+  box-shadow: 0 0 30px rgba(0,0,0,0.5);
+}

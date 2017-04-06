@@ -1,0 +1,88 @@
+<h4 class="dialog-title">Metrics</h4>
+
+<div id="metrics">
+<!--   <button class="btn btn-toggle btn-transparent btn-icon" ng-class="{alt:artifact_aspect_ratio=='locked'}">
+    <span class="btn-option" ng-click="set_artifact_aspect_ratio($event,'locked')" >
+      <span class="icon icon-lock-open"></span>
+    </span>
+
+    <span class="btn-option" ng-click="set_artifact_aspect_ratio($event,'open')" >
+      <span class="icon icon-lock-closed"></span>
+    </span>
+  </button>
+
+  <button class="btn btn-transparent btn-icon">
+    <span class="icon number">1:1</span>
+  </button> -->
+
+  <div class="dialog-section no-p-b no-p-h">
+    <div class="input-couple">
+      <div>
+        <div class="form-group no-m">
+          <label class="label label-sm text-right">Width</label>
+          <input class="input no-b no-p text-right" spellcheck="false" type="text" value="0" pattern="[0-9]" maxlength="6" ng-model="selection_metrics.w">
+          <button tabindex="-1" class="input-drag btn btn-transparent btn-icon" sd-fader="y-encoder" sd-fader-var-y="selection_metrics.w" sd-fader-min-y="0" sd-fader-max-y="100000" sd-fader-step="0.1">
+            <span class="icon icon-triangles-vertical"></span>
+          </button>
+          <!-- <span class="input-unit">px</span> -->
+          <span class="times">  × </span>
+
+        </div>
+      </div>
+      <div>
+        <div class="form-group no-m">
+          <label class="label label-sm text-left">Height</label>
+          <input class="input no-b no-p text-left" spellcheck="false" type="text" value="0" pattern="[0-9]" maxlength="6" ng-model="selection_metrics.h">
+          <button class="input-drag btn btn-transparent btn-icon absolute-bottom-right" sd-fader="y-encoder" sd-fader-var-y="selection_metrics.h" sd-fader-min-y="0" sd-fader-max-y="100000" sd-fader-step="0.1">
+            <span class="icon icon-triangles-vertical"></span>
+          </button>
+          <!-- <span class="input-unit">px</span> -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <div class="dialog-section no-p-b no-p-h">
+    <div class="input-couple">
+      <div>
+        <div class="form-group no-m">
+          <label class="label label-sm text-right">X Axis</label>
+          <input class="input no-b no-p text-right" spellcheck="false" type="text" value="0" pattern="[0-9]" maxlength="6" ng-model="selection_metrics.x1">
+          <button tabindex="-1" class="input-drag btn btn-transparent btn-icon" sd-fader="y-encoder" sd-fader-var-y="selection_metrics.x1" sd-fader-min-y="0" sd-fader-max-y="100000" sd-fader-step="0.1">
+            <span class="icon icon-triangles-vertical"></span>
+          </button>
+          <!-- <span class="input-unit">px</span> -->
+        </div>
+      </div>
+      <div>
+        <div class="form-group no-m">
+          <label class="label label-sm text-left">Y Axis</label>
+          <input class="input no-b no-p text-left" spellcheck="false" type="text" value="0" pattern="[0-9]" maxlength="6" ng-model="selection_metrics.y1">
+          <button class="input-drag btn btn-transparent btn-icon absolute-bottom-right" sd-fader="y-encoder" sd-fader-var-y="selection_metrics.y1" sd-fader-min-y="0" sd-fader-max-y="100000" sd-fader-step="0.1">
+            <span class="icon icon-triangles-vertical"></span>
+          </button>
+          <!-- <span class="input-unit">px</span> -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--div id="transform-origin" class="dialog-section">
+    <label class="label">Transform Origin</label>
+
+    <div class="transform-origin-icon">
+      <label ng-class="{checked:transform_origin=='absolute-top-left'}" ng-click="set_transform_origin($event,'absolute-top-left')" class="radio only absolute-top-left"> <input type="radio" value="absolute-top-left"> </label>
+      <label ng-class="{checked:transform_origin=='top-center'}" ng-click="set_transform_origin($event,'top-center')" class="radio only top-center"> <input type="radio" value="top-center"> </label>
+      <label ng-class="{checked:transform_origin=='absolute-top-right'}" ng-click="set_transform_origin($event,'absolute-top-right')" class="radio only absolute-top-right"> <input type="radio" value="absolute-top-right"> </label>
+      <label ng-class="{checked:transform_origin=='center-left'}" ng-click="set_transform_origin($event,'center-left')" class="radio only center-left"> <input type="radio" value="center-left"> </label>
+      <label ng-class="{checked:transform_origin=='center-center'}" ng-click="set_transform_origin($event,'center-center')" class="radio only center-center"> <input type="radio" value="center-center"> </label>
+      <label ng-class="{checked:transform_origin=='center-right'}" ng-click="set_transform_origin($event,'center-right')" class="radio only center-right"> <input type="radio" value="center-right"> </label>
+      <label ng-class="{checked:transform_origin=='absolute-bottom-left'}" ng-click="set_transform_origin($event,'absolute-bottom-left')" class="radio only absolute-bottom-left"> <input type="radio" value="absolute-bottom-left"> </label>
+      <label ng-class="{checked:transform_origin=='bottom-center'}" ng-click="set_transform_origin($event,'bottom-center')" class="radio only bottom-center"> <input type="radio" value="bottom-center"> </label>
+      <label ng-class="{checked:transform_origin=='absolute-bottom-right'}" ng-click="set_transform_origin($event,'absolute-bottom-right')" class="radio only absolute-bottom-right"> <input type="radio" value="absolute-bottom-right"> </label>
+    </div>
+  </div-->
+</div>

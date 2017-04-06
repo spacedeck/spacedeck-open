@@ -1,0 +1,18 @@
+#layout {
+  #align {
+    .btn-group {
+      height: 120px;
+      width: 180px;
+      position: relative;
+      .btn {
+        position: absolute;
+        display: inline-block;
+
+        &.top    { top:    0px; left: 50%; margin-left: -30px; }
+        &.bottom { bottom: 0px; left: 50%; margin-left: -30px; }
+        &.left   { left:   0px; top:  50%; margin-top:  -30px; }
+        &.right  { right:  0px; top:  50%; margin-top:  -30px; }
+      }
+    }
+  }
+}

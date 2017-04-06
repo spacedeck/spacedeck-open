@@ -1,0 +1,220 @@
+@import "vars";
+@import "mixins";
+
+.item {
+  min-height: 230px;
+  float: left;
+  width: 20%;
+  position: relative;
+  margin-right: -1px;
+  -webkit-transform-style: preserve-3d;
+
+  .folder-drop {
+    display:none;
+  }
+
+  &:hover {
+    cursor: move;
+    .handle,
+    .btn-group > .btn { opacity: 1 !important; }
+    > a .meta .type { opacity: 1 !important; }
+    > a .meta .subspaces, .members-online {
+        opacity: 1 !important;
+    }
+
+  }
+
+  &.appear > a,
+  &.creating > a {
+    -webkit-animation: appear 0.25s ease-out 0.05s;
+       -moz-animation: appear 0.25s ease-out 0.05s;
+        -ms-animation: appear 0.25s ease-out 0.05s;
+         -o-animation: appear 0.25s ease-out 0.05s;
+            animation: appear 0.25s ease-out 0.05s;
+
+    -webkit-animation-fill-mode: forwards;
+       -moz-animation-fill-mode: forwards;
+        -ms-animation-fill-mode: forwards;
+         -o-animation-fill-mode: forwards;
+            animation-fill-mode: forwards;
+  }
+
+  &.deleting > a {
+    -webkit-animation: disappear 0.25s ease-out 0.05s;
+       -moz-animation: disappear 0.25s ease-out 0.05s;
+        -ms-animation: disappear 0.25s ease-out 0.05s;
+         -o-animation: disappear 0.25s ease-out 0.05s;
+            animation: disappear 0.25s ease-out 0.05s;
+
+    -webkit-animation-fill-mode: forwards;
+       -moz-animation-fill-mode: forwards;
+        -ms-animation-fill-mode: forwards;
+         -o-animation-fill-mode: forwards;
+            animation-fill-mode: forwards;
+  }
+
+  &.tag-important > a {
+    background-color: #f1c40f;
+  }
+
+  &.renaming > a {
+    background-color: $blue !important;
+    color: white !important;
+  }
+
+  &.dropping {
+    .folder-drop {
+      display:block;
+    }
+  }
+
+  &.folder > a {
+    box-shadow: 2px 2px 0px #ccc;
+  }
+
+  > a {
+    opacity: 1;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
+    background-color: white;
+    color: #505050;
+    font-weight: 400;
+
+    padding: 20px;
+    display: block;
+    text-decoration: none;
+    min-height: 150px;
+    font-size: 16px;
+    border-radius: 3px;
+
+    position: absolute;
+    width: auto;
+    height: auto;
+    top: 0px;
+    right: 30px;
+    bottom: 30px;
+    left: 0px;
+
+    .meta {
+      position: absolute;
+      width: auto;
+      bottom: 10px;
+      right: 20px;
+      left: 20px;
+      text-transform: uppercase;
+      font-family: $main-font;
+
+      .subspaces, .members-online {
+        opacity: 0.4;
+      }
+
+      .type {
+        // padding-left: 20px;
+        font-weight: 700;
+        float: left;
+        padding-left: 19px;
+        opacity: 0.4;
+      }
+
+      .time {
+      }
+
+      .icon {
+        position: absolute;
+        left: 0px;
+        top: auto;
+        font-size: 10px;
+        line-height: 14px;
+        width: 20px;
+      }
+      small {
+        font-size: 70%;
+        display: block;
+      }
+    }
+
+    .image {
+      display: block;
+      height: 125px;
+      margin: -20px;
+      margin-bottom: 12px;
+      background-size: cover;
+      background-color: white;
+      background-color: rgba(0,0,0,0.0125);
+      border-top-left-radius: 3px;
+      border-top-right-radius: 3px;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .tag {
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      background-color: red;
+      border-radius: 3px;
+      height: 100%;
+      width: 2px;
+    }
+  }
+
+  &.has-image .name {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    max-height: 24px;
+    display: inline-block;
+    word-break: break-word;
+  }
+
+  .btn-group {
+    position: absolute;
+    right: 30px;
+    top: 0px;
+    z-index: 2;
+    > .btn { opacity: 0;}
+    &.open {
+      > .btn { opacity: 1; }
+      > .dropdown-menu {}
+    }
+  }
+
+  .handle {
+    position: absolute;
+    bottom: 0px;
+    top: auto;
+    right: 0px;
+    height: 30px;
+    width: 30px;
+    cursor: move;
+    display: none;
+    background-image: url("../images/handle.svg");
+    background-size: 10%;
+    background-position: bottom right;
+    background-repeat: no-repeat;
+    opacity: 0.05;
+
+    -webkit-transition: all 0.3s ease-out;
+    -moz-transition: all 0.3s ease-out;
+    transition: all 0.3s ease-out;
+
+    &:hover {
+      width: 50px;
+      height: 50px;
+      background-size: 100%;
+    }
+  }
+
+  &:nth-child(1) > a .tag { background-color: #a45ab9; }
+  &:nth-child(2) > a .tag { background-color: #e65e85; }
+  &:nth-child(3) > a .tag { background-color: #f9ad27; }
+  &:nth-child(4) > a .tag { background-color: #000000; }
+  &:nth-child(5) > a .tag { background-color: #57c793; }
+}

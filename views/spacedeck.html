@@ -1,0 +1,110 @@
+<!doctype html>
+<html class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <title>Spacedeck Open</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <link href="[[ '/images/favicon.png' | cdn ]]" rel="icon" type="image/x-icon" />
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,700,600,800,300|Montserrat:400,700|EB+Garamond|Vollkorn|Lato|Roboto|Source+Code+Pro|Ubuntu|Raleway|Playfair+Display|Crimson+Text' rel='stylesheet' type='text/css'>
+    <link type="text/css" rel="stylesheet" href="https://fast.fonts.net/cssapi/ee1a3484-4d98-4f9f-9f55-020a7b37f3c5.css"/>
+    <link rel="stylesheet" href="[[ '/stylesheets/style.css' | cdn ]]">
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/twemoji/1.3.2/twemoji.min.js"></script>
+
+    <script>
+      window.socket_auth = '[[socket_auth]]';
+      window.browser_lang = '[[locale]]';
+      window.csrf_token = '[[csrf_token]]';
+
+      {% if process.env.NODE_ENV != "production" %}
+        var ENV = {
+          name: 'development',
+          webHost: "localhost:9000",
+          webEndpoint:"http://localhost:9000",
+          apiEndpoint: "http://localhost:9000",
+          websocketsEndpoint: "ws://localhost:9000"
+        };
+      {% endif %}
+
+      {% if subdomain_team %}
+        var subdomainTeam = [[ subdomain_team | json | safe ]];
+      {% else %}
+        var subdomainTeam = null;
+      {% endif %}
+    </script>
+
+    {% if process.env.NODE_ENV == "production" %}
+    <script src="[[ '/javascripts/spacedeck.js' | cdn ]]"></script>
+    {% else %}
+    <script minify src="/javascripts/jquery-2.1.4.min.js"></script>
+    <script minify src="/javascripts/i18next-1.11.2.js"></script>
+    <script minify src="/javascripts/clipboard.js"></script>
+
+    <script minify src="/javascripts/lodash.compat.js"></script>
+    <script minify src="/javascripts/fastclick.js"></script>
+    <script minify src="/javascripts/vue.js"></script>
+    <script minify src="/javascripts/moment.js"></script>
+    <script minify src="/javascripts/medium.patched.js"></script>
+    <script minify src="/javascripts/route-recognizer.js"></script>
+
+    <script minify src="/javascripts/backend.js"></script>
+    <script minify src="/javascripts/link_parser.js"></script>
+    <script minify src="/javascripts/vector-render.js"></script>
+    <script minify src="/javascripts/mousetrap.js"></script>
+    <script minify src="/javascripts/smoke.js"></script>
+    <script minify src="/javascripts/helper.js"></script>
+    <script minify src="/javascripts/packer.growing.js"></script>
+
+    <script minify src="/javascripts/spacedeck_routes.js"></script>
+    <script minify src="/javascripts/spacedeck_formatting.js"></script>
+    <script minify src="/javascripts/spacedeck_sections.js"></script>
+    <script minify src="/javascripts/spacedeck_spaces.js"></script>
+    <script minify src="/javascripts/spacedeck_teams.js"></script>
+    <script minify src="/javascripts/spacedeck_board_artifacts.js"></script>
+    <script minify src="/javascripts/spacedeck_users.js"></script>
+    <script minify src="/javascripts/spacedeck_account.js"></script>
+    <script minify src="/javascripts/spacedeck_modals.js"></script>
+    <script minify src="/javascripts/spacedeck_avatars.js"></script>
+    <script minify src="/javascripts/spacedeck_websockets.js"></script>
+
+    <script minify src="/javascripts/spacedeck_whiteboard.js"></script>
+    <script minify src="/javascripts/spacedeck_directives.js"></script>
+    <script minify src="/javascripts/spacedeck_vue.js"></script>
+    {% endif %}
+  </head>
+
+  <body id="main" v-bind:class="{'present-mode':present_mode,'modal-open':active_modal}" v-on:click="handle_body_click($event)">
+    <!--[if lt IE 10]>
+        <p class="browsehappy">You are using an <strong>outdated</strong> version of Internet Explorer. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+    {% include "./partials/login.html" %}
+    {% include "./partials/space.html" %}
+    {% include "./partials/folders.html" %}
+    {% include "./partials/team.html" %}
+    {% include "./partials/account.html" %}
+    {% include "./partials/meta.html" %}
+    {% include "./partials/meta-folder.html" %}
+
+    {% include "./partials/modal/access.html" %}
+    {% include "./partials/modal/folder-settings.html" %}
+    {% include "./partials/modal/support.html" %}
+    {% include "./partials/modal/login.html" %}
+    {% include "./partials/modal/pdfoptions.html" %}
+
+  </body>
+
+  <script type="text/javascript">
+    window.locales = {};
+    window.locales.en = {};
+    window.locales.de = {};
+    window.locales.fr = {};
+    window.locales.en.translation = {% include "./../locales/en.js" %};
+    window.locales.de.translation = {% include "./../locales/de.js" %};
+    window.locales.fr.translation = {% include "./../locales/fr.js" %};
+  </script>
+</html>

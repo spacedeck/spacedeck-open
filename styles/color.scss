@@ -1,0 +1,251 @@
+@import "vars";
+@import "mixins";
+
+#color-toggles {
+  background-size: 40px;
+  border-radius: $radius;
+  background-color: $dark;
+  background-image: url('../images/opacity-grid.png');
+}
+.color-picker {
+  margin: 6px;
+  margin-bottom: 0;
+  width: 256px;
+  @include backface-visibility(hidden);
+
+  &.out .fader-selector {
+    opacity: 0;
+  }
+
+  .color {
+    position: relative;
+    width: 100%;
+    background-color: #2ecc71;
+    display: block;
+    border-top-left-radius: $radius;
+    border-top-right-radius: $radius;
+
+    &:before{
+      content: "";
+      display: block;
+      padding-top: 100%; /* initial ratio of 1:1*/
+    }
+
+    > div {
+      top: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      border-top-left-radius: $radius;
+      border-top-right-radius: $radius;
+
+      &.mask {
+        background-image: url('../images/huevalue.png');
+      }
+    }
+  }
+
+  .color-hue {
+    position: relative;
+    width: 100%;
+
+    &:before{
+      content: "";
+      display: block;
+      padding-top: 40px; /* initial ratio of 1:1*/
+    }
+    background-size: 100% 100%;
+    background-image: url('../images/hue.png');
+  }
+
+  .color-opacity {
+    &:before{
+      content: "";
+      display: block;
+      padding-top: 40px; /* initial ratio of 1:1*/
+    }
+
+    position: relative;
+    width: 100%;
+    background-size: cover;
+    background-image: url('../images/opacity-strip.png');
+  }
+}
+
+.color-indicator {
+  box-shadow: inset  0 0 3px rgba(0,0,0,0.1);
+  border: 2px solid rgba(0,0,0,0.2);
+  background-clip: padding-box;
+}
+
+.fader-selector {
+  padding: 0px;
+  background-color: transparent;
+  border: none;
+  border: 18px solid $dark;
+  border: 8px solid $dark;
+  height: 44px;
+  width: 44px;
+  margin: -2px;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  border-radius: 100%;
+  box-shadow: 0 0 10px 1px rgba(255,255,255,0.2), inset  0 0 10px 1px rgba(255,255,255,0.2);
+  @include transition( border 0.125s ease-in-out);
+  @include user-select(none);
+  @include scale(1,1);
+
+  &:after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -1px;
+    margin-left: -1px;
+    height: 2px;
+    width: 2px;
+    background-color: white;
+    pointer-events: none !important;
+    border-radius: 100%;
+  }
+
+  &:hover,
+  &:focus,
+  &:active {
+    outline: none;
+    border: 8px solid $light;
+  }
+  &:active {
+    background-color: white;
+  }
+}
+
+.color-palette {
+  width: 600px;
+  text-align: center;
+
+  .overflow-y-scroll {
+    padding-top: 10px;
+    padding-bottom: 15px;
+
+    overflow-y: auto;
+
+    .btn {
+      display: inline-block;
+      height: 40px;
+      width: 40px;
+      min-width: 0;
+      min-height: 0;
+      margin-left: 4px;
+      margin-right: 4px;
+      margin-top: 8px;
+      padding: 0px;
+      // background-color:  rgba(255,255,255,0.05);
+      background-clip: padding-box;
+      border: 2px solid rgba(0,0,0,0.1);
+      border-radius: 100%;
+      background-color: transparent;
+      background-color: rgba(255,255,255,0.025);
+      /* aspect ratio without spacer image */
+
+      &.active,
+      &:active {
+        background-clip: border-box;
+        border: 2px solid white;
+      }
+
+      .icon {
+        position: absolute;
+        left: -3.5px;
+        top: -2px;
+        @include icon-md;
+      }
+    }
+  }
+}
+
+
+.color .fader-selector   { z-index: 10; left: 120px; top: 120px; margin: -22px; cursor: move; }
+.color-hue .fader-selector     { z-index: 10; left: 0px; margin: -2px -22px; cursor: ew-resize;}
+.color-opacity .fader-selector { z-index: 10; left: 120px; margin: -2px -22px; cursor: ew-resize;}
+
+
+#colors {
+  #color-target {
+    text-align: center;
+    display: block;
+  }
+  @include clearfix;
+
+
+  #color-hex {
+    @include clearfix;
+    position: relative;
+    #color-hash {
+      position: relative;
+      margin-left: 40px;
+      width: 196px;
+    }
+    .btn {
+      position: absolute;
+      z-index: 100;
+    }
+    #add-remove-color {
+      left: 0px;
+    }
+    #color-options-toggle {
+      right: 0px;
+    }
+    div {
+      position: relative;
+      width: 100%;
+      .input {
+        height: 50px;
+        line-height: 70px;
+      }
+      label {
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 30px;
+        line-height: 32px;
+        font-size: 16px;
+        opacity: 0.35;
+        color: #888;
+        z-index: 10;
+        text-align: center;
+      }
+    }
+  }
+
+  #color-rgba {
+    position: relative;
+    @include clearfix;
+
+    label {
+      display: block;
+      width: 100%;
+      height: 20px;
+      line-height: 22px;
+      font-size: 16px;
+      opacity: 0.35;
+      color: #888;
+      z-index: 10;
+      text-align: center;
+      margin-bottom: -14px;
+      margin-top: 10px;
+    }
+    .input {
+      line-height: 48px;
+      width: 38px;
+    }
+  }
+}
+
+.font-size-swatches {
+  line-height: 50px;
+}

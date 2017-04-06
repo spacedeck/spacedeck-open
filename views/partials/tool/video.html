@@ -1,0 +1,15 @@
+<h4 class="dialog-title">Video</h4>
+
+<div id="video">
+  <div class="dialog-section">
+    <label class="btn btn-xxl btn-transparent btn-icon">
+      <span class="icon icon-video-camera"></span>
+      <input type="file" accept="video/*" multiple v-on="change:handle_video_file_upload($event)" id="video_file_upload">
+    </label>
+    <p>Click to Upload<br/> or drag file(s) anywhere.</p>
+  </div>
+  <div class="dialog-section no-p-b">
+    <input type="text" v-model="video_search_query" class="input input-md input-white input-round text-center no-p no-b no-r input-block" placeholder="Search / Paste URL" v-on="keyup:search_videos(video_search_query) | key enter">
+  </div>
+  <button class="btn btn-transparent btn-block text-center" v-on="click:handle_insert_video_url(video_search_query)">Insert Video</button>
+</div>

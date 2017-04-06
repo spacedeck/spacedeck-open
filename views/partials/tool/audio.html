@@ -1,0 +1,16 @@
+<h4 class="dialog-title">audio</h4>
+
+<div id="audio">
+
+  <div class="dialog-section">
+    <label class="btn btn-xxl btn-transparent btn-icon">
+      <span class="icon icon-music-note"></span>
+      <input type="file" accept="audio/*" multiple v-on="change:handle_audio_file_upload($event)" id="audio_file_upload">
+    </label>
+    <p>Click to Upload<br/> or drag file(s) here</p>
+  </div>
+  <div class="dialog-section no-p-b">
+    <input type="text" v-model="audio_search_query" class="input input-md input-white input-round text-center no-p no-b no-r input-block" placeholder="Search / Paste URL" v-on="keyup:search_audio(audio_search_query) | key enter">
+  </div>
+  <button class="btn btn-transparent btn-block text-center" v-on="click:handle_insert_audio_url(audio_search_query)">Insert Audio</button>
+</div>

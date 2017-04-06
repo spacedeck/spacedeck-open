@@ -1,0 +1,493 @@
+<!-- FIXME modal -->
+<div class="modal" v-if="(duplicate_folders.length > 0)" v-cloak>
+  <div class="modal-wrapper">
+    <div class="modal-dialog">
+
+      <button type="button" class="btn btn-icon btn-light btn-round close" v-on:click="duplicate_folders = []">
+        <span class="icon icon-cross-1"></span>
+      </button>
+
+      <div class="modal-content">
+        <div class="modal-body labels-inline">
+          <div class="modal-section">
+            
+            <div class="form-group">
+              <label>
+                [[__("duplicate_destination")]]
+              </label>
+            </div>
+            
+            <div class="form-group">
+              <select v-on:change="duplicate_folder_id=$event.target.value">
+                <option v-for="f in duplicate_folders" value="{{f._id}}">{{f.name}}</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <button class="btn btn-md btn-round btn-primary" v-on:click="duplicate_folder_confirm(); ">
+                <span class="icon-label">[[__("ok")]]</span>
+              </button>
+              
+              <button class="btn btn-md btn-round btn-darken pull-right" v-on:click="duplicate_folders = [];">
+                <span class="icon-label">[[__("cancel")]]</span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div v-cloak class="header-left" v-show="active_space_loaded">
+  <div class="btn-group dark">
+
+    <div class="pull-left">
+      <a
+         class="btn btn-stroke-darken btn-md btn-round btn-icon"
+         title="[[__("home")]]" href="/spaces"
+         v-if="(logged_in && !embedded && !active_space.parent_space_id && !guest_nickname)">
+        <span class="icon icon-home"></span>
+      </a>
+
+      <a
+         class="btn btn-stroke-darken btn-md btn-round btn-icon"
+         title="[[__("parent_folder")]]"
+         href="/folders/{{active_space.parent_space_id}}"
+         v-if="(active_space.parent_space_id && !guest_nickname)">
+
+        <span class="icon icon-arrow-left-light"></span>
+      </a>
+
+      <input class="input input-md input-transparent w-auto"
+             id="space-title"
+             v-model="active_space.name" name="title" v-on:keydown="save_space_keydown($event)"
+             v-if="space_editing_title && logged_in" style="padding-right:0" v-focus>
+
+      <span class="input input-md input-transparent w-auto"
+            v-if="!space_editing_title && logged_in"
+            v-on:click="edit_space_title()">{{active_space.name}}</span>
+
+      <span v-if="!logged_in" class="btn btn-dark btn-round btn-md">{{active_space.name}}</span>
+
+      <button class="btn btn-md btn-transparent btn-icon" v-if="space_editing_title" v-on:click="save_space_keydown()">
+        <span class="icon icon-check"></span>
+      </button>
+
+      <div class="dropdown top left light" v-bind:class="{open: active_dropdown=='space'}">
+        <button class="btn btn-md btn-icon btn-dark" v-on:click="activate_dropdown('space')">
+          <span class="icon icon-triangle-down"></span></button>
+
+        <div class="dropdown-menu" role="menu">
+          <ul class="select-list">
+            
+            <li v-on:click="activate_access()" v-if="logged_in">
+              <span>
+                <span class="icon icon-sm icon-share"></span>
+                <span>[[  __('share') ]]</span>
+              </span>
+            </li>
+            
+            <li v-on:click="edit_space_title()" v-if="logged_in">
+              <span>
+                <span class="icon icon-sm icon-tag"></span>
+                <span>[[  __('rename') ]]</span>
+              </span>
+            </li>
+
+            <li v-on:click="duplicate_space_into_folder()" v-if="logged_in">
+              <span>
+                <span class="icon icon-sm icon-duplicate"></span>
+                <span>[[  __('duplicate') ]]</span>
+              </span>
+            </li>
+            
+            <li v-on:click="download_space()">
+              <span>
+                <span class="icon icon-sm icon-download"></span>
+                <span>[[  __('download_space') ]]</span>
+              </span>
+            </li>
+
+            <li v-on:click="activate_modal('support')" v-if="logged_in">
+              <span>
+                <span class="icon icon-sm icon-info"></span>
+                <span>[[  __('support') ]]</span>
+              </span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <span class="btn btn-red btn-md" id="offline-indicator" v-bind:class="{offline: was_offline}" v-on:click="show_offline_help()">[[__("offline")]]</span>
+</div>
+
+<div v-cloak class="header-right" v-if="active_space_loaded">
+
+  <span v-for="active_user in active_space_users" >
+    <button
+      class="member btn btn-md btn-round"
+      v-cloak
+      v-bind:class="{'btn-dark': !active_user.avatar_thumb_uri}"
+      v-bind:style="{'background-image': 'url('+active_user.avatar_thumb_uri+')'}"
+      v-bind:title="active_user.nickname + ' is online'">
+
+      {{active_user.nickname}}
+
+    </button>
+  </span>
+
+  <div class="btn-group dark" v-if="active_space_role!='viewer'">
+    <button class="btn btn-md btn-transparent btn-icon" title="Start Presentation (others follow what you see)" v-on:click="toggle_present_mode()" v-bind:class="{open:present_mode}">
+      <span class="icon icon-presentation"></span>
+    </button>
+  </div>
+  
+  <div class="btn-group dark round" v-if="zones.length">
+    <button class="btn btn-md btn-transparent btn-icon" v-on:click="go_to_previous_zone()" title="[[__("Previous Zone")]]">
+      <span class="icon icon-triangle-4-left"></span>
+    </button>
+
+    <button class="btn btn-md btn-divider"></button>
+
+    <button class="btn btn-md btn-transparent btn-icon" v-on:click="go_to_next_zone()" title="[[__("Next Zone")]]">
+      <span class="icon icon-triangle-4-right"></span>
+    </button>
+  </div>
+  
+  <!--button class="btn btn-md btn-dark btn-round btn-icon" v-on:click="download_space()" title="[[__("download_space")]]">
+    <span class="icon icon-download"></span>
+  </button-->
+
+  <div class="btn-group dark" id="meta-toggle" style="margin-right:10px">
+    <button class="btn btn-md btn-transparent btn-icon" v-on:click="toggle_meta()" title="[[__("chat")]]">
+      <span class="jewel" style="color: white; background-color: red" v-if="meta_unseen>0">{{meta_unseen}}</span>
+      <span class="icon icon-messages"></span>
+    </button>
+  </div>
+</div>
+
+{% include "./tool/toolbar-elements.html" %}
+{% include "./tool/toolbar-object.html" %}
+
+<div v-if="active_space && active_space_loaded">
+  <div id="lasso"></div>
+  <div class="snap-ruler-h" v-bind:style="{top:snap_ruler_y+'px'}"></div>
+  <div class="snap-ruler-v" v-bind:style="{left:snap_ruler_x+'px'}"></div>
+  <div class="space-empty" v-cloak v-if="active_view == 'space' && !present_mode && active_space_artifacts.length == 0">
+    <div class="table-fake">
+      <div class="cell">
+        <p>Click anywhere to add content.<br>
+          You can also drop images, sounds and video<br>
+          or use copy and paste.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="space-loading" v-cloak v-bind:class="{active:loading_space_id, active:global_spinner}">
+  <div>
+    <div class="spinner"></div>
+  </div>
+</div>
+
+<div id="space" v-cloak
+     v-if="active_view == 'space' && active_space_loaded"
+     class="section board active mouse-{{mouse_state}} tool-{{active_tool}}"
+     v-bind:style="{'background-color': active_space.advanced.background_color}"
+     v-sd-droppable="handle_data_drop;active_space"
+     v-sd-whiteboard
+     v-on:scroll="handle_scroll"
+     v-on:dblclick="handle_space_doubleclick">
+
+  <div id="space-clipboard" style="position:fixed;top:0;left:0;z-index:0;opacity:0;background-color:white"><textarea v-model="selected_artifacts_json" cols="2" rows="2" id="clipboard-ta" class="mousetrap"></textarea></div>
+
+  <div class="space-bounds" v-bind:style="{width: active_space.advanced.width*bounds_zoom + 'px', height: active_space.advanced.height*bounds_zoom + 'px', 'background-color': active_space.advanced.background_color}"></div>
+
+  <div class="wrapper"
+       v-bind:style="{
+                transform: 'scale('+viewport_zoom+')',
+                'transform-origin': '0 0',
+                width: active_space.advanced.width + 'px',
+                height: active_space.advanced.height + 'px',
+                'background-image': (active_space.advanced.background_uri)?'url(' + active_space.advanced.background_uri + ')':'',
+                'background-color': ''+active_space.advanced.background_color,
+                'margin-left': bounds_margin_horiz + 'px',
+                'margin-top': bounds_margin_vert + 'px'}" >
+
+    <div v-for="a in active_space_artifacts"
+         v-bind:style="a.view.style" v-bind:class="a.view.classes"
+         v-bind:class="{text-editing:(editing_artifact_id==a._id && (a.view.major_type=='text' || a.view.major_type=='shape'))}"
+         id="artifact-{{a._id}}">
+
+
+      <div v-if="a.view && a.view.major_type" style="height:100%; width:100%" v-bind:title="(a.editor_name || (a.user && a.user.nickname) || '')">
+          <span v-if="a.locked && is_selected(a)" class="link-wrapper">
+            <span class="btn btn-sm btn-icon btn-round btn-primary">
+              <span class="icon icon-lock-closed"></span>
+            </span>
+          </span>
+        <!-- text -->
+        <div v-if="a.view.major_type == 'text'" class="text" v-bind:style="a.view.inner_style">
+          <div class="text-table">
+            <div class="text-cell" v-bind:style="a.view.text_cell_style">
+              <div class="text-column" class="text-editing" v-sd-richtext:obj="a" v-show="editing_artifact_id==a._id">{{{a.description}}}</div>
+              <div class="text-column" v-show="editing_artifact_id!=a._id">{{{a.description|urls_to_links}}}</div>
+            </div>
+          </div>
+
+          <span v-if="a.view.link.length>0" class="link-wrapper">
+            <a class="link btn btn-round btn-primary btn-sm" v-if="a.view.link" v-bind:href="a.view.link" target="_blank">{{a.view.link_caption}}</a>
+          </span>
+
+          <div class="btn btn-xs btn-icon btn-round btn-primary edit" v-show="editing_artifact_id!=a._id && is_selected(a)" v-on:touchstart="delayed_edit_artifact($event)"><span class="icon icon-pencil" v-on:click="toggle_selected_artifact_editing(true)" v-on:"touchstart:delayed_edit_artifact($event)"></span></div>
+          <input v-show="is_selected(a)" type="text" id="ios-focuser-{{a._id}}" class="ios-focuser">
+        </div>
+
+        <!-- drawing (annotation) -->
+        <div v-if="a.view.major_type == 'vector'" class="clip" v-bind:style="a.view.inner_style">
+          <div>{{{a.view.vector_svg}}}</div>
+        </div>
+
+        <!-- svg shape -->
+        <div v-if="a.view.major_type == 'shape'" class="clip" v-bind:style="a.view.inner_style">
+          <div class="shape">{{{a.view.vector_svg}}}</div>
+          <div class="text-table">
+            <div class="text-cell" v-bind:style="a.view.text_cell_style">
+              <div class="text-column" class="text-editing" v-sd-richtext:obj="a" v-show="editing_artifact_id==a._id"></div>
+              <div class="text-column" v-show="editing_artifact_id!=a._id">{{{a.description|urls_to_links}}}</div>
+            </div>
+          </div>
+          <span v-if="a.view.link.length>0" class="link-wrapper">
+            <a class="link btn btn-round btn-primary btn-sm" v-if="a.view.link" v-bind:href="a.view.link" target="_blank">{{a.view.link_caption}}</a>
+          </span>
+
+          <div class="btn btn-xs btn-icon btn-round btn-primary edit" v-show="editing_artifact_id!=a._id && is_selected(a)" v-on:touchstart="delayed_edit_artifact($event)"><span class="icon icon-pencil" v-on:click="toggle_selected_artifact_editing(true)" v-on:"touchstart:delayed_edit_artifact($event)"></span></div>
+          <input v-show="is_selected(a)" type="text" id="ios-focuser-{{a._id}}" class="ios-focuser">
+        </div>
+
+        <!-- svg image -->
+        <div v-if="a.view.major_type == 'svg'" class="svg" v-bind:style="a.view.inner_style">
+          <img v-bind:src="a.view.payload_uri"></img>
+        </div>
+
+        <!-- image -->
+        <div v-if="a.view.major_type == 'image'" class="image" v-bind:style="a.view.inner_style + '; background-image: url('+a.view.thumbnail_uri+');'">
+          <span class="title">{{a.title}}</span>
+          <div class="spinner"></div>
+          <div class="progress" v-bind:style="{width: a.view.progress+'%'}"></div>
+          <div class="progress-text">{{a.description}}</div>
+
+          <video v-if="a.mime == 'image/gif' && a.payload_alternatives && a.payload_alternatives.length > 0" preload autoplay loop>
+            <source v-for="rep in a.payload_alternatives" v-bind:src="rep.payload_uri" v-bind:type="rep.mime" />
+          </video>
+
+          <a class="btn btn-md btn-icon btn-round btn-primary edit"
+            v-show="a.mime == 'application/pdf'"
+            v-bind:href="a.payload_uri" target="_blank"
+            ><span class="icon icon-link"></span></a>
+
+          <span v-if="a.view.link.length>0" class="link-wrapper">
+            <a class="link btn btn-round btn-primary btn-sm" v-if="a.view.link" v-bind:href="a.view.link" target="_blank">{{a.view.link_caption}}</a>
+          </span>
+        </div>
+
+        <!-- video -->
+        <div v-if="a.view.major_type == 'video'" v-videoplayer="a" class="video" v-bind:style="a.view.inner_style + ';background-image: url('+a.view.thumbnail_uri+');'">
+          <video preload="metadata" v-bind:poster="a.view.thumbnail_uri">
+            <source v-for="rep in a.payload_alternatives" v-bind:src="rep.payload_uri" v-bind:type="rep.mime" />
+            <source v-if="a.payload_uri && a.mime" v-bind:src="a.payload_uri" v-bind:type="a.mime" />
+          </video>
+
+          <div class="tl-controls">
+            <div class="btn btn-md btn-toggle btn-round" v-bind:class="{alt:a.player_view.state=='playing'}">
+              <span class="btn-option play">
+                <span class="icon icon-controls-play"></span>
+              </span>
+
+              <span class="btn-option pause">
+                <span class="icon icon-controls-pause"></span>
+              </span>
+            </div>
+
+            <span class="btn btn-md btn-round btn-icon stop" v-show="a.player_view.state=='playing' || a.player_view.state=='paused'">
+              <span class="icon icon-controls-stop"></span>
+            </span>
+
+          </div>
+          <div class="spinner"></div>
+          <div class="progress" v-bind:style="{width: a.view.progress+'%'}">{{a.description}}</div>
+        </div>
+
+        <!-- audio -->
+        <div v-if="a.view.major_type == 'audio'" v-audioplayer="a" class="audio" v-bind:style="a.view.inner_style">
+
+          <audio>
+            <source v-for="alt in a.payload_alternatives | orderBy 'mime' -1" v-bind:src="alt.payload_uri" v-bind:type="alt.mime"/>
+            <source v-bind:src="a.payload_uri" v-bind:type="a.mime" v-if="a.payload_uri"/>
+          </audio>
+
+          <div class="timeline" v-show="a.board.h>=64 && a.board.w>=170" v-bind:style="{'background-image': 'url(' + a.payload_thumbnail_web_uri +')'}">
+            <div class="tl-current-time" v-bind:style="{width: a.player_view.current_time_float*100 + '%'}"></div>
+            <div class="tl-inpoint" v-bind:style="{left: a.player_view.inpoint_float*100 + '%'}" v-if="a.player_view.inpoint_float>0.0"></div>
+            <div class="tl-outpoint" v-bind:style="{left: a.player_view.outpoint_float*100 + '%'}"></div>
+          </div>
+
+          <div class="tl-controls">
+            <div class="btn btn-md btn-toggle btn-round" v-bind:class="{alt:a.player_view.state=='playing'}">
+              <span class="btn-option play">
+                <span class="icon icon-controls-play"></span>
+              </span>
+
+              <span class="btn-option pause">
+                <span class="icon icon-controls-pause"></span>
+              </span>
+            </div>
+
+            <span class="btn btn-md btn-round btn-icon stop" v-show="a.player_view.state=='playing' || a.player_view.state=='paused'">
+              <span class="icon icon-controls-stop"></span>
+            </span>
+
+            <span class="tl-title" v-show="a.board.w>=400">{{a.view.filename}}</span>
+            <span class="tl-times" class="btn-group">
+              <span class="btn btn-md btn-transparent no-p">{{a.player_view.current_time_string}}</span>
+              <span class="btn btn-md btn-transparent no-p" v-show="a.board.w>=170"> / {{a.player_view.total_time_string}}</span>
+            </span>
+
+            <span v-show="logged_in && a.board.w>=310">
+              <a class="btn btn-xs btn-round btn-icon set-inpoint" title="Set Inpoint at Playhead">
+                <span class="icon icon-edge-left"></span>
+              </a>
+              <a class="btn btn-xs btn-round btn-icon set-outpoint" title="Set Outpoint at Playhead">
+                <span class="icon icon-edge-right"></span>
+              </a>
+              <a class="btn btn-xs btn-round btn-icon reset-points" title="Reset In-/Outpoints">
+                <span class="icon icon-size-horizontal"></span>
+              </a>
+            </span>
+          </div>
+
+          <div class="spinner"></div>
+          <div class="progress" v-bind:style="{width: a.view.progress + '%'}">{{a.description}}</div>
+        </div>
+
+        <!-- zone -->
+        <div v-if="a.view.major_type == 'zone'" class="zone" v-bind:style="a.view.inner_style">
+          <div class="text-cell">
+            <div class="text-column" class="text-editing" v-sd-richtext:obj="a" v-show="editing_artifact_id==a._id"></div>
+            <div class="text-column" v-show="editing_artifact_id!=a._id">{{{a.description|urls_to_links}}}</div>
+          </div>
+        </div>
+
+        <!-- embed -->
+        <div v-if="a.view.major_type == 'oembed'" class="oembed" 
+          v-bind:style="{'background-image': 'url('+a.view.thumbnail_uri+')'}" 
+          v-bind:class="{interactive:(a.view.interactive || present_mode)}">
+          {{{a.view.oembed_html}}}
+          <button class="btn btn-icon btn-primary btn-round interact" v-on:click="a.view.interactive=1" v-if="!a.view.interactive && !present_mode"><span class="icon icon-tool-pointer"></span></button>
+        </div>
+
+        <!-- file -->
+        <div v-if="a.view.major_type == 'file'" class="text" v-bind:style="a.view.inner_style">
+          <span class="icon icon-page-vertical-double"></span>
+          {{a.view.filename}}
+          <div class="spinner"></div>
+        </div>
+
+      </div>
+    </div>
+    <!-- board artifacts end -->
+
+    <div
+       class="handles handles-object"
+       v-bind:class="{'handles-vector':selection_metrics.vector_selection}"
+       v-bind:style="selection_metrics.style">
+
+      <div class="handle resize-nw"><div><div><div>
+              <span class="value-h">{{selection_metrics.h}}</span>
+              <span class="value-w">{{selection_metrics.w}}</span>
+      </div></div></div></div>
+
+      <div class="handle resize-n"><div><div><div>
+              <span class="value-h">{{selection_metrics.h}}</span>
+      </div></div></div></div>
+
+      <div class="handle resize-ne"><div><div><div>
+              <span class="value-h">{{selection_metrics.h}}</span>
+              <span class="value-w">{{selection_metrics.w}}</span>
+      </div></div></div></div>
+
+      <div class="handle resize-e"><div><div><div>
+              <span class="value-w">{{selection_metrics.w}}</span>
+      </div></div></div></div>
+
+      <div class="handle resize-se"><div><div><div>
+              <span class="value-h">{{selection_metrics.h}}</span>
+              <span class="value-w">{{selection_metrics.w}}</span>
+      </div></div></div></div>
+
+      <div class="handle resize-s"><div><div><div>
+              <span class="value-h">{{selection_metrics.h}}</span>
+      </div></div></div></div>
+
+      <div class="handle resize-sw"><div><div><div>
+              <span class="value-h">{{selection_metrics.h}}</span>
+              <span class="value-w">{{selection_metrics.w}}</span>
+      </div></div></div></div>
+
+      <div class="handle resize-w"><div><div><div>
+              <span class="value-w">{{selection_metrics.w}}</span>
+      </div></div></div></div>
+
+      <div class="edge-handle resize-n"> <span class="value-h">{{selection_metrics.h}}</span> </div>
+      <div class="edge-handle resize-s"> <span class="value-h">{{selection_metrics.h}}</span> </div>
+      <div class="edge-handle resize-e"> <span class="value-w">{{selection_metrics.w}}</span> </div>
+      <div class="edge-handle resize-w"> <span class="value-w">{{selection_metrics.w}}</span> </div>
+
+      <div
+        v-bind:style="selection_metrics.vector_style" v-show="selection_metrics.vector_points">
+        <span v-for="p in selection_metrics.vector_points" v-bind:style="{left: p.dx+'px', top: p.dy+'px'}" class="vector-handle" data-idx="{{$index}}"></span>
+      </div>
+    </div>
+    <!-- handles end -->
+
+    <div class="cursor" v-for="c in user_cursors" v-bind:style="{left: c.x + 'px', top: c.y+'px'}"><span class="btn btn-round btn-sm btn-dark"><span class="icon icon-tool-pointer"></span> {{c.name}}</div>
+
+  </div>
+  <!-- wrapper end -->
+
+</div>
+
+<div v-if="active_space_loaded" v-cloak>
+  <div id="minimap"
+       v-bind:style="{width: ''+(active_space.advanced.width/minimap_scale)+'px', height: ''+(active_space.advanced.height/minimap_scale)+'px', bottom: '66px', right: '20px'}"
+       v-if="active_space"
+        v-on:mousedown="handle_minimap_mousedown($event)"
+        v-on:touchstart="handle_minimap_mousedown($event)"
+        v-on:mousemove="handle_minimap_mousemove($event)"
+        v-on:touchmove="handle_minimap_mousemove($event)"
+        v-on:mouseleave="handle_minimap_mouseup($event)"
+        v-on:touchend="handle_minimap_mouseup($event)"
+        v-on:mouseup="handle_minimap_mouseup($event)">
+    <div v-for="a in active_space_artifacts" v-bind:style="{left: ''+(a.board.x/minimap_scale)+ 'px',  top: ''+(a.board.y/minimap_scale) + 'px', width: ''+(a.board.w/minimap_scale)+ 'px', height: ''+(a.board.h/minimap_scale) + 'px'}"></div>
+    <div class="window" v-bind:style="{left: ''+(scroll_left/minimap_scale) + 'px', top: ''+(scroll_top/minimap_scale)+ 'px', width: ''+(window_width/minimap_scale)+ 'px', height: ''+(window_height/minimap_scale) + 'px'}"></div>
+
+  </div>
+
+  <div class="btn-group dark" style="position:absolute;bottom:20px;right:20px;">
+    <button class="btn btn-icon btn-md btn-transparent" v-on:click="zoom_in()">
+      <span class="icon icon-plus"></span>
+    </button>
+    <button class="btn btn-md btn-transparent no-p" v-on:click="zoom_to_original()">
+      {{viewport_zoom_percent}}%
+    </button>
+    <button class="btn btn-icon btn-md btn-transparent" v-on:click="zoom_out()">
+      <span class="icon icon-minus"></span>
+    </button>
+  </div>
+
+</div>

@@ -1,0 +1,334 @@
+@import "vars";
+@import "mixins";
+
+#presentation-previous,
+#presentation-next {
+  @include transition( all 0.25s ease-in-out);
+  position: absolute;
+  top: 50%;
+  margin: 10px;
+  margin-top: -30px;
+  pointer-events: none;
+  opacity: 0;
+  text-shadow: 0 0 2px rgba(255,255,255,0.05);
+  color: $dark;
+  z-index: 1000;
+  &:active {
+    @include transition( all 0s ease-in-out);
+  }
+}
+
+#presentation-previous {left: 0; }
+#presentation-next {right: 0; }
+
+#properties {
+  position: absolute;
+  right: 0px;
+  padding: 10px;
+  font-size: 0px;
+  white-space: nowrap;
+  height: 100%;
+  pointer-events: none;
+  @include transition( all 0.25s ease-in-out);
+  @include translate3d(0, 0, 0);
+
+  // @include backface-visibility(hidden);
+  -webkit-perspective: 1000;
+     -moz-perspective: 1000;
+      -ms-perspective: 1000;
+          perspective: 1000;
+
+  .panel-toggles {
+    @include transition( all 0.15s ease-in-out);
+    display: inline-block;
+    vertical-align: middle;
+
+    > div {
+      background-color: $dark !important;
+      color: $light;
+      border-radius: $radius;
+      font-size: 0px;
+
+      // border-top-right-radius: 0 !important;
+      // border-bottom-right-radius: 0 !important;
+    }
+
+    > div > * {
+      height: 0px;
+      // pointer-events: auto;
+      display: block !important;
+      overflow: hidden;
+      @include transition( height 0.125s ease-in-out);
+    }
+
+    > div > .in {
+      pointer-events: auto;
+      cursor: pointer;
+      height: 60px;
+    }
+  }
+
+  .panels {
+    @include transition( all 0.15s ease-in-out);
+    height: 100%;
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
+    margin-right: 10px;
+
+    .panel-wrap {
+      display: table;
+      position: absolute;
+      height: 100%;
+      right: 0px;
+      pointer-events: none;
+      @include scale(0,0);
+      @include user-select(none);
+      @include transform-origin(center right);
+      @include transition( all 0.125s ease-in-out);
+
+      &.active {
+        @include scale(1,1);
+        .panel > div {
+          @include rotateX(0deg);
+          pointer-events: auto !important;
+        }
+      }
+
+      .panel {
+        display: table-cell;
+        vertical-align: middle;
+        // @include backface-visibility(hidden);
+        -webkit-perspective: 1000;
+           -moz-perspective: 1000;
+            -ms-perspective: 1000;
+                perspective: 1000;
+
+        z-index: 1000;
+
+        @include perspective-origin(center right);
+        pointer-events: none;
+
+        > div {
+          @include rotateY(-90deg);
+          @include transform-origin(center right);
+          @include backface-visibility(hidden);
+          /* Other transform properties here */
+          pointer-events: none;
+          @include transition(all 0.2s ease-in-out);
+          position: relative;
+          background-color: $dark !important;
+          color: $light;
+          border-radius: $radius;
+          // overflow: hidden;
+
+          .section {
+            border-top: 2px solid rgba(0,0,0,0.1);
+            padding: 12px;
+            text-align: center;
+            min-width: 200px;
+
+            .label-sm {margin-bottom: 0px !important; pointer-events: none;}
+            .label-sm + input {margin-top: -8px !important; }
+            .label-sm + .btn-group {margin-top: -8px !important; }
+            .input {
+              height: 45px;
+              line-height: 45px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+#property-rotate {
+  overflow: hidden;
+  width: 60px;
+  height: 60px;
+  display: inline-block;
+  vertical-align: middle;
+  @include transition( all 0.25s ease-in-out);
+  &.inactive {
+    width: 0px;
+  }
+}
+
+#selection-tools {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  @include translate (-50%, -50%);
+}
+
+.unit {
+  font-family: 'open sans', sans-serif;
+  font-size: 9px;
+  margin-left: 3px;
+  text-transform: uppercase;
+  display: none;
+}
+
+#tools {
+  @include transition( all 0.25s ease-in-out);
+  position: absolute;
+  left: 0px;
+  padding: 10px;
+  font-size: 0;
+  height: 100%;
+  pointer-events: none;
+  z-index: 10;
+
+  > .btn-group {
+    background-color: $dark !important;
+    color: $light;
+    border-radius: $radius;
+    pointer-events: auto;
+
+    @include clearfix;
+    display: inline-block;
+    position: relative;
+    white-space: nowrap;
+    font-size: 0px;
+    text-align: center;
+    font-size: 0px;
+    line-height: 0px;
+
+    // border-top-left-radius: 0 !important;
+    // border-bottom-left-radius: 0 !important;
+
+    .btn {
+      display: block;
+    }
+    .btn.btn-divider {
+      min-height: 2px;
+      min-width: 60px;
+      width: 60px;
+      height: 2px !important;
+      padding: 0px;
+      background-color: rgba(0, 0, 0, 0.1);
+      margin: -1px 0;
+      opacity: 1;
+      z-index: 1000;
+      position: relative;
+    }
+  }
+}
+
+// #tools {
+//   position: absolute;
+//   top: 10px;
+//   width: 100%;
+//   @include transition( all 0.25s ease-in-out);
+//   z-index: 2000;
+//   pointer-events: none;
+//   -webkit-backface-visibility: hidden;
+//   -moz-backface-visibility: hidden;
+//   -ms-backface-visibility: hidden;
+//   backface-visibility: hidden;
+
+//   .btn {
+//     div {
+//       position: absolute;
+//       width: 100%;
+//     }
+//     &.fill-color-1  .jewel{ background-color: #4a2f7e; }
+//     &.fill-color-2  .jewel{ background-color: #9b59b6; }
+//     &.fill-color-3  .jewel{ background-color: #3498db; }
+//     &.fill-color-4  .jewel{ background-color: #2ecc71; }
+//     &.fill-color-5  .jewel{ background-color: #f1c40f; }
+//     &.fill-color-6  .jewel{ background-color: #e67e22; }
+//     &.fill-color-7  .jewel{ background-color: #d55c4b; }
+//     &.fill-color-8  .jewel{ background-color: #6f4021; }
+//     &.fill-color-9  .jewel{ background-color: #ffffff; }
+//     &.fill-color-10 .jewel{ background-color: #95a5a6; }
+//     &.fill-color-11 .jewel{ background-color: #252525; }
+//     &.fill-color-12 .jewel{ background-color: transparent !important;
+//       background-image: url('../images/opacity-grid.png');
+//       background-size: contain;
+//     }
+
+//     &.stroke-color-1  .jewel{ background-color: #4a2f7e;}
+//     &.stroke-color-2  .jewel{ background-color: #9b59b6;}
+//     &.stroke-color-3  .jewel{ background-color: #3498db;}
+//     &.stroke-color-4  .jewel{ background-color: #2ecc71;}
+//     &.stroke-color-5  .jewel{ background-color: #f1c40f;}
+//     &.stroke-color-6  .jewel{ background-color: #e67e22;}
+//     &.stroke-color-7  .jewel{ background-color: #d55c4b;}
+//     &.stroke-color-8  .jewel{ background-color: #6f4021;}
+//     &.stroke-color-9  .jewel{ background-color: #ffffff;}
+//     &.stroke-color-10 .jewel{ background-color: #95a5a6;}
+//     &.stroke-color-11 .jewel{ background-color: #252525;}
+//     &.stroke-color-12 .jewel{ background-color: transparent !important;
+//       background-image: url('../images/opacity-grid.png');
+//       background-size: contain;
+//     }
+//   }
+// }
+
+// .tool-set {
+//   @include user-select(none);
+//   pointer-events: none;
+//   text-align: center;
+//   font-size: 0px;
+//   width: auto;
+//   white-space: nowrap;
+
+//   &#sub-tools,
+//   &#main-tools{
+//     @include transition( all 0.15s ease-in-out);
+//   }
+
+//   &#main-tools {
+//     top: 10px;
+//   }
+
+//   &#sub-tools {
+//     top: 72px;
+//     -webkit-perspective: 1000;
+//     -moz-perspective: 1000;
+//     -ms-perspective: 1000;
+//     perspective: 1000;
+
+//     > div {
+//       @include rotateX(-90deg);
+
+//       -webkit-backface-visibility: hidden;
+//       -moz-backface-visibility: hidden;
+//       -ms-backface-visibility: hidden;
+//       backface-visibility: hidden;
+//       /* Other transform properties here */
+//       top: 0px;
+//       position: absolute;
+//       width: 100%;
+//       pointer-events: none;
+//       @include opacity(0);
+//       @include transition( all 0.2s ease-in-out);
+//       height: 0px !important;
+
+//       &.in {
+//         @include rotateX(0deg);
+//         @include opacity(1);
+//           pointer-events: auto !important;
+//       }
+//     }
+//   }
+
+//   > .btn-group {
+//     background-color: $dark !important;
+//     color: $light;
+//     border-radius: $radius;
+
+//     @include clearfix;
+//     display: inline-block;
+//     position: relative;
+//     white-space: nowrap;
+//     font-size: 0px;
+//     text-align: center;
+//     font-size: 0px;
+//     line-height: 0px;
+//     .btn {
+//       pointer-events: auto;
+//     }
+//   }
+// }

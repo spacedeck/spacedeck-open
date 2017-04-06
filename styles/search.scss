@@ -1,0 +1,102 @@
+@import "vars";
+@import "mixins";
+
+#search-dialog {
+  &:after {
+    margin-left: -160px;
+  }
+}
+
+.dialog-search {
+  margin-left: 0;
+
+  transform: translate3d(-22.5%, 0%, 100px) scale(1) !important;
+}
+
+.dialog-search-input {
+  position: absolute;
+  text-align: center;
+  top: 0;
+  left: 0;
+  right: 112px;
+  color: $medium;
+  padding: 25px;
+  background-color: rgba(245,245,245,0.95); 
+  border-top-left-radius: $radius*3;
+  z-index: 100;
+}
+
+.dialog-search-results {
+  padding: 40px !important;
+  padding-top: 110px !important;
+  margin-right: 92px;
+  position: relative;
+  @include clearfix();
+  font-size: 11px;
+  line-height: 1.5;
+  text-align: left !important;
+
+  .search-result {
+    max-width:100px;
+  }
+  
+  > * {
+    cursor: pointer; 
+    // &:hover {opacity: 0.8; }
+    > * {pointer-events: none; }
+  }
+  .search-result-audio {}
+  .search-result-video {
+    &:nth-child(3n+1) {clear: both; }
+
+    width: 33%;
+    float: left;
+    padding-right: 20px;
+    padding-bottom: 20px;
+
+    .thumbnail-wrapper {
+      &:hover .thumbnail { opacity: 0.8; }
+      span {
+        display: block;
+        top: 0;
+        left: 0;
+        position: absolute;
+        &:before{
+          content: "";
+          display: block;
+          padding-top: 100%; /* initial ratio of 1:1*/
+          padding-top: 55%;
+        }
+        background-color: $blue;
+        color: $light;
+        text-align: center;
+      }
+    }
+    
+    .thumbnail {
+      width: 100%;
+      margin-bottom: 10px;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      border-radius: $radius;
+      &:before{
+        content: "";
+        display: block;
+        padding-top: 100%; /* initial ratio of 1:1*/
+        padding-top: 55%;
+      }
+    }
+  }
+    .search-result-image {
+    display: inline-block;
+    margin-right: 8px;
+    margin-bottom: 8px;
+    img {
+      height: 100%;
+      max-width: 120px;
+      max-height: 120px;
+      border-radius: $radius;
+    }
+  }
+}

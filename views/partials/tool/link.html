@@ -1,0 +1,13 @@
+<div class="dialog-section no-p">
+  <div class="form-group">
+    <div class="input-group">
+      <input class="input no-b w-3 b-r m-r-60" type="url" placeholder="Url" 
+        v-on="keydown:create_link_on_selected_artifacts | key enter"
+        v-model="insert_link_url">
+    </div>
+    
+    <button class="btn btn-transparent btn-icon absolute-bottom-right" v-show="selection_metrics.has_link" v-on="click:remove_link_from_selected_artifacts()">
+      <span class="icon icon-link-open"></span>
+    </button>
+  </div>
+</div>

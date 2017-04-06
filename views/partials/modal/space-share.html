@@ -1,0 +1,24 @@
+<div class="modal" v-if="active_modal == 'space-share'" v-cloak>
+  <div class="modal-wrapper">
+    <div class="modal-dialog">
+
+      <button type="button" class="btn btn-icon btn-light btn-round close" v-on="click : close_modal()">
+        <span class="icon icon-cross-1"></span> 
+      </button>
+
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="modal-section no-b">
+            <p class="lead">Share &quot;{{active_space.name}}&quot;</p>
+          </div>
+          <div class="modal-section no-b">
+            <p class="lead">Or Copy &amp; Paste this Link</p>
+            <p>
+              <span class="input">{{share_base_url}}{{active_space._id}}</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

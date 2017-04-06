@@ -1,0 +1,130 @@
+<div class="toolbar toolbar-properties" v-cloak v-show="active_space_loaded && !is_active_space_role('viewer')" v-bind:class="{in:toolbar_props_in,out:!toolbar_props_in}" v-bind:style="{left:toolbar_props_x,top:toolbar_props_y}" v-if="active_space_loaded">
+
+  <div class="btn-group dark">
+    <div class="dropdown topleft light"
+    v-bind:class="{open : opened_dialog.match('color') ,
+    'option-1':opened_dialog=='color-fill' ,
+    'option-2':opened_dialog=='color-stroke' ,
+    'option-3':opened_dialog=='color-text',
+    'options-3':selection_metrics.contains_text}">
+
+      <label
+        class="dropdown-toggle btn btn-icon btn-transparent no-r-r"
+        v-on:click="open_dialog('color-fill')"
+        v-bind:class="{open:opened_dialog=='color-fill'}">
+        <span class="icon icon-tool-fill icon-sm"></span>
+        <span class="jewel" v-bind:style="{'background-color':active_style.fill_color}"></span>
+      </label>
+      <label
+        class="dropdown-toggle btn btn-icon btn-transparent no-r"
+        v-bind:class="{open:opened_dialog=='color-stroke'}"
+        v-on:click="open_dialog('color-stroke')">
+        <span class="icon icon-tool-stroke icon-sm"></span>
+        <span class="jewel jewel-stroke" v-bind:style="{'border-color':active_style.stroke_color}"></span>
+      </label>
+      <label
+         class="dropdown-toggle btn btn-icon btn-transparent no-r-l"
+         v-on:click="open_dialog('color-text')"
+         v-bind:class="{open:opened_dialog=='color-text'}">
+        <span class="icon icon-tool-text icon-sm"></span>
+        <span class="jewel" v-bind:style="{'border-color':active_style.text_color}">{{active_style.font_size}}</span>
+      </label>
+      <div class="dialog">
+        {% include "./color.html" %}
+      </div>
+    </div>
+  </div>
+
+  <div class="btn-group dark">
+
+    <!--     <button class="btn btn-transparent btn-icon-labeled">
+             <span class="icon icon-tool-eyedrop"></span>
+             <span class="icon-label">Eyedrop</span>
+    </button>
+
+    <button class="btn btn-divider"></button>
+    -->
+    
+    <div class="dropdown top light center" v-bind:class="{open:opened_dialog=='text-styles'}">
+      <div class="btn-collapse in">
+        <button class="btn btn-transparent btn-icon-labeled" v-on:click="open_dialog('text-styles')" v-bind:class="{open : opened_dialog=='text-styles'}">
+          <span class="icon icon-text-styles"></span>
+          <span class="icon-label">styles</span>
+        </button>
+      </div>
+
+      <div class="dialog">
+        {% include "./text-styles.html" %}
+      </div>
+    </div>
+    
+    <div class="dropdown top light center" v-bind:class="{open:opened_dialog=='filter'}">
+      <div class="btn-collapse" v-bind:class="{in:selection_metrics.contains_images}">
+      <!-- <div class="btn-collapse" v-bind:class="in:selection_metrics.count>0"> -->
+        <button class="btn btn-transparent btn-icon-labeled" v-on:click="open_dialog('filter')"  v-bind:class="{open : opened_dialog=='filter'}">
+          <span class="icon icon-contrast"></span>
+          <span class="icon-label">[[__("tool_filter")]]</span>
+        </button>
+      </div>
+
+      <div class="dialog">
+        {% include "./filter.html" %}
+      </div>
+    </div>
+
+    <div class="dropdown top light center" v-bind:class="{open:opened_dialog=='type-align'}">
+      <div class="btn-collapse" v-bind:class="{in:selection_metrics.contains_text}">
+        <button class="btn btn-transparent btn-icon-labeled" v-on:click="open_dialog('type-align')" v-bind:class="{open : opened_dialog=='type-align'}">
+          <span class="icon icon-text-align-left-alt"></span>
+          <span class="icon-label">[[__("tool_align")]]</span>
+        </button>
+      </div>
+
+      <div class="dialog">
+        {% include "./text-align.html" %}
+      </div>
+    </div>
+
+    <div class="dropdown top light center" v-bind:class="{open:opened_dialog=='layout'}">
+
+      <div class="btn-collapse" v-bind:class="{in:selection_metrics.count>0}">
+        <button class="btn btn-transparent btn-icon-labeled" v-on:click="open_dialog('layout')"  v-bind:class="{open : opened_dialog=='layout'}">
+          <span class="icon icon-cluster"></span>
+          <span class="icon-label">[[__("tool_layout")]]</span>
+        </button>
+      </div>
+
+      <div class="dialog">
+        {% include "./layout.html" %}
+      </div>
+    </div>
+    
+    <div class="dropdown top light center" v-bind:class="{open:opened_dialog=='text-settings'}">
+      
+      <div class="btn-collapse in">
+        <button class="btn btn-transparent btn-icon-labeled" v-on:click="open_dialog('text-settings')" v-bind:class="{open : opened_dialog=='text-settings'}">
+          <span class="icon icon-text-typeface"></span>
+        <span class="icon-label">Font</span>
+      </button>
+      </div>
+
+      <div class="dialog">
+        {% include "./text-digits.html" %}
+      </div>
+    </div>
+
+    <button class="btn btn-divider"></button>
+
+    <div class="dropdown top light center" v-bind:class="{open:opened_dialog=='object-options'}">
+      <button class="btn btn-transparent btn-icon-labeled" v-on:click="open_dialog('object-options')" v-bind:class="{open : opened_dialog=='object-options'}">
+        <span class="icon icon-cogwheel"></span>
+        <span class="icon-label">[[__("more")]]</span>
+      </button>
+
+      <div class="dialog no-min-w">
+        {% include "./object-options.html" %}
+      </div>
+    </div>
+    
+  </div>
+</div>

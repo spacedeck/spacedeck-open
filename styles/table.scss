@@ -1,0 +1,97 @@
+@import "vars";
+@import "mixins";
+
+.table-wrap {
+  // margin-left: -40px;
+  // margin-right: -40px;
+  margin-bottom: 30px;
+}
+.table {
+  width: 100%;
+  color: $medium;;
+  font-family: $main-font;
+  // border-radius: $radius;
+  // border: 2px solid rgba(0,0,0,0.0125) !important;
+}
+
+.table thead > tr > th:first-child, 
+.table tbody > tr > th:first-child, 
+.table tfoot > tr > th:first-child, 
+.table thead > tr > td:first-child, 
+.table tbody > tr > td:first-child, 
+.table tfoot > tr > td:first-child {
+  width:1%;
+  padding-left: 25px;
+  text-align: left !important;
+}
+
+.table thead > tr > th:last-child, 
+.table tbody > tr > th:last-child, 
+.table tfoot > tr > th:last-child, 
+.table thead > tr > td:last-child, 
+.table tbody > tr > td:last-child, 
+.table tfoot > tr > td:last-child {
+  padding-right: 25px;
+  text-align: right;
+  width: 1%;
+}
+
+
+.table thead > tr > td,
+.table tbody > tr > td,
+.table tfoot > tr > td {
+  padding: 10px;
+  border: none;
+  font-size: 16px;
+  line-height: inherit;
+  //white-space: nowrap;
+  vertical-align: middle;
+  height: 60px;
+
+  &.no-p {padding: 0px; }
+  &.max {width: 100%; }
+  &.min {width: 1%; }
+
+  border-bottom: 2px solid rgba(0,0,0,0.0125) !important;
+}
+
+.table thead > tr > th,
+.table tbody > tr > th,
+.table tfoot > tr > th {
+  border: none;
+  line-height: inherit;
+  //white-space: nowrap;
+  vertical-align: middle;
+  padding: 10px 20px;
+
+  font-size: 10px;
+  text-transform: uppercase;
+  text-align: left;
+}
+
+.table tbody > tr:nth-child(odd) > td {
+  background-color: rgba(0,0,0,0.025);  
+}
+
+.table thead > tr:first-child > td:first-child,
+.table tbody > tr:first-child > td:first-child,
+.table tfoot > tr:first-child > td:first-child {
+  border-top-left-radius: 3px;
+}
+.table thead > tr:first-child > td:last-child,
+.table tbody > tr:first-child > td:last-child,
+.table tfoot > tr:first-child > td:last-child {
+  border-top-right-radius: 3px;
+}
+
+.table thead > tr:last-child > td:first-child,
+.table tbody > tr:last-child > td:first-child,
+.table tfoot > tr:last-child > td:first-child {
+  border-bottom-left-radius: 3px;
+}
+
+.table thead > tr:last-child > td:last-child,
+.table tbody > tr:last-child > td:last-child,
+.table tfoot > tr:last-child > td:last-child  {
+  border-bottom-right-radius: 3px;
+}

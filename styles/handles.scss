@@ -1,0 +1,465 @@
+@import "vars";
+@import "mixins";
+.artifact {
+  .selection-actions {display: none; }
+  &.selected {
+    .selection-actions {display: block; }
+  }
+}
+
+.selection-actions {
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 10px;
+  pointer-events: auto;
+}
+
+@mixin tri-s {
+  &:after {
+    top: 100%;
+    margin-left: -13px;
+    left: 50%;
+    margin-top: -5px;
+    border-left: 13px solid transparent;
+    border-right: 13px solid transparent;
+    border-top: 13px solid $dark;
+  }
+}
+
+@mixin tri-n {
+  &:after {
+    bottom: 100%;
+    margin-left: -13px;
+    left: 50%;
+    margin-bottom: -5px;
+    border-left: 13px solid transparent;
+    border-right: 13px solid transparent;
+    border-bottom: 13px solid $dark;
+  }
+}
+
+@mixin tri-e {
+  &:after {
+    left: 100%;
+    margin-top: -13px;
+    top: 50%;
+    margin-left: -5px;
+    border-top: 13px solid transparent;
+    border-bottom: 13px solid transparent;
+    border-left: 13px solid $dark;
+  }
+}
+
+@mixin tri-w {
+  &:after {
+    right: 100%;
+    margin-top: -13px;
+    top: 50%;
+    margin-right: -5px;
+    border-top: 13px solid transparent;
+    border-bottom: 13px solid transparent;
+    border-right: 13px solid $dark;
+  }
+}
+
+.selected .handles {
+    display: block;
+    // box-shadow: 0 0 0 1px rgba(41,41,41,0.4);
+}
+
+.handles {
+  // background-color: rgba(40,140,215,0.45);
+  border: 1px solid rgba(255,255,255,0.5);
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 800;
+  pointer-events: none;
+  
+  &:after{
+    border: 1px dotted rgba(40,140,215,1);
+    content: "";
+    display: block;
+    position: absolute;
+    height: auto;
+    width: auto;
+    top: -1px;
+    left: -1px;
+    right: -1px;
+    bottom: -1px;
+  }
+}
+
+.extreme-zoom .handles {
+  border: 8px solid rgba(255,255,255,0.5);
+  
+  &:after{
+    border: 8px dotted rgba(40,140,215,1);
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+  }
+}
+
+.extreme-zoom .handle {
+  @include scale(8,8);
+  
+  &:hover {
+    @include scale(12,12);
+  }
+}
+
+.mouse-scribble, .mouse-vector_transform {
+  .handles, .handles:after {
+    display: none !important;
+  }
+}
+
+// .n-resize        { cursor: n-resize; }
+// .e-resize        { cursor: e-resize; }
+// .s-resize        { cursor: s-resize; }
+// .w-resize        { cursor: w-resize; }
+// .ns-resize       { cursor: ns-resize; }
+// .ew-resize       { cursor: ew-resize; }
+// .ne-resize       { cursor: ne-resize; }
+// .nw-resize       { cursor: nw-resize; }
+// .se-resize       { cursor: se-resize; }
+// .sw-resize       { cursor: sw-resize; }
+// .nesw-resize     { cursor: nesw-resize; }
+// .nwse-resize     { cursor: nwse-resize; }
+
+.resize-nw {
+  .value-w {
+    right: 35px;
+    top: -10px;
+    @include transform-origin(center right);
+    @include tri-e;
+  }
+  .value-h {
+    left: -10px;
+    bottom: 35px;
+    @include transform-origin(bottom center);
+    @include tri-s;
+  }
+}
+
+.resize-ne {
+  .value-w {
+    left: 35px;
+    top: -10px;
+    @include tri-w;
+    @include transform-origin(center left);
+  }
+  .value-h {
+    right: -10px;
+    bottom: 35px;
+    @include transform-origin(bottom center);
+    @include tri-s;
+  }
+}
+
+
+.resize-se {
+  .value-w {
+    left: 35px;
+    bottom: -10px;
+    @include tri-w;
+    @include transform-origin(center left);
+  }
+  .value-h {
+    right: -10px;
+    top: 35px;
+    @include transform-origin(top center);
+    @include tri-n;
+    pointer-events: none;
+  }
+}
+
+.resize-sw {
+  .value-w {
+    right: 35px;
+    bottom: -10px;
+    @include tri-e;
+    @include transform-origin(center right);
+    // border-top-left-radius: 5px;
+    // border-bottom-left-radius: 5px;
+
+  }
+  .value-h {
+    left: -10px;
+    top: 35px;
+    @include transform-origin(top center);
+    @include tri-n;
+    // border-bottom-left-radius: 5px;
+    // border-bottom-right-radius: 5px;
+  }
+}
+
+.resize-n {
+  .value-h {
+    margin-left: -20px;
+    left: 50%;
+    bottom: 20px;
+    @include transform-origin(bottom center);
+    @include tri-s;
+  }
+}
+
+.resize-e {
+  .value-w {
+    left: 20px;
+    top: 50%;
+    margin-top: -20px;
+    @include tri-w;
+    @include transform-origin(center left);
+  }
+}
+
+.resize-s {
+  .value-h {
+    left: 50%;
+    margin-left: -20px;
+    top: 20px;
+    @include transform-origin(top center);
+    @include tri-n;
+  }
+}
+
+.resize-w {
+  .value-w {
+    right: 20px;
+    top: 50%;
+    margin-top: -20px;
+    @include tri-e;
+    @include transform-origin(center right);
+  }
+}
+
+
+.value-h,
+.value-w {
+  z-index: 1;
+  line-height: 40px;
+  width: 40px;
+  height: 40px;
+  display: inline-block;
+  position: absolute;
+  border-radius: 100%;
+  // border-radius: $radius;
+  @include scale(0,0);
+  // opacity: 0;
+  pointer-events: none !important;
+  @include transition( all 0.1s 0.05s ease-in-out);
+  text-align: center;  
+  background-color: $dark;
+  color: $light;
+  font-size: 10px;
+  &:after {
+    @include transition( all 0.3s ease-in-out);
+    content: "";
+    position: absolute;
+    width: 0; 
+    height: 0; 
+    pointer-events: none !important;
+  }
+}
+
+.handle > div > div > div:active .value-w, 
+.handle:active .value-h{ 
+  @include transition( all 0.05s 0s cubic-bezier(0, 0, 0.7, 1.7));
+  opacity: 1;
+  @include scale(1,1);
+}
+
+
+.edge-handle:active .value-w, 
+.edge-handle:active .value-h{ 
+  @include transition( all 0.05s 0s cubic-bezier(0, 0, 0.7, 1.7));
+  opacity: 1;
+  @include scale(1,1);
+}
+
+.edge-handle {
+  @include user-select(none);
+  pointer-events:auto;
+  
+  z-index: 1000;
+  position: absolute;
+  background-clip: content-box;
+  
+  @include transition( background-color 0.05s ease-in-out);
+
+  &:active,
+  &:hover {
+    background-color: $blue;
+    @include transition( background-color 0s ease-in-out);
+  }
+
+  &.resize-n,
+  &.resize-s {
+    width: 100%;
+    height: 10px;
+  }
+
+  &.resize-w,
+  &.resize-e {
+    width: 10px;
+    height: 100%;
+  }
+
+  &.resize-n:active { border-top: 3px solid transparent; border-bottom: 3px solid transparent; }
+  &.resize-s:active { border-top: 3px solid transparent; border-bottom: 3px solid transparent; }
+  &.resize-w:active { border-left: 3px solid transparent; border-right: 3px solid transparent; }
+  &.resize-e:active { border-left: 3px solid transparent; border-right: 3px solid transparent; }
+
+  &.resize-n { &:active,&:hover, { cursor: ns-resize;}}
+  &.resize-s { &:active,&:hover, { cursor: ns-resize;}}
+  &.resize-w { &:active,&:hover, { cursor: ew-resize;}}
+  &.resize-e { &:active,&:hover, { cursor: ew-resize;}}
+
+  &.resize-n { border-top: 4px solid transparent; border-bottom: 4px solid transparent; bottom: 100%;  margin-bottom: -5px; }
+  &.resize-s { border-top: 4px solid transparent; border-bottom: 4px solid transparent; top: 100%;  margin-top: -5px; }
+  &.resize-w { border-left: 4px solid transparent; border-right: 4px solid transparent; right: 100%;  margin-right: -5px; }
+  &.resize-e { border-left: 4px solid transparent; border-right: 4px solid transparent; left: 100%;  margin-left: -5px; }
+}
+
+.vector-handle {
+  @include user-select(none);
+  pointer-events:auto;
+  z-index: 2000;
+  position: absolute;
+  width: 30px !important;
+  height: 30px !important;
+  border-radius: 100%;
+  margin: -15px;
+
+  border: 1px solid rgba(0,0,0,0.25);
+
+  &:hover {
+    background-color: rgba(255,255,255,0.5);
+    cursor: move;
+  }
+}
+
+.handles-vector {
+  .handle, .edge-handle {
+    display: none !important;
+  }
+}
+
+.handles:not(.handles-vector) .vector-handle {
+  display: none;
+}
+
+.handle {
+  @include user-select(none);
+  pointer-events:auto;
+  z-index: 2000;
+  position: absolute;
+  width: 60px !important;
+  height: 60px !important;
+  border-radius: 100%;
+  margin: -30px;
+  @include transition(all 0.1s ease-in-out);
+  @include scale(0.5,0.5);
+  
+  &:hover {
+    @include scale(1,1);
+    .value-h,
+    .value-w {
+      display: block;
+    }
+  }
+  
+  // &:after {
+  //   @include transition( all 0.3s ease-in-out);
+  //   content: "";
+  //   position: absolute;
+  //   top: 0px;
+  //   margin-left: -20px;
+  //   width: 0; 
+  //   height: 0; 
+  //   border-left: 20px solid transparent;
+  //   border-right: 20px solid transparent;
+  //   border-top: 20px solid $dark;
+  //   pointer-events: none !important;
+  //   left: 50%;
+  // }
+
+  &.resize-nw { top: 0%; left: 0%;}
+  &.resize-n { top: 0%; left: 50%;}
+  &.resize-ne { top: 0%; left: 100%;}
+  &.resize-e { top: 50%; left: 100%;}
+  &.resize-se { top: 100%; left: 100%;}
+  &.resize-s { top: 100%; left: 50%;}
+  &.resize-sw { top: 100%; left: 0%;}
+  &.resize-w { top: 50%; left: 0%;}
+
+  &.resize-nw > div > div > div { cursor: nwse-resize; }
+  &.resize-n > div > div > div { cursor: ns-resize;}
+
+  &.resize-ne > div > div > div { cursor: nesw-resize; }
+  &.resize-e > div > div > div { cursor: ew-resize; }
+
+  &.resize-se > div > div > div { cursor: nwse-resize; }
+  &.resize-s > div > div > div { cursor: ns-resize; }
+
+  &.resize-sw > div > div > div { cursor: nesw-resize; }
+  &.resize-w > div > div > div { cursor: ew-resize; }
+
+  &.resize-n { display: none;}
+  &.resize-e { display: none;}
+  &.resize-s { display: none;}
+  &.resize-w { display: none;}
+
+  &:hover > div > div > div { border-width: 9px; }
+  > div:hover > div > div   { border-width: 8px; }
+  > div > div:hover > div   { border-width: 7px; }
+  > div > div > div:hover   { border-width: 6px; }
+  > div > div > div:active  { border-width: 6px; }
+
+  > div > div > div {
+    background-color: $dark;
+
+    border-style: solid;
+    border-width: 10px;
+    border-color: transparent;
+    -webkit-background-clip: padding-box;
+       -moz-background-clip: padding-box;
+            background-clip: padding-box;
+
+    -webkit-transition: all .05s ease-in-out;
+       -moz-transition: all .05s ease-in-out;
+        -ms-transition: all .05s ease-in-out;
+         -o-transition: all .05s ease-in-out;
+            transition: all .05s ease-in-out;
+  }
+
+  div {
+    position: relative;
+    border-radius: 100%;
+    top: 5px;
+    left: 5px;
+    @include transition( all 0.5s ease-in-out);
+  }
+
+  > div {
+    width: 50px;
+    height: 50px;
+  }
+
+  > div > div {
+    width: 40px;
+    height: 40px;
+  }
+
+  > div > div > div {
+    z-index: 10;
+    width: 30px;
+    height: 30px;
+  }
+}

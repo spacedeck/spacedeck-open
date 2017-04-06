@@ -1,0 +1,115 @@
+@import "vars";
+@import "mixins";
+
+body {
+  background-color: $light;
+  color: $medium;
+  font-weight: 300;
+  font-weight: 400;
+
+  font-family: $main-font, sans-serif;
+  font-weight: 300;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+hr {
+  margin: auto;
+  // margin-top: ($line-height*2)-1;
+  // margin-bottom: $line-height*2;
+  width: auto;
+  border: none;
+  border-top: 2px solid rgba(0,0,0,0.025);
+}
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+  color: inherit;
+  font-family: inherit;
+  font-weight: 500;
+  line-height: 1.3;
+  margin-top: 0px;
+  margin-bottom: 1em;
+  // font-family: $main-font;
+  display: block;
+  &:last-child { margin-bottom: 0px; }
+}
+
+h1, .h1 { font-size: 54px; }
+h2, .h2 {font-size: 40px; }
+h3, .h3 {font-size: 30px; }
+h4, .h4 {font-size: 20px; }
+h5, .h5 {font-size: 16px; }
+h6, .h6 {font-size: 14px; }
+
+strong {font-weight: 500; }
+
+small {font-size: 75%; }
+
+a {
+  text-decoration: none;
+  color: $medium;
+}
+
+dl {
+  background-color: rgba(0,0,0,0.05);
+  color: rgba(136,136,136,1);
+  border-radius: $radius;
+  display: inline-block;
+  margin-right: 5px;
+  padding: 15px 25px;
+
+  dt {
+    font-weight: bold;
+  }
+  dd {
+    padding: 0px;
+    margin: 0px;
+  }
+}
+
+ol, ul, p {
+  font-size: 20px;
+  line-height: 1.6;
+  margin: 0px;
+  margin-bottom: 1em;
+
+  /*&:last-child {
+    margin-bottom: 0px;
+  }*/
+
+  small {
+    font-size: 80%;
+    line-height: 170%;
+    display: inline-block;
+  }
+
+  a {
+     -ms-word-break: break-all;
+       word-break: break-all;
+       /* Non standard for webkit */
+       word-break: break-word;
+
+  -webkit-hyphens: auto;
+     -moz-hyphens: auto;
+          hyphens: auto;
+  }
+
+  b {
+    font-weight: 700;
+  }
+
+  &.lead {
+    font-weight: 200;
+    font-size: 22px !important;
+    line-height: 1.4;
+    &.lead-lg { $font-size: 20px*1.5 !important; }
+    &.lead-xl { font-size: 40px !important; }
+    &.lead-xxl { font-size: 60px !important; }
+    small { font-size: 60%; }
+    b { font-weight: 600; }
+  }
+}
+
+// ol, ul {padding-left: 20px; }
+// ol.lead {padding-left: 29px; }
+// ul.lead {padding-left: 23px; }

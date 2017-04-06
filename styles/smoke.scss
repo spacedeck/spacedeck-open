@@ -1,0 +1,72 @@
+@import "vars";
+
+.smoke {
+  text-align: center;
+  background-color: white;
+  box-shadow: 0 0px 20px #666;
+}
+
+.smoke-base {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  visibility: hidden;
+  opacity: 0;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.smoke-base.smoke-visible {
+  opacity: 1;
+  visibility: visible; 
+}
+
+.smokebg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0; 
+}
+
+.smoke-base .smoke-dialog {
+  margin: auto;
+  margin-top: 200px;
+  border-radius: 20px;
+  
+  width: 400px;
+  padding: 10px;
+  
+  font-size: 13pt;
+  text-align: left;
+}
+
+.smoke-dialog-prompt {
+  margin-top: 15px;
+  text-align: center; 
+}
+
+.smoke-dialog-buttons {
+  margin: 20px 0 0 0; 
+}
+
+.smoke-dialog-buttons button {
+  background-color: $blue;
+  color: $light;
+  margin: 10px 0px 0px 5px;
+}
+
+.smoke-dialog-buttons button.cancel {
+  background-color: $light;
+  color: $dark;
+}
+
+.smoke-dialog-prompt input {
+  width: 75%;
+}
+
+.smoke-base .smoke-dialog-inner {
+  padding: 20px;
+  color: #202020;
+}

@@ -1,0 +1,32 @@
+@import "vars";
+@import "mixins";
+
+.section {
+  // min-height: 100%;
+  min-height: 50px !important;
+  position: relative;
+  //@include clearfix;
+  background-color: #fff;
+  background-position: center;
+  background-size: cover;
+
+  &.active {
+    .section-padding-corner.in,
+    .section-padding.in {
+      display: block;
+    }
+  }
+}
+
+.space-empty,
+.section-empty {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 800;
+  pointer-events: none;
+  opacity: 0.25;
+  display: block;
+}

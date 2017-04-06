@@ -1,0 +1,46 @@
+<div class="toolbar toolbar-object-options" v-show="(active_space && (active_view == 'space' && !is_active_space_role('viewer')))" v-bind:class="in:(selection_metrics.count>0)">
+
+  <div class="btn-group dark">
+    <div class="btn-group">
+      <div class="btn-collapse" v-bind:class="in : opened_dialog == 'delete_artifact'">
+        <button class="btn btn-green btn-icon-labeled hover" v-on="click : delete_selected_artifacts()">
+          <span class="icon icon-check"></span>
+          <span class="icon-label">Okay</span>
+        </button>
+      </div>
+
+      <div class="btn-collapse" v-bind:class="in : opened_dialog == 'delete_artifact' , last : opened_dialog == 'delete_artifact'">
+        <button class="btn btn-red btn-icon-labeled hover" v-on="click : open_dialog('delete_artifact')">
+          <span class="icon icon-cross-3"></span>
+          <span class="icon-label">Cancel</span>
+        </button>
+      </div>
+
+      <div class="btn-collapse" v-bind:class="in : opened_dialog != 'delete_artifact' , first : opened_dialog != 'delete_artifact'">
+        <button class="btn btn-dark btn-icon-labeled hover" v-on="click : open_dialog('delete_artifact')">
+          <span class="icon icon-trash"></span>
+          <span class="icon-label">Delete</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="btn-collapse" v-bind:class="in:selection_metrics.count<2">
+      <button class="btn btn-transparent btn-icon-labeled hover" v-if="" v-on:click=" show_artifact_comments($event)" >
+        <span class="icon icon-messages"></span>
+        <span class="icon-label">Comment</span>
+      </button>
+    </div>
+
+    <button class="btn btn-transparent btn-icon-labeled hover" v-on:click="duplicate_selected_artifacts()">
+      <span class="icon icon-duplicate"></span>
+      <span class="icon-label">Copy</span>
+    </button>
+  </div>
+
+  <div class="btn-group dark">
+    <button class="btn btn-transparent btn-icon-labeled hover" v-on:click="deselect(true)">
+      <span class="icon icon-cross-1"></span>
+      <span class="icon-label">Cancel</span>
+    </button>
+  </div>
+</div>

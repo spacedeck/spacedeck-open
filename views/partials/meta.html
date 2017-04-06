@@ -1,0 +1,71 @@
+<div id="sidebar" v-bind:class="{in : meta_visible}" v-if="active_space_loaded && active_space">
+
+  <button class="btn btn-md btn-transparent btn-icon round pull-right" v-on:click="toggle_meta()" style="margin-top:15px;margin-right:20px">
+    <span class="icon icon-cross-0"></span>
+  </button>
+
+  <div class="sidebar-section" v-if="!logged_in && guest_nickname">
+    <!--h4>{{active_space.name}}</h4>
+
+    <div style="margin-bottom: 15px; margin-top: 8px" >
+      <small>
+        [[__("created_by")]] <b>{{active_space.creator.nickname}}.</b><br/>
+        [[__("last_updated")]] <b>{{active_space.updated_at | date 'MMMM Do YYYY, HH:mm'}}.</b>
+      </small>
+    </div-->
+
+    <div v-if="!logged_in && guest_nickname">
+      <button class="btn btn-sm btn-round btn-primary m-r-5"
+       v-on:click=" ask_guestname(guest_nickname);">
+        {{guest_nickname}}
+      </button>
+      <button class="btn btn-sm btn-round btn-primary m-r-5"
+       v-on:click="guest_logout()">
+        [[__("logout")]]
+      </button>
+    </div>
+  </div>
+
+  <div class="sidebar-section">
+    <h5>[[__("chat")]] &nbsp; <a v-if="active_space_role!='viewer'" v-on:click="activate_access()" class="btn btn-xs btn-darken">Add People</a></h5>
+
+    <textarea id="new-comment" style="min-height:80px;padding: 5px 9px;margin-bottom:10px" class="input input-darken no-b" v-if="can_add_comment" v-model="space_comment" placeholder="[[__("chat_message_placeholder")]]" spellcheck="false"></textarea>
+
+    <div v-if="can_add_comment">
+      <button class="btn btn-sm btn-primary" v-on:click="create_space_comment(space_comment)">[[__("post")]]</button>
+    </div>
+
+    <ul class="comments">
+      <li class="comment" v-for="item in active_space_messages | exceptFilter artifact_id | orderBy 'created_at' -1">
+        <ul class="comment-meta">
+          <li>
+            <a title="{{item.created_at | date 'MMMM Do YYYY, HH:mm'}}">
+              {{item.user.nickname}}
+              {{item.editor_name}}
+            </a>
+          </li>
+
+          <li
+            v-show="(active_space_role != 'viewer' || item.user_id==user._id)"
+            class="delete pull-right"
+            v-if="active_space_role!='viewer'"
+            v-on:click="remove_space_comment(item)">
+            <a title="[[__("delete")]]" style="cursor:pointer">✕</a>
+          </li>
+        </ul>
+
+        <span class="comment-author">
+          <a class="url" rel="contact" title="{{item.user.nickname}}">
+            <img class="btn btn-round btn-dark btn-sm btn-icon" v-bind:src="user_avatar_image(item.user)" v-if="has_avatar_image(item.user)">
+
+            <span class="btn btn-round btn-dark btn-sm btn-icon" v-if="!has_avatar_image(item.user)">
+              <span class="icon icon-user"></span>
+            </span>
+          </a>
+        </span>
+        <div class="comment-body" v-html="item.message"></div>
+      </li>
+    </ul>
+
+  </div>
+</div>

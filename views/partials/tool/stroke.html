@@ -1,0 +1,68 @@
+<h4 class="dialog-title">Stroke</h4>
+
+<div id="stroke">
+  <div class="dialog-section no-p">
+    <div class="form-group no-m">
+      <input class="input no-b no-p text-center text-large" spellcheck="false" type="number" v-model="active_style.stroke">
+      <button tabindex="-1" class="input-drag btn btn-transparent btn-icon" v-sd-fader="true" sd-fader-var-y="active_style.stroke" sd-fader-min-y="0" sd-fader-max-y="100" sd-fader-step="1">
+        <span class="icon icon-triangles-vertical"></span>
+      </button>
+      <span class="input-unit">px</span>
+    </div>
+  </div>
+
+  <div class="dialog-section no-p-h no-p-b" v-show="selection_metrics.borders_stylable">
+    <div class="form-group no-m">
+      <label class="label label-sm">Border Radius</label>
+      <input class="input no-b no-p text-center" spellcheck="false" type="number" v-model="active_style.border_radius">
+      <button tabindex="-1" class="input-drag btn btn-transparent btn-icon" v-sd-fader="true" sd-fader-var-y="active_style.border_radius" sd-fader-min-y="0" sd-fader-max-y="500" sd-fader-step="1">
+        <span class="icon icon-triangles-vertical"></span>
+      </button>
+      <span class="input-unit">px</span>
+    </div>
+  </div>
+
+  <div id="style" class="dialog-section no-p-h no-p-b" v-show="selection_metrics.borders_stylable">
+    <div class="form-group">
+      <label class="label label-sm">Border Style</label>
+      <div class="btn-group center">
+        <button class="btn btn-transparent btn-icon" v-on="click:set_artifact_style_prop('stroke_style','solid')">
+          <span class="icon icon-border-solid"></span>
+        </button>
+        <button class="btn btn-transparent btn-icon" v-on="click:set_artifact_style_prop('stroke_style','dashed')">
+          <span class="icon icon-border-dashed"></span>
+        </button>
+        <button class="btn btn-transparent btn-icon" v-on="click:set_artifact_style_prop('stroke_style','dotted')">
+          <span class="icon icon-border-dotted"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+<!--   <div class="dialog-section">
+    <label class="btn btn-sm btn-round color-indicator" style="background-color:{{active_style.stroke_color}}"><input type="color" v-model="active_style.stroke_color" style="display:block;visibility:hidden;position:absolute;"></label>
+  </div>
+ -->
+  <div class="dialog-section no-p">
+    <button class="btn btn-transparent btn-block text-center" v-on="click:reset_stroke()">Remove Stroke</button>
+  </div>
+
+</div>
+
+<!--div id="style" class="dialog-section">
+  <div class="form-group">
+    <label class="label label-sm">Arrow Head</label>
+    <div class="btn-group center">
+      <button class="btn btn-transparent btn-icon">
+        <span class="icon icon-chevron-up-4"></span>
+      </button>
+      <button class="btn btn-transparent btn-icon">
+        <span class="icon icon-shape-triangle"></span>
+      </button>
+      <button class="btn btn-transparent btn-icon">
+        <span class="icon icon-moon-new"></span>
+      </button>
+    </div>
+  </div>
+</div-->
+

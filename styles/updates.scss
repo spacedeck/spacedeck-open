@@ -1,0 +1,27 @@
+@import "vars";
+@import "mixins";
+
+#updates {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  > li {
+    padding: 0 0;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    .avatar {
+      border-radius: 100%;
+      vertical-align: middle;
+      margin-right: 10px;
+    }
+    > span,
+    > a {
+      vertical-align: middle;
+      line-height: 60px;
+    }
+    a {color: $blue; }
+    .date {
+      float: right; 
+      display: inline-block;
+    }
+  }
+}

@@ -1,0 +1,42 @@
+@import "vars";
+@import "mixins";
+
+#metrics {
+  #transform-origin {
+    height: 230px;
+    position: relative;
+
+    .transform-origin-icon {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 120px;
+      height: 120px;
+      border: 2px solid rgba(0,0,0,0.1);
+      border-radius: 4px;
+      margin: -45px -60px;
+
+      .radio {
+        position: absolute;
+        display: inline-block;
+
+        &.top-left   {top: -30px; left: 0; margin-left: -30px; }
+        &.top-center {top: -30px; left: 50%; margin-left: -30px; }
+        &.top-right  {top: -30px; right: 0; margin-right: -30px; } 
+
+        &.center-left   {top: 50%; margin-top: -30px; left: 0; margin-left: -30px; }
+        &.center-center {top: 50%; margin-top: -30px; left: 50%; margin-left: -30px; }
+        &.center-right  {top: 50%; margin-top: -30px; right: 0; margin-right: -30px; } 
+
+        &.bottom-left   {bottom: 0; margin-bottom: -30px; left: 0; margin-left: -30px; }
+        &.bottom-center {bottom: 0; margin-bottom: -30px; left: 50%; margin-left: -30px; }
+        &.bottom-right  {bottom: 0; margin-bottom: -30px; right: 0; margin-right: -30px; } 
+      }
+    }
+
+    .icon-label {
+      pointer-events: none;
+      margin-top: 62px;
+    }
+  }
+}

@@ -1,0 +1,96 @@
+@import "vars";
+@import "mixins";
+
+#editors, #editors-list {
+  @include user-select(none);
+
+  h6 {
+    padding: 15px 25px;
+    margin: 0px;
+    color: $medium;
+    font-size: 10px;
+  }
+
+  ul {
+    padding: 0px;
+    margin: 0px;
+    li {
+      &:nth-child(1)  .editor-avatar {background-color: #4a2f7e;}
+      &:nth-child(2)  .editor-avatar {background-color: #9b59b6;}
+      &:nth-child(3)  .editor-avatar {background-color: #3498db;}
+      &:nth-child(4)  .editor-avatar {background-color: #2ecc71;}
+      &:nth-child(5)  .editor-avatar {background-color: #f1c40f;}
+      &:nth-child(6)  .editor-avatar {background-color: #e67e22;}
+      &:nth-child(7)  .editor-avatar {background-color: #d55c4b;}
+      &:nth-child(8)  .editor-avatar {background-color: #6f4021;}
+      &:nth-child(9)  .editor-avatar {background-color: #ffffff;}
+      &:nth-child(10) .editor-avatar {background-color: #95a5a6;}
+      &:nth-child(11) .editor-avatar {background-color: #252525;}
+    }
+  }
+}
+
+
+#invite-message {
+  height: 117px !important;
+}
+
+.editor > a, 
+.editor > span {
+  text-align: left;
+  border-radius: $radius;
+  display: block;
+  // background-color: rgba(255,255,255,0.05);
+  position: relative;
+  // padding-left: 70px !important;
+  min-height: 60px;
+  border: none;
+
+
+  .editor-avatar {
+    margin-top: 7px;
+    background-size: cover;
+    background-position: center;
+    margin-right: 15px;
+    float: left;
+    color: white !important;
+
+    &.status-off,
+    &.status-on {
+      &:before {
+        top: 0;
+        right: 0;
+        display: block;
+        position: absolute;
+        color: $darker ;
+        border: 1px solid #292929;
+        border-radius: 100px;
+
+        padding: 4px; 
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: 0px;
+        height: 4px;
+        width: 4px;
+      }
+    }
+    &.status-off:before {background-color: #d55c4b; content: "off"; display: none;}
+    &.status-on:before {background-color: #2ecc71; content: "on"; }
+  }
+
+  .editor-email,
+  .editor-name {
+    font-family: $main-font;
+    font-size: 13px;
+    line-height: 1.4;
+    display: block;
+    font-weight: 300;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: $medium;
+  }
+  .editor-email {
+    opacity: 0.5;
+  }
+}

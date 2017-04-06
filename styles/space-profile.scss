@@ -1,0 +1,76 @@
+@import "vars";
+@import "mixins";
+
+#space-profile {
+  .modal-content {width: 680px; }
+}
+#item-content {
+  position: relative;
+  z-index: 10;
+}
+#item-cover {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  opacity: 0.1;
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
+}
+.item-head {
+  .item-title {margin-bottom: 15px; }
+  > span {display: block; }
+}
+.item-info {
+  margin-bottom: 30px;
+}
+.item-stats {
+  margin: 0;
+  padding: 5px 0;
+  margin-bottom: 20px;
+  list-style: none;
+  font-family: $main-font;
+  font-size: 13px;
+  
+  li {
+    display: inline-block;
+    .icon {
+      margin-right: 0px;
+    }
+    > span {
+      margin-right: 10px;
+    }
+  }
+}
+
+.item-actions {}
+.item-categories,
+.item-tags {
+  padding-top: 20px;
+  margin-bottom: -20px;
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 0;
+  }
+
+  li {
+    display: inline-block;
+    margin-right: 5px;
+    margin-bottom: 10px;
+    span {
+
+      border: 2px solid rgba(255,255,255,0.1);
+      display: inline-block;
+      min-width: 32px;
+      height: 32px;
+      line-height: 28px;
+      font-size: 11px;
+      border-radius: 100px !important;
+      padding: 0 10px;
+    }
+  }
+}

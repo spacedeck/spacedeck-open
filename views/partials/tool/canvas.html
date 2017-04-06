@@ -1,0 +1,28 @@
+<h4 class="dialog-title">Padding</h4>
+
+<div id="canvas">
+  <div class="dialog-section no-p-b no-p-h">
+    <div class="input-couple">
+      <div>
+        <div class="form-group no-m">
+          <label class="label label-sm text-right">Horizontal</label>
+          <input class="input no-b no-p text-right" spellcheck="false" type="text" value="0" pattern="[0-9]" maxlength="6" v-model="active_version.advanced.padding_horiz">
+          <button tabindex="-1" class="input-drag btn btn-transparent btn-icon" v-sd-fader="true" sd-fader-var-y="active_version.advanced.padding_horiz" sd-fader-min-y="0" sd-fader-max-y="1000" sd-fader-step="1">
+            <span class="icon icon-triangles-vertical"></span>
+          </button>
+          <!-- <span class="input-unit">px</span> -->
+        </div>
+      </div>
+      <div>
+        <div class="form-group no-m">
+          <label class="label label-sm text-left">Vertical</label>
+          <input class="input no-b no-p text-left" spellcheck="false" type="text" value="0" pattern="[0-9]" maxlength="6" ng-model="active_version.advanced.height">
+          <button class="input-drag btn btn-transparent btn-icon absolute-bottom-right" sd-fader="y-encoder" sd-fader-var-y="active_version.advanced.height" sd-fader-min-y="100" sd-fader-max-y="20000" sd-fader-step="10">
+            <span class="icon icon-triangles-vertical"></span>
+          </button>
+          <!-- <span class="input-unit">px</span> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
