@@ -1,7 +1,8 @@
 {
   "endpoint": "http://localhost:9666",
-  "storage_bucket": "my_spacedeck_s3_bucket",
-  "storage_cdn": "http://localhost:9666",
+  "storage_bucket": "sdeck-development",
+  "storage_cdn": "http://localhost:9123/sdeck-development",
+  "storage_endpoint": "http://storage:9000",
   "google_access" : "",
   "google_secret" : "",
   "admin_pass": "very_secret_admin_password",

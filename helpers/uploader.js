@@ -6,20 +6,29 @@ AWS.config.region = 'eu-central-1';
 var fs = require('fs');
 var config = require('config');
 
-var cdn = config.get("storage_cdn") 
-var storage_endpoint = 'http://storage:9000';
+var cdn = config.get("storage_cdn");
+var storage_endpoint = config.get("storage_endpoint");
+
 const bucketName = "sdeck-fresh-development";
 const ep = new AWS.Endpoint(storage_endpoint);
+
+AWS.config.update(new AWS.Config({
+  accessKeyId: process.env.MINIO_ACCESS_KEY, 
+  secretAccessKey: process.env.MINIO_SECRET_KEY, 
+  region: 'us-east-1',
+  s3ForcePathStyle: true,
+  signatureVersion: 'v4'
+}));
+
 const s3 = new AWS.S3({
   endpoint: ep
 });
 
-
 module.exports = {
   removeFile: (path, callback) => {
-    const s3 = new AWS.S3({
-      region: 'eu-central-1'
-    });
+    // const s3 = new AWS.S3({
+    //   region: 'eu-central-1'
+    // });
     const bucket = config.get("storage_bucket");
     s3.deleteObject({
       Bucket: bucket, Key: path
@@ -37,7 +46,7 @@ module.exports = {
       callback({error:"missing path"}, null);
       return;
     }
-    console.log("[s3] uploading", localFilePath, " to ", fileName);
+    console.log("[storage] uploading", localFilePath, " to ", fileName);
 
     const bucket = config.get("storage_bucket");
     const fileStream = fs.createReadStream(localFilePath);
@@ -49,9 +58,9 @@ module.exports = {
     });
     fileStream.on('open', function () {
       // FIXME
-      var s3 = new AWS.S3({
-        region: 'eu-central-1'
-      });
+      // var s3 = new AWS.S3({
+      //   region: 'eu-central-1'
+      // });
 
       s3.putObject({
         Bucket: bucket,
@@ -63,7 +72,7 @@ module.exports = {
           console.error(err);
           callback(err);
         }else {
-          const url = "https://"+ config.get("storage_cdn") + "/" + fileName;
+          const url = cdn + "/" + fileName;
           console.log("[s3]" + localFilePath + " to " + url);
           callback(null, url);
         }

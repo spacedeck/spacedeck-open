@@ -9,11 +9,14 @@ services:
       - MINIO_SECRET_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
     ports:
       - 9123:9000
+    command: server /export
   db:
     image: mongo
   spacedeck-open:
     environment:
       - env=development
+      - MINIO_ACCESS_KEY=AKIAIOSFODNN7EXAMPLE
+      - MINIO_SECRET_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
     build: .
     volumes:
       - ./:/usr/src/app
@@ -25,3 +28,7 @@ services:
       - db
       - sync
       - storage
+    links:
+      - storage
+      - db
+      - sync
