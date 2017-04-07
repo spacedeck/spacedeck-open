@@ -6,7 +6,7 @@ require('../../models/schema');
 var mailer = require('../../helpers/mailer');
 var uploader = require('../../helpers/uploader');
 
-var bcrypt = require('bcrypt');
+var bcrypt = require('bcryptjs');
 var crypo = require('crypto');
 var swig = require('swig');
 var async = require('async');

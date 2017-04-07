@@ -3,7 +3,7 @@
 var config = require('config');
 require('../../models/schema');
 
-var bcrypt = require('bcrypt');
+var bcrypt = require('bcryptjs');
 var crypo = require('crypto');
 
 var express = require('express');

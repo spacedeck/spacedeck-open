@@ -9,7 +9,7 @@ var mailer = require('../../helpers/mailer');
 var fs = require('fs');
 var _ = require('underscore');
 var crypto = require('crypto');
-var bcrypt = require('bcrypt');
+var bcrypt = require('bcryptjs');
 
 var express = require('express');
 var router = express.Router();
