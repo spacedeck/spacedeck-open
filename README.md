@@ -42,10 +42,16 @@ To rebuild the frontend CSS styles (you need to do this at least once):
 
     gulp styles
 
+# Configuration
+
+see: config/config.json
+
 # Run
 
     export NODE_ENV=development
     npm start
+
+    open http://localhost:90000
 
 # License
 
