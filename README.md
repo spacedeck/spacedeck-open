@@ -23,7 +23,7 @@ We appreciate filed issues, pull requests and general discussion.
 
 Spacedeck uses the following major building blocks:
 
-- Node.js 4.x (Backend / API)
+- Node.js 7.x (Backend / API)
 - MongoDB 3.x (Datastore)
 - Redis 3.x (Datastore for realtime channels)
 - Vue.js (Frontend)
@@ -32,7 +32,7 @@ It also has some binary dependencies for media conversion and PDF export:
 
 - imagemagick, graphicsmagick, libav(+codecs, ffmpeg replacement), audiowaveform (https://github.com/bbcrd/audiowaveform), phantomjs (http://phantomjs.org/)
 
-Currently, media files are stored in Amazon S3, so you need an Amazon AWS account and have the ```AWS_ACCESS_KEY_ID``` and ```AWS_SECRET_ACCESS_KEY``` environment variables defined. For sending emails, Amazon SES is required.
+Currently, media files are stored in Amazon S3, so you need an Amazon AWS account and have the ```AWS_ACCESS_KEY_ID``` and ```AWS_SECRET_ACCESS_KEY``` environment variables defined. For sending emails in production, Amazon SES is required.
 
 To install Spacedeck, you need node.js 4.x and a running MongoDB instance. Then, to install all node dependencies, run
 
