@@ -3,7 +3,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-module.exports.artifactSchema = mongoose.model('Artifact', {
+module.exports.artifactSchema = Schema({
   mime: String,
   thumbnail_uri: String,
   space_id: Schema.Types.ObjectId,
