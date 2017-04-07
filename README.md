@@ -30,7 +30,7 @@ Spacedeck uses the following major building blocks:
 
 It also has some binary dependencies for media conversion and PDF export:
 
-- imagemagick
+- imagemagick, graphicsmagick, libav(+codecs, ffmpeg replacement), audiowaveform (https://github.com/bbcrd/audiowaveform), phantomjs (http://phantomjs.org/)
 
 Currently, media files are stored in Amazon S3, so you need an Amazon AWS account and have the ```AWS_ACCESS_KEY_ID``` and ```AWS_SECRET_ACCESS_KEY``` environment variables defined. For sending emails, Amazon SES is required.
 
