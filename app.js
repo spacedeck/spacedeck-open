@@ -121,11 +121,11 @@ if (app.get('env') == 'development') {
 module.exports = app;
 
 // CONNECT TO DATABASE
-const mongoHost = process.env.MONGO_PORT_27017_TCP_ADDR || 'localhost';
+const mongoHost = process.env.MONGO_PORT_27017_TCP_ADDR || 'db';
 mongoose.connect('mongodb://' + mongoHost + '/spacedeck');
 
 // START WEBSERVER
-const port = 9000;
+const port = 9666;
 
 const server = http.Server(app).listen(port, () => {
 

@@ -3,7 +3,7 @@ require('../models/schema');
 
 const WebSocketServer = require('ws').Server;
 
-const Redis = require('ioredis');
+const RedisConnection = require('ioredis');
 const async = require('async');
 const _ = require("underscore");
 const mongoose = require("mongoose");
@@ -12,7 +12,7 @@ const crypto = require('crypto');
 module.exports = {
   startWebsockets: function(server){
     this.setupSubscription();
-    this.state = new Redis(6379, process.env.REDIS_PORT_6379_TCP_ADDR || 'localhost');
+    this.state = new RedisConnection(6379, process.env.REDIS_PORT_6379_TCP_ADDR || 'sync');
 
     if(!this.current_websockets){
       this.current_websockets = [];
@@ -117,7 +117,7 @@ module.exports = {
   },
 
   setupSubscription: function() {
-    this.cursorSubscriber = new Redis(6379, process.env.REDIS_PORT_6379_TCP_ADDR || 'localhost');
+    this.cursorSubscriber = new RedisConnection(6379, process.env.REDIS_PORT_6379_TCP_ADDR || 'sync');
     this.cursorSubscriber.subscribe(['cursors', 'users', 'updates'], function (err, count) {
       console.log("[redis] websockets to " + count + " topics." );
     });

@@ -47,7 +47,7 @@ To rebuild the frontend CSS styles (you need to do this at least once):
     export NODE_ENV=development
     npm start
 
-#experimental docker support
+# experimental docker support
 
 We have a docker base image at https://github.com/spacedeck/docker-baseimage that includes all required binaries. Based on this image we can use Docker-Compose to bootstrap a Spacedeck including data storages.
 

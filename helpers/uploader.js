@@ -6,6 +6,15 @@ AWS.config.region = 'eu-central-1';
 var fs = require('fs');
 var config = require('config');
 
+var cdn = config.get("storage_cdn") 
+var storage_endpoint = 'http://storage:9000';
+const bucketName = "sdeck-fresh-development";
+const ep = new AWS.Endpoint(storage_endpoint);
+const s3 = new AWS.S3({
+  endpoint: ep
+});
+
+
 module.exports = {
   removeFile: (path, callback) => {
     const s3 = new AWS.S3({

@@ -5,7 +5,7 @@ const websockets = require('./websockets');
 
 module.exports = {
   connectRedis(){
-    const redisHost = process.env.REDIS_PORT_6379_TCP_ADDR || 'localhost';
+    const redisHost = process.env.REDIS_PORT_6379_TCP_ADDR || 'sync';
     this.connection = new RedisConnection(6379, redisHost);
   },
   sendMessage(action, model, attributes, channelId) {
