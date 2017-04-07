@@ -23,14 +23,14 @@ We appreciate filed issues, pull requests and general discussion.
 
 Spacedeck uses the following major building blocks:
 
-- Node.js 4.x (Backend / API)
+- Vue.js (Frontend)
+- Node.js 7.x (Backend / API)
 - MongoDB 3.x (Datastore)
 - Redis 3.x (Datastore for realtime channels)
-- Vue.js (Frontend)
 
 It also has some binary dependencies for media conversion and PDF export:
 
-- imagemagick
+- imagemagick, graphicsmagick, libav(+codecs, ffmpeg replacement), audiowaveform (https://github.com/bbcrd/audiowaveform), phantomjs (http://phantomjs.org/)
 
 Currently, media files are stored in Amazon S3, so you need an Amazon AWS account and have the ```AWS_ACCESS_KEY_ID``` and ```AWS_SECRET_ACCESS_KEY``` environment variables defined. For sending emails, Amazon SES is required.
 
@@ -46,6 +46,13 @@ To rebuild the frontend CSS styles (you need to do this at least once):
 
     export NODE_ENV=development
     npm start
+
+#experimental docker support
+
+We have a docker base image at https://github.com/spacedeck/docker-baseimage that includes all required binaries. Based on this image we can use Docker-Compose to bootstrap a Spacedeck including data storages.
+
+docker-compose build
+docker-compose run -e ENV=development -p 9666:9666 -e NODE_ENV=development spacedeck
 
 # License
 

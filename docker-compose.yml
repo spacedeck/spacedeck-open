@@ -1,0 +1,27 @@
+version: '2'
+services:
+  sync:
+    image: redis
+  storage:
+    image: minio/minio
+    environment:
+      - MINIO_ACCESS_KEY=AKIAIOSFODNN7EXAMPLE
+      - MINIO_SECRET_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+    ports:
+      - 9123:9000
+  db:
+    image: mongo
+  spacedeck:
+    environment:
+      - env=development
+    build: .
+    volumes:
+      - ./:/usr/src/app
+      - /usr/src/app/node_modules
+    command: npm start
+    ports:
+      - 9666:9666
+    depends_on:
+      - db
+      - sync
+      - storage
