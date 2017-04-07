@@ -33,7 +33,7 @@ module.exports = {
 
     phantom.create({ path: require('phantomjs-prebuilt').path }, function (err, browser) {
       if(err){
-        console.err(err);
+        console.log(err);
       }else{
         return browser.createPage(function (err, page) {
           console.log("page created, opening ",space_url);
