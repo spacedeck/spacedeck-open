@@ -1,5 +1,7 @@
 # Spacedeck Open
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/spacedeck/spacedeck-open.svg)](https://greenkeeper.io/)
+
 This is the free and open source version of Spacedeck, a web based, real time, collaborative whiteboard application with rich media support. Spacedeck was developed in 6 major releases during Autumn 2011 until the end of 2016 and was originally a commercial SaaS. The developers were Lukas F. Hartmann (mntmn) and Martin Güther (magegu). All icons and large parts of the CSS were designed by Thomas Helbig (dergraph).
 
 As we plan to retire the subscription based service at spacedeck.com in late 2017, we decided to open-source Spacedeck to allow educational and other organizations who currently rely on Spacedeck to migrate to a self-hosted version.
