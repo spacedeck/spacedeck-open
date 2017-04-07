@@ -11,7 +11,7 @@ services:
       - 9123:9000
   db:
     image: mongo
-  spacedeck:
+  spacedeck-open:
     environment:
       - env=development
     build: .

@@ -6,6 +6,9 @@
     "start": "nodemon -e .js,.html bin/www",
     "test": "mocha"
   },
+  "engines" : { 
+    "node" : ">=7.8.0" 
+  },
   "dependencies": {
     "archiver": "1.3.0",
     "async": "2.3.0",

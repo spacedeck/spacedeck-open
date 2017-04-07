@@ -32,7 +32,7 @@ It also has some binary dependencies for media conversion and PDF export:
 
 - imagemagick, graphicsmagick, libav(+codecs, ffmpeg replacement), audiowaveform (https://github.com/bbcrd/audiowaveform), phantomjs (http://phantomjs.org/)
 
-Currently, media files are stored in Amazon S3, so you need an Amazon AWS account and have the ```AWS_ACCESS_KEY_ID``` and ```AWS_SECRET_ACCESS_KEY``` environment variables defined. For sending emails, Amazon SES is required.
+Currently, media files are stored in Amazon S3, so you need an Amazon AWS account and have the ```AWS_ACCESS_KEY_ID``` and ```AWS_SECRET_ACCESS_KEY``` environment variables defined. For sending emails in production, Amazon SES is required.
 
 To install Spacedeck, you need node.js 4.x and a running MongoDB instance. Then, to install all node dependencies, run
 
@@ -42,17 +42,22 @@ To rebuild the frontend CSS styles (you need to do this at least once):
 
     gulp styles
 
+# Configuration
+
+see: config/config.json
+
 # Run
 
     export NODE_ENV=development
     npm start
+    open http://localhost:9666
 
-# experimental docker support
+# experimental docker(compose) support
 
 We have a docker base image at https://github.com/spacedeck/docker-baseimage that includes all required binaries. Based on this image we can use Docker-Compose to bootstrap a Spacedeck including data storages.
 
 docker-compose build
-docker-compose run -e ENV=development -p 9666:9666 -e NODE_ENV=development spacedeck
+docker-compose run -e ENV=development -p 9666:9666 -e NODE_ENV=development spacedeck-open
 
 # License
 
