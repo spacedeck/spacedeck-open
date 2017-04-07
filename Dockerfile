@@ -11,7 +11,6 @@ RUN npm install -g --save-dev gulp
 
 COPY . /usr/src/app
 RUN gulp styles
-
 RUN npm cache clean
 
 CMD [ "npm", "start" ]

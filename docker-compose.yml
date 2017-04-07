@@ -19,7 +19,7 @@ services:
       - MINIO_SECRET_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
     build: .
     volumes:
-      - ./:/usr/src/app
+      # - ./:/usr/src/app
       - /usr/src/app/node_modules
     command: npm start
     ports:

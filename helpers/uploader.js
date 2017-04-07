@@ -24,11 +24,16 @@ const s3 = new AWS.S3({
   endpoint: ep
 });
 
+s3.createBucket({
+  Bucket: config.get("storage_bucket"),
+  ACL: "public-read",
+  GrantRead: "*"
+}, (err,res) => {
+  console.log("createBucket",err,res);
+});
+
 module.exports = {
   removeFile: (path, callback) => {
-    // const s3 = new AWS.S3({
-    //   region: 'eu-central-1'
-    // });
     const bucket = config.get("storage_bucket");
     s3.deleteObject({
       Bucket: bucket, Key: path
@@ -57,11 +62,6 @@ module.exports = {
       }
     });
     fileStream.on('open', function () {
-      // FIXME
-      // var s3 = new AWS.S3({
-      //   region: 'eu-central-1'
-      // });
-
       s3.putObject({
         Bucket: bucket,
         Key: fileName,
