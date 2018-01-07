@@ -51,7 +51,7 @@ see: config/config.json
     export NODE_ENV=development
     npm start
 
-    open http://localhost:90000
+    open http://localhost:9000
 
 # License
 
