@@ -3,18 +3,19 @@ require('../models/schema');
 
 const WebSocketServer = require('ws').Server;
 
-const Redis = require('ioredis');
 const async = require('async');
 const _ = require("underscore");
 const mongoose = require("mongoose");
 const crypto = require('crypto');
 
-module.exports = {
-  startWebsockets: function(server){
-    this.setupSubscription();
-    this.state = new Redis(6379, process.env.REDIS_PORT_6379_TCP_ADDR || 'localhost');
+var redis = require("./redis.js");
 
-    if(!this.current_websockets){
+module.exports = {
+  startWebsockets: function(server) {
+    this.setupSubscription();
+    this.state = redis.getConnection();
+    
+    if(!this.current_websockets) {
       this.current_websockets = [];
     }
 
@@ -117,8 +118,7 @@ module.exports = {
   },
 
   setupSubscription: function() {
-    this.cursorSubscriber = new Redis(6379, process.env.REDIS_PORT_6379_TCP_ADDR || 'localhost');
-    this.cursorSubscriber.subscribe(['cursors', 'users', 'updates'], function (err, count) {
+    this.cursorSubscriber = redis.getConnection().subscribe(['cursors', 'users', 'updates'], function (err, count) {
       console.log("[redis] websockets to " + count + " topics." );
     });
     this.cursorSubscriber.on('message', function (channel, rawMessage) {
@@ -206,7 +206,7 @@ module.exports = {
       console.log("websocket not found to remove");
     }
 
-    this.state.del(ws.id, function(err, res) {
+    this.state.del(ws.id+"", function(err, res) {
       if (err) console.error(err, res);
       else {
         this.removeUserInSpace(ws.space_id, ws, (err) => {
@@ -221,7 +221,8 @@ module.exports = {
   
   addUserInSpace: function(username, space, ws, cb) {
     console.log("[websockets] user "+username+" in "+space.access_mode +" space " +  space._id + " with socket "  +  ws.id);
-    this.state.set(ws.id,  username, function(err, res) {
+    
+    this.state.set(ws.id+"", username+"", function(err, res) {
       if(err) console.error(err, res);
       else {
         this.state.sadd("space_" + space._id, ws.id, function(err, res) {
@@ -238,7 +239,7 @@ module.exports = {
     }.bind(this));
   },
   removeUserInSpace: function(spaceId, ws, cb) {
-    this.state.srem("space_" + spaceId, ws.id, function(err, res) {
+    this.state.srem("space_" + spaceId, ws.id+"", function(err, res) {
       if (err) cb(err);
       else {
         console.log("[websockets] socket "+  ws.id + " went offline in space " + spaceId);
