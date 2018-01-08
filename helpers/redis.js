@@ -1,11 +1,12 @@
 'use strict';
 
+// this is a mock version of the Redis API,
+// emulating Redis if it is not available locally
 var notRedis = {
   state: {},
   topics: {},
   
   publish: function(topic, msg, cb) {
-    //console.log("[notredis] publish",topic,msg);
     if (!this.topics[topic]) {
       this.topics[topic] = {
         subscribers: []
@@ -43,7 +44,7 @@ var notRedis = {
       t.subscribers.push(handle);
     }
 
-    cb(null, handle, topics.length);
+    cb(null, topics.length);
     return handle;
   },
 
@@ -82,7 +83,7 @@ var notRedis = {
   incr: function(key, cb) {
     if (!this.state[key]) this.state[key] = 0;
     this.state[key]++;
-    cb();
+    cb(null, this.state[key]);
   },
 
   expire: function() {
