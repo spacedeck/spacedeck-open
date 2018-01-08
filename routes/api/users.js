@@ -5,6 +5,7 @@ require('../../models/schema');
 
 var mailer = require('../../helpers/mailer');
 var uploader = require('../../helpers/uploader');
+var importer = require('../../helpers/importer');
 
 var bcrypt = require('bcryptjs');
 var crypo = require('crypto');
@@ -465,6 +466,15 @@ router.post('/:user_id/confirm', function(req, res, next) {
     name: req.i18n.__("confirm_action")
   }});
   res.sendStatus(201);
+});
+
+router.get('/:user_id/import', function(req, res, next) {
+  if (req.query.zip) {
+    res.send("importing");
+    importer.importZIP(req.user, req.query.zip);
+  } else {
+    res.sendStatus(400);
+  }
 });
 
 module.exports = router;

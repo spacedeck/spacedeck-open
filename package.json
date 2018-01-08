@@ -23,6 +23,7 @@
     "debug": "~2.6.3",
     "execSync": "latest",
     "express": "~4.13.0",
+    "extract-zip": "^1.6.6",
     "glob": "7.1.1",
     "gm": "1.23.0",
     "googleapis": "18.0.0",

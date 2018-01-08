@@ -59,7 +59,9 @@ router.get('/', (req, res) => {
           "nickname": 1,
           "email": 1
         }).exec((err, user) => {
-          a['user'] = user.toObject();
+          if (user) {
+            a['user'] = user.toObject();
+          }
           cb(err, a);
         });
       } else {
