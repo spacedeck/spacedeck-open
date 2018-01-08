@@ -1,15 +1,21 @@
 'use strict';
 
-var AWS = require('aws-sdk');
-AWS.config.region = 'eu-central-1';
-
 var fs = require('fs');
 var config = require('config');
+
+// use AWS S3 or local folder depending on config
+if (config.get("storage_local_path")) {
+  var AWS = require('mock-aws-s3');
+  AWS.config.basePath = config.get("storage_local_path");
+} else {
+  var AWS = require('aws-sdk');
+  AWS.config.region = config.get("storage_region");
+}
 
 module.exports = {
   removeFile: (path, callback) => {
     const s3 = new AWS.S3({
-      region: 'eu-central-1'
+      region: config.get("storage_region")
     });
     const bucket = config.get("storage_bucket");
     s3.deleteObject({
@@ -39,9 +45,8 @@ module.exports = {
       }
     });
     fileStream.on('open', function () {
-      // FIXME
       var s3 = new AWS.S3({
-        region: 'eu-central-1'
+        region: config.get("storage_region")
       });
 
       s3.putObject({
@@ -54,7 +59,7 @@ module.exports = {
           console.error(err);
           callback(err);
         }else {
-          const url = "https://"+ config.get("storage_cdn") + "/" + fileName;
+          const url = config.get("storage_cdn") + "/" + fileName;
           console.log("[s3]" + localFilePath + " to " + url);
           callback(null, url);
         }
