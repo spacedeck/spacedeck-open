@@ -15,13 +15,16 @@ const favicon = require('serve-favicon');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
+
 const mongoose = require('mongoose');
+
 const swig = require('swig');
 const i18n = require('i18n-2');
 const helmet = require('helmet');
 
 const express = require('express');
 const app = express();
+const serveStatic = require('serve-static');
 
 const isProduction = app.get('env') === 'production';
 
@@ -67,7 +70,6 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.use(cookieParser());
-app.use(helmet.noCache())
 app.use(helmet.frameguard())
 app.use(helmet.xssFilter())
 app.use(helmet.hsts({
@@ -109,6 +111,12 @@ app.use('/api/teams', require('./routes/api/teams'));
 app.use('/api/webgrabber', require('./routes/api/webgrabber'));
 app.use('/', require('./routes/root'));
 
+if (config.get('storage_local_path')) {
+  app.use('/storage', serveStatic(config.get('storage_local_path')+"/"+config.get('storage_bucket'), {
+    maxAge: 24*3600
+  }));
+}
+
 // catch 404 and forward to error handler
 app.use(require('./middlewares/404'));
 if (app.get('env') == 'development') {
@@ -128,7 +136,7 @@ mongoose.connect('mongodb://' + mongoHost + '/spacedeck');
 const port = 9000;
 
 const server = http.Server(app).listen(port, () => {
-
+  
   if ("send" in process) {
     process.send('online');
   }
