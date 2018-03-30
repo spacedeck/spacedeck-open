@@ -32,7 +32,9 @@ It also has some binary dependencies for media conversion and PDF export:
 
 - imagemagick, graphicsmagick, libav(+codecs, ffmpeg replacement), audiowaveform (https://github.com/bbcrd/audiowaveform), phantomjs (http://phantomjs.org/)
 
-Currently, media files are stored in Amazon S3, so you need an Amazon AWS account and have the ```AWS_ACCESS_KEY_ID``` and ```AWS_SECRET_ACCESS_KEY``` environment variables defined. For sending emails in production, Amazon SES is required.
+By default, media files are uploaded to the ```storage``` folder.
+
+Optionally, you can use Amazon S3 for file storage. In that case you need an Amazon AWS account and have the ```AWS_ACCESS_KEY_ID``` and ```AWS_SECRET_ACCESS_KEY``` environment variables defined. For sending emails in production, Amazon SES is required.
 
 To run Spacedeck, you need Node.JS 7.x and a running MongoDB 3.4 instance. Then, to install all node dependencies, run
 
