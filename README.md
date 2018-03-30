@@ -10,7 +10,7 @@ We appreciate filed issues, pull requests and general discussion.
 
 # Features
 
-- Create virtual whiteboards called "Spaces" with virtually unlimited size
+- Create virtual whiteboards called *Spaces* with virtually unlimited size
 - Drag & drop images, videos and audio from your computer or the web
 - Write and format text with full control over fonts, colors and style
 - Draw, annotate and highlight with included graphical shapes
@@ -23,10 +23,10 @@ We appreciate filed issues, pull requests and general discussion.
 
 Spacedeck uses the following major building blocks:
 
-- Vue.js (Frontend)
-- Node.js 7.x (Backend / API)
-- MongoDB 3.x (Data store)
-- Redis 3.x (Data store for realtime channels)
+- Vue.js: Frontend UI Framework
+- Node.js 7.x: Web Server / API
+- MongoDB 3.4: Data store *(important: newer versions than 3.4 don't work yet!)*
+- Redis 3.x: Data store for realtime channels, (*optional*)
 
 It also has some binary dependencies for media conversion and PDF export:
 
@@ -34,7 +34,7 @@ It also has some binary dependencies for media conversion and PDF export:
 
 Currently, media files are stored in Amazon S3, so you need an Amazon AWS account and have the ```AWS_ACCESS_KEY_ID``` and ```AWS_SECRET_ACCESS_KEY``` environment variables defined. For sending emails in production, Amazon SES is required.
 
-To install Spacedeck, you need node.js 4.x and a running MongoDB instance. Then, to install all node dependencies, run
+To run Spacedeck, you need Node.JS 7.x and a running MongoDB 3.4 instance. Then, to install all node dependencies, run
 
     npm install
 
