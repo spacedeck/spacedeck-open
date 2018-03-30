@@ -5,6 +5,7 @@ require('../../models/schema');
 
 var bcrypt = require('bcryptjs');
 var crypo = require('crypto');
+var URL = require('url').URL;
 
 var express = require('express');
 var router = express.Router();
@@ -40,11 +41,11 @@ router.post('/', function(req, res) {
               user.sessions.push(session);
 
               user.save(function(err, result) {
-                // FIXME
-                var secure = process.env.NODE_ENV == "production" || process.env.NODE_ENV == "staging";
-                var domain = (process.env.NODE_ENV == "production") ? ".example.org" : "localhost";
+                if (err) console.error("Error saving user:",err);
+                
+                var domain = (process.env.NODE_ENV == "production") ? new URL(config.get('endpoint')).hostname : "localhost";
 
-                res.cookie('sdsession', token, { domain: domain, httpOnly: true, secure: secure});
+                res.cookie('sdsession', token, { domain: domain, httpOnly: true });
                 res.status(201).json(session);
               });
             });
@@ -69,8 +70,7 @@ router.delete('/current', function(req, res, next) {
     });
     user.sessions = newSessions;
     user.save(function(err, result) {
-      // FIXME
-      var domain = (process.env.NODE_ENV == "production") ? ".example.org" : "localhost";
+      var domain = new URL(config.get('endpoint')).hostname;
       res.clearCookie('sdsession', { domain: domain });
       res.sendStatus(204);
     });

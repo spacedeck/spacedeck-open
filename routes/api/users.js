@@ -5,6 +5,7 @@ require('../../models/schema');
 
 var mailer = require('../../helpers/mailer');
 var uploader = require('../../helpers/uploader');
+var importer = require('../../helpers/importer');
 
 var bcrypt = require('bcryptjs');
 var crypo = require('crypto');
@@ -15,6 +16,7 @@ var fs = require('fs');
 var request = require('request');
 var gm = require('gm');
 var validator = require('validator');
+var URL = require('url').URL;
 
 var express = require('express');
 var router = express.Router();
@@ -181,8 +183,7 @@ router.get('/loginorsignupviagoogle', function(req, res) {
       var apiUrl = "https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=" + tokens.access_token;
       
       var finalizeLogin = function(session){
-        var secure = process.env.NODE_ENV == "production" || process.env.NODE_ENV == "staging";
-        res.cookie('sdsession', session.token, { httpOnly: true, secure: secure});
+        res.cookie('sdsession', session.token, { httpOnly: true });
         res.status(201).json(session);
       };
 
@@ -465,6 +466,15 @@ router.post('/:user_id/confirm', function(req, res, next) {
     name: req.i18n.__("confirm_action")
   }});
   res.sendStatus(201);
+});
+
+router.get('/:user_id/import', function(req, res, next) {
+  if (req.query.zip) {
+    res.send("importing");
+    importer.importZIP(req.user, req.query.zip);
+  } else {
+    res.sendStatus(400);
+  }
 });
 
 module.exports = router;

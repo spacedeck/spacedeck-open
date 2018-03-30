@@ -15,13 +15,16 @@ const favicon = require('serve-favicon');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
+
 const mongoose = require('mongoose');
+
 const swig = require('swig');
 const i18n = require('i18n-2');
 const helmet = require('helmet');
 
 const express = require('express');
 const app = express();
+const serveStatic = require('serve-static');
 
 const isProduction = app.get('env') === 'production';
 
@@ -47,7 +50,7 @@ swig.setFilter('cdn', function(input, idx) {
 app.engine('html', swig.renderFile);
 app.set('view engine', 'html');
 
-if (app.get('env') != 'development') {
+if (isProduction) {
   app.set('views', path.join(__dirname, 'build', 'views'));
   app.use(favicon(path.join(__dirname, 'build', 'assets', 'images', 'favicon.png')));
   app.use(express.static(path.join(__dirname, 'build', 'assets')));
@@ -67,7 +70,6 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.use(cookieParser());
-app.use(helmet.noCache())
 app.use(helmet.frameguard())
 app.use(helmet.xssFilter())
 app.use(helmet.hsts({
@@ -82,7 +84,6 @@ app.use(helmet.noSniff())
 app.use(require("./middlewares/templates"));
 app.use(require("./middlewares/error_helpers"));
 app.use(require("./middlewares/setuser"));
-app.use(require("./middlewares/subdomain"));
 app.use(require("./middlewares/cors"));
 app.use(require("./middlewares/i18n"));
 app.use("/api", require("./middlewares/api_helpers"));
@@ -109,6 +110,12 @@ app.use('/api/teams', require('./routes/api/teams'));
 app.use('/api/webgrabber', require('./routes/api/webgrabber'));
 app.use('/', require('./routes/root'));
 
+if (config.get('storage_local_path')) {
+  app.use('/storage', serveStatic(config.get('storage_local_path')+"/"+config.get('storage_bucket'), {
+    maxAge: 24*3600
+  }));
+}
+
 // catch 404 and forward to error handler
 app.use(require('./middlewares/404'));
 if (app.get('env') == 'development') {
@@ -121,14 +128,14 @@ if (app.get('env') == 'development') {
 module.exports = app;
 
 // CONNECT TO DATABASE
-const mongoHost = process.env.MONGO_PORT_27017_TCP_ADDR || 'localhost';
+const mongoHost = process.env.MONGO_PORT_27017_TCP_ADDR || config.get('mongodb_host');
 mongoose.connect('mongodb://' + mongoHost + '/spacedeck');
 
 // START WEBSERVER
-const port = 9000;
+const port = 9666;
 
 const server = http.Server(app).listen(port, () => {
-
+  
   if ("send" in process) {
     process.send('online');
   }

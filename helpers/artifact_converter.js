@@ -7,6 +7,7 @@ const fs = require('fs');
 const Models = require('../models/schema');
 const uploader = require('../helpers/uploader');
 const path = require('path');
+const os = require('os');
 
 const fileExtensionMap = {
   ".amr" : "audio/AMR",
@@ -245,13 +246,12 @@ function resizeAndUpload(a, size, max, fileName, localFilePath, callback) {
   if (max>320 || size.width > max || size.height > max) {
     var resizedFileName = max + "_"+fileName;
     var s3Key = "s"+ a.space_id.toString() + "/a" + a._id.toString() + "/" + resizedFileName;
-    var localResizedFilePath = "/tmp/"+resizedFileName;
+    var localResizedFilePath = os.tmpdir()+"/"+resizedFileName;
     gm(localFilePath).resize(max, max).autoOrient().write(localResizedFilePath, function (err) {
       if(!err) {
         uploader.uploadFile(s3Key, "image/jpeg", localResizedFilePath, function(err, url) {
           if (err) callback(err);
           else{
-            console.log(localResizedFilePath);
             fs.unlink(localResizedFilePath, function (err) {
               if (err) {
                 console.error(err);

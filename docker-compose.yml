@@ -1,0 +1,34 @@
+version: '2'
+services:
+  sync:
+    image: redis
+  storage:
+    image: minio/minio
+    environment:
+      - MINIO_ACCESS_KEY=AKIAIOSFODNN7EXAMPLE
+      - MINIO_SECRET_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+    ports:
+      - 9123:9000
+    command: server /export
+  db:
+    image: mongo
+  spacedeck-open:
+    environment:
+      - env=development
+      - MINIO_ACCESS_KEY=AKIAIOSFODNN7EXAMPLE
+      - MINIO_SECRET_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+    build: .
+    volumes:
+      # - ./:/usr/src/app
+      - /usr/src/app/node_modules
+    command: npm start
+    ports:
+      - 9666:9666
+    depends_on:
+      - db
+      - sync
+      - storage
+    links:
+      - storage
+      - db
+      - sync
