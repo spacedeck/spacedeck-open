@@ -41,7 +41,7 @@
     "log-timestamp": "latest",
     "md5": "2.2.1",
     "mock-aws-s3": "^2.6.0",
-    "moment": "2.18.1",
+    "moment": "^2.19.3",
     "mongoose": "4.9.3",
     "morgan": "1.8.1",
     "node-phantom-simple": "2.2.4",
