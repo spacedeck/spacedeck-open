@@ -44,7 +44,7 @@ To rebuild the frontend CSS styles (you need to do this at least once):
 
 # Configuration
 
-see: config/config.json
+See [config/default.json](config/default.json)
 
 # Run
 
