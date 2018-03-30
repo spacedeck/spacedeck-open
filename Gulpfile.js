@@ -12,10 +12,9 @@ var uglify = require('gulp-uglify');
 var fingerprint = require('gulp-fingerprint');
 var rev = require('gulp-rev');
 
-var RevAll = require('gulp-rev-all');
+var revAll = require('gulp-rev-all');
 
 gulp.task('rev', () => {
-  var revAll = new RevAll();
   return gulp.src(['public/**'])
     .pipe(gulp.dest('build/assets'))
     .pipe(revAll.revision())

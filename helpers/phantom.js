@@ -32,31 +32,36 @@ module.exports = {
     };
 
     phantom.create({ path: require('phantomjs-prebuilt').path }, function (err, browser) {
-      return browser.createPage(function (err, page) {
-        console.log("page created, opening ",space_url);
+      if(err){
+        console.log(err);
+      }else{
+        return browser.createPage(function (err, page) {
+          console.log("page created, opening ",space_url);
 
-        if (type=="pdf") {
-          var psz = {
-            width: space.advanced.width+"px",
-            height: space.advanced.height+"px"
-          };
-          page.set('paperSize', psz);
-        }
+          if (type=="pdf") {
+            var psz = {
+              width: space.advanced.width+"px",
+              height: space.advanced.height+"px"
+            };
+            page.set('paperSize', psz);
+          }
 
-        page.set('settings.resourceTimeout',timeout);
-        page.set('settings.javascriptEnabled',false);
+          page.set('settings.resourceTimeout',timeout);
+          page.set('settings.javascriptEnabled',false);
 
-        return page.open(space_url, function (err,status) {
-          page.render(export_path, function() {
-            on_success_called = true;
-            if (on_success) {
-              on_success(export_path);
-            }
-            page.close();
-            browser.exit();
+          return page.open(space_url, function (err,status) {
+            page.render(export_path, function() {
+              on_success_called = true;
+              if (on_success) {
+                on_success(export_path);
+              }
+              page.close();
+              browser.exit();
+            });
           });
-        });
-      });
+        });        
+      }
+
     }, {
       onExit: on_exit
     });

@@ -1,5 +1,7 @@
 'use strict';
 
+const config = require('config');
+
 // this is a mock version of the Redis API,
 // emulating Redis if it is not available locally
 var notRedis = {
@@ -92,7 +94,12 @@ var notRedis = {
 
 module.exports = {
   connectRedis: function() {
-    this.connection = notRedis;
+    if (config.get("redis_mock")) {
+      this.connection = notRedis;
+    } else {
+      const redisHost = process.env.REDIS_PORT_6379_TCP_ADDR || 'sync';
+      this.connection = new RedisConnection(6379, redisHost);
+    }
   },
   getConnection: function() {
     this.connectRedis();

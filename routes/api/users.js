@@ -16,6 +16,7 @@ var fs = require('fs');
 var request = require('request');
 var gm = require('gm');
 var validator = require('validator');
+var URL = require('url').URL;
 
 var express = require('express');
 var router = express.Router();
@@ -182,8 +183,7 @@ router.get('/loginorsignupviagoogle', function(req, res) {
       var apiUrl = "https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=" + tokens.access_token;
       
       var finalizeLogin = function(session){
-        var secure = process.env.NODE_ENV == "production" || process.env.NODE_ENV == "staging";
-        res.cookie('sdsession', session.token, { httpOnly: true, secure: secure});
+        res.cookie('sdsession', session.token, { httpOnly: true });
         res.status(201).json(session);
       };
 

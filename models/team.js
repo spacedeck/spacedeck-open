@@ -45,7 +45,7 @@ module.exports.teamSchema.index({
 
 module.exports.teamSchema.statics.getTeamForHost = (host, cb) => {
 
-  if (host != "127.0.0.1:9000") { //phantomjs check
+  if (host != "127.0.0.1:9666") { //phantomjs check
     let subDomainParts = host.split('.');
 
     if (subDomainParts.length > 2) {

@@ -1,21 +1,28 @@
 'use strict';
 require('../models/schema');
 
+const config = require('config');
+
 const WebSocketServer = require('ws').Server;
 
+const RedisConnection = require('ioredis');
 const async = require('async');
 const _ = require("underscore");
 const mongoose = require("mongoose");
 const crypto = require('crypto');
 
-var redis = require("./redis.js");
+const redisMock = require("./redis.js");
 
 module.exports = {
   startWebsockets: function(server) {
     this.setupSubscription();
-    this.state = redis.getConnection();
     
-    if(!this.current_websockets) {
+    if (!this.current_websockets) {
+      if (config.get("redis_mock")) {
+        this.state = redisMock.getConnection();
+      } else {
+        this.state = new RedisConnection(6379, process.env.REDIS_PORT_6379_TCP_ADDR || config.get("redis_host"));
+      }
       this.current_websockets = [];
     }
 
@@ -118,9 +125,17 @@ module.exports = {
   },
 
   setupSubscription: function() {
-    this.cursorSubscriber = redis.getConnection().subscribe(['cursors', 'users', 'updates'], function (err, count) {
-      console.log("[redis] websockets to " + count + " topics." );
-    });
+    if (config.get("redis_mock")) {
+      this.cursorSubscriber = redisMock.getConnection().subscribe(['cursors', 'users', 'updates'], function (err, count) {
+        console.log("[redis-mock] websockets subscribed to " + count + " topics." );
+      });
+    } else {
+      this.cursorSubscriber = new RedisConnection(6379, process.env.REDIS_PORT_6379_TCP_ADDR || config.get("redis_host"));
+      this.cursorSubscriber.subscribe(['cursors', 'users', 'updates'], function (err, count) {
+        console.log("[redis] websockets subscribed to " + count + " topics." );
+      });
+    }
+    
     this.cursorSubscriber.on('message', function (channel, rawMessage) {
       const msg = JSON.parse(rawMessage);
       const spaceId = msg.space_id;

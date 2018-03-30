@@ -53,7 +53,7 @@ module.exports = {
           }
         }
       }, function(err, data) {
-        if(err) console.log('Email not sent:', err);
+        if (err) console.error("Error sending email:", err);
         else console.log("Email sent.");
       });
     }

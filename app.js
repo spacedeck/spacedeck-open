@@ -50,7 +50,7 @@ swig.setFilter('cdn', function(input, idx) {
 app.engine('html', swig.renderFile);
 app.set('view engine', 'html');
 
-if (app.get('env') != 'development') {
+if (isProduction) {
   app.set('views', path.join(__dirname, 'build', 'views'));
   app.use(favicon(path.join(__dirname, 'build', 'assets', 'images', 'favicon.png')));
   app.use(express.static(path.join(__dirname, 'build', 'assets')));
@@ -84,7 +84,6 @@ app.use(helmet.noSniff())
 app.use(require("./middlewares/templates"));
 app.use(require("./middlewares/error_helpers"));
 app.use(require("./middlewares/setuser"));
-app.use(require("./middlewares/subdomain"));
 app.use(require("./middlewares/cors"));
 app.use(require("./middlewares/i18n"));
 app.use("/api", require("./middlewares/api_helpers"));
@@ -129,11 +128,11 @@ if (app.get('env') == 'development') {
 module.exports = app;
 
 // CONNECT TO DATABASE
-const mongoHost = process.env.MONGO_PORT_27017_TCP_ADDR || 'localhost';
+const mongoHost = process.env.MONGO_PORT_27017_TCP_ADDR || config.get('mongodb_host');
 mongoose.connect('mongodb://' + mongoHost + '/spacedeck');
 
 // START WEBSERVER
-const port = 9000;
+const port = 9666;
 
 const server = http.Server(app).listen(port, () => {
   

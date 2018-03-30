@@ -23,10 +23,10 @@ We appreciate filed issues, pull requests and general discussion.
 
 Spacedeck uses the following major building blocks:
 
+- Vue.js (Frontend)
 - Node.js 7.x (Backend / API)
 - MongoDB 3.x (Datastore)
 - Redis 3.x (Datastore for realtime channels)
-- Vue.js (Frontend)
 
 It also has some binary dependencies for media conversion and PDF export:
 
@@ -50,8 +50,14 @@ see: config/config.json
 
     export NODE_ENV=development
     npm start
+    open http://localhost:9666
 
-    open http://localhost:9000
+# experimental docker(compose) support
+
+We have a docker base image at https://github.com/spacedeck/docker-baseimage that includes all required binaries. Based on this image we can use Docker Compose to bootstrap a Spacedeck including data storage.
+
+    docker-compose build
+    docker-compose run -e ENV=development -p 9666:9666 -e NODE_ENV=development spacedeck-open
 
 # License
 
