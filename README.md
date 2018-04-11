@@ -2,7 +2,7 @@
 
 This is the free and open source version of Spacedeck, a web based, real time, collaborative whiteboard application with rich media support. Spacedeck was developed in 6 major releases during Autumn 2011 until the end of 2016 and was originally a commercial SaaS. The developers were Lukas F. Hartmann (mntmn) and Martin Güther (magegu). All icons and large parts of the CSS were designed by Thomas Helbig (dergraph).
 
-As we plan to retire the subscription based service at spacedeck.com in late 2017, we decided to open-source Spacedeck to allow educational and other organizations who currently rely on Spacedeck to migrate to a self-hosted version.
+As we plan to retire the subscription based service at spacedeck.com in May 2018, we decided to open-source Spacedeck to allow educational and other organizations who currently rely on Spacedeck to migrate to a self-hosted or local version.
 
 Data migration features will be added soon.
 
@@ -23,20 +23,20 @@ We appreciate filed issues, pull requests and general discussion.
 
 Spacedeck uses the following major building blocks:
 
-- Vue.js: Frontend UI Framework
-- Node.js 7.x: Web Server / API
-- MongoDB 3.4: Data store *(important: newer versions than 3.4 don't work yet!)*
-- Redis 3.x: Data store for realtime channels, (*optional*)
+- Node.js 9.x: Web Server / API
+- Vue.js: Frontend UI Framework (included)
+- SQLite (included)
 
 It also has some binary dependencies for media conversion and PDF export:
 
-- imagemagick, graphicsmagick, libav(+codecs, ffmpeg replacement), audiowaveform (https://github.com/bbcrd/audiowaveform), phantomjs (http://phantomjs.org/)
+- graphicsmagick (for image conversion)
+- ffmpeg (for video/audio conversion)
+- audiowaveform (for audio waveform rendering) (https://github.com/bbcrd/audiowaveform)
+- phantomjs (for website screenshot rendering and PDF export, included)
 
 By default, media files are uploaded to the ```storage``` folder.
 
-Optionally, you can use Amazon S3 for file storage. In that case you need an Amazon AWS account and have the ```AWS_ACCESS_KEY_ID``` and ```AWS_SECRET_ACCESS_KEY``` environment variables defined. For sending emails in production, Amazon SES is required.
-
-To run Spacedeck, you need Node.JS 7.x and a running MongoDB 3.4 instance. Then, to install all node dependencies, run
+To run Spacedeck, you only need Node.JS 9.x. Then, to install all node dependencies, run
 
     npm install
 
@@ -52,14 +52,18 @@ See [config/default.json](config/default.json)
 
     export NODE_ENV=development
     npm start
-    open http://localhost:9666
+
+Then open http://localhost:9666 in a web browser.
 
 # License
 
-Spacedeck Open is released under the GNU Affero General Public License Version 3 (GNU AGPLv3).
+The Spacedeck logo and brand assets are registered trademarks of Spacedeck GmbH. All rights reserved.
+
+Spacedeck Open source code is released under the GNU Affero General Public License Version 3 (GNU AGPLv3).
 
     Spacedeck Open - Web-based Collaborative Whiteboard For Rich Media
-    Copyright (C) 2011-2017 Lukas F. Hartmann, Martin Güther, Thomas Helbig
+    Copyright (C) 2011-2018 Lukas F. Hartmann, Martin Güther
+    Icons and original CSS design copyright by Thomas Helbig
     
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
