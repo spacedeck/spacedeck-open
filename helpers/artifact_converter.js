@@ -4,10 +4,14 @@ const exec = require('child_process');
 const gm = require('gm');
 const async = require('async');
 const fs = require('fs');
-const Models = require('../models/schema');
+const Models = require('../models/db');
 const uploader = require('../helpers/uploader');
 const path = require('path');
 const os = require('os');
+
+const db = require('../models/db');
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
 const fileExtensionMap = {
   ".amr" : "audio/AMR",
@@ -301,25 +305,20 @@ var resizeAndUploadImage = function(a, mime, size, fileName, fileNameOrg, imageF
     a.payload_uri = results.original;
 
     var factor = 320/size.width;
-    var newBoardSpecs = a.board;
-    newBoardSpecs.w = Math.round(size.width*factor);
-    newBoardSpecs.h = Math.round(size.height*factor);
-    a.board = newBoardSpecs;
+    a.w = Math.round(size.width*factor);
+    a.h = Math.round(size.height*factor);
 
     a.updated_at = new Date();
-    a.save(function(err) {
-      if(err) payloadCallback(err, null);
-      else {
-        fs.unlink(originalFilePath, function (err) {
-          if (err){
-            console.error(err);
-            payloadCallback(err, null);
-          } else {
-            console.log('successfully deleted ' + originalFilePath);
-            payloadCallback(null, a);
-          }
-        });
-      }
+    a.save().then(function() {
+      fs.unlink(originalFilePath, function (err) {
+        if (err){
+          console.error(err);
+          payloadCallback(err, null);
+        } else {
+          console.log('successfully deleted ' + originalFilePath);
+          payloadCallback(null, a);
+        }
+      });
     });
   });
 };
@@ -371,25 +370,20 @@ module.exports = {
                     a.payload_uri = url;
 
                     var factor = 320/size.width;
-                    var newBoardSpecs = a.board;
-                    newBoardSpecs.w = Math.round(size.width*factor);
-                    newBoardSpecs.h = Math.round(size.height*factor);
-                    a.board = newBoardSpecs;
+                    a.w = Math.round(size.width*factor);
+                    a.h = Math.round(size.height*factor);
 
                     a.updated_at = new Date();
-                    a.save(function(err){
-                      if(err) payloadCallback(err, null);
-                      else {
-                        fs.unlink(localFilePath, function (err) {
-                          if (err){
-                            console.error(err);
-                            payloadCallback(err, null);
-                          } else {
-                            console.log('successfully deleted ' + localFilePath);
-                            payloadCallback(null, a);
-                          }
-                        });
-                      }
+                    a.save().then(function() {
+                      fs.unlink(localFilePath, function (err) {
+                        if (err){
+                          console.error(err);
+                          payloadCallback(err, null);
+                        } else {
+                          console.log('successfully deleted ' + localFilePath);
+                          payloadCallback(null, a);
+                        }
+                      });
                     });
                   }
                 });
@@ -483,6 +477,8 @@ module.exports = {
                 ];
               }
 
+              db.packArtifact(a);
+
               a.updated_at = new Date();
               a.save(function(err) {
                 if (err) payloadCallback(err, null);
@@ -564,19 +560,19 @@ module.exports = {
               ];
 
               a.updated_at = new Date();
-              a.save(function(err){
-                if(err) payloadCallback(err, null);
-                else {
-                  fs.unlink(localFilePath, function (err) {
-                    if (err){
-                      console.error(err);
-                      payloadCallback(err, null);
-                    } else {
-                      console.log('successfully deleted ' + localFilePath);
-                      payloadCallback(null, a);
-                    }
-                  });
-                }
+
+              db.packArtifact(a);
+              
+              a.save().then(function(){
+                fs.unlink(localFilePath, function (err) {
+                  if (err){
+                    console.error(err);
+                    payloadCallback(err, null);
+                  } else {
+                    console.log('successfully deleted ' + localFilePath);
+                    payloadCallback(null, a);
+                  }
+                });
               });
             }
           });
@@ -594,13 +590,10 @@ module.exports = {
             a.payload_uri = url;
             
             a.updated_at = new Date();
-            a.save(function(err) {
-              if(err) payloadCallback(err, null);
-              else {
-                fs.unlink(localFilePath, function (err) {
-                  payloadCallback(null, a);
-                });
-              }
+            a.save().then(function() {
+              fs.unlink(localFilePath, function (err) {
+                payloadCallback(null, a);
+              });
             });
           });
         }

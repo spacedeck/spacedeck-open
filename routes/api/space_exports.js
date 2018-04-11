@@ -1,6 +1,6 @@
 "use strict";
 var config = require('config');
-require('../../models/schema');
+require('../../models/db');
 
 var redis = require('../../helpers/redis');
 var mailer = require('../../helpers/mailer');
@@ -337,28 +337,5 @@ router.get('/html', function(req, res) {
   });
 });
 
-router.get('/path', (req, res) => {
-  // build up a breadcrumb trail (path)
-  var path = [];
-  var buildPath = (space) => {
-    if (space.parent_space_id) {
-      Space.findOne({
-        "_id": space.parent_space_id
-      }, (err, parentSpace) => {
-        if (space._id == parentSpace._id) {
-          console.log("error: circular parent reference for space " + space._id);
-          res.send("error: circular reference");
-        } else {
-          path.push(parentSpace);
-          buildPath(parentSpace);
-        }
-      });
-    } else {
-      // reached the top
-      res.json(path.reverse());
-    }
-  }
-  buildPath(req.space);
-});
-
 module.exports = router;
+

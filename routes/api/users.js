@@ -1,14 +1,15 @@
 "use strict";
 
 var config = require('config');
-require('../../models/schema');
+const db = require('../../models/db');
+const uuidv4 = require('uuid/v4');
 
 var mailer = require('../../helpers/mailer');
 var uploader = require('../../helpers/uploader');
 var importer = require('../../helpers/importer');
 
 var bcrypt = require('bcryptjs');
-var crypo = require('crypto');
+var crypto = require('crypto');
 var swig = require('swig');
 var async = require('async');
 var _ = require('underscore');
@@ -30,231 +31,99 @@ router.get('/current', function(req, res, next) {
   }
 });
 
+// create user
 router.post('/', function(req, res) {
-  if (req.body["email"] && req.body["password"]) {
-
-    var email = req.body["email"].toLowerCase();
-    var nickname = req.body["nickname"];
-    var password = req.body["password"];
-    var password_confirmation = req.body["password_confirmation"];
-
-    if (password_confirmation == password) {
-      if (validator.isEmail(email)) {
-
-        var createUser = function() {
-          bcrypt.genSalt(10, function(err, salt) {
-            bcrypt.hash(password, salt, function(err, hash) {
-
-              crypo.randomBytes(16, function(ex, buf) {
-                var token = buf.toString('hex');
-
-                var u = new User({
-                  email: email,
-                  account_type: "email",
-                  nickname: nickname,
-                  password_hash: hash,
-                  preferences: {
-                    language: req.i18n.locale
-                  },
-                  confirmation_token: token
-                });
-
-                u.save(function (err) {
-                  if (err) res.sendStatus(400);
-                  else {
-                    var homeSpace = new Space({
-                      name: req.i18n.__("home"),
-                      space_type: "folder",
-                      creator: u
-                    });
-
-                    homeSpace.save((err, homeSpace) => {
-                      if (err) res.sendStatus(400);
-                      else {
-                        u.home_folder_id = homeSpace._id;
-                        u.save((err) => {
-
-                          mailer.sendMail(u.email, req.i18n.__("confirm_subject"), req.i18n.__("confirm_body"), {
-                            action: {
-                              link: config.endpoint + "/confirm/" + u.confirmation_token,
-                              name: req.i18n.__("confirm_action")
-                            }
-                          });
-
-                          if (err) res.status(400).json(err);
-                          else {
-                            res.status(201).json({});
-                          }
-                        });
-                      }
-                    });
-                  }
-                });
-              });
-            });
-          });
-        };
-
-        User.find({email: email}, (function (err, users) {
-          if (err) {
-            res.status(400).json({"error":"password_confirmation"});
-          } else {
-
-            if (users.length === 0) {
-              var domain = email.slice(email.lastIndexOf('@')+1);
-
-              Domain.findOne({domain: domain}, function(err, domain) {
-                if(domain){
-                  if(domain.edu) {
-                    createUser();
-                  } else {
-                    res.status(400).json({"error":"domain_blocked"});
-                  }
-                } else {
-                  createUser();
-                }
-              });
-            } else {
-              res.status(400).json({"error":"user_email_already_used"});
-            }
-          }
-        })); 
-      } else {
-        res.status(400).json({"error":"email_invalid"});
-      }    
-    } else {
-      res.status(400).json({"error":"password_confirmation"});
-    }
-  } else {
+  if (!req.body["email"] || !req.body["password"]) {
     res.status(400).json({"error":"email or password missing"});
+    return;
   }
-});
+  
+  var email = req.body["email"].toLowerCase();
+  var nickname = req.body["nickname"];
+  var password = req.body["password"];
+  var password_confirmation = req.body["password_confirmation"];
 
-router.get('/oauth2callback/url', function(req, res) {
-  var google = require('googleapis');
-  var OAuth2 = google.auth.OAuth2;
+  if (password_confirmation != password) {
+    res.status(400).json({"error":"password_confirmation"});
+    return;
+  }
+  
+  if (!validator.isEmail(email)) {
+    res.status(400).json({"error":"email_invalid"});
+    return;
+  }
+  
+  var createUser = function() {
+    bcrypt.genSalt(10, function(err, salt) {
+      bcrypt.hash(password, salt, function(err, hash) {
+        crypto.randomBytes(16, function(ex, buf) {
+          var token = buf.toString('hex');
 
-  var oauth2Client = new OAuth2(
-    config.google_access,
-    config.google_secret,
-    config.endpoint + "/login"
-  );
+          var u = {
+            _id: uuidv4(),
+            email: email,
+            account_type: "email",
+            nickname: nickname,
+            password_hash: hash,
+            prefs_language: req.i18n.locale,
+            confirmation_token: token
+          };
 
-  var url = oauth2Client.generateAuthUrl({
-    access_type: 'online',
-    scope: "email"
-  });
+          db.User.create(u)
+            .error(err => {
+              res.sendStatus(400);
+            })
+            .then(u => {
+              console.log("!!! created user:", u);
+              var homeSpace = {
+                _id: uuidv4(),
+                name: req.i18n.__("home"),
+                space_type: "folder",
+                creator_id: u._id
+              };
 
-  res.status(200).json({"url":url});
-});
-
-router.get('/loginorsignupviagoogle', function(req, res) {
-  var google = require('googleapis');
-  var OAuth2 = google.auth.OAuth2;
-  var plus = google.plus('v1');
-
-  var oauth2Client = new OAuth2(
-    config.google_access,
-    config.google_secret,
-    config.endpoint + "/login"
-  );
-
-  var loginUser = function(user, cb) {
-    crypo.randomBytes(48, function(ex, buf) {
-      var token = buf.toString('hex');
-      var session = {
-        token: token,
-        created_at: new Date()
-      };
-      if(!user.sessions)
-        user.sessions = [];
-      user.sessions.push(session);
-      user.save(function(err, user) {
-        cb(session);
+              db.Space.create(homeSpace)
+                .error(err => {
+                  res.sendStatus(400);
+                })
+                .then(homeSpace => {
+                  u.home_folder_id = homeSpace._id;
+                  u.save()
+                    .then(() => {
+                      res.status(201).json({});
+                      
+                      mailer.sendMail(u.email, req.i18n.__("confirm_subject"), req.i18n.__("confirm_body"), {
+                        action: {
+                          link: config.endpoint + "/confirm/" + u.confirmation_token,
+                          name: req.i18n.__("confirm_action")
+                        }
+                      });
+                    })
+                    .error(err => {
+                      res.status(400).json(err);
+                    });
+                })
+            });
+        });
       });
     });
   };
 
-  var code = req.query.code;
-  oauth2Client.getToken(code, function(err, tokens) {
-
-    if (err) res.status(400).json(err);
-    else {
-      var apiUrl = "https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=" + tokens.access_token;
-      
-      var finalizeLogin = function(session){
-        res.cookie('sdsession', session.token, { httpOnly: true });
-        res.status(201).json(session);
-      };
-
-      request.get(apiUrl, function(error, response, body) {
-        if (error) res.status(400).json(error);
-        else {
-          const data = JSON.parse(body);
-          const email = data.email;
-          const name = data.name;
-
-          User.findOne({email: email}, function (err, user) {
-            if (user) {
-              // login new google user
-              if (user.account_type == "google") {
-                // just login
-                loginUser(user, (session) => {
-                  finalizeLogin(session);
-                });
-              } else {
-                res.status(400).json({"error":"user_email_already_used"});
-              }
-            } else {
-              const u = new User({
-                email: email,
-                account_type: "google",
-                nickname: name,
-                avatar_thumb_uri: body.picture,
-                preferences: {
-                  language: req.i18n.locale
-                },
-                confirmed_at: new Date()
-              });
-
-              u.save(function (err) {
-                if (err) res.status(400).json(err);
-                else {
-                  var homeSpace = new Space({
-                    name: req.i18n.__("home"),
-                    space_type: "folder",
-                    creator: u
-                  });
-
-                  homeSpace.save(function(err, homeSpace) {
-                    if (err) res.status(400).json(err);
-                    else {
-                      u.home_folder_id = homeSpace._id;
-                      u.save(function(err){
-                        if (err) res.sendStatus(400);
-                        else {
-
-                          mailer.sendMail(u.email, req.i18n.__("welcome_subject"), req.i18n.__("welcome_body"), {});
-                          loginUser(u, function(session) {
-                            finalizeLogin(session);
-                          });
-                        }
-                      });
-                    }
-                  });
-                }
-              });
-            }
-          });
-        }
-      });
-    }
-  });
+  console.log("!!! hello !!!");
+  
+  db.User.findAll({where: {email: email}})
+    .then(users => {
+      if (users.length == 0) {
+        //var domain = email.slice(email.lastIndexOf('@')+1);
+        createUser();
+      } else {
+        res.status(400).json({"error":"user_email_already_used"});
+      }
+    })
 });
 
-router.get('/ ', function(req, res, next) {
+router.get('/current', function(req, res, next) {
   if (req.user) {
-    console.log(req.user.team);
     res.status(200).json(req.user);
   } else {
     res.status(401).json({"error":"user_not_found"});
@@ -406,7 +275,7 @@ router.post('/password_reset_requests', (req, res, next) => {
     } else {
       if (user) {
         if(user.account_type == "email") {
-          crypo.randomBytes(16, (ex, buf) => {
+          crypto.randomBytes(16, (ex, buf) => {
             user.password_reset_token = buf.toString('hex');
             user.save((err, updatedUser) => {
               if (err) res.status(400).json(err);

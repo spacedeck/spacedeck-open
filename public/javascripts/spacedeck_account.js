@@ -36,13 +36,11 @@ SpacedeckAccount = {
 
     save_user_language: function(lang) {
       localStorage.lang = lang;
-      if (this.user.preferences) {
-        this.user.preferences.language = lang;
-        this.save_user(function() {
-          window._spacedeck_location_change = true;
-          location.href="/spaces";
-        }.bind(this));
-      }
+      this.user.prefs_language = lang;
+      this.save_user(function() {
+        window._spacedeck_location_change = true;
+        location.href="/spaces";
+      }.bind(this));
     },
 
     save_user: function(on_success) {

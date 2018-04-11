@@ -1,6 +1,6 @@
 "use strict";
 var config = require('config');
-require('../../models/schema');
+require('../../models/db');
 
 var redis = require('../../helpers/redis');
 var mailer = require('../../helpers/mailer');

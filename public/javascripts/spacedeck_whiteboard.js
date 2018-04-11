@@ -331,7 +331,7 @@ function setup_whiteboard_directives() {
       var $scope = this.vm.$root;
 
       return _.filter($scope.active_space_artifacts, function(a) {
-        return this.rects_intersecting(a.board, rect);
+        return this.rects_intersecting(a, rect);
       }.bind(this));
     },
 
@@ -439,15 +439,15 @@ function setup_whiteboard_directives() {
 
         dists = $scope.unselected_artifacts().map(function(a){
 
-          var r  = this.rect_to_points(a.board);
+          var r  = this.rect_to_points(a);
 
           var xd1 = Math.abs(r[0].x-x);
           var xd2 = Math.abs(r[1].x-x);
-          var xd3 = Math.abs(r[0].x+a.board.w/2 - x);
+          var xd3 = Math.abs(r[0].x+a.w/2 - x);
 
           var yd1 = Math.abs(r[0].y-y);
           var yd2 = Math.abs(r[2].y-y);
-          var yd3 = Math.abs(r[0].y+a.board.h/2 - y);
+          var yd3 = Math.abs(r[0].y+a.h/2 - y);
 
           if (!snap_middle) {
             if (xd2<xd1) {
@@ -469,10 +469,10 @@ function setup_whiteboard_directives() {
 
           if (snap_middle) {
             var xd = xd3;
-            var sx = r[0].x+a.board.w/2;
+            var sx = r[0].x+a.w/2;
 
             var yd = yd3;
-            var sy = r[0].y+a.board.h/2;
+            var sy = r[0].y+a.h/2;
           }
 
           return [[xd,sx],[yd,sy]];
@@ -531,18 +531,14 @@ function setup_whiteboard_directives() {
         mime: "x-spacedeck/vector",
         description: "",
         control_points: [{dx:0,dy:0}],
-        board: {
-          x: point.x,
-          y: point.y,
-          z: z,
-          w: 64,
-          h: 64
-        },
-        style: {
-          stroke_color: "#000000",
-          stroke: 2,
-          shape: "scribble"
-        }
+        x: point.x,
+        y: point.y,
+        z: z,
+        w: 64,
+        h: 64,
+        stroke_color: "#000000",
+        stroke: 2,
+        shape: "scribble"
       };
 
       $scope.save_artifact(a, function(saved_a) {
@@ -572,18 +568,14 @@ function setup_whiteboard_directives() {
         mime: "x-spacedeck/vector",
         description: "",
         control_points: [{dx:0,dy:0},{dx:0,dy:0},{dx:0,dy:0}],
-        board: {
-          x: point.x,
-          y: point.y,
-          z: z,
-          w: 64,
-          h: 64
-        },
-        style: {
-          stroke_color: "#000000",
-          stroke: 2,
-          shape: "arrow"
-        }
+        x: point.x,
+        y: point.y,
+        z: z,
+        w: 64,
+        h: 64,
+        stroke_color: "#000000",
+        stroke: 2,
+        shape: "arrow"
       };
 
       $scope.save_artifact(a, function(saved_a) {
@@ -612,18 +604,14 @@ function setup_whiteboard_directives() {
         mime: "x-spacedeck/vector",
         description: "",
         control_points: [{dx:0,dy:0},{dx:0,dy:0}],
-        board: {
-          x: point.x,
-          y: point.y,
-          z: z,
-          w: 64,
-          h: 64
-        },
-        style: {
-          stroke_color: "#000000",
-          stroke: 2,
-          shape: "line"
-        }
+        x: point.x,
+        y: point.y,
+        z: z,
+        w: 64,
+        h: 64,
+        stroke_color: "#000000",
+        stroke: 2,
+        shape: "line"
       };
 
       $scope.save_artifact(a, function(saved_a) {
@@ -675,11 +663,11 @@ function setup_whiteboard_directives() {
 
           if (_.include(["text","placeholder"],$scope.artifact_major_type(ars[i]))) {
             // some types of artifact need a minimum size
-            if (ars[i].board.w<10) {
-              ars[i].board.w = 10;
+            if (ars[i].w<10) {
+              ars[i].w = 10;
             }
-            if (ars[i].board.h<10) {
-              ars[i].board.h = 10;
+            if (ars[i].h<10) {
+              ars[i].h = 10;
             }
           }
 
@@ -827,10 +815,8 @@ function setup_whiteboard_directives() {
 
           if (old_a) {
             return {
-              board: _.extend(a.board, {
-                x: old_a.board.x + dx - snap_dx,
-                y: old_a.board.y + dy - snap_dy
-              })
+              x: old_a.x + dx - snap_dx,
+              y: old_a.y + dy - snap_dy
             };
           } else {
             // deleted?
@@ -865,26 +851,24 @@ function setup_whiteboard_directives() {
 
         var scale_x = lead_x ? (moved_x)/lead_x : 1;
         var scale_y = lead_y ? (moved_y)/lead_y : 1;
-        if ($scope.transform_lock) scale_y = scale_x;
+        if (!$scope.transform_lock) scale_y = scale_x;
 
         $scope.update_selected_artifacts(function(a) {
           var old_a = $scope.find_artifact_before_transaction(a);
 
-          var x1 = origin_x + ((old_a.board.x - origin_x) * scale_x);
-          var y1 = origin_y + ((old_a.board.y - origin_y) * scale_y);
-          var x2 = origin_x + (((old_a.board.x + old_a.board.w) - origin_x) * scale_x);
-          var y2 = origin_y + (((old_a.board.y + old_a.board.h) - origin_y) * scale_y);
+          var x1 = origin_x + ((old_a.x - origin_x) * scale_x);
+          var y1 = origin_y + ((old_a.y - origin_y) * scale_y);
+          var x2 = origin_x + (((old_a.x + old_a.w) - origin_x) * scale_x);
+          var y2 = origin_y + (((old_a.y + old_a.h) - origin_y) * scale_y);
 
           if (x1>x2) { var t = x1; x1 = x2; x2 = t; }
           if (y1>y2) { var t = y1; y1 = y2; y2 = t; }
 
           return {
-            board: _.extend(a.board, {
-              x: x1,
-              y: y1,
-              w: x2 - x1,
-              h: y2 - y1
-            })
+            x: x1,
+            y: y1,
+            w: x2 - x1,
+            h: y2 - y1
           };
         }.bind(this));
 
@@ -902,18 +886,17 @@ function setup_whiteboard_directives() {
           var old_a = $scope.find_artifact_before_transaction(a);
 
           var control_points = _.cloneDeep(old_a.control_points);
-          var board = _.clone(old_a.board);
           var cp = control_points[$scope.selected_control_point_idx];
 
-          var snapped = _this.snap_point(board.x+cp.dx+dx, board.y+cp.dy+dy);
-          dx = snapped.snapx[1]-(board.x+cp.dx);
-          dy = snapped.snapy[1]-(board.y+cp.dy);
+          var snapped = _this.snap_point(old_a.x+cp.dx+dx, old_a.y+cp.dy+dy);
+          dx = snapped.snapx[1]-(old_a.x+cp.dx);
+          dy = snapped.snapy[1]-(old_a.y+cp.dy);
 
           cp.dx += dx;
           cp.dy += dy;
 
           // special case for arrow's 3rd point
-          if (a.style.shape == "arrow" && $scope.selected_control_point_idx!=2) {
+          if (a.shape == "arrow" && $scope.selected_control_point_idx!=2) {
             /*control_points[2].dx += dx/2;
             control_points[2].dy += dy/2; */
 
@@ -921,7 +904,7 @@ function setup_whiteboard_directives() {
             control_points[2].dy = (control_points[0].dy+control_points[1].dy)/2;
           }
 
-          return _this.normalize_control_points(control_points, board);
+          return _this.normalize_control_points(control_points, old_a);
         });
 
       } else if (this.mouse_state == "scribble") {
@@ -930,16 +913,14 @@ function setup_whiteboard_directives() {
           var old_a = a;
 
           var control_points = _.cloneDeep(old_a.control_points);
-          var board = _.clone(old_a.board);
-
           var offset = this.offset_point_in_wrapper({x:cursor.x,y:cursor.y});
 
           control_points.push({
-            dx: offset.x-board.x,
-            dy: offset.y-board.y
+            dx: offset.x-old_a.x,
+            dy: offset.y-old_a.y
           });
 
-          return this.normalize_control_points(simplify_scribble_points(control_points), board);
+          return this.normalize_control_points(simplify_scribble_points(control_points), old_a);
         }.bind(this));
 
         var arts = $scope.selected_artifacts();
@@ -959,7 +940,7 @@ function setup_whiteboard_directives() {
       }
     },
 
-    normalize_control_points: function(control_points, board) {
+    normalize_control_points: function(control_points, artifact) {
       var x1 = _.min(control_points,"dx").dx;
       var y1 = _.min(control_points,"dy").dy;
       var x2 = _.max(control_points,"dx").dx;
@@ -981,19 +962,15 @@ function setup_whiteboard_directives() {
       var bshiftx = 0;
       var bshifty = 0;
 
-      if (board.w < 0) bshiftx = -board.w;
-      if (board.h < 0) bshifty = -board.h;
-
-      var shifted_board = {
-        x: board.x + bshiftx - shiftx,
-        y: board.y + bshifty - shifty,
-        w: w,
-        h: h,
-        z: board.z
-      };
+      if (artifact.w < 0) bshiftx = -artifact.w;
+      if (artifact.h < 0) bshifty = -artifact.h;
 
       return {
-        board: shifted_board,
+        x: artifact.x + bshiftx - shiftx,
+        y: artifact.y + bshifty - shifty,
+        w: w,
+        h: h,
+        z: artifact.z,
         control_points: shifted_cps
       };
     }

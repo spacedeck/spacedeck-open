@@ -1,25 +1,19 @@
 "use strict";
 var config = require('config');
-require('../../models/schema');
+const db = require('../../models/db');
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
 var redis = require('../../helpers/redis');
 var mailer = require('../../helpers/mailer');
-var uploader = require('../../helpers/uploader');
-var space_render = require('../../helpers/space-render');
-var phantom = require('../../helpers/phantom');
 
 var async = require('async');
 var fs = require('fs');
 var _ = require("underscore");
-var mongoose = require("mongoose");
-var archiver = require('archiver');
 var request = require('request');
 var url = require("url");
 var path = require("path");
-var crypto = require('crypto');
-var qr = require('qr-image');
 var glob = require('glob');
-var gm = require('gm');
 
 var express = require('express');
 var router = express.Router({mergeParams: true});
@@ -46,12 +40,12 @@ var roleMapping = {
 }
 
 router.get('/', function(req, res, next) {
-  Membership
-    .find({
-      space: req.space._id
-    })
-    .populate("user")
-    .exec(function(err, memberships) {
+  db.Membership
+    .findAll({where: {
+      space_id: req.space._id
+    }})
+    //.populate("user")
+    .then(memberships => {
       res.status(200).json(memberships);
     });
 });

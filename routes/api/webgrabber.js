@@ -1,7 +1,7 @@
 "use strict";
 
 var config = require('config');
-require('../../models/schema');
+require('../../models/db');
 
 var fs = require('fs');
 var phantom = require('node-phantom-simple');

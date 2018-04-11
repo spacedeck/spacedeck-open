@@ -5,7 +5,7 @@ const config = require('config')
 const fs = require('fs')
 const path = require('path')
 
-require('../models/schema')
+require('../models/db')
 
 module.exports = {
   importZIP: function(user, zipPath) {

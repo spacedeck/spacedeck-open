@@ -198,7 +198,7 @@
 <div id="space" v-cloak
      v-if="active_view == 'space' && active_space_loaded"
      class="section board active mouse-{{mouse_state}} tool-{{active_tool}}"
-     v-bind:style="{'background-color': active_space.advanced.background_color}"
+     v-bind:style="{'background-color': active_space.background_color}"
      v-sd-droppable="handle_data_drop;active_space"
      v-sd-whiteboard
      v-on:scroll="handle_scroll"
@@ -206,16 +206,16 @@
 
   <div id="space-clipboard" style="position:fixed;top:0;left:0;z-index:0;opacity:0;background-color:white"><textarea v-model="selected_artifacts_json" cols="2" rows="2" id="clipboard-ta" class="mousetrap"></textarea></div>
 
-  <div class="space-bounds" v-bind:style="{width: active_space.advanced.width*bounds_zoom + 'px', height: active_space.advanced.height*bounds_zoom + 'px', 'background-color': active_space.advanced.background_color}"></div>
+  <div class="space-bounds" v-bind:style="{width: active_space.width*bounds_zoom + 'px', height: active_space.height*bounds_zoom + 'px', 'background-color': active_space.background_color}"></div>
 
   <div class="wrapper"
        v-bind:style="{
                 transform: 'scale('+viewport_zoom+')',
                 'transform-origin': '0 0',
-                width: active_space.advanced.width + 'px',
-                height: active_space.advanced.height + 'px',
-                'background-image': (active_space.advanced.background_uri)?'url(' + active_space.advanced.background_uri + ')':'',
-                'background-color': ''+active_space.advanced.background_color,
+                width: active_space.width + 'px',
+                height: active_space.height + 'px',
+                'background-image': (active_space.background_uri)?'url(' + active_space.background_uri + ')':'',
+                'background-color': ''+active_space.background_color,
                 'margin-left': bounds_margin_horiz + 'px',
                 'margin-top': bounds_margin_vert + 'px'}" >
 
@@ -331,7 +331,7 @@
             <source v-bind:src="a.payload_uri" v-bind:type="a.mime" v-if="a.payload_uri"/>
           </audio>
 
-          <div class="timeline" v-show="a.board.h>=64 && a.board.w>=170" v-bind:style="{'background-image': 'url(' + a.payload_thumbnail_web_uri +')'}">
+          <div class="timeline" v-show="a.h>=64 && a.w>=170" v-bind:style="{'background-image': 'url(' + a.payload_thumbnail_web_uri +')'}">
             <div class="tl-current-time" v-bind:style="{width: a.player_view.current_time_float*100 + '%'}"></div>
             <div class="tl-inpoint" v-bind:style="{left: a.player_view.inpoint_float*100 + '%'}" v-if="a.player_view.inpoint_float>0.0"></div>
             <div class="tl-outpoint" v-bind:style="{left: a.player_view.outpoint_float*100 + '%'}"></div>
@@ -352,13 +352,13 @@
               <span class="icon icon-controls-stop"></span>
             </span>
 
-            <span class="tl-title" v-show="a.board.w>=400">{{a.view.filename}}</span>
+            <span class="tl-title" v-show="a.w>=400">{{a.view.filename}}</span>
             <span class="tl-times" class="btn-group">
               <span class="btn btn-md btn-transparent no-p">{{a.player_view.current_time_string}}</span>
-              <span class="btn btn-md btn-transparent no-p" v-show="a.board.w>=170"> / {{a.player_view.total_time_string}}</span>
+              <span class="btn btn-md btn-transparent no-p" v-show="a.w>=170"> / {{a.player_view.total_time_string}}</span>
             </span>
 
-            <span v-show="logged_in && a.board.w>=310">
+            <span v-show="logged_in && a.w>=310">
               <a class="btn btn-xs btn-round btn-icon set-inpoint" title="Set Inpoint at Playhead">
                 <span class="icon icon-edge-left"></span>
               </a>
@@ -464,7 +464,7 @@
 
 <div v-if="active_space_loaded" v-cloak>
   <div id="minimap"
-       v-bind:style="{width: ''+(active_space.advanced.width/minimap_scale)+'px', height: ''+(active_space.advanced.height/minimap_scale)+'px', bottom: '66px', right: '20px'}"
+       v-bind:style="{width: ''+(active_space.width/minimap_scale)+'px', height: ''+(active_space.height/minimap_scale)+'px', bottom: '66px', right: '20px'}"
        v-if="active_space"
         v-on:mousedown="handle_minimap_mousedown($event)"
         v-on:touchstart="handle_minimap_mousedown($event)"
@@ -473,7 +473,7 @@
         v-on:mouseleave="handle_minimap_mouseup($event)"
         v-on:touchend="handle_minimap_mouseup($event)"
         v-on:mouseup="handle_minimap_mouseup($event)">
-    <div v-for="a in active_space_artifacts" v-bind:style="{left: ''+(a.board.x/minimap_scale)+ 'px',  top: ''+(a.board.y/minimap_scale) + 'px', width: ''+(a.board.w/minimap_scale)+ 'px', height: ''+(a.board.h/minimap_scale) + 'px'}"></div>
+    <div v-for="a in active_space_artifacts" v-bind:style="{left: ''+(a.x/minimap_scale)+ 'px',  top: ''+(a.y/minimap_scale) + 'px', width: ''+(a.w/minimap_scale)+ 'px', height: ''+(a.h/minimap_scale) + 'px'}"></div>
     <div class="window" v-bind:style="{left: ''+(scroll_left/minimap_scale) + 'px', top: ''+(scroll_top/minimap_scale)+ 'px', width: ''+(window_width/minimap_scale)+ 'px', height: ''+(window_height/minimap_scale) + 'px'}"></div>
 
   </div>

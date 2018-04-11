@@ -1,20 +1,16 @@
 "use strict";
 
 var config = require('config');
-require('../../models/schema');
+require('../../models/db');
 
 var fs = require('fs');
 var _ = require("underscore");
-var mongoose = require("mongoose");
 var async = require('async');
-var archiver = require('archiver');
 var request = require('request');
 var url = require("url");
 var path = require("path");
 var crypto = require('crypto');
-var qr = require('qr-image');
 var glob = require('glob');
-var gm = require('gm');
 
 var express = require('express');
 var router = express.Router();

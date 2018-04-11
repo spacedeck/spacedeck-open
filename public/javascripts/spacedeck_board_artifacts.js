@@ -61,16 +61,16 @@ var SpacedeckBoardArtifacts = {
   },
 
   artifact_link: function(a) {
-    if (a.meta && a.meta.link_uri) {
-      return a.meta.link_uri;
+    if (a.link_uri) {
+      return a.link_uri;
     } else {
       return "";
     }
   },
 
   artifact_link_caption: function(a) {
-    if (a.meta && a.meta.link_uri) {
-      var parts = a.meta.link_uri.split("/");
+    if (a.link_uri) {
+      var parts = a.link_uri.split("/");
       // scheme://domain.foo/...
       // 0      1 2
       if (parts.length>2) {
@@ -102,11 +102,9 @@ var SpacedeckBoardArtifacts = {
     if (this.artifact_is_selected(a) && this.editing_artifact_id!=a._id) clzs.push("selected");
     if (!a._id) clzs.push("creating");
 
-    if (a.style) {
-      clzs.push("align-"+a.style.align);
-      clzs.push("align-"+a.style.valign);
-    }
-
+    if (a.align) clzs.push("align-"+a.align);
+    if (a.valign) clzs.push("align-"+a.valign);
+    
     clzs.push("state-"+a.state);
 
     if (this.artifact_is_text_blank(a)) {
@@ -123,56 +121,56 @@ var SpacedeckBoardArtifacts = {
   artifact_inner_style: function(a) {
     var styles = [];
 
-    if (a.style) {
+    //if (a.style) {
 
-      var svg_style = ((a.mime.match("vector") || a.mime.match("shape")) && a.style.shape!="square");
+      var svg_style = ((a.mime.match("vector") || a.mime.match("shape")) && a.shape!="square");
 
       if (!svg_style) {
-        if (a.style.stroke) {
-          styles.push("border-width:"+a.style.stroke+"px");
-          styles.push("border-style:"+(a.style.stroke_style||"solid"));
+        if (a.stroke) {
+          styles.push("border-width:"+a.stroke+"px");
+          styles.push("border-style:"+(a.stroke_style||"solid"));
         }
-        if (a.style.stroke_color) {
-          styles.push("border-color:"+a.style.stroke_color);
+        if (a.stroke_color) {
+          styles.push("border-color:"+a.stroke_color);
         }
-        if (a.style.border_radius) {
-          styles.push("border-radius:"+a.style.border_radius+"px");
+        if (a.border_radius) {
+          styles.push("border-radius:"+a.border_radius+"px");
         }
       }
 
-      if (a.style.fill_color && !svg_style) {
-        styles.push("background-color:"+a.style.fill_color);
+      if (a.fill_color && !svg_style) {
+        styles.push("background-color:"+a.fill_color);
       }
-      if (a.style.text_color) {
-        styles.push("color:"+a.style.text_color);
+      if (a.text_color) {
+        styles.push("color:"+a.text_color);
       }
 
       var filters = [];
 
-      if (!isNaN(a.style.brightness) && a.style.brightness != 100) {
-        filters.push("brightness("+a.style.brightness+"%)");
+      if (!isNaN(a.brightness) && a.brightness != 100) {
+        filters.push("brightness("+a.brightness+"%)");
       }
-      if (!isNaN(a.style.contrast) && a.style.contrast != 100) {
-        filters.push("contrast("+a.style.contrast+"%)");
+      if (!isNaN(a.contrast) && a.contrast != 100) {
+        filters.push("contrast("+a.contrast+"%)");
       }
-      if (!isNaN(a.style.opacity) && a.style.opacity != 100) {
-        filters.push("opacity("+a.style.opacity+"%)");
+      if (!isNaN(a.opacity) && a.opacity != 100) {
+        filters.push("opacity("+a.opacity+"%)");
       }
-      if (!isNaN(a.style.hue) && a.style.hue) {
-        filters.push("hue-rotate("+a.style.hue+"deg)");
+      if (!isNaN(a.hue) && a.hue) {
+        filters.push("hue-rotate("+a.hue+"deg)");
       }
-      if (!isNaN(a.style.saturation) && a.style.saturation != 100) {
-        filters.push("saturate("+a.style.saturation+"%)");
+      if (!isNaN(a.saturation) && a.saturation != 100) {
+        filters.push("saturate("+a.saturation+"%)");
       }
-      if (!isNaN(a.style.blur) && a.style.blur) {
-        filters.push("blur("+a.style.blur+"px)");
+      if (!isNaN(a.blur) && a.blur) {
+        filters.push("blur("+a.blur+"px)");
       }
 
       if (filters.length) {
         styles.push("-webkit-filter:"+filters.join(" "));
         styles.push("filter:"+filters.join(" "));
       }
-    }
+    //}
 
     return styles.join(";");
   },
@@ -180,12 +178,10 @@ var SpacedeckBoardArtifacts = {
   artifact_text_cell_style: function(a, for_text_editor) {
     var styles = [];
 
-    if (a.style) {
-      if (a.style.padding_left)   styles.push("padding-left:"+a.style.padding_left+"px");
-      if (a.style.padding_right)  styles.push("padding-right:"+a.style.padding_right+"px");
-      if (a.style.padding_top)    styles.push("padding-top:"+a.style.padding_top+"px");
-      if (a.style.padding_bottom) styles.push("padding-bottom:"+a.style.padding_bottom+"px");
-    }
+    if (a.padding_left)   styles.push("padding-left:"+a.padding_left+"px");
+    if (a.padding_right)  styles.push("padding-right:"+a.padding_right+"px");
+    if (a.padding_top)    styles.push("padding-top:"+a.padding_top+"px");
+    if (a.padding_bottom) styles.push("padding-bottom:"+a.padding_bottom+"px");
 
     return styles.join(";");
   },
@@ -194,26 +190,22 @@ var SpacedeckBoardArtifacts = {
     var styles = [];
     var z = 0;
 
-    if (a.board) {
-      z = a.board.z;
-      if (z<0) z=0; // fix negative z-index
-      
-      styles = [
-        "left:"  +a.board.x+"px",
-        "top:"   +a.board.y+"px",
-        "width:" +a.board.w+"px",
-        "height:"+a.board.h+"px",
-        "z-index:"+z
-      ];
-    }
+    z = a.z;
+    if (z<0) z=0; // fix negative z-index
+    
+    styles = [
+      "left:"  +a.x+"px",
+      "top:"   +a.y+"px",
+      "width:" +a.w+"px",
+      "height:"+a.h+"px",
+      "z-index:"+z
+    ];
 
-    if (a.style) {
-      if (a.style.margin_left)   styles.push("margin-left:"+a.style.margin_left+"px");
-      if (a.style.margin_right)  styles.push("margin-right:"+a.style.margin_right+"px");
-      if (a.style.margin_top)    styles.push("margin-top:"+a.style.margin_top+"px");
-      if (a.style.margin_bottom) styles.push("margin-bottom:"+a.style.margin_bottom+"px");
-    }
-
+    if (a.margin_left)   styles.push("margin-left:"+a.margin_left+"px");
+    if (a.margin_right)  styles.push("margin-right:"+a.margin_right+"px");
+    if (a.margin_top)    styles.push("margin-top:"+a.margin_top+"px");
+    if (a.margin_bottom) styles.push("margin-bottom:"+a.margin_bottom+"px");
+    
     // FIXME: via class logic?
     if (a.mime.match("vector")) {
       styles.push("overflow:visible");
@@ -241,7 +233,7 @@ var SpacedeckBoardArtifacts = {
 
   artifact_thumbnail_uri: function(a) {
     if (a.payload_thumbnail_big_uri && a.board) {
-      if (a.board.w>800) {
+      if (a.w>800) {
         return a.payload_thumbnail_big_uri;
       }
     }
@@ -255,35 +247,35 @@ var SpacedeckBoardArtifacts = {
     var type = parts[0];
     var provider = parts[1];
 
-    if (!a.meta || !a.meta.link_uri) {
+    if (!a.link_uri) {
       console.log("missing meta / link_uri: ",a);
       console.log("type/provider: ",type,provider);
       return ("missing metadata: "+a._id);
     }
 
     if (provider=="youtube") {
-      var vid = a.meta.link_uri.match(/(v=|\/)([a-zA-Z0-9\-_]{11})/);
+      var vid = a.link_uri.match(/(v=|\/)([a-zA-Z0-9\-_]{11})/);
       if (vid && vid.length>2) {
         var uri = "https://youtube.com/embed/"+vid[2];
         return "<iframe frameborder=0 allowfullscreen src=\""+uri+"?showinfo=0&rel=0&controls=0\"></iframe>";
       } else return "Can't resolve: "+a.payload_uri;
 
     } else if (provider=="dailymotion") {
-      var match = a.meta.link_uri.match(/dailymotion.com\/video\/([^<]*)/);
+      var match = a.link_uri.match(/dailymotion.com\/video\/([^<]*)/);
       if (match && match.length>1) {
         var uri = "https://www.dailymotion.com/embed/video/"+match[1];
         return "<iframe frameborder=0 allowfullscreen src=\""+uri+"\"></iframe>";
       } else return "Can't resolve: "+a.payload_uri;
 
     } else if (provider=="vimeo") {
-      var match = a.meta.link_uri.match(/https?:\/\/(www\.)?vimeo.com\/(\d+)($|\/)/);
+      var match = a.link_uri.match(/https?:\/\/(www\.)?vimeo.com\/(\d+)($|\/)/);
       if (match) {
         var uri = "https://player.vimeo.com/video/"+match[2];
         return "<iframe frameborder=0 allowfullscreen src=\""+uri+"\"></iframe>";
       } else return "Can't resolve: "+a.payload_uri;
 
     } else if (provider=="soundcloud") {
-      return '<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url='+a.meta.link_uri.replace(":", "%3A")+'"></iframe>';
+      return '<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url='+a.link_uri.replace(":", "%3A")+'"></iframe>';
 
     } else if (provider=="spacedeck") {
 
@@ -299,8 +291,8 @@ var SpacedeckBoardArtifacts = {
 
     if (mtype != "vector" && mtype != "shape") return "";
 
-    var shape = a.style.shape || "";
-    var padding = 32 + a.style.stroke*2;
+    var shape = a.shape || "";
+    var padding = 32 + a.stroke*2;
     var path_svg;
     var fill = "";
 
@@ -310,13 +302,13 @@ var SpacedeckBoardArtifacts = {
       fill = "fill:none";
     } else {
       path_svg = render_vector_shape(a, padding);
-      fill = "fill:"+a.style.fill_color+";";
+      fill = "fill:"+a.fill_color+";";
       padding = 0;
     }
     var margin = padding;
 
-    var svg = "<svg xmlns='http://www.w3.org/2000/svg' width='"+(a.board.w+2*padding)+"' height='"+(a.board.h+2*padding)+"' ";
-    svg += "style='margin-left:"+(-margin)+"px;margin-top:"+(-margin)+"px;stroke-width:"+a.style.stroke+";stroke:"+a.style.stroke_color+";"+fill+"'>";
+    var svg = "<svg xmlns='http://www.w3.org/2000/svg' width='"+(a.w+2*padding)+"' height='"+(a.h+2*padding)+"' ";
+    svg += "style='margin-left:"+(-margin)+"px;margin-top:"+(-margin)+"px;stroke-width:"+a.stroke+";stroke:"+a.stroke_color+";"+fill+"'>";
     svg += path_svg;
     svg += "</svg>";
 
@@ -329,10 +321,10 @@ var SpacedeckBoardArtifacts = {
     if (arts.length==0) return null;
 
     r = {
-      x1: parseInt(_.min(arts.map(function(a){return a.board.x}))),
-      y1: parseInt(_.min(arts.map(function(a){return a.board.y}))),
-      x2: parseInt(_.max(arts.map(function(a){return a.board.x+a.board.w}))),
-      y2: parseInt(_.max(arts.map(function(a){return a.board.y+a.board.h})))
+      x1: parseInt(_.min(arts.map(function(a){return a.x}))),
+      y1: parseInt(_.min(arts.map(function(a){return a.y}))),
+      x2: parseInt(_.max(arts.map(function(a){return a.x+a.w}))),
+      y2: parseInt(_.max(arts.map(function(a){return a.y+a.h})))
     };
     r.x=r.x1;
     r.y=r.y1;
@@ -356,7 +348,7 @@ var SpacedeckBoardArtifacts = {
 
   artifacts_in_rect: function(rect) {
     return _.filter(this.active_space_artifacts, function(a) {
-      return this.rects_intersecting(a.board, rect);
+      return this.rects_intersecting(a, rect);
     }.bind(this));
   },
 
@@ -366,15 +358,15 @@ var SpacedeckBoardArtifacts = {
     var rect = this.artifact_selection_rect();
     var overlapping = _.filter(this.artifacts_in_rect(rect), function(a){return !this.is_selected(a)}.bind(this));
 
-    var max_z = _.max(overlapping,function(a){ return a.board.z; });
+    var max_z = _.max(overlapping,function(a){ return a.z; });
     if (max_z.board) {
-      max_z = max_z.board.z + 1;
+      max_z = max_z.z + 1;
     } else {
       max_z = 1;
     }
     
     this.update_selected_artifacts(function(a) {
-      return { board: _.extend(a.board, { z: max_z }) };
+      return { z: max_z };
     });
   },
 
@@ -384,15 +376,15 @@ var SpacedeckBoardArtifacts = {
     var rect = this.artifact_selection_rect();
     var overlapping = _.filter(this.artifacts_in_rect(rect), function(a){return !this.is_selected(a);}.bind(this));
 
-    var min_z = _.min(overlapping,function(a){ return (a.board?a.board.z:0); });
+    var min_z = _.min(overlapping,function(a){ return a.z; });
     if (min_z.board) {
-      min_z = min_z.board.z - 1;
+      min_z = min_z.z - 1;
     } else {
       min_z = 0;
     }
-    var my_z = _.max(this.selected_artifacts(),function(a){ (a.board?a.board.z:0); });
+    var my_z = _.max(this.selected_artifacts(),function(a){ return a.z; });
     if (my_z.board) {
-      my_z = my_z.board.z - 1;
+      my_z = my_z.z - 1;
     } else {
       my_z = 0;
     }
@@ -400,14 +392,14 @@ var SpacedeckBoardArtifacts = {
     // TODO: move all other items up in this case?
     if (min_z < 0) {
       this.update_artifacts(overlapping, function(a) {
-        return { board: _.extend(a.board, { z: (my_z + (a.board?a.board.z:0) + 1) }) };
+        return { z: (my_z + a.z + 1) };
       });
 
       return;
     }
 
     this.update_selected_artifacts(function(a) {
-      return { board: _.extend(a.board, { z: min_z }) };
+      return { z: min_z };
     });
   },
 
@@ -416,7 +408,7 @@ var SpacedeckBoardArtifacts = {
 
     var rect = this.artifact_selection_rect();
     this.update_selected_artifacts(function(a) {
-      return { board: _.extend(a.board, { x: rect.x1 }) };
+      return { x: rect.x1 };
     });
   },
 
@@ -425,7 +417,7 @@ var SpacedeckBoardArtifacts = {
 
     var rect = this.artifact_selection_rect();
     this.update_selected_artifacts(function(a) {
-      return { board: _.extend(a.board, { y: rect.y1 }) };
+      return { y: rect.y1 };
     });
   },
 
@@ -434,7 +426,7 @@ var SpacedeckBoardArtifacts = {
 
     var rect = this.artifact_selection_rect();
     this.update_selected_artifacts(function(a) {
-      return { board: _.extend(a.board, { x: rect.x2 - a.board.w }) };
+      return { x: rect.x2 - a.w };
     });
   },
 
@@ -443,7 +435,7 @@ var SpacedeckBoardArtifacts = {
 
     var rect = this.artifact_selection_rect();
     this.update_selected_artifacts(function(a) {
-      return { board: _.extend(a.board, { y: rect.y2 - a.board.h }) };
+      return { y: rect.y2 - a.h };
     });
   },
 
@@ -453,7 +445,7 @@ var SpacedeckBoardArtifacts = {
     var rect = this.artifact_selection_rect();
     var cx = rect.x1 + (rect.x2-rect.x1)/2;
     this.update_selected_artifacts(function(a) {
-      return { board: _.extend(a.board, { x: cx - a.board.w/2 }) };
+      return { x: cx - a.w/2 };
     });
   },
 
@@ -463,7 +455,7 @@ var SpacedeckBoardArtifacts = {
     var rect = this.artifact_selection_rect();
     var cy = rect.y1 + (rect.y2-rect.y1)/2;
     this.update_selected_artifacts(function(a) {
-      return { board: _.extend(a.board, { y: cy - a.board.h/2 }) };
+      return { y: cy - a.h/2 };
     });
   },
 
@@ -473,11 +465,11 @@ var SpacedeckBoardArtifacts = {
     var arts = this.selected_artifacts();
     if (arts.length<2) return;
 
-    var totalw  = _.reduce(arts, function(sum, a) { return sum + a.board.w }, 0);
+    var totalw  = _.reduce(arts, function(sum, a) { return sum + a.w }, 0);
     var avgw    = totalw / arts.length;
 
     this.update_selected_artifacts(function(a) {
-      return { board: _.extend(a.board, { w: avgw }) };
+      return { w: avgw };
     });
   },
 
@@ -487,11 +479,11 @@ var SpacedeckBoardArtifacts = {
     var arts = this.selected_artifacts();
     if (arts.length<2) return;
 
-    var totalh  = _.reduce(arts, function(sum, a) { return sum + a.board.h }, 0);
+    var totalh  = _.reduce(arts, function(sum, a) { return sum + a.h }, 0);
     var avgh    = totalh / arts.length;
 
     this.update_selected_artifacts(function(a) {
-      return { board: _.extend(a.board, { h: avgh }) };
+      return { h: avgh };
     });
   },
 
@@ -506,16 +498,16 @@ var SpacedeckBoardArtifacts = {
     var selected = this.selected_artifacts();
     if (selected.length<3) return;
 
-    var sorted = _.sortBy(selected, function(a) { return a.board.x });
-    var startx = sorted[0].board.x + sorted[0].board.w/2;
-    var stopx  = _.last(sorted).board.x + _.last(sorted).board.w/2;
+    var sorted = _.sortBy(selected, function(a) { return a.x });
+    var startx = sorted[0].x + sorted[0].w/2;
+    var stopx  = _.last(sorted).x + _.last(sorted).w/2;
     var step   = (stopx-startx)/(sorted.length-1);
 
     for (var i=1; i<sorted.length-1; i++) {
       var a = sorted[i];
-      var x = startx + step*i - a.board.w/2;
+      var x = startx + step*i - a.w/2;
       this.update_artifacts([a],function(a) {
-        return { board: _.extend(a.board, {x: x}) }
+        return { x: x }
       });
     }
   },
@@ -526,16 +518,16 @@ var SpacedeckBoardArtifacts = {
     var selected = this.selected_artifacts();
     if (selected.length<3) return;
 
-    var sorted = _.sortBy(selected, function(a) { return a.board.y });
-    var starty = sorted[0].board.y + sorted[0].board.h/2;
-    var stopy  = _.last(sorted).board.y + _.last(sorted).board.h/2;
+    var sorted = _.sortBy(selected, function(a) { return a.y });
+    var starty = sorted[0].y + sorted[0].h/2;
+    var stopy  = _.last(sorted).y + _.last(sorted).h/2;
     var step   = (stopy-starty)/(sorted.length-1);
 
     for (var i=1; i<sorted.length-1; i++) {
       var a = sorted[i];
-      var y = starty + step*i - a.board.h/2;
+      var y = starty + step*i - a.h/2;
       this.update_artifacts([a],function(a) {
-        return { board: _.extend(a.board, {y: y}) }
+        return { y: y }
       });
     }
   },
@@ -546,21 +538,21 @@ var SpacedeckBoardArtifacts = {
     var selected = this.selected_artifacts();
     if (selected.length<3) return;
 
-    var sorted  = _.sortBy(selected, function(a) { return a.board.x });
-    var startx  = sorted[0].board.x;
-    var stopx   = _.last(sorted).board.x + _.last(sorted).board.w;
+    var sorted  = _.sortBy(selected, function(a) { return a.x });
+    var startx  = sorted[0].x;
+    var stopx   = _.last(sorted).x + _.last(sorted).w;
     var range   = stopx - startx;
-    var totalw  = _.reduce(sorted, function(sum, a) { return sum + a.board.w }, 0);
+    var totalw  = _.reduce(sorted, function(sum, a) { return sum + a.w }, 0);
     var avgs    = (range - totalw) / (sorted.length-1);
-    var prevend = startx + sorted[0].board.w;
+    var prevend = startx + sorted[0].w;
 
     for (var i=1; i<sorted.length-1; i++) {
       var a = sorted[i];
       var x = prevend + avgs;
       this.update_artifacts([a],function(a) {
-        return { board: _.extend(a.board, {x: x}) }
+        return { x: x }
       });
-      prevend = x+a.board.w;
+      prevend = x+a.w;
     }
   },
 
@@ -570,21 +562,21 @@ var SpacedeckBoardArtifacts = {
     var selected = this.selected_artifacts();
     if (selected.length<3) return;
 
-    var sorted  = _.sortBy(selected, function(a) { return a.board.y });
-    var starty  = sorted[0].board.y;
-    var stopy   = _.last(sorted).board.y + _.last(sorted).board.h;
+    var sorted  = _.sortBy(selected, function(a) { return a.y });
+    var starty  = sorted[0].y;
+    var stopy   = _.last(sorted).y + _.last(sorted).h;
     var range   = stopy - starty;
-    var totalh  = _.reduce(sorted, function(sum, a) { return sum + a.board.h }, 0);
+    var totalh  = _.reduce(sorted, function(sum, a) { return sum + a.h }, 0);
     var avgs    = (range - totalh) / (sorted.length-1);
-    var prevend = starty + sorted[0].board.h;
+    var prevend = starty + sorted[0].h;
 
     for (var i=1; i<sorted.length-1; i++) {
       var a = sorted[i];
       var y = prevend + avgs;
       this.update_artifacts([a],function(a) {
-        return { board: _.extend(a.board, {y: y}) }
+        return { y: y }
       });
-      prevend = y+a.board.h;
+      prevend = y+a.h;
     }
   },
 
@@ -594,20 +586,20 @@ var SpacedeckBoardArtifacts = {
     var selected = this.selected_artifacts();
     if (selected.length<2) return;
 
-    var sorted = _.sortBy(selected, function(a) { return a.board.x+a.board.y*this.active_space.advanced.width }.bind(this));
+    var sorted = _.sortBy(selected, function(a) { return a.x+a.y*this.active_space.advanced.width }.bind(this));
 
-    var minx = sorted[0].board.x;
-    var miny = sorted[0].board.y;
+    var minx = sorted[0].x;
+    var miny = sorted[0].y;
 
-    var sorted = _.sortBy(selected, function(a) { return -Math.max(a.board.w,a.board.h) }.bind(this));
+    var sorted = _.sortBy(selected, function(a) { return -Math.max(a.w,a.h) }.bind(this));
     
     var blocks = [];
 
     for (var i=0; i<sorted.length; i++) {
       var a = sorted[i];
       blocks.push({
-        w: a.board.w,
-        h: a.board.h,
+        w: a.w,
+        h: a.h,
         a: a
       });
     }
@@ -620,10 +612,10 @@ var SpacedeckBoardArtifacts = {
       if (block.fit) {
         var a = block.a;
         this.update_artifacts([a],function(a) {
-          return { board: _.extend(a.board, {
+          return {
             x: minx+block.fit.x,
             y: miny+block.fit.y
-          }) }
+          }
         });
       }
     }

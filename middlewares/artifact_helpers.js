@@ -1,22 +1,20 @@
 'use strict';
+const db = require('../models/db');
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
-require('../models/schema');
 var config = require('config');
 
 module.exports = (req, res, next) => {
   var artifactId = req.params.artifact_id;
-  Artifact.findOne({
+  db.Artifact.findOne({where: {
     "_id": artifactId
-  }, (err, artifact) => {
-    if (err) {
-      res.status(400).json(err);
+  }}).then(artifact => {
+    if (artifact) {
+      req['artifact'] = artifact;
+      next();
     } else {
-      if (artifact) {
-        req['artifact'] = artifact;
-        next();
-      } else {
-        res.sendStatus(404);
-      }
+      res.sendStatus(404);
     }
   });
 };

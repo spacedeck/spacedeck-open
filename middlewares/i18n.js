@@ -1,6 +1,6 @@
 'use strict';
 
-require('../models/schema');
+require('../models/db');
 var config = require('config');
 
 module.exports = (req, res, next) => {

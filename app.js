@@ -1,6 +1,6 @@
 "use strict";
 
-require('./models/schema');
+const db = require('./models/db.js');
 require("log-timestamp");
 
 const config = require('config');
@@ -16,7 +16,7 @@ const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 
-const mongoose = require('mongoose');
+//const mongoose = require('mongoose');
 
 const swig = require('swig');
 const i18n = require('i18n-2');
@@ -81,33 +81,30 @@ app.use(helmet.noSniff())
 
 // CUSTOM MIDDLEWARES
 
-app.use(require("./middlewares/templates"));
-app.use(require("./middlewares/error_helpers"));
-app.use(require("./middlewares/setuser"));
-app.use(require("./middlewares/cors"));
-app.use(require("./middlewares/i18n"));
+//app.use(require("./middlewares/error_helpers"));
+app.use(require("./middlewares/session"));
+//app.use(require("./middlewares/cors"));
+//app.use(require("./middlewares/i18n"));
 app.use("/api", require("./middlewares/api_helpers"));
 app.use('/api/spaces/:id', require("./middlewares/space_helpers"));
 app.use('/api/spaces/:id/artifacts/:artifact_id', require("./middlewares/artifact_helpers"));
-app.use('/api/teams', require("./middlewares/team_helpers"));
 
 // REAL ROUTES
 
 app.use('/api/users', require('./routes/api/users'));
-app.use('/api/memberships', require('./routes/api/memberships'));
+//app.use('/api/memberships', require('./routes/api/memberships'));
 
 const spaceRouter = require('./routes/api/spaces');
 app.use('/api/spaces', spaceRouter);
 
 spaceRouter.use('/:id/artifacts', require('./routes/api/space_artifacts'));
 spaceRouter.use('/:id/memberships', require('./routes/api/space_memberships'));
-spaceRouter.use('/:id/messages', require('./routes/api/space_messages'));
+//spaceRouter.use('/:id/messages', require('./routes/api/space_messages'));
 spaceRouter.use('/:id/digest', require('./routes/api/space_digest'));
-spaceRouter.use('/:id', require('./routes/api/space_exports'));
+//spaceRouter.use('/:id', require('./routes/api/space_exports'));
 
 app.use('/api/sessions', require('./routes/api/sessions'));
-app.use('/api/teams', require('./routes/api/teams'));
-app.use('/api/webgrabber', require('./routes/api/webgrabber'));
+//app.use('/api/webgrabber', require('./routes/api/webgrabber'));
 app.use('/', require('./routes/root'));
 
 if (config.get('storage_local_path')) {
@@ -117,7 +114,7 @@ if (config.get('storage_local_path')) {
 }
 
 // catch 404 and forward to error handler
-app.use(require('./middlewares/404'));
+//app.use(require('./middlewares/404'));
 if (app.get('env') == 'development') {
   app.set('view cache', false);
   swig.setDefaults({cache: false});
@@ -128,8 +125,9 @@ if (app.get('env') == 'development') {
 module.exports = app;
 
 // CONNECT TO DATABASE
-const mongoHost = process.env.MONGO_PORT_27017_TCP_ADDR || config.get('mongodb_host');
-mongoose.connect('mongodb://' + mongoHost + '/spacedeck');
+//const mongoHost = process.env.MONGO_PORT_27017_TCP_ADDR || config.get('mongodb_host');
+//mongoose.connect('mongodb://' + mongoHost + '/spacedeck');
+db.init();
 
 // START WEBSERVER
 const port = 9666;
@@ -174,7 +172,7 @@ redis.connectRedis();
 process.on('message', (message) => {
   console.log("Process message:", message);
   if (message === 'shutdown') {
-    console.log("Exiting spacedeck.");
+    console.log("Exiting Spacedeck.");
     process.exit(0);
   }
 });

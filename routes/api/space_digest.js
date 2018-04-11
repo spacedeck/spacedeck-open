@@ -1,7 +1,7 @@
 "use strict";
 
 var config = require('config');
-require('../../models/schema');
+require('../../models/db');
 
 var async = require('async');
 var fs = require('fs');
@@ -40,6 +40,12 @@ var roleMapping = {
 };
 
 router.get('/', function(req, res, next) {
+
+  res.status(200).json([]);
+  return;
+
+  // FIXME TODO
+  
   var showActionForSpaces = function(err, spaceIds) {
     var userMapping = {
       '_id': 1,

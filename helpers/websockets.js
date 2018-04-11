@@ -1,5 +1,8 @@
 'use strict';
-require('../models/schema');
+
+const db = require('../models/db');
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
 const config = require('config');
 
@@ -8,7 +11,6 @@ const WebSocketServer = require('ws').Server;
 const RedisConnection = require('ioredis');
 const async = require('async');
 const _ = require("underscore");
-const mongoose = require("mongoose");
 const crypto = require('crypto');
 
 const redisMock = require("./redis.js");
@@ -45,11 +47,11 @@ module.exports = {
             const editorAuth = msg.editor_auth;
             const spaceId = msg.space_id;
 
-            Space.findOne({"_id": spaceId}).populate('creator').exec((err, space) => {
+            db.Space.findOne({where: {"_id": spaceId}}).then(space => {
               if (space) {
                 const upgradeSocket = function() {
                   if (token) {
-                    User.findBySessionToken(token, function(err, user) {
+                    db.findUserBySessionToken(token, function(err, user) {
                       if (err) {
                         console.error(err, user);
                       } else {
@@ -268,10 +270,10 @@ module.exports = {
   },
 
   distributeUsers: function(spaceId) {
-    if(!spaceId)
+    if (!spaceId)
       return;
 
-    this.state.smembers("space_" + spaceId, function(err, list) {
+    /*this.state.smembers("space_" + spaceId, function(err, list) {
       async.map(list, function(item, callback) {
         this.state.get(item, function(err, userId) {
           console.log(item, "->", userId);
@@ -292,16 +294,14 @@ module.exports = {
           return {nickname: realNickname, email: null, avatar_thumbnail_uri: null };
         });
 
-        User.find({"_id" : { "$in" : validUserIds }}, { "nickname" : 1 ,  "email" : 1, "avatar_thumbnail_uri": 1 }, function(err, users) {
-          if (err)
-            console.error(err);
-          else {
+        db.User.findAll({where: {
+          "_id" : { "$in" : validUserIds }}, attributes: ["nickname","email","avatar_thumbnail_uri"]})
+          .then(users) {
             const allUsers = users.concat(anonymousUsers);
             const strUsers = JSON.stringify({users: allUsers, space_id: spaceId});
             this.state.publish("users", strUsers);
-          }
-        }.bind(this));
+          }.bind(this));
       }.bind(this));
-    }.bind(this));
+    }.bind(this));*/
   }
 };
