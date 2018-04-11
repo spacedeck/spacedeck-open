@@ -27,12 +27,11 @@ Spacedeck uses the following major building blocks:
 - Vue.js: Frontend UI Framework (included)
 - SQLite (included)
 
-It also has some binary dependencies for media conversion and PDF export:
+It also has some optional binary dependencies for advanced media conversion:
 
-- graphicsmagick (for image conversion)
-- ffmpeg (for video/audio conversion)
+- ffmpeg and ffprobe (for video/audio conversion)
 - audiowaveform (for audio waveform rendering) (https://github.com/bbcrd/audiowaveform)
-- phantomjs (for website screenshot rendering and PDF export, included)
+- ghostscript (gs, for PDF import)
 
 By default, media files are uploaded to the ```storage``` folder.
 

@@ -1,6 +1,8 @@
 "use strict";
 
 var config = require('config');
+
+const os = require('os');
 const db = require('../../models/db');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
@@ -124,8 +126,7 @@ router.post('/:artifact_id/payload', function(req, res, next) {
 
     var fileName = (req.query.filename || "upload.bin").replace(/[^a-zA-Z0-9_\-\.]/g, '');
 
-    // FIXME TODO use portable tmp dir
-    var localFilePath = "/tmp/" + fileName;
+    var localFilePath = os.tmpdir() + "/" + fileName;
     var writeStream = fs.createWriteStream(localFilePath);
     var stream = req.pipe(writeStream);
 

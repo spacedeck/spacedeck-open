@@ -114,32 +114,33 @@ router.get('/', function(req, res, next) {
       });
     } else if (req.query.search) {
 
-      Membership.find({
+      db.Membership.findAll({where:{
         user: req.user._id
-      }, function(err, memberships) {
+      }}).then(memberships => {
         
         var validMemberships = memberships.filter(function(m) {
-          if (!m.space || (m.space == "undefined"))
+          if (!m.space_id || (m.space_id == "undefined"))
             return false;
           else
-            return mongoose.Types.ObjectId.isValid(m.space.toString());
+            return true;
         });
 
         var spaceIds = validMemberships.map(function(m) {
-          return new mongoose.Types.ObjectId(m.space);
+          return m.space_id;
         });
 
-        var q = {
-          "$or": [{"creator": req.user._id},
+        // TODO FIXME port
+        var q = { where: {
+          "$or": [{"creator_id": req.user._id},
                   {"_id": {"$in": spaceIds}},
                   {"parent_space_id": {"$in": spaceIds}}],
-          name: new RegExp(req.query.search, "i")
+          name: new RegExp(req.query.search, "i")}
         };
 
-        Space
-          .find(q)
-          .populate('creator', userMapping)
-          .exec(function(err, spaces) {
+        db.Space
+          .findAll(q)
+          //.populate('creator', userMapping)
+          .then(function(spaces) {
             if (err) console.error(err);
             var updatedSpaces = spaces.map(function(s) {
               var spaceObj = s.toObject();
@@ -151,15 +152,14 @@ router.get('/', function(req, res, next) {
 
     } else if (req.query.parent_space_id && req.query.parent_space_id != req.user.home_folder_id) {
 
-      Space
-        .findOne({
+      db.Space
+        .findOne({where: {
           _id: req.query.parent_space_id
-        })
-        .populate('creator', userMapping)
-        .exec(function(err, space) {
+        }})
+        //.populate('creator', userMapping)
+        .then(function(space) {
           if (space) {
             db.getUserRoleInSpace(space, req.user, function(role) {
-              
               if (role == "none") {
                 if(space.access_mode == "public") {
                   role = "viewer";
@@ -167,12 +167,12 @@ router.get('/', function(req, res, next) {
               }
 
               if (role != "none") {
-                Space
-                  .find({
+                db.Space
+                  .findAll({where:{
                     parent_space_id: req.query.parent_space_id
-                  })
-                  .populate('creator', userMapping)
-                  .exec(function(err, spaces) {
+                  }})
+                  //.populate('creator', userMapping)
+                  .then(function(spaces) {
                     res.status(200).json(spaces);
                   });
               } else {
@@ -185,9 +185,6 @@ router.get('/', function(req, res, next) {
         });
 
     } else {
-
-      console.log("!!!!!!!!!! spaces lookup");
-      
       db.Membership.findAll({ where: {
         user_id: req.user._id
       }}).then(memberships => {
@@ -243,9 +240,6 @@ router.post('/', function(req, res, next) {
       
       db.Space.create(attrs).then(createdSpace => {
         //if (err) res.sendStatus(400);
-
-        console.log("!!!!!!!!!! createdSpace:",createdSpace);
-        
         var membership = {
           _id: uuidv4(),
           user_id: req.user._id,
@@ -342,7 +336,7 @@ router.put('/:id', function(req, res) {
 router.post('/:id/background', function(req, res, next) {
   var space = req.space;
   var newDate = new Date();
-  var fileName = (req.query.filename || "upload.bin").replace(/[^a-zA-Z0-9\.]/g, '');
+  var fileName = (req.query.filename || "upload.jpg").replace(/[^a-zA-Z0-9\.]/g, '');
   var localFilePath = "/tmp/" + fileName;
   var writeStream = fs.createWriteStream(localFilePath);
   var stream = req.pipe(writeStream);
@@ -351,38 +345,26 @@ router.post('/:id/background', function(req, res, next) {
     uploader.uploadFile("s" + req.space._id + "/bg_" + newDate.getTime() + "_" + fileName, "image/jpeg", localFilePath, function(err, backgroundUrl) {
       if (err) res.status(400).json(err);
       else {
-        var adv = space.advanced;
-
-        if (adv.background_uri) {
-          var oldPath = url.parse(req.space.thumbnail_url).pathname;
+        if (space.background_uri) {
+          var oldPath = url.parse(req.space.background_uri).pathname;
           uploader.removeFile(oldPath, function(err) {
             console.error("removed old bg error:", err);
           });
         }
 
-        adv.background_uri = backgroundUrl;
-
-        Space.findOneAndUpdate({
-          "_id": space._id
+        db.Space.update({
+          background_uri: backgroundUrl
         }, {
-          "$set": {
-            advanced: adv
-          }
-        }, {
-          "new": true
-        }, function(err, space) {
-          if (err) {
-            res.sendStatus(400);
-          } else {
-            fs.unlink(localFilePath, function(err) {
-              if (err) {
-                console.error(err);
-                res.status(400).json(err);
-              } else {
-                res.status(200).json(space);
-              }
-            });
-          }
+          where: { "_id": space._id }
+        }, function(rows) {
+          fs.unlink(localFilePath, function(err) {
+            if (err) {
+              console.error(err);
+              res.status(400).json(err);
+            } else {
+              res.status(200).json(space);
+            }
+          });
         });
       }
     });

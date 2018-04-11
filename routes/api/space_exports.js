@@ -1,6 +1,6 @@
 "use strict";
 var config = require('config');
-require('../../models/db');
+const db = require('../../models/db');
 
 var redis = require('../../helpers/redis');
 var mailer = require('../../helpers/mailer');
@@ -49,26 +49,18 @@ var roleMapping = {
 
 router.get('/png', function(req, res, next) {
   var triggered = new Date();
-
   var s3_filename = "s" + req.space._id + "/" + "thumb_" + triggered.getTime() + ".jpg";
 
   if (!req.space.thumbnail_updated_at || req.space.thumbnail_updated_at < req.space.updated_at || !req.space.thumbnail_url) {
-
-    Space.update({
-      "_id": req.space._id
-    }, {
-      "$set": {
-        thumbnail_updated_at: triggered
-      }
-    }, function(a, b, c) {});
-
+    db.Space.update({ thumbnail_updated_at: triggered }, {where : {"_id": req.space._id }});
+    
     phantom.takeScreenshot(req.space, "png",
                            function(local_path) {
       var localResizedFilePath = local_path + ".thumb.jpg";
       gm(local_path).resize(640, 480).quality(70.0).autoOrient().write(localResizedFilePath, function(err) {
         
         if (err) {
-          console.error("screenshot resize error: ", err);
+          console.error("[space screenshot] resize error: ", err);
           res.status(500).send("Error taking screenshot.");
           return;
         }
@@ -76,22 +68,15 @@ router.get('/png', function(req, res, next) {
         uploader.uploadFile(s3_filename, "image/jpeg", localResizedFilePath, function(err, thumbnailUrl) {
 
           if (err) {
-            console.error("screenshot s3 upload error. filename: " + s3_filename + " details: ", err);
+            console.error("[space screenshot] upload error. filename: " + s3_filename + " details: ", err);
             res.status(500).send("Error uploading screenshot.");
             return;
           }
 
           var oldUrl = req.space.thumbnail_url;
 
-          Space.update({
-            "_id": req.space._id
-          }, {
-            "$set": {
-              thumbnail_url: thumbnailUrl
-            }
-          }, function(a, b, c) {
+          db.Space.update({ thumbnail_url: thumbnailUrl }, {where : {"_id": req.space._id }}).then(() => {
             res.redirect(thumbnailUrl);
-
             try {
               if (oldUrl) {
                 var oldPath = url.parse(oldUrl).pathname;
@@ -124,77 +109,6 @@ router.get('/png', function(req, res, next) {
 function make_export_filename(space, extension) {
   return space.name.replace(/[^\w]/g, '') + "-" + space._id + "-" + moment().format("YYYYMMDD-HH-mm-ss") + "." + extension;
 }
-
-router.get('/list', function(req, res, next) {
-
-  if (req.user) {
-    if (req.spaceRole == "admin" ||  req.spaceRole == "editor") {
-
-      if (req.space.space_type == "space") {
-        Artifact.find({
-          space_id: req.space._id
-        }).exec(function(err, artifacts) {
-          async.map(artifacts, function(a, cb) {
-            if (a.user_id) {
-              User.findOne({
-                "_id": a.user_id
-              }).exec(function(err, user) {
-                a.user = user;
-
-                if (a.last_update_user_id) {
-                  User.findOne({
-                    "_id": a.last_update_user_id
-                  }).exec(function(err, updateUser) {
-                    a.update_user = updateUser;
-                    cb(null, a);
-                  });
-                } else {
-                  cb(null, a);
-                }
-              });
-            } else {
-              cb(null, a);
-            }
-          }, function(err, mappedArtifacts) {
-
-            req.space.artifacts = mappedArtifacts.map(function(a) {
-              a.description = sanitizeHtml(a.description, {
-                allowedTags: [],
-                allowedAttributes: []
-              });
-
-              if (a.payload_uri) {
-                var parsed = url.parse(a.payload_uri);
-                var fileName = path.basename(parsed.pathname) || "file.bin";
-                a.filename = fileName;
-              }
-
-              return a;
-            });
-
-            res.render('artifact_list', {
-              space: req.space
-            });
-          });
-        });
-      } else {
-        Space.getRecursiveSubspacesForSpace(req.space, (err, subspaces) => {
-          res.render('space_list', {
-            subspaces: subspaces.map((s) => {
-              s.ae_link = config.endpoint + '/s/' + s.edit_hash + (s.edit_slug ? ('-'+s.edit_slug) : '')
-              return s;
-            }),
-            space: req.space
-          });
-        });
-      }
-    } else {
-      res.sendStatus(403);
-    }
-  } else {
-    res.sendStatus(403);
-  }
-});
 
 router.get('/pdf', function(req, res, next) {
   var s3_filename = make_export_filename(req.space, "pdf");
@@ -329,9 +243,10 @@ router.get('/zip', function(req, res, next) {
 });
 
 router.get('/html', function(req, res) {
-  Artifact.find({
+  console.log("!!!!! hello ");
+  db.Artifact.findAll({where: {
     space_id: req.space._id
-  }, function(err, artifacts) {
+  }}).then(function(artifacts) {
     var space = req.space;
     res.send(space_render.render_space_as_html(space, artifacts));
   });

@@ -3,6 +3,7 @@ var config = require('config');
 const db = require('../../models/db');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
+const uuidv4 = require('uuid/v4');
 
 var redis = require('../../helpers/redis');
 var mailer = require('../../helpers/mailer');
@@ -55,13 +56,15 @@ router.post('/', function(req, res, next) {
     var attrs = req.body;
     attrs['space'] = req.space._id;
     attrs['state'] = "pending";
-    var membership = new Membership(attrs);
+    attrs._id = uuidv4();
+    var membership = attrs;
+    
     var msg = attrs.personal_message;
 
     if (membership.email_invited != req.user.email) {
-      User.findOne({
+      db.User.findOne({where:{
         "email": membership.email_invited
-      }, function(err, user) {
+      }}, function(user) {
 
         if (user) {
           membership.user = user;
@@ -70,35 +73,32 @@ router.post('/', function(req, res, next) {
           membership.code = crypto.randomBytes(64).toString('hex').substring(0, 12);
         }
 
-        membership.save(function(err) {
-          if (err) res.sendStatus(400);
-          else {
-            var accept_link = config.endpoint + "/accept/" + membership._id + "?code=" + membership.code;
+        db.Membership.create(membership).then(function() {
+          var accept_link = config.endpoint + "/accept/" + membership._id + "?code=" + membership.code;
 
-            if (user) {
-              accept_link = config.endpoint + "/" + req.space.space_type + "s/" + req.space._id;
-            }
-
-            var openText = req.i18n.__("space_invite_membership_action");
-            if (user) {
-              req.i18n.__("open");
-            }
-
-            const name = req.user.nickname || req.user.email
-            const subject = (req.space.space_type == "space") ? req.i18n.__("space_invite_membership_subject", name, req.space.name) : req.i18n.__("folder_invite_membership_subject", req.user.nickname, req.space.name)
-            const body = (req.space.space_type == "space") ? req.i18n.__("space_invite_membership_body", name, req.space.name) : req.i18n.__("folder_invite_membership_body", req.user.nickname, req.space.name)
-
-            mailer.sendMail(
-              membership.email_invited, subject, body, {
-                messsage: msg,
-                action: {
-                  link: accept_link,
-                  name: openText
-                }
-              });
-
-            res.status(201).json(membership);
+          if (user) {
+            accept_link = config.endpoint + "/" + req.space.space_type + "s/" + req.space._id;
           }
+
+          var openText = req.i18n.__("space_invite_membership_action");
+          if (user) {
+            req.i18n.__("open");
+          }
+
+          const name = req.user.nickname || req.user.email
+          const subject = (req.space.space_type == "space") ? req.i18n.__("space_invite_membership_subject", name, req.space.name) : req.i18n.__("folder_invite_membership_subject", req.user.nickname, req.space.name)
+          const body = (req.space.space_type == "space") ? req.i18n.__("space_invite_membership_body", name, req.space.name) : req.i18n.__("folder_invite_membership_body", req.user.nickname, req.space.name)
+
+          mailer.sendMail(
+            membership.email_invited, subject, body, {
+              messsage: msg,
+              action: {
+                link: accept_link,
+                name: openText
+              }
+            });
+
+          res.status(201).json(membership);
         });
 
       });

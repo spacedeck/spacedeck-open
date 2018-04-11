@@ -97,7 +97,7 @@ module.exports = {
     updated_at: {type: Sequelize.DATE, defaultValue: Sequelize.NOW}
   }),
   
-  Artifact: sequelize.define('message', {
+  Message: sequelize.define('message', {
     _id: {type: Sequelize.STRING, primaryKey: true},
     space_id: Sequelize.STRING,
     user_id: Sequelize.STRING,

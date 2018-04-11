@@ -79,8 +79,6 @@ app.use(helmet.hsts({
 app.disable('x-powered-by');
 app.use(helmet.noSniff())
 
-// CUSTOM MIDDLEWARES
-
 //app.use(require("./middlewares/error_helpers"));
 app.use(require("./middlewares/session"));
 //app.use(require("./middlewares/cors"));
@@ -89,19 +87,17 @@ app.use("/api", require("./middlewares/api_helpers"));
 app.use('/api/spaces/:id', require("./middlewares/space_helpers"));
 app.use('/api/spaces/:id/artifacts/:artifact_id', require("./middlewares/artifact_helpers"));
 
-// REAL ROUTES
-
 app.use('/api/users', require('./routes/api/users'));
-//app.use('/api/memberships', require('./routes/api/memberships'));
+app.use('/api/memberships', require('./routes/api/memberships'));
 
 const spaceRouter = require('./routes/api/spaces');
 app.use('/api/spaces', spaceRouter);
 
 spaceRouter.use('/:id/artifacts', require('./routes/api/space_artifacts'));
 spaceRouter.use('/:id/memberships', require('./routes/api/space_memberships'));
-//spaceRouter.use('/:id/messages', require('./routes/api/space_messages'));
+spaceRouter.use('/:id/messages', require('./routes/api/space_messages'));
 spaceRouter.use('/:id/digest', require('./routes/api/space_digest'));
-//spaceRouter.use('/:id', require('./routes/api/space_exports'));
+spaceRouter.use('/:id', require('./routes/api/space_exports'));
 
 app.use('/api/sessions', require('./routes/api/sessions'));
 //app.use('/api/webgrabber', require('./routes/api/webgrabber'));
@@ -125,8 +121,6 @@ if (app.get('env') == 'development') {
 module.exports = app;
 
 // CONNECT TO DATABASE
-//const mongoHost = process.env.MONGO_PORT_27017_TCP_ADDR || config.get('mongodb_host');
-//mongoose.connect('mongodb://' + mongoHost + '/spacedeck');
 db.init();
 
 // START WEBSERVER
