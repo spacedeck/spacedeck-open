@@ -23,35 +23,25 @@ We appreciate filed issues, pull requests and general discussion.
 
 Spacedeck Open has a data import feature that you can use to migrate your ZIP export from Spacedeck.com.
 
-1. To import, first drop your downloaded ZIP file in the spacedeck root folder.
-2. Navigate to *Account / Profile* in your local Spacedeck Open application (person icon in the top right corner).
-3. On the bottom of the page, click the *Import* button next to the ZIP file name.
-4. Wait until console output has finished.
+1. Just copy your downloaded ZIP file into the spacedeck root folder. Don't extract it.
+2. Start your local Spacedeck.
+3. Navigate to *Account / Profile* (person icon in the top right corner).
+4. Click the *Import* button next to the ZIP file name. It is on the bottom of the page.
+5. Wait until console output has finished and you're done.
 
 # Requirements, Installation
 
-Spacedeck uses the following major building blocks:
+Spacedeck requires:
 
 - Node.js 9.x: Web Server / API. Download: https://nodejs.org
-- Vue.js: Frontend UI Framework, included
-- SQLite, included
 
-It also has some optional binary dependencies for advanced media conversion:
+To run Spacedeck, you only need Node.JS 9.x.
 
-- ffmpeg and ffprobe for video/audio conversion. Download: https://www.ffmpeg.org/download.html
-- audiowaveform for audio waveform rendering. Download: https://github.com/bbcrd/audiowaveform
-- ghostscript for PDF import. Download: https://www.ghostscript.com/download/gsdnld.html
-
-By default, media files are uploaded to the ```storage``` folder.
-The database is stored in ```database.sqlite``` by default.
-
-To use Spacedeck, you only need Node.JS 9.x.
-
-Then, to install all node dependencies, run
+To install all node dependencies, run (do this once):
 
     npm install
 
-To rebuild the frontend CSS styles (you need to do this at least once):
+To rebuild the frontend CSS styles (do this at least once, too):
 
     gulp styles
 
@@ -68,6 +58,19 @@ Then open http://localhost:9666 in a web browser.
 # Run (desktop app with integrated web server)
 
     electron .
+
+# Optional Dependencies
+
+For advanced media conversion:
+
+- ffmpeg and ffprobe for video/audio conversion. Download: https://www.ffmpeg.org/download.html
+- audiowaveform for audio waveform rendering. Download: https://github.com/bbcrd/audiowaveform
+- ghostscript for PDF import. Download: https://www.ghostscript.com/download/gsdnld.html
+
+# Data Storage
+
+By default, media files are uploaded to the ```storage``` folder.
+The database is stored in ```database.sqlite``` by default.
 
 # License
 
