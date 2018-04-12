@@ -17,7 +17,6 @@ var slug = require('slug');
 var fs = require('fs');
 var async = require('async');
 var _ = require("underscore");
-var mongoose = require("mongoose");
 var request = require('request');
 var url = require("url");
 var path = require("path");
@@ -67,6 +66,7 @@ router.get('/', function(req, res, next) {
           return m.space_id;
         });
 
+        // TODO port
         var q = {
           "space_type": "folder",
           "$or": [{
@@ -81,13 +81,11 @@ router.get('/', function(req, res, next) {
           }]
         };
 
-        Space
-          .find(q)
-          .populate('creator', userMapping)
-          .exec(function(err, spaces) {
-            if (err) console.error(err);
+        db.Space
+          .findAll({where: q})
+          .then(function(spaces) {
             var updatedSpaces = spaces.map(function(s) {
-              var spaceObj = s.toObject();
+              var spaceObj = s; //.toObject();
               return spaceObj;
             });
 
@@ -104,18 +102,17 @@ router.get('/', function(req, res, next) {
                 return s.space_type == "folder";
               })
               var uniqueFolders = _.unique(onlyFolders, (s) => {
-                return s._id.toString();
+                return s._id;
               })
 
               res.status(200).json(uniqueFolders);
-
             });
           });
       });
     } else if (req.query.search) {
 
       db.Membership.findAll({where:{
-        user: req.user._id
+        user_id: req.user._id
       }}).then(memberships => {
         
         var validMemberships = memberships.filter(function(m) {
@@ -131,21 +128,15 @@ router.get('/', function(req, res, next) {
 
         // TODO FIXME port
         var q = { where: {
-          "$or": [{"creator_id": req.user._id},
-                  {"_id": {"$in": spaceIds}},
-                  {"parent_space_id": {"$in": spaceIds}}],
-          name: new RegExp(req.query.search, "i")}
-        };
+          [Op.or]: [{"creator_id": req.user._id},
+                   {"_id": {[Op.in]: spaceIds}},
+                   {"parent_space_id": {[Op.in]: spaceIds}}],
+          name: {[Op.like]: "%"+req.query.search+"%"}
+        }, include: ['creator']};
 
         db.Space
           .findAll(q)
-          //.populate('creator', userMapping)
           .then(function(spaces) {
-            if (err) console.error(err);
-            var updatedSpaces = spaces.map(function(s) {
-              var spaceObj = s.toObject();
-              return spaceObj;
-            });
             res.status(200).json(spaces);
           });
       });
@@ -161,7 +152,7 @@ router.get('/', function(req, res, next) {
           if (space) {
             db.getUserRoleInSpace(space, req.user, function(role) {
               if (role == "none") {
-                if(space.access_mode == "public") {
+                if (space.access_mode == "public") {
                   role = "viewer";
                 }
               }
@@ -170,8 +161,7 @@ router.get('/', function(req, res, next) {
                 db.Space
                   .findAll({where:{
                     parent_space_id: req.query.parent_space_id
-                  }})
-                  //.populate('creator', userMapping)
+                  }, include:['creator']})
                   .then(function(spaces) {
                     res.status(200).json(spaces);
                   });
@@ -214,7 +204,7 @@ router.get('/', function(req, res, next) {
         };
 
         db.Space
-          .findAll({where: q})
+          .findAll({where: q, include: ['creator']})
           .then(function(spaces) {
             var updatedSpaces = spaces.map(function(s) {
               var spaceObj = db.spaceToObject(s);
@@ -414,15 +404,12 @@ router.delete('/:id', function(req, res, next) {
 
     if (req.spaceRole == "admin") {
       const attrs = req.body;
-      Space.recursiveDelete(space, function(err) {
-        if (err) res.status(400).json(err);
-        else {
-          res.distributeDelete("Space", space);
-        }
+      space.destroy().then(function() {
+        res.distributeDelete("Space", space);
       });
     } else {
       res.status(403).json({
-        "error": "requires admin status"
+        "error": "requires admin role"
       });
     }
   } else {

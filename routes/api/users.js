@@ -74,14 +74,12 @@ router.post('/', function(req, res) {
               res.sendStatus(400);
             })
             .then(u => {
-              console.log("!!! created user:", u);
               var homeSpace = {
                 _id: uuidv4(),
                 name: req.i18n.__("home"),
                 space_type: "folder",
                 creator_id: u._id
               };
-
               db.Space.create(homeSpace)
                 .error(err => {
                   res.sendStatus(400);
@@ -108,8 +106,6 @@ router.post('/', function(req, res) {
       });
     });
   };
-
-  console.log("!!! hello !!!");
   
   db.User.findAll({where: {email: email}})
     .then(users => {
@@ -131,19 +127,15 @@ router.get('/current', function(req, res, next) {
 });
 
 router.put('/:id', function(req, res, next) {
+  // TODO explicit whitelisting
   var user = req.user;
-  console.log(req.params.id, user._id);
   if (user._id == req.params.id) {
     var newAttr = req.body;
     newAttr.updated_at = new Date();
     delete newAttr['_id'];
 
-    User.findOneAndUpdate({"_id": user._id}, {"$set": newAttr}, function(err, updatedUser) {
-      if (err) {
-        res.sendStatus(400);
-      } else {
-        res.status(200).json(updatedUser);
-      }
+    db.User.update(newAttr, {where: {"_id": user._id}}).then(function(updatedUser) {
+      res.status(200).json(newAttr);
     });
   } else {
     res.sendStatus(403);
@@ -161,12 +153,8 @@ router.post('/:id/password', function(req, res, next) {
         bcrypt.genSalt(10, function(err, salt) {
           bcrypt.hash(pass, salt, function(err, hash) {
             user.password_hash = hash;
-            user.save(function(err){
-              if(err){
-                res.status(400).json(err);
-              }else{
-                res.sendStatus(204);
-              }
+            user.save().then(function() {
+              res.sendStatus(204);
             });
           });
         });
@@ -195,7 +183,7 @@ router.delete('/:id',  (req, res, next) => {
       }
     } else {
       user.remove((err) => {
-        if(err)res.status(400).json(err);
+        if (err) res.status(400).json(err);
         else res.sendStatus(204);
       });
     }
@@ -239,19 +227,15 @@ router.post('/:user_id/avatar', (req, res, next) => {
           if (err) res.status(400).json(err);
           else {
             user.avatar_thumb_uri = url;
-            user.save((err, updatedUser) => {
-              if (err) {
-                res.sendStatus(400);
-              } else {
-                fs.unlink(localResizedFilePath, (err) => {
-                  if (err) {
-                    console.error(err);
-                    res.status(400).json(err);
-                  } else {
-                    res.status(200).json(updatedUser);
-                  }
-                });
-              }
+            user.save().then(() => {
+              fs.unlink(localResizedFilePath, (err) => {
+                if (err) {
+                  console.error(err);
+                  res.status(400).json(err);
+                } else {
+                  res.status(200).json(user);
+                }
+              });
             });
           }
         });
@@ -269,31 +253,20 @@ router.post('/feedback', function(req, res, next) {
 
 router.post('/password_reset_requests', (req, res, next) => {
   const email = req.query.email;
-  User.findOne({"email": email}).exec((err, user) => {
-    if (err) {
-      res.status(400).json(err);
+  db.User.findOne({where: {"email": email}}).then((user) => {
+    if (user) {
+      crypto.randomBytes(16, (ex, buf) => {
+        user.password_reset_token = buf.toString('hex');
+        user.save().then(updatedUser => {
+          mailer.sendMail(email, req.i18n.__("password_reset_subject"), req.i18n.__("password_reset_body"), {action: {
+            link: config.endpoint + "/password-confirm/" + user.password_reset_token,
+            name: req.i18n.__("password_reset_action")
+          }});
+          res.status(201).json({});
+        });
+      });
     } else {
-      if (user) {
-        if(user.account_type == "email") {
-          crypto.randomBytes(16, (ex, buf) => {
-            user.password_reset_token = buf.toString('hex');
-            user.save((err, updatedUser) => {
-              if (err) res.status(400).json(err);
-              else {
-                mailer.sendMail(email, req.i18n.__("password_reset_subject"), req.i18n.__("password_reset_body"), {action: {
-                  link: config.endpoint + "/password-confirm/" + user.password_reset_token,
-                  name: req.i18n.__("password_reset_action")
-                }});
-                res.status(201).json({});
-              }
-            });
-          });
-        } else {
-          res.status(404).json({"error": "error_unknown_email"});
-        }
-      } else {
-        res.status(404).json({"error": "error_unknown_email"});
-      }
+      res.status(404).json({"error": "error_unknown_email"});
     }
   });
 });
@@ -302,29 +275,25 @@ router.post('/password_reset_requests/:confirm_token/confirm', function(req, res
   var password = req.body.password;
 
   User
-    .findOne({"password_reset_token": req.params.confirm_token})
-    .exec((err, user) => {
-      if (err) {
-        res.sendStatus(400);
-      } else {
-        if(user) {
-          bcrypt.genSalt(10, (err, salt) => {
-            bcrypt.hash(password, salt, function(err, hash) {
+    .findOne({where: {"password_reset_token": req.params.confirm_token}})
+    .then((user) => {
+      if (user) {
+        bcrypt.genSalt(10, (err, salt) => {
+          bcrypt.hash(password, salt, function(err, hash) {
 
-              user.password_hash = hash;
-              user.password_token = null;
-              user.save(function(err, updatedUser){
-                if (err) {
-                  res.sendStatus(400);
-                } else {
-                  res.sendStatus(201);
-                }
-              });
+            user.password_hash = hash;
+            user.password_token = null;
+            user.save(function(err, updatedUser){
+              if (err) {
+                res.sendStatus(400);
+              } else {
+                res.sendStatus(201);
+              }
             });
           });
-        } else {
-          res.sendStatus(404);
-        }
+        });
+      } else {
+        res.sendStatus(404);
       }
     });
 });

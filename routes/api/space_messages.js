@@ -14,7 +14,6 @@ var phantom = require('../../helpers/phantom');
 var async = require('async');
 var fs = require('fs');
 var _ = require("underscore");
-var mongoose = require("mongoose");
 var archiver = require('archiver');
 var request = require('request');
 var url = require("url");
@@ -52,8 +51,7 @@ var roleMapping = {
 router.get('/', function(req, res, next) {
   db.Message.findAll({where:{
     space_id: req.space._id
-  }})
-  //.populate('user', userMapping)
+  }, include: ['user']})
     .then(function(messages) {
       res.status(200).json(messages);
     });
@@ -65,6 +63,7 @@ router.post('/', function(req, res, next) {
 
   if (req.user) {
     attrs.user = req.user;
+    attrs.user_id = req.user._id;
   } else {
     attrs.user = null;
   }
@@ -72,7 +71,7 @@ router.post('/', function(req, res, next) {
   var msg = attrs;
   msg._id = uuidv4();
 
-  db.Message.create(msg, function() {
+  db.Message.create(msg).then(function() {
     if (msg.message.length <= 1) return;
     // TODO reimplement notifications
     res.distributeCreate("Message", msg);
@@ -82,19 +81,12 @@ router.post('/', function(req, res, next) {
 router.delete('/:message_id', function(req, res, next) {
   db.Message.findOne({where:{
     "_id": req.params.message_id
-  }}, function(msg) {
+  }}).then(function(msg) {
     if (!msg) {
       res.sendStatus(404);
     } else {
-      msg.destroy(function(err) {
-        if (err) res.status(400).json(err);
-        else {
-          if (msg) {
-            res.distributeDelete("Message", msg);
-          } else {
-            res.sendStatus(404);
-          }
-        }
+      msg.destroy().then(function() {
+        res.distributeDelete("Message", msg);
       });
     }
   });

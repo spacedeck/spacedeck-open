@@ -198,6 +198,48 @@ module.exports = {
   }),
     
   init: function() {
+    User = this.User;
+    Session = this.Session;
+    Space = this.Space;
+    Artifact = this.Artifact;
+    Message = this.Message;
+    Membership = this.Membership;
+
+    Space.belongsTo(User, {
+      foreignKey: {
+        name: 'creator_id'
+      },
+      as: 'creator'
+    });
+    
+    Artifact.belongsTo(User, {
+      foreignKey: {
+        name: 'user_id'
+      },
+      as: 'user'
+    });
+    
+    Artifact.belongsTo(Space, {
+      foreignKey: {
+        name: 'space_id'
+      },
+      as: 'space'
+    });
+    
+    Message.belongsTo(User, {
+      foreignKey: {
+        name: 'user_id'
+      },
+      as: 'user'
+    });
+    
+    Message.belongsTo(Space, {
+      foreignKey: {
+        name: 'space_id'
+      },
+      as: 'space'
+    });
+    
     sequelize.sync();
   },
 
@@ -222,7 +264,6 @@ module.exports = {
             });
           } else {
             // reached the top
-
             var role = prevRole;
             space.memberships = currentMemberships;
 
@@ -252,10 +293,10 @@ module.exports = {
   },
 
   findUserBySessionToken: (token, cb) => {
-    db.Session.findOne({where: {token: token}})
+    Session.findOne({where: {token: token}})
       .then(session => {
         if (!session) cb(null, null)
-        else db.User.findOne({where: {_id: session.user_id}})
+        else User.findOne({where: {_id: session.user_id}})
           .then(user => {
             cb(null, user)
           })

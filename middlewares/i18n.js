@@ -10,8 +10,8 @@ module.exports = (req, res, next) => {
     req.i18n.setLocaleFromCookie();
   }
 
-  if (req.user && req.user.preferences.language) {
-    req.i18n.setLocale(req.user.preferences.language);
+  if (req.user && req.user.prefs_language) {
+    req.i18n.setLocale(req.user.prefs_language);
   }
   next();
 }

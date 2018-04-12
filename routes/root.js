@@ -9,7 +9,6 @@ const crypto = require('crypto');
 const router = express.Router();
 const mailer = require('../helpers/mailer');
 const _ = require('underscore');
-const qr = require('qr-image');
 
 router.get('/', (req, res) => {
   res.render('index', { title: 'Spaces' });

@@ -13,19 +13,17 @@ SpacedeckAccount = {
   methods: {
     show_account: function(user) {
       this.activate_dropdown('account');
-      this.load_subscription();
-      this.load_billing();
     },
 
     account_save_user_digest: function(val) {
-      this.user.preferences.daily_digest = val;
-      this.save_user(function(){  
+      this.user.prefs_email_digest = val;
+      this.save_user(function() {  
       });
     },
 
     account_save_user_notifications: function(val) {
-      this.user.preferences.email_notifications = val;
-      this.save_user(function(){
+      this.user.prefs_email_notifications = val;
+      this.save_user(function() {
       });
     },
 

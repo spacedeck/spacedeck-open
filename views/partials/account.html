@@ -86,15 +86,15 @@
     <div class="collapse" v-bind:class="{in:account=='language'}">
       <div class="modal-section">
         <label class="radio" v-bind:class="{checked
-        : user.preferences.language=='en'}" v-on:click="save_user_language('en')">
+        : user.prefs_language=='en'}" v-on:click="save_user_language('en')">
           <input type="radio" id="user-preferences_language" name="language" value="en"><span>English</span>
         </label>
         <hr/>
-        <label class="radio" v-bind:class="{checked: user.preferences.language=='de'}" v-on:click="save_user_language('de')">
+        <label class="radio" v-bind:class="{checked: user.prefs_language=='de'}" v-on:click="save_user_language('de')">
           <input type="radio" id="user-preferences_language" name="language" value="de"><span>Deutsch</span>
         </label>
         <hr/>
-        <label class="radio" v-bind:class="{checked: user.preferences.language=='fr'}" v-on:click="save_user_language('fr')">
+        <label class="radio" v-bind:class="{checked: user.prefs_language=='fr'}" v-on:click="save_user_language('fr')">
           <input type="radio" id="user-preferences_language" name="language" value="fr"><span>Français</span>
         </label>
       </div>
@@ -104,8 +104,8 @@
       <div class="modal-section labels-inline">
         <div class="form-group">
           <label class="checkbox"
-            v-bind:class="{checked: user.preferences.email_notifications}"
-            v-on:click="account_save_user_notifications(!user.preferences.email_notifications);">
+            v-bind:class="{checked: user.prefs_email_notifications}"
+            v-on:click="account_save_user_notifications(!user.prefs_email_notifications);">
             <span>[[__('notifications_option_chat')]]</span>
           </label>
         </div>

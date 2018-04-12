@@ -170,7 +170,6 @@ var SpacedeckRoutes = {
               location.href = "/";
             } else {
               this.active_view = "account";
-              this.load_subscription();
             }
           }.bind(this)
         }

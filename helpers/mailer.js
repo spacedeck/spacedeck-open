@@ -1,7 +1,7 @@
 'use strict';
 
 var swig = require('swig');
-var AWS = require('aws-sdk');
+//var AWS = require('aws-sdk');
 
 module.exports = {
   sendMail: (to_email, subject, body, options) => {
@@ -29,9 +29,9 @@ module.exports = {
       options: options
     });
 
-    if (process.env.NODE_ENV === 'development') {
+    //if (process.env.NODE_ENV === 'development') {
       console.log("Email: to " + to_email + " in production.\nreply_to: " + reply_to + "\nsubject: " + subject + "\nbody: \n" + htmlText + "\n\n plaintext:\n" + plaintext);
-    } else {
+    /*} else {
       AWS.config.update({region: 'eu-west-1'});
       var ses = new AWS.SES();
 
@@ -56,6 +56,6 @@ module.exports = {
         if (err) console.error("Error sending email:", err);
         else console.log("Email sent.");
       });
-    }
+    }*/
   }
 };

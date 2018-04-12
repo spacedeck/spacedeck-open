@@ -2,7 +2,6 @@
 var config = require('config');
 const db = require('../../models/db');
 
-var redis = require('../../helpers/redis');
 var mailer = require('../../helpers/mailer');
 var uploader = require('../../helpers/uploader');
 var space_render = require('../../helpers/space-render');
@@ -12,13 +11,11 @@ var async = require('async');
 var moment = require('moment');
 var fs = require('fs');
 var _ = require("underscore");
-var mongoose = require("mongoose");
 var archiver = require('archiver');
 var request = require('request');
 var url = require("url");
 var path = require("path");
 var crypto = require('crypto');
-var qr = require('qr-image');
 var glob = require('glob');
 var gm = require('gm');
 var sanitizeHtml = require('sanitize-html');
