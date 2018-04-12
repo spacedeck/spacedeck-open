@@ -93,6 +93,8 @@ module.exports = {
     space_id: Sequelize.STRING,
     user_id: Sequelize.STRING,
     role: Sequelize.STRING,
+    code: Sequelize.STRING,
+    state: {type: Sequelize.STRING, defaultValue: "pending"},
     created_at: {type: Sequelize.DATE, defaultValue: Sequelize.NOW},
     updated_at: {type: Sequelize.DATE, defaultValue: Sequelize.NOW}
   }),
@@ -210,6 +212,20 @@ module.exports = {
         name: 'creator_id'
       },
       as: 'creator'
+    });
+
+    Membership.belongsTo(User, {
+      foreignKey: {
+        name: 'user_id'
+      },
+      as: 'user'
+    });
+    
+    Membership.belongsTo(Space, {
+      foreignKey: {
+        name: 'space_id'
+      },
+      as: 'space'
     });
     
     Artifact.belongsTo(User, {

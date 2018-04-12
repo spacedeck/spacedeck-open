@@ -15,37 +15,16 @@ var request = require('request');
 var url = require("url");
 var path = require("path");
 var glob = require('glob');
+var crypto = require('crypto');
 
 var express = require('express');
 var router = express.Router({mergeParams: true});
-
-// JSON MAPPINGS
-var userMapping = {
-  _id: 1,
-  nickname: 1,
-  email: 1,
-  avatar_thumb_uri: 1
-};
-
-var spaceMapping = {
-  _id: 1,
-  name: 1,
-  thumbnail_url: 1
-};
-
-var roleMapping = {
-  "none": 0,
-  "viewer": 1,
-  "editor": 2,
-  "admin": 3
-}
 
 router.get('/', function(req, res, next) {
   db.Membership
     .findAll({where: {
       space_id: req.space._id
-    }})
-    //.populate("user")
+    }, include: ['user']})
     .then(memberships => {
       res.status(200).json(memberships);
     });
@@ -54,8 +33,8 @@ router.get('/', function(req, res, next) {
 router.post('/', function(req, res, next) {
   if (req.spaceRole == "admin") {
     var attrs = req.body;
-    attrs['space'] = req.space._id;
-    attrs['state'] = "pending";
+    attrs.space_id = req.space._id;
+    attrs.state = "pending";
     attrs._id = uuidv4();
     var membership = attrs;
     
@@ -64,10 +43,10 @@ router.post('/', function(req, res, next) {
     if (membership.email_invited != req.user.email) {
       db.User.findOne({where:{
         "email": membership.email_invited
-      }}, function(user) {
+      }}).then(function(user) {
 
         if (user) {
-          membership.user = user;
+          membership.user_id = user._id;
           membership.state = "active";
         } else {
           membership.code = crypto.randomBytes(64).toString('hex').substring(0, 12);
@@ -119,21 +98,15 @@ router.post('/', function(req, res, next) {
 router.put('/:membership_id', function(req, res, next) {
   if (req.user) {
     if (req.spaceRole == "admin") {
-      Membership.findOne({
+      db.Membership.findOne({ where: {
         _id: req.params.membership_id
-      }, function(err, mem) {
-        if (err) res.sendStatus(400);
-        else {
-          if (mem) {
-            var attrs = req.body;
-            mem.role = attrs.role;
-            mem.save(function(err) {
-              if (err) res.sendStatus(400);
-              else {
-                res.status(201).json(mem);
-              }
-            });
-          }
+      }}).then(function(mem) {
+        if (mem) {
+          var attrs = req.body;
+          mem.role = attrs.role;
+          mem.save(function() {
+            res.status(201).json(mem);
+          });
         }
       });
     } else {
@@ -146,20 +119,12 @@ router.put('/:membership_id', function(req, res, next) {
 
 router.delete('/:membership_id', function(req, res, next) {
   if (req.user) {
-    Membership.findOne({
+    db.Membership.findOne({ where: {
       _id: req.params.membership_id
-    }, function(err, mem) {
-      if (err) res.sendStatus(400);
-      else {
-        mem.remove(function(err) {
-          if (err) {
-            res.status(400).json(err);
-          } else {
-            // FIXME might need to delete the user?
-            res.sendStatus(204);
-          }
-        });
-      }
+    }}).then(function(mem) {
+      mem.destroy().then(function() {
+        res.sendStatus(204);
+      });
     });
   } else {
     res.sendStatus(403);

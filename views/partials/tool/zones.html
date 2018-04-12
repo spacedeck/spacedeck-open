@@ -9,7 +9,7 @@
     <button v-on:click="add_zone()" class="btn btn-sm btn-primary">[[__("add_zone")]]</button>
   </div>
 
-  <div class="dialog-section no-p" v-for="z in zones | orderBy 'style.order'" style="white-space: nowrap;text-align:left;cursor:pointer" v-on:click="zoom_to_zone(z)">
+  <div class="dialog-section no-p" v-for="z in zones | orderBy 'order'" style="white-space: nowrap;text-align:left;cursor:pointer" v-on:click="zoom_to_zone(z)">
     <button class="btn btn-sm btn-transparent">{{{z.description}}}</button>
     <button v-if="$index==current_zone_idx" v-on:click="sort_zone_up(z)" class="btn btn-sm btn-round btn-transparent btn-icon"><span class="icon icon-triangle-up"></span></button>
     <button v-if="$index==current_zone_idx" v-on:click="sort_zone_down(z)" class="btn btn-sm btn-round btn-transparent btn-icon"><span class="icon icon-triangle-down"></span></button>
