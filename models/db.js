@@ -304,6 +304,9 @@ module.exports = {
   },
 
   unpackArtifact: (a) => {
+    if (a.tags) {
+      a.tags = JSON.parse(a.tags);
+    }
     if (a.control_points) {
       a.control_points = JSON.parse(a.control_points);
     }
@@ -314,6 +317,9 @@ module.exports = {
   },
 
   packArtifact: (a) => {
+    if (a.tags) {
+      a.tags = JSON.stringify(a.tags);
+    }
     if (a.control_points) {
       a.control_points = JSON.stringify(a.control_points);
     }

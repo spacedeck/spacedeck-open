@@ -1,6 +1,6 @@
 <div id="team" class="dialog in" style="padding:100px;z-index:20000;position:absolute;width:100%;min-height:100%;background-color:#eee" v-if="active_view == 'account' && user" v-cloak>
 
-  <a href="/spaces" class="btn btn-round btn-icon btn-stroke-darken btn-md pull-right" style="position:absolute;top:30px;right:30px"><span class="icon icon-cross-0"></span></a>
+  <a href="/spaces" class="btn btn-round btn-icon btn-dark btn-md pull-right" style="position:absolute;top:30px;right:30px"><span class="icon icon-cross-0"></span></a>
 
   <div class="dialog-tabs" style="margin:auto">
     <div class="dialog-tab" v-bind:class="{open:account=='profile'}" v-on:click="account='profile'"><span>[[__("profile_caption")]]</span></div>
@@ -79,6 +79,14 @@
           <p v-if="account_confirmed_sent">
             <span class="icon icon-check"></span> <span>[[__("confirmation_sent_another")]]</span>
           </p>
+        </div>
+
+        <div class="form-group">
+          <label class="label">Spacedeck.com Data Import</label>
+          <p v-if="!importables">No .ZIP files found in Spacedeck application folder.</p>
+          <ul>
+            <li v-for="f in importables">{{f}} <button v-on:click="start_zip_import(f)">Start Import</button></li>
+          </ul>
         </div>
       </div>
     </div>

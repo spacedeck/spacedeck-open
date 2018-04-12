@@ -5,6 +5,11 @@ const config = require('config')
 const fs = require('fs')
 const path = require('path')
 
+const db = require('../models/db')
+const Sequelize = require('sequelize')
+const Op = Sequelize.Op
+const uuidv4 = require('uuid/v4')
+
 require('../models/db')
 
 module.exports = {
@@ -54,8 +59,8 @@ module.exports = {
           let artifacts = JSON.parse(fs.readFileSync(importDir+'/'+space._id+'_artifacts.json'))
           console.log('[import] space',space._id,'artifacts:',artifacts.length)
 
-          let q = {_id: space._id}
-          space.creator = user._id
+          //let q = {where: {_id: space._id}}
+          space.creator_id = user._id
           delete space.__v
           
           // transplant homefolder
@@ -64,17 +69,35 @@ module.exports = {
             space.parent_space_id = user.home_folder_id
           }
 
-          Space.findOneAndUpdate(q, space, {upsert: true}, function(err,res) {
-            if (err) console.log("[import] space upsert err:",err)
-          })
+          // move nested attrs
+          console.log(space)
+          for (let [k,v] of Object.entries(space.advanced)) {
+            space[k] = v
+          }
+
+          db.Space.create(space)
+            .error((err) => {
+              console.error("[import] space upsert err:",err)
+            })
           
           for (var j=0; j<artifacts.length; j++) {
             let a = artifacts[j]
             
             let q = {_id: a._id}
-            a.creator = user._id
+            a.user_id = user._id
             delete a.__v
             delete a.payload_thumbnail_big_uri
+            
+            // move nested attrs
+            for (let [k,v] of Object.entries(a.meta)) {
+              a[k] = v
+            }
+            for (let [k,v] of Object.entries(a.board)) {
+              a[k] = v
+            }
+            for (let [k,v] of Object.entries(a.style)) {
+              a[k] = v
+            }
 
             let prefix = "/storage/"+relativeImportDir+"/"+space._id+"_files/"
             if (a.thumbnail_uri && a.thumbnail_uri[0]!='/') a.thumbnail_uri = prefix + a.thumbnail_uri
@@ -92,8 +115,10 @@ module.exports = {
               }
             }
 
-            Artifact.findOneAndUpdate(q, a, {upsert: true}, function(err,res) {
-              if (err) console.log("[import] artifact upsert err:",err)
+            db.packArtifact(a)
+
+            db.Artifact.create(a).error(function(err) {
+              console.error("[import] artifact upsert err:",err)
             })
           }
         }

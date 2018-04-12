@@ -133,7 +133,15 @@ function load_spaces(id, is_home, on_success, on_error) {
   }, on_error);
 }
 
-function load_writable_folders( on_success, on_error) {
+function load_importables(user, on_success, on_error) {
+  load_resource("get", "/users/"+user._id+"/importables", null, on_success, on_error);
+}
+
+function import_zip(user, filename, on_success, on_error) {
+  load_resource("get", "/users/"+user._id+"/import?zip="+filename, null, on_success, on_error);
+}
+
+function load_writable_folders(on_success, on_error) {
   load_resource("get", "/spaces?writablefolders=true", null, on_success, on_error);
 }
 

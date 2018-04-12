@@ -21,6 +21,7 @@ var URL = require('url').URL;
 
 var express = require('express');
 var router = express.Router();
+var glob = require('glob');
 
 router.get('/current', function(req, res, next) {
   if (req.user) {
@@ -304,6 +305,12 @@ router.post('/:user_id/confirm', function(req, res, next) {
     name: req.i18n.__("confirm_action")
   }});
   res.sendStatus(201);
+});
+
+router.get('/:user_id/importables', function(req, res, next) {
+  glob('*.zip', function(err, files) {
+    res.status(200).json(files);
+  });
 });
 
 router.get('/:user_id/import', function(req, res, next) {
