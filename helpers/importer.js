@@ -71,8 +71,8 @@ module.exports = {
 
           // move nested attrs
           console.log(space)
-          for (let [k,v] of Object.entries(space.advanced)) {
-            space[k] = v
+          for (k in space.advanced) {
+            space[k] = space.advanced[k]
           }
 
           db.Space.create(space)
@@ -89,14 +89,14 @@ module.exports = {
             delete a.payload_thumbnail_big_uri
             
             // move nested attrs
-            for (let [k,v] of Object.entries(a.meta)) {
-              a[k] = v
+            for (k in a.style) {
+              a[k] = a.style[k]
             }
-            for (let [k,v] of Object.entries(a.board)) {
-              a[k] = v
+            for (k in a.meta) {
+              a[k] = a.meta[k]
             }
-            for (let [k,v] of Object.entries(a.style)) {
-              a[k] = v
+            for (k in a.board) {
+              a[k] = a.board[k]
             }
 
             let prefix = "/storage/"+relativeImportDir+"/"+space._id+"_files/"
