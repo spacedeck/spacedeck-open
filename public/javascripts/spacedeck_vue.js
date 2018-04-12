@@ -158,7 +158,7 @@ function boot_spacedeck() {
   });
 }
 
-$(document).ready(function(){
+document.addEventListener("DOMContentLoaded",function() {
   window.smoke = smoke;
   window.alert = smoke.alert;
   

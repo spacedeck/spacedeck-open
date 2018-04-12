@@ -283,9 +283,9 @@ var SpacedeckSpaces = {
 
               this.discover_zones();
 
-              window.setTimeout(function() {
-                this.zoom_to_fit();
-              }.bind(this),10);
+              //window.setTimeout(function() {
+              //  this.zoom_to_fit();
+              //}.bind(this),10);
 
               if (on_success) {
                 on_success();
@@ -636,17 +636,14 @@ var SpacedeckSpaces = {
 
     download_space: function() {
       smoke.quiz(__("download_space"), function(e, test) {
-        if (e == "PDF"){
+        if (e == "PDF") {
           this.download_space_as_pdf(this.active_space);
-        }else if (e == "ZIP"){
+        } else if (e == "ZIP") {
           this.download_space_as_zip(this.active_space);
-        }else if (e == "TXT"){
-          this.download_space_as_list(this.active_space);
         }
       }.bind(this), {
         button_1: "PDF",
         button_2: "ZIP",
-        button_3: "TXT",
         button_cancel:__("cancel")
       });
 

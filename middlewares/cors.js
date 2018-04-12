@@ -1,6 +1,6 @@
 'use strict';
 
-require('../models/schema');
+require('../models/db');
 const config = require('config');
 const url = require('url');
 
@@ -26,20 +26,20 @@ module.exports = (req, res, next) => {
     const parsedUrl = url.parse(origin, true, true);
 
     // FIXME
-    if (parsedUrl.hostname == "cdn.spacedeck.com") {      
+    if (parsedUrl.hostname == "cdn.spacedeck.com") {
       res.header('Cache-Control', "max-age");
       res.header('Expires', "30d");
       res.removeHeader("Pragma");
 
       respond(origin, req, res, next);
     } else {
-      Team.getTeamForHost(parsedUrl.hostname, (err, team, subdomain) => {
-        if (team) {
+      //Team.getTeamForHost(parsedUrl.hostname, (err, team, subdomain) => {
+        //if (team) {
           respond(origin, req, res, next);
-        } else {
+        //} else {
           next();
-        }
-      });
+        //}
+      //});
     }
 
   } else {

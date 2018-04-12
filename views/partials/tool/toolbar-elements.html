@@ -76,20 +76,7 @@
         {% include "./zones.html" %}
       </div>
     </div>
-
-    <div id="mobile-dialog" class="dropdown bottom light center static" v-bind:class="{open:opened_dialog=='mobile'}">
-      <div class="btn-collapse in">
-        <button class="btn btn-transparent btn-icon-labeled" v-bind:class="{open:opened_dialog=='mobile'}" v-on:click="open_dialog('mobile')" >
-          <span class="icon icon-device-mobile"></span>
-          <span class="icon-label">[[__("mobile")]]</span>
-        </button>
-      </div>
-
-      <div class="dialog mobile-search">
-        {% include "./pick-mobile.html" %}
-      </div>
-    </div>
-
+    
     <button class="btn btn-divider" v-show="logged_in"></button>
 
     <div class="dropdown bottom light center" v-show="logged_in" v-bind:class="{open:opened_dialog=='background'}">

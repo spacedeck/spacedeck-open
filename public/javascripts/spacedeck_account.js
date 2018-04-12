@@ -8,24 +8,29 @@ SpacedeckAccount = {
     account_confirmed_sent: false,
     account_tab: 'invoices',
     password_change_error: null,
-    feedback_text: ""
+    feedback_text: "",
+    importables: [], // spacedeck.com zip import files
   },
   methods: {
-    show_account: function(user) {
+    show_account: function() {
       this.activate_dropdown('account');
-      this.load_subscription();
-      this.load_billing();
+    },
+
+    start_zip_import: function(f) {
+      if (confirm("Your archive will be imported in the background. This can take a few minutes. You can continue using Spacedeck in the meantime.")) {
+        import_zip(this.user, f);
+      }
     },
 
     account_save_user_digest: function(val) {
-      this.user.preferences.daily_digest = val;
-      this.save_user(function(){  
+      this.user.prefs_email_digest = val;
+      this.save_user(function() {  
       });
     },
 
     account_save_user_notifications: function(val) {
-      this.user.preferences.email_notifications = val;
-      this.save_user(function(){
+      this.user.prefs_email_notifications = val;
+      this.save_user(function() {
       });
     },
 
@@ -36,13 +41,11 @@ SpacedeckAccount = {
 
     save_user_language: function(lang) {
       localStorage.lang = lang;
-      if (this.user.preferences) {
-        this.user.preferences.language = lang;
-        this.save_user(function() {
-          window._spacedeck_location_change = true;
-          location.href="/spaces";
-        }.bind(this));
-      }
+      this.user.prefs_language = lang;
+      this.save_user(function() {
+        window._spacedeck_location_change = true;
+        location.href="/spaces";
+      }.bind(this));
     },
 
     save_user: function(on_success) {

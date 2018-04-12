@@ -1,9 +1,9 @@
 <div id="space" class="section board active mouse-{{mouse_state}} tool-{{active_tool}}">
 
-  <div class="space-bounds" style="width:{{active_space.advanced.width*bounds_zoom}}px;height:{{active_space.advanced.height*bounds_zoom}}px;"></div>
+  <div class="space-bounds" style="width:{{active_space.width*bounds_zoom}}px;height:{{active_space.height*bounds_zoom}}px;"></div>
 
   <div class="wrapper"
-    style="transform:scale({{viewport_zoom}});transform-origin:0 0;width:{{active_space.advanced.width}}px;height:{{active_space.advanced.height}}px;background-image:url('{{active_space.advanced.background_uri}}');background-color:{{active_space.advanced.background_color}};margin-left:{{bounds_margin_horiz}}px;margin-top:{{bounds_margin_vert}}px" >
+    style="transform:scale({{viewport_zoom}});transform-origin:0 0;width:{{active_space.width}}px;height:{{active_space.height}}px;background-image:url('{{active_space.background_uri}}');background-color:{{active_space.background_color}};margin-left:{{bounds_margin_horiz}}px;margin-top:{{bounds_margin_vert}}px" >
 
     <div v-repeat="a : active_space_artifacts"
       v-class="text-editing:(editing_artifact_id==a._id && (a.view.major_type=='text' || a.view.major_type=='shape'))"
@@ -81,7 +81,7 @@
           </div>
 
           <div class="tl-controls">
-            <div class="btn btn-md btn-toggle btn-round" v-class="alt:a.player_view.state=='playing'" v-show="a.board.w>=200 || a.player_view.state!='playing'">
+            <div class="btn btn-md btn-toggle btn-round" v-class="alt:a.player_view.state=='playing'" v-show="a.w>=200 || a.player_view.state!='playing'">
               <span class="btn-option play">
                 <span class="icon icon-controls-play"></span>
               </span>
@@ -95,8 +95,8 @@
               <span class="icon icon-controls-stop"></span>
             </span>
 
-            <span class="tl-title" v-show="a.board.w>=250 && a.board.h>=150">{{a.view.filename}}</span>
-            <span class="tl-times" class="btn-group" v-show="a.board.w>=400 && a.board.h>=150">
+            <span class="tl-title" v-show="a.w>=250 && a.h>=150">{{a.view.filename}}</span>
+            <span class="tl-times" class="btn-group" v-show="a.w>=400 && a.h>=150">
               <span class="btn btn-md btn-transparent no-p set-inpoint">{{a.player_view.current_time_string}} /</span>
               <span class="btn btn-md btn-transparent no-p set-outpoint">{{a.player_view.total_time_string}}</span>
             </span>

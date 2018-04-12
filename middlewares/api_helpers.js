@@ -1,8 +1,10 @@
 'use strict';
 
-require('../models/schema');
+require('../models/db');
 var config = require('config');
 const redis = require('../helpers/redis');
+
+// FIXME TODO object.toJSON()
 
 var saveAction = (actionKey, object) => {
   if (object.constructor.modelName == "Space")
@@ -13,14 +15,14 @@ var saveAction = (actionKey, object) => {
     space: object.space_id || object.space,
     user: object.user_id || object.user,
     editor_name: object.editor_name,
-    object: object.toJSON()
+    object: object
   };
 
-  let action = new Action(attr);
+  /*let action = new Action(attr);
   action.save(function(err) {
     if (err)
       console.error("saved create action err:", err);
-  });
+  });*/
 };
 
 module.exports = (req, res, next) => {
@@ -32,21 +34,21 @@ module.exports = (req, res, next) => {
 
   res['distributeCreate'] = function(model, object) {
     if (!object) return;
-    redis.sendMessage("create", model, object.toJSON(), req.channelId);
-    this.status(201).json(object.toJSON());
+    redis.sendMessage("create", model, object, req.channelId);
+    this.status(201).json(object);
     saveAction("create", object);
   };
 
   res['distributeUpdate'] = function(model, object) {
     if (!object) return;
-    redis.sendMessage("update", model, object.toJSON(), req.channelId);
-    this.status(200).json(object.toJSON());
+    redis.sendMessage("update", model, object, req.channelId);
+    this.status(200).json(object);
     saveAction("update", object);
   };
 
   res['distributeDelete'] = function(model, object) {
     if (!object) return;
-    redis.sendMessage("delete", model, object.toJSON(), req.channelId);
+    redis.sendMessage("delete", model, object, req.channelId);
     this.sendStatus(204);
     saveAction("delete", object);
   };

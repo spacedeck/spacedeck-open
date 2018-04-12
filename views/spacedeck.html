@@ -13,6 +13,8 @@
     <link type="text/css" rel="stylesheet" href="https://fast.fonts.net/cssapi/ee1a3484-4d98-4f9f-9f55-020a7b37f3c5.css"/>
     <link rel="stylesheet" href="[[ '/stylesheets/style.css' | cdn ]]">
 
+    <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+    
     <script src="//cdnjs.cloudflare.com/ajax/libs/twemoji/1.3.2/twemoji.min.js"></script>
 
     <script>
@@ -83,6 +85,8 @@
     <script minify src="/javascripts/spacedeck_directives.js"></script>
     <script minify src="/javascripts/spacedeck_vue.js"></script>
     {% endif %}
+    
+    <script>if (window.module) module = window.module;</script>
   </head>
 
   <body id="main" v-bind:class="{'present-mode':present_mode,'modal-open':active_modal}" v-on:click="handle_body_click($event)">

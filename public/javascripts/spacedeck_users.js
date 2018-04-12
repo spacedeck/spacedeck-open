@@ -15,7 +15,8 @@ SpacedeckUsers = {
     account_remove_error: null,
     loading_user: false,
     password_reset_confirm_error: "",
-    password_reset_error: ""
+    password_reset_error: "",
+    
   },
   methods:{
     load_user: function(on_success, on_error) {
@@ -29,6 +30,12 @@ SpacedeckUsers = {
         if (on_success) {
           on_success(user);
         }
+
+        // see spacedeck_account.js
+        load_importables(this.user, function(files) {
+          this.importables = files;
+        }.bind(this));
+        
       }.bind(this), function() {
         // error
         this.loading_user = false;
@@ -38,18 +45,6 @@ SpacedeckUsers = {
           on_error();
         }
       }.bind(this));
-    },
-
-    login_google: function(evt) {
-      this.loading_user = true;
-
-      create_oauthtoken(function(data){
-        this.loading_user = false;
-        location.href = data.url;
-      }, function(xhr){
-        this.loading_user = false;
-        alert("could not get oauth token");
-      });
     },
 
     finalize_login: function(session_token, on_success) {
@@ -169,7 +164,6 @@ SpacedeckUsers = {
     },
 
     password_reset_submit: function(evt, email) {
-
       if (evt) {
         evt.preventDefault();
         evt.stopPropagation();
@@ -203,7 +197,6 @@ SpacedeckUsers = {
     },
 
     password_reset_confirm: function(evt, password, password_confirmation) {
-
       if (evt) {
         evt.preventDefault();
         evt.stopPropagation();

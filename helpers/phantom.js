@@ -1,8 +1,9 @@
 'use strict';
 
-require('../models/schema');
-var config = require('config');
-var phantom = require('node-phantom-simple');
+const db = require('../models/db');
+const config = require('config');
+const phantom = require('node-phantom-simple');
+const os = require('os');
 
 module.exports = {
   // type = "pdf" or "png"
@@ -10,7 +11,7 @@ module.exports = {
     var spaceId = space._id;
     var space_url = config.get("endpoint")+"/api/spaces/"+spaceId+"/html";
 
-    var export_path = "/tmp/"+spaceId+"."+type;
+    var export_path = os.tmpdir()+"/"+spaceId+"."+type;
 
     var timeout = 5000;
     if (type=="pdf") timeout = 30000;
@@ -24,7 +25,7 @@ module.exports = {
 
     var on_exit = function(exit_code) {
       if (exit_code>0) {
-        console.log("phantom abnormal exit for url "+space_url);
+        console.error("phantom abnormal exit for url "+space_url);
         if (!on_success_called && on_error) {
           on_error();
         }
@@ -32,16 +33,16 @@ module.exports = {
     };
 
     phantom.create({ path: require('phantomjs-prebuilt').path }, function (err, browser) {
-      if(err){
-        console.log(err);
-      }else{
+      if (err) {
+        console.error(err);
+      } else {
         return browser.createPage(function (err, page) {
           console.log("page created, opening ",space_url);
 
           if (type=="pdf") {
             var psz = {
-              width: space.advanced.width+"px",
-              height: space.advanced.height+"px"
+              width: space.width+"px",
+              height: space.height+"px"
             };
             page.set('paperSize', psz);
           }

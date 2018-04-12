@@ -1,6 +1,6 @@
 <div id="team" class="dialog in" style="padding:100px;z-index:20000;position:absolute;width:100%;min-height:100%;background-color:#eee" v-if="active_view == 'account' && user" v-cloak>
 
-  <a href="/spaces" class="btn btn-round btn-icon btn-stroke-darken btn-md pull-right" style="position:absolute;top:30px;right:30px"><span class="icon icon-cross-0"></span></a>
+  <a href="/spaces" class="btn btn-round btn-icon btn-dark btn-md pull-right" style="position:absolute;top:30px;right:30px"><span class="icon icon-cross-0"></span></a>
 
   <div class="dialog-tabs" style="margin:auto">
     <div class="dialog-tab" v-bind:class="{open:account=='profile'}" v-on:click="account='profile'"><span>[[__("profile_caption")]]</span></div>
@@ -80,21 +80,29 @@
             <span class="icon icon-check"></span> <span>[[__("confirmation_sent_another")]]</span>
           </p>
         </div>
+
+        <div class="form-group">
+          <label class="label">Spacedeck.com Data Import</label>
+          <p v-if="!importables">No .ZIP files found in Spacedeck application folder.</p>
+          <ul>
+            <li v-for="f in importables">{{f}} <button v-on:click="start_zip_import(f)">Start Import</button></li>
+          </ul>
+        </div>
       </div>
     </div>
 
     <div class="collapse" v-bind:class="{in:account=='language'}">
       <div class="modal-section">
         <label class="radio" v-bind:class="{checked
-        : user.preferences.language=='en'}" v-on:click="save_user_language('en')">
+        : user.prefs_language=='en'}" v-on:click="save_user_language('en')">
           <input type="radio" id="user-preferences_language" name="language" value="en"><span>English</span>
         </label>
         <hr/>
-        <label class="radio" v-bind:class="{checked: user.preferences.language=='de'}" v-on:click="save_user_language('de')">
+        <label class="radio" v-bind:class="{checked: user.prefs_language=='de'}" v-on:click="save_user_language('de')">
           <input type="radio" id="user-preferences_language" name="language" value="de"><span>Deutsch</span>
         </label>
         <hr/>
-        <label class="radio" v-bind:class="{checked: user.preferences.language=='fr'}" v-on:click="save_user_language('fr')">
+        <label class="radio" v-bind:class="{checked: user.prefs_language=='fr'}" v-on:click="save_user_language('fr')">
           <input type="radio" id="user-preferences_language" name="language" value="fr"><span>Français</span>
         </label>
       </div>
@@ -104,8 +112,8 @@
       <div class="modal-section labels-inline">
         <div class="form-group">
           <label class="checkbox"
-            v-bind:class="{checked: user.preferences.email_notifications}"
-            v-on:click="account_save_user_notifications(!user.preferences.email_notifications);">
+            v-bind:class="{checked: user.prefs_email_notifications}"
+            v-on:click="account_save_user_notifications(!user.prefs_email_notifications);">
             <span>[[__('notifications_option_chat')]]</span>
           </label>
         </div>

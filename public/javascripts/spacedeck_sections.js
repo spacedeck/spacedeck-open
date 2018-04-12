@@ -369,8 +369,8 @@ var SpacedeckSections = {
       // canvas
       this.$watch('active_style.background_color', function (value, mutation) {
 
-        if (this.active_style.background_color != this.active_space.advanced.background_color) {
-          this.$set("active_space.advanced.background_color",this.active_style.background_color);
+        if (this.active_style.background_color != this.active_space.background_color) {
+          this.$set("active_space.background_color",this.active_style.background_color);
           this.throttled_save_active_space();
         }
 
@@ -448,7 +448,7 @@ var SpacedeckSections = {
 
         for (var i=0; i<props.length; i++) {
           var prop = props[i];
-          this.active_style[prop]=a.style[prop];
+          this.active_style[prop]=a[prop];
         }
 
         // defaults
@@ -457,10 +457,10 @@ var SpacedeckSections = {
         this.active_style.line_height = this.default_style.line_height;
         this.active_style.letter_spacing = this.default_style.letter_spacing;
 
-        this.active_style.padding_top =    a.style.padding_top || 0;
-        this.active_style.padding_bottom = a.style.padding_bottom || 0;
-        this.active_style.padding_left =   a.style.padding_left || 0;
-        this.active_style.padding_right =  a.style.padding_right || 0;
+        this.active_style.padding_top =    a.padding_top || 0;
+        this.active_style.padding_bottom = a.padding_bottom || 0;
+        this.active_style.padding_left =   a.padding_left || 0;
+        this.active_style.padding_right =  a.padding_right || 0;
 
         if (this.active_style.padding_top == this.active_style.padding_bottom) {
           this.active_style.padding_vert = this.active_style.padding_top;
@@ -476,10 +476,10 @@ var SpacedeckSections = {
           this.active_style.padding = this.active_style.padding_top;
         }
 
-        this.active_style.margin_top =    a.style.margin_top || 0;
-        this.active_style.margin_bottom = a.style.margin_bottom || 0;
-        this.active_style.margin_left =   a.style.margin_left || 0;
-        this.active_style.margin_right =  a.style.margin_right || 0;
+        this.active_style.margin_top =    a.margin_top || 0;
+        this.active_style.margin_bottom = a.margin_bottom || 0;
+        this.active_style.margin_left =   a.margin_left || 0;
+        this.active_style.margin_right =  a.margin_right || 0;
 
         if (this.active_style.margin_top == this.active_style.margin_bottom) {
           this.active_style.margin_vert = this.active_style.margin_top;
@@ -758,8 +758,8 @@ var SpacedeckSections = {
     },
 
     resize_minimap: function() {
-      if (!this.active_space || !this.active_space.advanced) return;
-      this.minimap_scale = this.active_space.advanced.width/100.0;
+      if (!this.active_space) return;
+      this.minimap_scale = this.active_space.width/100.0;
     },
 
     handle_minimap_mouseup: function(evt) {
@@ -921,7 +921,7 @@ var SpacedeckSections = {
 
     discover_zones: function() {
       this.zones = _.sortBy(_.filter(this.active_space_artifacts, function(a) { return (a.mime=="x-spacedeck/zone") }),
-        function(z){return z.style.order});
+        function(z){return z.order});
     },
 
     artifact_plaintext: function(a) {
@@ -1015,10 +1015,10 @@ var SpacedeckSections = {
       arts = _.filter(arts); // remove any nulls
 
       return {
-        x1: parseInt(_.min(arts.map(function(a){return ((!a.board || !a.board.x)?0:a.board.x)}))),
-        y1: parseInt(_.min(arts.map(function(a){return ((!a.board || !a.board.y)?0:a.board.y)}))),
-        x2: parseInt(_.max(arts.map(function(a){return (!a.board?0:a.board.x+a.board.w)}))),
-        y2: parseInt(_.max(arts.map(function(a){return (!a.board?0:a.board.y+a.board.h)})))
+        x1: parseInt(_.min(arts.map(function(a){return ((!a || !a.x)?0:a.x)}))),
+        y1: parseInt(_.min(arts.map(function(a){return ((!a || !a.y)?0:a.y)}))),
+        x2: parseInt(_.max(arts.map(function(a){return (!a?0:a.x+a.w)}))),
+        y2: parseInt(_.max(arts.map(function(a){return (!a?0:a.y+a.h)})))
       };
     },
 
@@ -1076,7 +1076,7 @@ var SpacedeckSections = {
       this.selection_metrics.count=arts.length;
       this.selection_metrics.scribble_selection = false;
       if (arts.length == 1 && arts[0].mime == "x-spacedeck/vector") {
-        if (arts[0].style.shape == "scribble") {
+        if (arts[0].shape == "scribble") {
           this.selection_metrics.scribble_selection = true;
         }
         this.selection_metrics.vector_points = arts[0].control_points;
@@ -1112,8 +1112,8 @@ var SpacedeckSections = {
     fixup_space_size: function() {
       if (!this.active_space) return;
 
-      this.active_space.advanced.width =Math.max(this.active_space.advanced.width, window.innerWidth);
-      this.active_space.advanced.height=Math.max(this.active_space.advanced.height, window.innerHeight);
+      this.active_space.width =Math.max(this.active_space.width, window.innerWidth);
+      this.active_space.height=Math.max(this.active_space.height, window.innerHeight);
     },
 
     end_transaction: function() {
@@ -1125,13 +1125,13 @@ var SpacedeckSections = {
       var er = this.enclosing_rect(this.active_space_artifacts);
       if (!er) return;
 
-      this.active_space.advanced.width =Math.max(er.x2+100, window.innerWidth);
-      this.active_space.advanced.height=Math.max(er.y2+100, window.innerHeight);
+      this.active_space.width =Math.max(er.x2+100, window.innerWidth);
+      this.active_space.height=Math.max(er.y2+100, window.innerHeight);
 
-      if (this._last_bounds_width != this.active_space.advanced.width ||
-        this._last_bounds_height != this.active_space.advanced.height) {
-        this._last_bounds_width = this.active_space.advanced.width;
-        this._last_bounds_height = this.active_space.advanced.height;
+      if (this._last_bounds_width != this.active_space.width ||
+        this._last_bounds_height != this.active_space.height) {
+        this._last_bounds_width = this.active_space.width;
+        this._last_bounds_height = this.active_space.height;
 
         save_space(this.active_space);
       }
@@ -1214,7 +1214,7 @@ var SpacedeckSections = {
 
       // this is a bit hacky, but might be the smartest place to do it
       if (a.view && a.view.vector_svg) {
-        a.style.shape_svg = a.view.vector_svg;
+        a.shape_svg = a.view.vector_svg;
       }
 
       window.artifact_save_queue[a._id] = a;
@@ -1329,7 +1329,7 @@ var SpacedeckSections = {
       this.update_selected_artifacts(function(a) {
         var c = {};
 
-        if (c[prop] != val) {
+        if (a[prop] != val) {
           //console.log("set_artifact_prop: ",c,val);
           c[prop]=val;
           return c;
@@ -1343,11 +1343,11 @@ var SpacedeckSections = {
       this.begin_transaction();
 
       this.update_selected_artifacts(function(a) {
-        var c = {style: a.style||{}};
-
-        if (c.style[prop] != val) {
+        var c = {};
+        
+        if (a[prop] != val) {
           //console.log("set_artifact_style_prop: ",c,val);
-          c.style[prop]=val;
+          c[prop]=val;
           return c;
         }
 
@@ -1419,7 +1419,7 @@ var SpacedeckSections = {
       if (this.selected_artifacts().length!=1 && this.opened_dialog!="background") return;
 
       if (this.opened_dialog=="background") {
-        this.active_style[this.color_picker_target] = this.active_space.advanced.background_color;
+        this.active_style[this.color_picker_target] = this.active_space.background_color;
       } else {
         if (!this.active_style[this.color_picker_target]) {
           this.active_style[this.color_picker_target] = this.default_style[this.color_picker_target];
@@ -1478,10 +1478,8 @@ var SpacedeckSections = {
 
       this.update_selected_artifacts(function(a) {
         return {
-          board: _.extend(a.board, {
-            x: a.board.x+dx,
-            y: a.board.y+dy
-          })
+          x: a.x+dx,
+          y: a.y+dy
         };
       });
     },
@@ -1489,7 +1487,7 @@ var SpacedeckSections = {
     /* -------------------------------------------------------------------- */
 
     highest_z: function() {
-      var z = _.max(this.active_space_artifacts.map(function(a){return a.board.z||0}));
+      var z = _.max(this.active_space_artifacts.map(function(a){return a.z||0}));
       if (z<0) z=0;
       if (z>999) z=999;
       return z;
@@ -1574,20 +1572,18 @@ var SpacedeckSections = {
         payload_thumbnail_web_uri: url || null,
         space_id: space._id,
 
-        style: {
-          order: this.active_space_artifacts.length+1,
-          valign: "middle",
-          align: "center"
-          //fill_color: "#f8f8f8"
-        }
+        order: this.active_space_artifacts.length+1,
+        valign: "middle",
+        align: "center"
+        //fill_color: "#f8f8f8"
       };
 
       if (mimes[item_type] == "text/html") {
-        new_item.style.padding_left = 10;
-        new_item.style.padding_top = 10;
-        new_item.style.padding_right = 10;
-        new_item.style.padding_bottom = 10;
-        new_item.style.fill_color = "rgba(255,255,255,1)";
+        new_item.padding_left = 10;
+        new_item.padding_top = 10;
+        new_item.padding_right = 10;
+        new_item.padding_bottom = 10;
+        new_item.fill_color = "rgba(255,255,255,1)";
         new_item.description = "<p>Text</p>";
       }
 
@@ -1600,13 +1596,11 @@ var SpacedeckSections = {
         z = point.z;
       }
 
-      new_item.board = {
-        x: parseInt(point.x),
-        y: parseInt(point.y),
-        w: w,
-        h: h,
-        z: z
-      };
+      new_item.x = parseInt(point.x);
+      new_item.y = parseInt(point.y);
+      new_item.z = z;
+      new_item.w = w;
+      new_item.h = h;
 
       if (this.guest_nickname) {
         new_item.editor_name = this.guest_nickname;
@@ -1665,7 +1659,7 @@ var SpacedeckSections = {
       for (var i=0; i<new_zones.length; i++) {
         if (new_zones[i]) {
           if (!new_zones[i].style) new_zones[i].style = {};
-          new_zones[i].style.order = i;
+          new_zones[i].order = i;
           save_artifact(new_zones[i]);
         }
       }
@@ -1679,7 +1673,7 @@ var SpacedeckSections = {
       for (var i=0; i<new_zones.length; i++) {
         if (new_zones[i]) {
           if (!new_zones[i].style) new_zones[i].style = {};
-          new_zones[i].style.order = i;
+          new_zones[i].order = i;
           save_artifact(new_zones[i]);
         }
       }
@@ -1695,17 +1689,13 @@ var SpacedeckSections = {
         space_id: this.active_space._id,
         mime: "x-spacedeck/zone",
         description: "Zone "+(this.zones.length+1),
-        board: {
-          x: point.x,
-          y: point.y,
-          w: w,
-          h: h,
-          z: 0
-        },
-        style: {
-          valign: "middle",
-          align: "center"
-        }
+        x: point.x,
+        y: point.y,
+        w: w,
+        h: h,
+        z: 0,
+        valign: "middle",
+        align: "center"
       };
 
       if (this.guest_nickname) {
@@ -1735,22 +1725,18 @@ var SpacedeckSections = {
         space_id: this.active_space._id,
         mime: "x-spacedeck/shape",
         description: "Text",
-        board: {
-          x: point.x,
-          y: point.y,
-          z: point.z,
-          w: w,
-          h: h
-        },
-        style: {
-          stroke_color: "#ffffff",
-          text_color: "#ffffff",
-          stroke: 0,
-          fill_color: "#000000",
-          shape: shape_type,
-          valign: "middle",
-          align: "center"
-        }
+        x: point.x,
+        y: point.y,
+        z: point.z,
+        w: w,
+        h: h,
+        stroke_color: "#ffffff",
+        text_color: "#ffffff",
+        stroke: 0,
+        fill_color: "#000000",
+        shape: shape_type,
+        valign: "middle",
+        align: "center"
       };
 
       if (this.guest_nickname) {
@@ -1829,17 +1815,13 @@ var SpacedeckSections = {
         state: "uploading",
         payload_thumbnail_medium_uri: null,
         payload_thumbnail_web_uri: null,
-        board: {
-          x: point.x,
-          y: point.y,
-          w: w,
-          h: h,
-          z: point.z
-        },
-        style: {
-          order: this.active_space_artifacts.length+1,
-          fill_color: fill
-        }
+        x: point.x,
+        y: point.y,
+        w: w,
+        h: h,
+        z: point.z,
+        order: this.active_space_artifacts.length+1,
+        fill_color: fill
       }
 
       this.update_board_artifact_viewmodel(a);
@@ -1864,7 +1846,11 @@ var SpacedeckSections = {
           a.payload_thumbnail_big_uri = updated_a.payload_thumbnail_big_uri;
           a.payload_alternatives = updated_a.payload_alternatives;
           a.mime = updated_a.mime;
-          a.board = updated_a.board;
+          a.x = updated_a.x;
+          a.y = updated_a.y;
+          a.w = updated_a.w;
+          a.h = updated_a.h;
+          a.z = updated_a.z;
           a.state = updated_a.state;
           this.update_board_artifact_viewmodel(a);
 
@@ -2002,26 +1988,26 @@ var SpacedeckSections = {
     clear_formatting_walk: function(el,cmd,arg1,arg2) {
       if (el && el.style) {
         if (cmd == "preciseFontSize") {
-          el.style.fontSize = null;
+          el.fontSize = null;
         } else if (cmd == "letterSpacing") {
-          el.style.letterSpacing = null;
+          el.letterSpacing = null;
         } else if (cmd == "lineHeight") {
-          el.style.lineHeight = null;
+          el.lineHeight = null;
         } else if (cmd == "fontName") {
-          el.style.fontFamily = null;
+          el.fontFamily = null;
         } else if (cmd == "fontWeight") {
-          el.style.fontWeight = null;
-          el.style.fontStyle = null;
+          el.fontWeight = null;
+          el.fontStyle = null;
         } else if (cmd == "bold") {
-          el.style.fontWeight = null;
+          el.fontWeight = null;
         } else if (cmd == "italic") {
-          el.style.fontStyle = null;
+          el.fontStyle = null;
         } else if (cmd == "underline") {
-          el.style.textDecoration = null;
+          el.textDecoration = null;
         } else if (cmd == "strikeThrough") {
-          el.style.textDecoration = null;
+          el.textDecoration = null;
         } else if (cmd == "forecolor") {
-          el.style.color = null;
+          el.color = null;
         }
       }
 
@@ -2108,6 +2094,9 @@ var SpacedeckSections = {
 
           if (a.description!=dom.innerHTML) {
             a.description = dom.innerHTML;
+
+            console.log("new DOM:",dom.innerHTML);
+            
             this.update_board_artifact_viewmodel(a);
             this.queue_artifact_for_save(a);
 
@@ -2141,10 +2130,7 @@ var SpacedeckSections = {
 
     remove_link_from_selected_artifacts: function() {
       this.update_selected_artifacts(function(a) {
-        var meta = a.meta || {};
-        delete meta.link_uri;
-
-        return {meta: meta};
+        return {link_uri: ""};
       });
     },
 
@@ -2160,9 +2146,7 @@ var SpacedeckSections = {
       var insert_link_url = prompt("URL:",def);
 
       this.update_selected_artifacts(function(a) {
-        var meta = a.meta || {};
-        meta.link_uri = insert_link_url;
-        var update = {meta: meta};
+        var update = {link_uri: insert_link_url};
 
         if (a.payload_uri && a.payload_uri.match("webgrabber")) {
           var enc_uri = encodeURIComponent(btoa(insert_link_url));
@@ -2185,11 +2169,10 @@ var SpacedeckSections = {
       delete copy["$index"];
       delete copy["_id"];
 
-      if (dx) copy.board.x += dx;
-      if (dy) copy.board.y += dy;
+      if (dx) copy.x += dx;
+      if (dy) copy.y += dy;
 
-      if (!copy.style) copy.style = {};
-      copy.style.order = this.active_space_artifacts.length+1;
+      copy.order = this.active_space_artifacts.length+1;
 
       if (this.guest_nickname) {
         copy.editor_name = this.guest_nickname;
@@ -2334,16 +2317,16 @@ var SpacedeckSections = {
             if (parsed[i].mime) {
               var z = this.highest_z()+1;
               if (parsed.length==1) {
-                var w = parsed[i].board.w;
-                var h = parsed[i].board.h;
+                var w = parsed[i].w;
+                var h = parsed[i].h;
                 var point = this.find_place_for_item(w,h);
-                parsed[i].board.x = point.x;
-                parsed[i].board.y = point.y;
-                parsed[i].board.z = point.z;
+                parsed[i].x = point.x;
+                parsed[i].y = point.y;
+                parsed[i].z = point.z;
               } else {
-                parsed[i].board.x = parsed[i].board.x+50;
-                parsed[i].board.y = parsed[i].board.y+50;
-                parsed[i].board.y = parsed[i].board.z+z;
+                parsed[i].x = parsed[i].x+50;
+                parsed[i].y = parsed[i].y+50;
+                parsed[i].y = parsed[i].z+z;
               }
               this.clone_artifact(parsed[i], 0,0, function(a) {
                 this.multi_select([a]);
@@ -2373,13 +2356,11 @@ var SpacedeckSections = {
       var h = 300;
       var point = this.find_place_for_item(w,h);
 
-      new_item.board = {
-        x: point.x,
-        y: point.y,
-        w: w,
-        h: h,
-        z: point.z
-      };
+      new_item.x = point.x;
+      new_item.y = point.y;
+      new_item.w = w;
+      new_item.h = h;
+      new_item.z = point.z;
 
       if (this.guest_nickname) {
         new_item.editor_name = this.guest_nickname;
@@ -2402,16 +2383,12 @@ var SpacedeckSections = {
         mime: "image/png",
         description: url,
         state: "uploading",
-        board: {
-          x: point.x,
-          y: point.y,
-          w: 200,
-          h: 200,
-          z: z
-        },
-        style: {
-          order: this.active_space_artifacts.length
-        }
+        x: point.x,
+        y: point.y,
+        w: 200,
+        h: 200,
+        z: z,
+        order: this.active_space_artifacts.length
       }
 
       var metadata = parse_link(url)
@@ -2473,16 +2450,12 @@ var SpacedeckSections = {
         payload_thumbnail_medium_uri: metadata.thumbnail_url,
         payload_thumbnail_web_uri: metadata.thumbnail_url,
         state: "idle",
-        meta: {
-          title: metadata.title,
-          link_uri: metadata.url || url
-        },
-        board: {
-          x: point.x - w/2,
-          y: point.y - h/2,
-          w: w,
-          h: h
-        }
+        title: metadata.title,
+        link_uri: metadata.url || url,
+        x: point.x - w/2,
+        y: point.y - h/2,
+        w: w,
+        h: h
       });
 
       if (this.guest_nickname) {
@@ -2591,7 +2564,7 @@ var SpacedeckSections = {
     },
 
     remove_section_background: function() {
-      this.active_space.advanced.background_uri = null;
+      this.active_space.background_uri = null;
       save_space(this.active_space);
     },
 
@@ -2652,8 +2625,8 @@ var SpacedeckSections = {
 
       this.bounds_zoom = this.viewport_zoom;
 
-      var eff_w = this.active_space.advanced.width*this.viewport_zoom;
-      var eff_h = this.active_space.advanced.height*this.viewport_zoom;
+      var eff_w = this.active_space.width*this.viewport_zoom;
+      var eff_h = this.active_space.height*this.viewport_zoom;
 
       if (window.innerWidth>eff_w) {
         // horizontal centering
@@ -2846,8 +2819,8 @@ var SpacedeckSections = {
         
         var el = $("#space")[0];
 
-        var eff_w = this.active_space.advanced.width*this.viewport_zoom;
-        var eff_h = this.active_space.advanced.height*this.viewport_zoom;
+        var eff_w = this.active_space.width*this.viewport_zoom;
+        var eff_h = this.active_space.height*this.viewport_zoom;
         
         var sx = el.scrollLeft;
         var sy = el.scrollTop;
@@ -2980,9 +2953,9 @@ var SpacedeckSections = {
 
           var w = 300;
           var h = 200;
-          if (parsed.board && parsed.board.w && parsed.board.h) {
-            w = parsed.board.w;
-            h = parsed.board.h;
+          if (parsed.board && parsed.w && parsed.h) {
+            w = parsed.w;
+            h = parsed.h;
           }
 
           var point = this.cursor_point_to_space(evt);

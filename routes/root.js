@@ -1,7 +1,7 @@
 "use strict";
 
 const config = require('config');
-require('../models/schema');
+require('../models/db');
 
 const redis = require('../helpers/redis');
 const express = require('express');
@@ -9,7 +9,6 @@ const crypto = require('crypto');
 const router = express.Router();
 const mailer = require('../helpers/mailer');
 const _ = require('underscore');
-const qr = require('qr-image');
 
 router.get('/', (req, res) => {
   res.render('index', { title: 'Spaces' });
@@ -92,10 +91,6 @@ router.get('/login', (req, res) => {
 });
 
 router.get('/logout', (req, res) => {
-  res.render('spacedeck');
-});
-
-router.get('/users/oauth2callback', (req, res) => {
   res.render('spacedeck');
 });
 
@@ -183,107 +178,6 @@ router.get('/spaces/:id', (req, res) => {
       res.render('spacedeck', { title: 'Space' });
     }
   } else res.render('spacedeck', { title: 'Space' });
-});
-
-router.get('/users/byteam/:team_id/join', (req, res) => {
-  if (!req.user) {
-    const q = {confirmation_token: req.query.confirmation_token, account_type: "email", team: req.params.team_id};
-    User.findOne(q,  (err, user) => {
-      if (err) {
-        res.status(400).json({"error":"session.users"});
-      } else {
-        if (user) {
-          crypto.randomBytes(48, function(ex, buf) {
-            const token = buf.toString('hex');
-
-            var session = {
-              token: token,
-              ip: req.ip,
-              device: "web",
-              created_at: new Date()
-            };
-
-            if (!user.sessions)
-              user.sessions = [];
-
-            user.sessions.push(session);
-            user.confirmed_at = new Date();
-            user.confirmation_token = null;
-
-            user.save(function(err, result) {
-              // FIXME
-              const secure = process.env.NODE_ENV == "production" || process.env.NODE_ENV == "staging";
-              const domain = (process.env.NODE_ENV == "production") ? ".spacedeck.com" : ".spacedecklocal.de";
-
-              res.cookie('sdsession', token, { domain: domain, httpOnly: true, secure: secure});
-              res.redirect("/spaces");
-            });
-          });
-        } else {
-          res.status(404).json({"error": "not found"});
-        }
-      }
-    });
-
-  } else {
-    res.redirect("/spaces");
-  }
-});
-
-router.get('/teams/:id/join', function(req, res, next) {
-  if (req.user) {
-    if (!req.user.team) {
-      Team.findOne({"_id": req.params.id}, function(err, team) {
-        if (team) {
-          const idx = team.invitation_codes.indexOf(req.query.code);
-          if (idx >= 0) {
-            const u = req.user;
-            u.team = team;
-
-            if(!u.confirmed_at) {
-              u.confirmed_at = new Date();
-            }
-            
-            u.payment_plan_key = team.payment_plan_key;
-            u.save(function(err) {
-              if (err) res.status(400).json(err);
-              else {
-                team.invitation_condes = team.invitation_codes.slice(idx);
-                team.save(function(err) {
-                  team.invitation_codes = null;
-
-                  var finish = function(team, users) {
-                    User.find({"_id": {"$in": team.admins}}).exec((err, admins) => {
-                      if(admins) {
-                        admins.forEach((admin) => {
-                          mailer.sendMail(
-                            admin.email,
-                            req.i18n.__("team_new_member_subject", team.name),
-                            req.i18n.__("team_new_member_body", u.email, team.name)
-                          );
-                        });
-                      }
-                    });
-                  }
-
-                  User.find({team: team}, function(err, users) {
-                    finish(team, users);
-                    res.redirect("/spaces");
-                  });
-                });
-              }
-            });
-          } else {
-            res.redirect("/spaces?error=team_code_notfound");
-          }
-        } else {
-          res.redirect("/spaces?error=team_notfound");
-        }
-      });
-    } else {
-      res.redirect("/spaces?error=team_already");
-    }
-  } else res.redirect("/login");
 });
 
 router.get('/qrcode/:id', function(req, res) {

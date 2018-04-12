@@ -21,7 +21,7 @@ function vec2_angle(v) {
 }
 
 function render_vector_drawing(a, padding) {
-  var shape = a.style.shape || "";
+  var shape = a.shape || "";
   var path = [];
   var p = a.control_points[0];
 
@@ -48,8 +48,8 @@ function render_vector_drawing(a, padding) {
 
     var d = "M" + (cps.dx + padding) + "," + (cps.dy + padding) + " Q" + (scaledMiddlePoint.dx + padding) + "," + (scaledMiddlePoint.dy + padding) + " " + (cpe.dx + padding) + "," + (cpe.dy + padding);
     var tip  = "<defs><marker id='ae" + markerId + "' refX=\"0.1\" refY=\"3\" markerWidth=\"3\" markerHeight=\"6\" orient=\"auto\">";
-        tip += "<path d=\"M-3,0 V6 L3,3 Z\" fill=\""+a.style.stroke_color+"\" stroke-width=\"0\"/></marker></defs>";
-    var svg = tip + "<path d='" + d + "' style='stroke-width:" + a.style.stroke + ";' marker-end='url(#ae" + markerId + ")'/>";
+        tip += "<path d=\"M-3,0 V6 L3,3 Z\" fill=\""+a.stroke_color+"\" stroke-width=\"0\"/></marker></defs>";
+    var svg = tip + "<path d='" + d + "' style='stroke-width:" + a.stroke + ";' marker-end='url(#ae" + markerId + ")'/>";
 
     return svg;
   }
@@ -237,11 +237,11 @@ function render_vector_rect(xradius,yradius,offset) {
 }
 
 function render_vector_shape(a) {
-  var stroke = parseInt(a.style.stroke) + 4;
+  var stroke = parseInt(a.stroke) + 4;
   var offset = stroke / 2;
 
-  var xr = (a.board.w-stroke) / 2;
-  var yr = (a.board.h-stroke) / 2;
+  var xr = (a.w-stroke) / 2;
+  var yr = (a.h-stroke) / 2;
 
   var shape_renderers = {
     ellipse: function() { return render_vector_ellipse(xr, yr, offset); },
@@ -258,7 +258,7 @@ function render_vector_shape(a) {
     cloud: function() { return render_vector_cloud(xr, yr, offset); },
   }
 
-  var render_func = shape_renderers[a.style.shape];
+  var render_func = shape_renderers[a.shape];
 
   if (!render_func) return "";
 

@@ -4,52 +4,18 @@ const exec = require('child_process');
 const gm = require('gm');
 const async = require('async');
 const fs = require('fs');
-const Models = require('../models/schema');
+const Models = require('../models/db');
 const uploader = require('../helpers/uploader');
 const path = require('path');
 const os = require('os');
 
-const fileExtensionMap = {
-  ".amr" : "audio/AMR",
-  ".ogg" : "audio/ogg",
-  ".aac" : "audio/aac",
-  ".mp3" : "audio/mpeg",
-  ".mpg" : "video/mpeg",
-  ".3ga" : "audio/3ga",
-  ".mp4" : "video/mp4",
-  ".wav" : "audio/wav",
-  ".mov" : "video/quicktime",
-  ".doc" : "application/msword",
-  ".dot" : "application/msword",
-  ".docx" : "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-  ".dotx" : "application/vnd.openxmlformats-officedocument.wordprocessingml.template",
-  ".docm" : "application/vnd.ms-word.document.macroEnabled.12",
-  ".dotm" : "application/vnd.ms-word.template.macroEnabled.12",
-  ".xls" : "application/vnd.ms-excel",
-  ".xlt" : "application/vnd.ms-excel",
-  ".xla" : "application/vnd.ms-excel",
-  ".xlsx" : "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-  ".xltx" : "application/vnd.openxmlformats-officedocument.spreadsheetml.template",
-  ".xlsm" : "application/vnd.ms-excel.sheet.macroEnabled.12",
-  ".xltm" : "application/vnd.ms-excel.template.macroEnabled.12",
-  ".xlam" : "application/vnd.ms-excel.addin.macroEnabled.12",
-  ".xlsb" : "application/vnd.ms-excel.sheet.binary.macroEnabled.12",
-  ".ppt" : "application/vnd.ms-powerpoint",
-  ".pot" : "application/vnd.ms-powerpoint",
-  ".pps" : "application/vnd.ms-powerpoint",
-  ".ppa" : "application/vnd.ms-powerpoint",
-  ".pptx" : "application/vnd.openxmlformats-officedocument.presentationml.presentation",
-  ".potx" : "application/vnd.openxmlformats-officedocument.presentationml.template",
-  ".ppsx" : "application/vnd.openxmlformats-officedocument.presentationml.slideshow",
-  ".ppam" : "application/vnd.ms-powerpoint.addin.macroEnabled.12",
-  ".pptm" : "application/vnd.ms-powerpoint.presentation.macroEnabled.12",
-  ".potm" : "application/vnd.ms-powerpoint.template.macroEnabled.12",
-  ".ppsm" : "application/vnd.ms-powerpoint.slideshow.macroEnabled.12",
-  ".key" : "application/x-iwork-keynote-sffkey",
-  ".pages" : "application/x-iwork-pages-sffpages",
-  ".numbers" : "application/x-iwork-numbers-sffnumbers",
-  ".ttf" : "application/x-font-ttf"
-};
+const db = require('../models/db');
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
+
+const mime = require('mime-types');
+const fileType = require('file-type');
+const readChunk = require('read-chunk');
 
 const convertableImageTypes = [
   "image/png",
@@ -69,7 +35,7 @@ const convertableVideoTypes = [
 
 const convertableAudioTypes = [
   "application/ogg",
-  "audio/AMR",
+  "audio/amr",
   "audio/3ga",
   "audio/wav",
   "audio/3gpp",
@@ -128,7 +94,7 @@ function createWaveform(fileName, localFilePath, callback){
 
 function convertVideo(fileName, filePath, codec, callback, progress_callback) {
   var ext = path.extname(fileName);
-  var presetMime = fileExtensionMap[ext];
+  var presetMime = mime.lookup(fileName);
 
   var newExt = codec == "mp4" ? "mp4" : "ogv";
   var convertedPath = filePath + "." + newExt;
@@ -186,7 +152,7 @@ function convertVideo(fileName, filePath, codec, callback, progress_callback) {
 
 function convertAudio(fileName, filePath, codec, callback) {
   var ext = path.extname(fileName);
-  var presetMime = fileExtensionMap[ext];
+  var presetMime = mime.lookup(fileName);
 
   var newExt = codec == "mp3" ? "mp3" : "ogg";
   var convertedPath = filePath + "." + newExt;
@@ -223,22 +189,14 @@ function createThumbnailForVideo(fileName, filePath, callback) {
 
 function getMime(fileName, filePath, callback) {
   var ext = path.extname(fileName);
-  var presetMime = fileExtensionMap[ext];
+  var presetMime = mime.lookup(fileName);
   
   if (presetMime) {
     callback(null, presetMime);
   } else {
-    exec.execFile("file", ["-b","--mime-type", filePath], {}, function(error, stdout, stderr) {
-      console.log("file stdout: ",stdout);
-      if (stderr === '' && error == null) {
-        //filter special chars from commandline
-        var mime = stdout.replace(/[^a-zA-Z0-9\/\-]/g,'');
-        callback(null, mime);
-      } else {
-        console.log("getMime file error: ", error);
-        callback(error, null);
-      }
-    });
+    const buffer = readChunk.sync(filePath, 0, 4100);
+    var mimeType = fileType(buffer);
+    callback(null, mimeType);
   }
 }
 
@@ -272,7 +230,7 @@ function resizeAndUpload(a, size, max, fileName, localFilePath, callback) {
 }
 
 
-var resizeAndUploadImage = function(a, mime, size, fileName, fileNameOrg, imageFilePath, originalFilePath, payloadCallback) {
+var resizeAndUploadImage = function(a, mimeType, size, fileName, fileNameOrg, imageFilePath, originalFilePath, payloadCallback) {
   async.parallel({
     small: function(callback){
       resizeAndUpload(a, size, 320, fileName, imageFilePath, callback);
@@ -285,13 +243,13 @@ var resizeAndUploadImage = function(a, mime, size, fileName, fileNameOrg, imageF
     },
     original: function(callback){
       var s3Key = "s"+ a.space_id.toString() + "/a" + a._id + "/" + fileNameOrg;
-      uploader.uploadFile(s3Key, mime, originalFilePath, function(err, url){
+      uploader.uploadFile(s3Key, mimeType, originalFilePath, function(err, url){
         callback(null, url);
       });
     }
   }, function(err, results) {
     a.state = "idle";
-    a.mime = mime;
+    a.mime = mimeType;
     var stats = fs.statSync(originalFilePath);
 
     a.payload_size = stats["size"];
@@ -301,46 +259,41 @@ var resizeAndUploadImage = function(a, mime, size, fileName, fileNameOrg, imageF
     a.payload_uri = results.original;
 
     var factor = 320/size.width;
-    var newBoardSpecs = a.board;
-    newBoardSpecs.w = Math.round(size.width*factor);
-    newBoardSpecs.h = Math.round(size.height*factor);
-    a.board = newBoardSpecs;
+    a.w = Math.round(size.width*factor);
+    a.h = Math.round(size.height*factor);
 
     a.updated_at = new Date();
-    a.save(function(err) {
-      if(err) payloadCallback(err, null);
-      else {
-        fs.unlink(originalFilePath, function (err) {
-          if (err){
-            console.error(err);
-            payloadCallback(err, null);
-          } else {
-            console.log('successfully deleted ' + originalFilePath);
-            payloadCallback(null, a);
-          }
-        });
-      }
+    a.save().then(function() {
+      fs.unlink(originalFilePath, function (err) {
+        if (err){
+          console.error(err);
+          payloadCallback(err, null);
+        } else {
+          console.log('successfully deleted ' + originalFilePath);
+          payloadCallback(null, a);
+        }
+      });
     });
   });
 };
 
 module.exports = {
   convert: function(a, fileName, localFilePath, payloadCallback, progress_callback) {
-    getMime(fileName, localFilePath, function(err, mime){
-      console.log("[convert] fn: "+fileName+" local: "+localFilePath+" mime:", mime);
+    getMime(fileName, localFilePath, function(err, mimeType){
+      console.log("[convert] fn: "+fileName+" local: "+localFilePath+" mimeType:", mimeType);
 
       if (!err) {
-        if (convertableImageTypes.indexOf(mime) > -1) {
+        if (convertableImageTypes.indexOf(mimeType) > -1) {
          
           gm(localFilePath).size(function (err, size) {
             console.log("[convert] gm:", err, size);
 
             if (!err) {
-              if(mime == "application/pdf") {
+              if(mimeType == "application/pdf") {
                 var firstImagePath =  localFilePath + ".jpeg";
                 exec.execFile("gs", ["-sDEVICE=jpeg","-dNOPAUSE", "-dJPEGQ=80", "-dBATCH", "-dFirstPage=1", "-dLastPage=1", "-sOutputFile=" + firstImagePath, "-r90", "-f", localFilePath], {}, function(error, stdout, stderr) {
                   if(error === null) {
-                    resizeAndUploadImage(a, mime, size, fileName + ".jpeg", fileName, firstImagePath, localFilePath, function(err, a) {
+                    resizeAndUploadImage(a, mimeType, size, fileName + ".jpeg", fileName, firstImagePath, localFilePath, function(err, a) {
                       fs.unlink(firstImagePath, function (err) {
                         payloadCallback(err, a);
                       });
@@ -350,7 +303,7 @@ module.exports = {
                   }
                 });
 
-              } else if(mime == "image/gif") {
+              } else if(mimeType == "image/gif") {
                 //gifs are buggy after convertion, so we should not convert them
 
                 var s3Key = "s"+ a.space_id.toString() + "/a" + a._id.toString() + "/" + fileName;
@@ -362,7 +315,7 @@ module.exports = {
                     var stats = fs.statSync(localFilePath);
 
                     a.state = "idle";
-                    a.mime = mime;
+                    a.mime = mimeType;
 
                     a.payload_size = stats["size"];
                     a.payload_thumbnail_web_uri = url;
@@ -371,36 +324,31 @@ module.exports = {
                     a.payload_uri = url;
 
                     var factor = 320/size.width;
-                    var newBoardSpecs = a.board;
-                    newBoardSpecs.w = Math.round(size.width*factor);
-                    newBoardSpecs.h = Math.round(size.height*factor);
-                    a.board = newBoardSpecs;
+                    a.w = Math.round(size.width*factor);
+                    a.h = Math.round(size.height*factor);
 
                     a.updated_at = new Date();
-                    a.save(function(err){
-                      if(err) payloadCallback(err, null);
-                      else {
-                        fs.unlink(localFilePath, function (err) {
-                          if (err){
-                            console.error(err);
-                            payloadCallback(err, null);
-                          } else {
-                            console.log('successfully deleted ' + localFilePath);
-                            payloadCallback(null, a);
-                          }
-                        });
-                      }
+                    a.save().then(function() {
+                      fs.unlink(localFilePath, function (err) {
+                        if (err){
+                          console.error(err);
+                          payloadCallback(err, null);
+                        } else {
+                          console.log('successfully deleted ' + localFilePath);
+                          payloadCallback(null, a);
+                        }
+                      });
                     });
                   }
                 });
 
               } else {
-                resizeAndUploadImage(a, mime, size, fileName, fileName, localFilePath, localFilePath, payloadCallback);
+                resizeAndUploadImage(a, mimeType, size, fileName, fileName, localFilePath, localFilePath, payloadCallback);
               }
             } else payloadCallback(err);
           });            
       
-        } else if (convertableVideoTypes.indexOf(mime) > -1) {
+        } else if (convertableVideoTypes.indexOf(mimeType) > -1) {
           async.parallel({
             thumbnail: function(callback) {
               createThumbnailForVideo(fileName, localFilePath, function(err, created){
@@ -416,7 +364,7 @@ module.exports = {
               });
             },
             ogg: function(callback) {
-              if (mime == "video/ogg") {
+              if (mimeType == "video/ogg") {
                 callback(null, "org");
               } else {
                 convertVideo(fileName, localFilePath, "ogg", function(err, file) {
@@ -432,7 +380,7 @@ module.exports = {
               }
             },
             mp4: function(callback) {
-              if (mime == "video/mp4") {
+              if (mimeType == "video/mp4") {
                 callback(null, "org");
               } else {
                 convertVideo(fileName, localFilePath, "mp4", function(err, file) {
@@ -448,7 +396,7 @@ module.exports = {
               }
             },
             original: function(callback){
-              uploader.uploadFile(fileName, mime, localFilePath, function(err, url){
+              uploader.uploadFile(fileName, mimeType, localFilePath, function(err, url){
                 callback(null, url);
               });
             }
@@ -458,7 +406,7 @@ module.exports = {
             if (err) payloadCallback(err, a);
             else {
               a.state = "idle";
-              a.mime = mime;
+              a.mime = mimeType;
               var stats = fs.statSync(localFilePath);
 
               a.payload_size = stats["size"];
@@ -467,7 +415,7 @@ module.exports = {
               a.payload_thumbnail_big_uri = results.thumbnail;
               a.payload_uri = results.original;
 
-              if (mime == "video/mp4") {
+              if (mimeType == "video/mp4") {
                 a.payload_alternatives = [
                   {
                     mime: "video/ogg",
@@ -482,6 +430,8 @@ module.exports = {
                   }
                 ];
               }
+
+              db.packArtifact(a);
 
               a.updated_at = new Date();
               a.save(function(err) {
@@ -501,7 +451,7 @@ module.exports = {
             }
           });
 
-        } else if (convertableAudioTypes.indexOf(mime) > -1) {
+        } else if (convertableAudioTypes.indexOf(mimeType) > -1) {
 
           async.parallel({
             ogg: function(callback) {
@@ -539,7 +489,7 @@ module.exports = {
             },
             original: function(callback) {
               var keyName = "s" + a.space_id.toString() + "/a" + a._id.toString() + "/" + fileName;
-              uploader.uploadFile(keyName, mime, localFilePath, function(err, url){
+              uploader.uploadFile(keyName, mimeType, localFilePath, function(err, url){
                 callback(null, url);
               });
             }
@@ -550,7 +500,7 @@ module.exports = {
             else {
 
               a.state = "idle";
-              a.mime = mime;
+              a.mime = mimeType;
               var stats = fs.statSync(localFilePath);
 
               a.payload_size = stats["size"];
@@ -564,43 +514,40 @@ module.exports = {
               ];
 
               a.updated_at = new Date();
-              a.save(function(err){
-                if(err) payloadCallback(err, null);
-                else {
-                  fs.unlink(localFilePath, function (err) {
-                    if (err){
-                      console.error(err);
-                      payloadCallback(err, null);
-                    } else {
-                      console.log('successfully deleted ' + localFilePath);
-                      payloadCallback(null, a);
-                    }
-                  });
-                }
+
+              db.packArtifact(a);
+              
+              a.save().then(function(){
+                fs.unlink(localFilePath, function (err) {
+                  if (err){
+                    console.error(err);
+                    payloadCallback(err, null);
+                  } else {
+                    console.log('successfully deleted ' + localFilePath);
+                    payloadCallback(null, a);
+                  }
+                });
               });
             }
           });
 
 
         } else {
-          console.log("mime not matched for conversion, storing file");
+          console.log("mimeType not matched for conversion, storing file");
           var keyName = "s" + a.space_id.toString() + "/a" + a._id.toString() + "/" + fileName;
-          uploader.uploadFile(keyName, mime, localFilePath, function(err, url) {
+          uploader.uploadFile(keyName, mimeType, localFilePath, function(err, url) {
             
             a.state = "idle";
-            a.mime = mime;
+            a.mime = mimeType;
             var stats = fs.statSync(localFilePath);
             a.payload_size = stats["size"];
             a.payload_uri = url;
             
             a.updated_at = new Date();
-            a.save(function(err) {
-              if(err) payloadCallback(err, null);
-              else {
-                fs.unlink(localFilePath, function (err) {
-                  payloadCallback(null, a);
-                });
-              }
+            a.save().then(function() {
+              fs.unlink(localFilePath, function (err) {
+                payloadCallback(null, a);
+              });
             });
           });
         }

@@ -1,7 +1,12 @@
 "use strict";
 
 var config = require('config');
-require('../../models/schema');
+
+const os = require('os');
+const db = require('../../models/db');
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
+const uuidv4 = require('uuid/v4');
 
 var payloadConverter = require('../../helpers/artifact_converter');
 var redis = require('../../helpers/redis');
@@ -9,13 +14,11 @@ var redis = require('../../helpers/redis');
 var async = require('async');
 var fs = require('fs');
 var _ = require("underscore");
-var mongoose = require("mongoose");
 var archiver = require('archiver');
 var request = require('request');
 var url = require("url");
 var path = require("path");
 var crypto = require('crypto');
-var qr = require('qr-image');
 var glob = require('glob');
 var gm = require('gm');
 
@@ -46,15 +49,24 @@ var roleMapping = {
 // ARTIFACTS
 
 router.get('/', (req, res) => {
-  Artifact.find({
+  db.Artifact.findAll({where: {
     space_id: req.space._id
-  }).exec((err, artifacts) => {
+  }}).then(artifacts => {
     async.map(artifacts, (a, cb) => {
-      a = a.toObject();
+      //a = a.toObject(); TODO
+
+      if (a.control_points) {
+        a.control_points = JSON.parse(a.control_points);
+      }
+      if (a.payload_alternatives) {
+        a.payload_alternatives = JSON.parse(a.payload_alternatives);
+      }
+      
       if (a.user_id) {
-        User.findOne({
+        // FIXME JOIN
+        /*User.findOne({where: {
           "_id": a.user_id
-        }).select({
+        }}).select({
           "_id": 1,
           "nickname": 1,
           "email": 1
@@ -63,7 +75,8 @@ router.get('/', (req, res) => {
             a['user'] = user.toObject();
           }
           cb(err, a);
-        });
+        });*/
+        cb(null, a);
       } else {
         cb(null, a);
       }
@@ -81,9 +94,8 @@ router.post('/', function(req, res, next) {
 
   attrs['space_id'] = req.space._id;
 
-  var artifact = new Artifact(attrs);
-
-  artifact.created_from_ip = req['real_ip'];
+  var artifact = attrs;
+  artifact._id = uuidv4();
   
   if (req.user) {
     artifact.user_id = req.user._id;
@@ -92,23 +104,18 @@ router.post('/', function(req, res, next) {
     artifact.last_update_editor_name = req.editor_name;
   }
 
-  if (req.spaceRole == "editor"  ||  req.spaceRole == "admin") {
-    artifact.save(function(err) {
-      if (err) res.status(400).json(err);
-      else {
-        Space.update({
-          _id: req.space._id
-        }, {
-          "$set": {
-            updated_at: new Date()
-          }
-        });
-        res.distributeCreate("Artifact", artifact);
-      }
+  db.packArtifact(artifact);
+
+  if (req.spaceRole == "editor" || req.spaceRole == "admin") {
+    db.Artifact.create(artifact).then(() => {
+      //if (err) res.status(400).json(err);
+      db.unpackArtifact(artifact);
+      db.Space.update({ updated_at: new Date() }, {where: {_id: req.space._id}});
+      res.distributeCreate("Artifact", artifact);
     });
   } else {
     res.status(401).json({
-      "error": "no access"
+      "error": "Access denied"
     });
   }
 });
@@ -118,7 +125,8 @@ router.post('/:artifact_id/payload', function(req, res, next) {
     var a = req.artifact;
 
     var fileName = (req.query.filename || "upload.bin").replace(/[^a-zA-Z0-9_\-\.]/g, '');
-    var localFilePath = "/tmp/" + fileName;
+
+    var localFilePath = os.tmpdir() + "/" + fileName;
     var writeStream = fs.createWriteStream(localFilePath);
     var stream = req.pipe(writeStream);
 
@@ -132,13 +140,7 @@ router.post('/:artifact_id/payload', function(req, res, next) {
       payloadConverter.convert(a, fileName, localFilePath, function(error, artifact) {
         if (error) res.status(400).json(error);
         else {
-          Space.update({
-            _id: req.space._id
-          }, {
-            "$set": {
-              updated_at: new Date()
-            }
-          });
+          db.Space.update({ updated_at: new Date() }, {where: {_id: req.space._id}});
           res.distributeUpdate("Artifact", artifact);
         }
       }, progress_callback);
@@ -161,42 +163,23 @@ router.put('/:artifact_id', function(req, res, next) {
   } else {
     newAttr.last_update_editor_name = req.editor_name;
   }
+  
+  db.packArtifact(newAttr);
 
-  Artifact.findOneAndUpdate({
+  db.Artifact.update(newAttr, { where: {
     "_id": a._id
-  }, {
-    "$set": newAttr
-  }, {
-    "new": true
-  }, function(err, artifact) {
-    if (err) res.status(400).json(err);
-    else {
-      Space.update({
-        _id: req.space._id
-      }, {
-        "$set": {
-          updated_at: new Date()
-        }
-      });
-      res.distributeUpdate("Artifact", artifact);
-    }
+  }}).then(rows => {
+    db.unpackArtifact(newAttr);
+    db.Space.update({ updated_at: new Date() }, {where: {_id: req.space._id} });
+    res.distributeUpdate("Artifact", newAttr);
   });
 });
 
 router.delete('/:artifact_id', function(req, res, next) {
   var artifact = req.artifact;
-  artifact.remove(function(err) {
-    if (err) res.status(400).json(err);
-    else {
-      Space.update({
-        _id: req.space._id
-      }, {
-        "$set": {
-          updated_at: new Date()
-        }
-      });
-      res.distributeDelete("Artifact", artifact);
-    }
+  db.Artifact.destroy({where: { "_id": artifact._id}}).then(() => {
+    db.Space.update({ updated_at: new Date() }, {where: {_id: req.space._id} });
+    res.distributeDelete("Artifact", artifact);
   });
 });
 
