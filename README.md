@@ -35,7 +35,9 @@ It also has some optional binary dependencies for advanced media conversion:
 
 By default, media files are uploaded to the ```storage``` folder.
 
-To run Spacedeck, you only need Node.JS 9.x. Then, to install all node dependencies, run
+To use Spacedeck, you only need Node.JS 9.x.
+
+Then, to install all node dependencies, run
 
     npm install
 
@@ -47,12 +49,15 @@ To rebuild the frontend CSS styles (you need to do this at least once):
 
 See [config/default.json](config/default.json)
 
-# Run
+# Run (web server)
 
-    export NODE_ENV=development
-    npm start
+    node spacedeck.js
 
 Then open http://localhost:9666 in a web browser.
+
+# Run (desktop app with integrated web server)
+
+    electron .
 
 # License
 
