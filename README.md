@@ -4,8 +4,6 @@ This is the free and open source version of Spacedeck, a web based, real time, c
 
 As we plan to retire the subscription based service at spacedeck.com in May 2018, we decided to open-source Spacedeck to allow educational and other organizations who currently rely on Spacedeck to migrate to a self-hosted or local version.
 
-Data migration features will be added soon.
-
 We appreciate filed issues, pull requests and general discussion.
 
 # Features
@@ -19,21 +17,31 @@ We appreciate filed issues, pull requests and general discussion.
 - Share Spaces on the web or via email
 - Export your work as printable PDF or ZIP
 
+# Data Import from Spacedeck.com
+
+Spacedeck Open has a data import feature that you can use to migrate your ZIP export from Spacedeck.com.
+
+1. To import, first drop your downloaded ZIP file in the spacedeck root folder.
+2. Navigate to *Account / Profile* in your local Spacedeck Open application (person icon in the top right corner).
+3. On the bottom of the page, click the *Import* button next to the ZIP file name.
+4. Wait until console output has finished.
+
 # Requirements, Installation
 
 Spacedeck uses the following major building blocks:
 
-- Node.js 9.x: Web Server / API
-- Vue.js: Frontend UI Framework (included)
-- SQLite (included)
+- Node.js 9.x: Web Server / API. Download: https://nodejs.org
+- Vue.js: Frontend UI Framework, included
+- SQLite, included
 
 It also has some optional binary dependencies for advanced media conversion:
 
-- ffmpeg and ffprobe (for video/audio conversion)
-- audiowaveform (for audio waveform rendering) (https://github.com/bbcrd/audiowaveform)
-- ghostscript (gs, for PDF import)
+- ffmpeg and ffprobe for video/audio conversion. Download: https://www.ffmpeg.org/download.html
+- audiowaveform for audio waveform rendering. Download: https://github.com/bbcrd/audiowaveform
+- ghostscript for PDF import. Download: https://www.ghostscript.com/download/gsdnld.html
 
 By default, media files are uploaded to the ```storage``` folder.
+The database is stored in ```database.sqlite``` by default.
 
 To use Spacedeck, you only need Node.JS 9.x.
 
