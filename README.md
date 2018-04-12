@@ -4,6 +4,8 @@ This is the free and open source version of Spacedeck, a web based, real time, c
 
 As we plan to retire the subscription based service at spacedeck.com in May 2018, we decided to open-source Spacedeck to allow educational and other organizations who currently rely on Spacedeck to migrate to a self-hosted or local version.
 
+Easy to use desktop releases with binaries for Linux, Mac and Windows will be published here soon. In the meantime, you have to install Node.JS.
+
 We appreciate filed issues, pull requests and general discussion.
 
 # Features
