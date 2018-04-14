@@ -46,7 +46,7 @@
 	"specify": "Bitte spezifiziere",
 	"confirm": "Bitte bestätige",
 	"signup_google": "Mit Google anmelden",
-	"error_unknown_email": "Unbekannte Kombination von Email und Passwort. Oder versuche dich mit Google anzumelden.",
+	"error_unknown_email": "Unbekannte Kombination von Email und Passwort.",
 	"error_password_confirmation": "Die beiden Passwörter stimmen nicht überein.",
 	"error_domain_blocked": "Diese Domain ist gesperrt.",
 	"error_user_email_already_used": "Diese Email-Adresse ist bereits registriert.",

@@ -320,26 +320,26 @@ module.exports = {
   },
 
   unpackArtifact: (a) => {
-    if (a.tags) {
+    if (a.tags && (typeof a.tags)=="string") {
       a.tags = JSON.parse(a.tags);
     }
-    if (a.control_points) {
+    if (a.control_points && (typeof a.control_points)=="string") {
       a.control_points = JSON.parse(a.control_points);
     }
-    if (a.payload_alternatives) {
+    if (a.payload_alternatives && (typeof a.payload_alternatives)=="string") {
       a.payload_alternatives = JSON.parse(a.payload_alternatives);
     }
     return a;
   },
 
   packArtifact: (a) => {
-    if (a.tags) {
+    if (a.tags && (typeof a.tags)!="string") {
       a.tags = JSON.stringify(a.tags);
     }
-    if (a.control_points) {
+    if (a.control_points && (typeof a.control_points)!="string") {
       a.control_points = JSON.stringify(a.control_points);
     }
-    if (a.payload_alternatives) {
+    if (a.payload_alternatives && (typeof a.payload_alternatives)!="string") {
       a.payload_alternatives = JSON.stringify(a.payload_alternatives);
     }
     return a;

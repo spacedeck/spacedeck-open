@@ -37,7 +37,7 @@ const convertableAudioTypes = [
   "application/ogg",
   "audio/amr",
   "audio/3ga",
-  "audio/wav",
+  "audio/wave",
   "audio/3gpp",
   "audio/x-wav",
   "audio/aiff",
@@ -263,6 +263,8 @@ var resizeAndUploadImage = function(a, mimeType, size, fileName, fileNameOrg, im
     a.h = Math.round(size.height*factor);
 
     a.updated_at = new Date();
+    db.packArtifact(a);
+
     a.save().then(function() {
       fs.unlink(originalFilePath, function (err) {
         if (err){
@@ -328,6 +330,8 @@ module.exports = {
                     a.h = Math.round(size.height*factor);
 
                     a.updated_at = new Date();
+                    db.packArtifact(a);
+
                     a.save().then(function() {
                       fs.unlink(localFilePath, function (err) {
                         if (err){

@@ -41,7 +41,7 @@ var SpacedeckBoardArtifacts = {
     if ("medium_for_object" in this) {
       var medium = this.medium_for_object[a._id];
       if (medium && a._id != this.editing_artifact_id) {
-        medium.value(a.description);
+        medium.value(a.description.toString());
       }
     }
   },
@@ -88,10 +88,11 @@ var SpacedeckBoardArtifacts = {
   },
 
   artifact_is_text_blank: function(a) {
-    if(a.description){
-      var filtered = a.description.replace(/<[^>]+>/g,"").replace(/\s/g,"");
+    if (a.description) {
+      desc = a.description.toString();
+      var filtered = desc.replace(/<[^>]+>/g,"").replace(/\s/g,"");
       return (filtered.length<1);
-    }else{
+    } else {
       return false;
     }
   },
