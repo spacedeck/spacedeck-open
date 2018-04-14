@@ -3,6 +3,7 @@
 var config = require('config');
 const db = require('../../models/db');
 const uuidv4 = require('uuid/v4');
+const os = require('os');
 
 var mailer = require('../../helpers/mailer');
 var uploader = require('../../helpers/uploader');
@@ -215,8 +216,8 @@ router.post('/:user_id/avatar', (req, res, next) => {
   const user = req.user;
   const filename = "u"+req.user._id+"_"+(new Date().getTime())+".jpeg"
 
-  const localFilePath = "/tmp/"+filename;
-  const localResizedFilePath = "/tmp/resized_"+filename;
+  const localFilePath = os.tmpdir()+"/"+filename;
+  const localResizedFilePath = os.tmpdir()+"/resized_"+filename;
   const writeStream = fs.createWriteStream(localFilePath);
   const stream = req.pipe(writeStream);
 
