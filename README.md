@@ -41,10 +41,6 @@ To install all node dependencies, run (do this once):
 
     npm install
 
-To rebuild the frontend CSS styles (do this at least once, too):
-
-    gulp styles
-
 # Configuration
 
 See [config/default.json](config/default.json)
@@ -71,6 +67,12 @@ For advanced media conversion:
 
 By default, media files are uploaded to the ```storage``` folder.
 The database is stored in ```database.sqlite``` by default.
+
+# Hacking
+
+To rebuild the frontend CSS styles:
+
+    gulp styles
 
 # License
 
