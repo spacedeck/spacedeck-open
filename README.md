@@ -1,14 +1,14 @@
 # Spacedeck Open
 
-This is the free and open source version of Spacedeck, a web based, real time, collaborative whiteboard application with rich media support. Spacedeck was developed in 6 major releases during Autumn 2011 until the end of 2016 and was originally a commercial SaaS. The developers were Lukas F. Hartmann (mntmn) and Martin Güther (magegu). All icons and large parts of the CSS were designed by Thomas Helbig (dergraph).
+This is the free and open source version of Spacedeck, a web based, real time, collaborative whiteboard application with rich media support. Spacedeck was developed in 6 major releases during Autumn 2011 until the end of 2016 and was originally a commercial SaaS. The developers were Lukas F. Hartmann (mntmn) and Martin Güther (magegu).
 
-As we plan to retire the subscription based service at spacedeck.com in May 2018, we decided to open-source Spacedeck to allow educational and other organizations who currently rely on Spacedeck to migrate to a self-hosted or local version.
+The spacedeck.com online service was shut down on May 1st 2018. We decided to open-source Spacedeck to allow educational and other organizations who currently rely on Spacedeck to migrate to a self-hosted or local version.
+
+We appreciate filed issues, pull requests and general discussion.
 
 **Windows users:** Try the one-click release at https://github.com/spacedeck/spacedeck-open/releases/tag/v0.9
 
 Desktop releases for Linux and Mac will be published here soon. In the meantime, you have to install Node.JS to run Spacedeck.
-
-We appreciate filed issues, pull requests and general discussion.
 
 # Features
 
