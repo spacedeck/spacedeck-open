@@ -240,7 +240,6 @@ router.get('/zip', function(req, res, next) {
 });
 
 router.get('/html', function(req, res) {
-  console.log("!!!!! hello ");
   db.Artifact.findAll({where: {
     space_id: req.space._id
   }}).then(function(artifacts) {

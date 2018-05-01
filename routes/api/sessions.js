@@ -23,15 +23,11 @@ router.post('/', function(req, res) {
   db.User.findOne({where: {email: email}})
     .error(err => {
       res.sendStatus(404);
-      //res.status(400).json({"error":"session.users"});
     })
     .then(user => {
-      console.log("!!! user: ",user.password_hash);
-      
       if (bcrypt.compareSync(password, user.password_hash)) {
         crypto.randomBytes(48, function(ex, buf) {
           var token = buf.toString('hex');
-          console.log("!!! token: ",token);
 
           var session = {
             user_id: user._id,
@@ -47,7 +43,7 @@ router.post('/', function(req, res) {
               res.sendStatus(500);
             })
             .then(() => {
-              var domain = (process.env.NODE_ENV == "production") ? new URL(config.get('endpoint')).hostname : "localhost";
+              var domain = (process.env.NODE_ENV == "production") ? new URL(config.get('endpoint')).hostname : req.headers.hostname;
               res.cookie('sdsession', token, { domain: domain, httpOnly: true });
               res.status(201).json(session);
             });
@@ -60,16 +56,14 @@ router.post('/', function(req, res) {
 
 router.delete('/current', function(req, res, next) {
   if (req.user) {
-    /*var user = req.user;
-    var newSessions = user.sessions.filter( function(session){
-      return session.token != req.token;
-    });*/
-    //user.sessions = newSessions;
-    //user.save(function(err, result) {
-      var domain = new URL(config.get('endpoint')).hostname;
-      res.clearCookie('sdsession', { domain: domain });
-      res.sendStatus(204);
-    //});
+    var token = req.cookies['sdsession'];
+    db.Session.findOne({where: {token: token}})
+      .then(session => {
+        session.destroy();
+      });
+    var domain = (process.env.NODE_ENV == "production") ? new URL(config.get('endpoint')).hostname : req.headers.hostname;
+    res.clearCookie('sdsession', { domain: domain });
+    res.sendStatus(204);
   } else {
     res.sendStatus(404);
   }

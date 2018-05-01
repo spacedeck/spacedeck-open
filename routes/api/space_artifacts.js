@@ -133,7 +133,7 @@ router.post('/:artifact_id/payload', function(req, res, next) {
     var progress_callback = function(progress_msg) {
       a.description = progress_msg;
       a.save();
-      redis.sendMessage("update", a, a.toJSON(), req.channelId);
+      redis.sendMessage("update", a, JSON.stringify(a), req.channelId);
     };
 
     stream.on('finish', function() {
@@ -171,6 +171,7 @@ router.put('/:artifact_id', function(req, res, next) {
   }}).then(rows => {
     db.unpackArtifact(newAttr);
     db.Space.update({ updated_at: new Date() }, {where: {_id: req.space._id} });
+    newAttr._id = a._id;
     res.distributeUpdate("Artifact", newAttr);
   });
 });

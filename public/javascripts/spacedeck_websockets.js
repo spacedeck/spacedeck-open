@@ -59,13 +59,13 @@ SpacedeckWebsockets = {
         else if (msg.action == "delete" && msg.object) {
           if (this.active_space) {
             var o = msg.object;
-            if(o._id){
+            if (o._id){
               var existing_artifact = this.find_artifact_by_id(o._id);
               if (existing_artifact) {
                 var idx = this.active_space_artifacts.indexOf(existing_artifact);
                 this.active_space_artifacts.splice(idx, 1);
               } else console.log("existing artifact to delete not found");
-            }else console.error("object without _id");
+            } else console.error("object without _id");
           }
         }
       }
@@ -101,11 +101,13 @@ SpacedeckWebsockets = {
       }
 
       if (this.websocket && this.websocket.readyState==1) {
+        var token = "";
+        if (this.user) token = this.user.token;
         var auth_params = {
           action: "auth",
           editor_auth: space_auth,
           editor_name: this.guest_nickname,
-          auth_token: window.socket_auth,
+          auth_token: token,
           space_id: space._id
         };
         console.log("[websocket] auth space");

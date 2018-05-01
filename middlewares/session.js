@@ -16,7 +16,8 @@ module.exports = (req, res, next) => {
         else db.User.findOne({where: {_id: session.user_id}})
           .then(user => {
             if (!user) {
-              res.clearCookie('sdsession');
+              var domain = (process.env.NODE_ENV == "production") ? new URL(config.get('endpoint')).hostname : req.headers.hostname;
+              res.clearCookie('sdsession', { domain: domain });
 
               if (req.accepts("text/html")) {
                 res.send("Please clear your cookies and try again.");

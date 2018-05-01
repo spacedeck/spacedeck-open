@@ -48,10 +48,6 @@ SpacedeckUsers = {
     },
 
     finalize_login: function(session_token, on_success) {
-      if(!window.socket_auth || window.socket_auth == '' || window.socket_auth == 'null') {
-        window.socket_auth = session_token;
-      }
-
       this.load_user(function(user) {
         if (this.invitation_token) {
           accept_invitation(this.invitation_token, function(memberships){

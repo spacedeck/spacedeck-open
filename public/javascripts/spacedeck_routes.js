@@ -252,8 +252,6 @@ var SpacedeckRoutes = {
       // #hash
       if (event.currentTarget.hash && event.currentTarget.hash.length>1) return;
 
-      console.log("clicked", event.currentTarget.pathname);
-
       // external link?
       if (event.currentTarget.host != location.host) return;
 
@@ -269,35 +267,6 @@ var SpacedeckRoutes = {
       event.preventDefault();
     }.bind(this));
 
-    if (location.host!=ENV.webHost) {
-      if (!subdomainTeam) {
-        location.href = ENV.webEndpoint;
-        return;
-      } else {
-        if(subdomainTeam.subdomain) {
-          var realHost = (subdomainTeam.subdomain + "." + ENV.webHost);
-          if (location.host != realHost) {
-            location.href = realHost;
-            return;
-          }
-        } else {
-          location.href = ENV.webEndpoint;
-          return;
-        }
-      }
-    } 
-
-    if (this.logged_in) {
-      if (this.user.team) {
-        if (this.user.team.subdomain && this.user.team.subdomain.length > 0) {
-          var realHost = (this.user.team.subdomain + "." + ENV.webHost);         
-          if (location.host != realHost) {
-            location.href = location.protocol + "//" + realHost + location.pathname;
-            return;
-          }
-        }
-      }
-    }
     this.internal_route(location.pathname);
   },
   

@@ -22,29 +22,13 @@
       window.browser_lang = '[[locale]]';
       window.csrf_token = '[[csrf_token]]';
 
-      {% if process.env.NODE_ENV != "production" %}
-        var ENV = {
-          name: 'development',
-          webHost: "localhost:9666",
-          webEndpoint:"http://localhost:9666",
-          apiEndpoint: "http://localhost:9666",
-          websocketsEndpoint: "ws://localhost:9666"
-        };
-      {% else %}
-        var ENV = {
-          name: 'production',
-          webHost: location.host,
-          webEndpoint: location.origin,
-          apiEndpoint: location.origin,
-          websocketsEndpoint: location.origin.replace("https:","wss:").replace("http:","ws:")
-        };
-      {% endif %}
-
-      {% if subdomain_team %}
-        var subdomainTeam = [[ subdomain_team | json | safe ]];
-      {% else %}
-        var subdomainTeam = null;
-      {% endif %}
+      var ENV = {
+        name: 'development',
+        webHost: location.host,
+        webEndpoint: location.origin,
+        apiEndpoint: location.origin,
+        websocketsEndpoint: location.origin.replace("https:","wss:").replace("http:","ws:")
+      };
     </script>
 
     {% if process.env.NODE_ENV == "production" %}
