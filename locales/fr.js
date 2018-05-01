@@ -46,7 +46,7 @@
 	"specify": "Veuillez préciser:",
 	"confirm": "Veuillez confirmer",
 	"signup_google": "S'inscrire avec Google",
-	"error_unknown_email": "Combinaison inconnue de l'email et mot de passe. Ou essayer de signer avec Google.",
+	"error_unknown_email": "Combinaison inconnue de l'email et mot de passe.",
 	"error_password_confirmation": "Les deux mots de passe ne correspondent pas.",
 	"error_domain_blocked": "Ce domaine a été désactivé.",
 	"error_user_email_already_used": "Cette adresse email est déjà enregistré.",

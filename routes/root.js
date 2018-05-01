@@ -1,7 +1,6 @@
 "use strict";
 
 const config = require('config');
-require('../models/db');
 
 const redis = require('../helpers/redis');
 const express = require('express');
@@ -9,6 +8,11 @@ const crypto = require('crypto');
 const router = express.Router();
 const mailer = require('../helpers/mailer');
 const _ = require('underscore');
+
+const db = require('../models/db');
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
+const uuidv4 = require('uuid/v4');
 
 router.get('/', (req, res) => {
   res.render('index', { title: 'Spaces' });
@@ -120,79 +124,30 @@ router.get('/t/:id', (req, res) => {
 });
 
 router.get('/s/:token', (req, res) => {
-  redis.rateLimit(req.real_ip, "token", function(ok) {
-    if (ok) {
-      var token = req.params.token; 
-      if (token.split("-").length > 0) {
-        token = token.split("-")[0];
-      }
+  var token = req.params.token; 
+  if (token.split("-").length > 0) {
+    token = token.split("-")[0];
+  }
 
-      Space.findOne({"edit_hash": token}).exec(function (err, space) {
-        if (err) {
-          res.status(404).render('not_found', { title: 'Page Not Found.' });
-        } else {
-          if (space) {
-            if(req.accepts('text/html')){
-              res.redirect("/spaces/"+space._id + "?spaceAuth=" + token);
-            }else{
-              res.status(200).json(space);
-            }
-          } else {
-            if(req.accepts('text/html')){
-              res.status(404).render('not_found', { title: 'Page Not Found.' });
-            } else {
-              res.status(404).json({});
-            }
-          }
-        }
-      });
+  db.Space.findOne({where: {"edit_hash": token}}).then(function (space) {
+    if (space) {
+      if (req.accepts('text/html')){
+	res.redirect("/spaces/"+space._id + "?spaceAuth=" + token);
+      } else {
+	res.status(200).json(space);
+      }
     } else {
-      res.status(429).json({"error": "Too Many Requests"});
+      if (req.accepts('text/html')) {
+	res.status(404).render('not_found', { title: 'Page Not Found.' });
+      } else {
+	res.status(404).json({});
+      }
     }
   });
 });
 
 router.get('/spaces/:id', (req, res) => {
-  if (req.headers['user-agent']) {
-    if (req.headers['user-agent'].match(/facebook/)) {
-      Space.findOne({"_id": req.params.id }).exec(function (err, space) {
-        if (err) {
-          res.status(400).json(err);
-        } else {
-          if (space) {
-            if (space.access_mode == "public") {
-              Artifact.find({"space_id": req.params.id }).populate("creator").exec(function(err, artifacts) {
-                space.artifacts = artifacts;
-                res.render('facebook', { space: space });
-              });
-            } else {
-              res.redirect("/?error=space_not_accessible");
-            }
-          } else {
-            res.render('not_found', { title: 'Spaces' });
-          }
-        }
-      });
-    } else {
-      // not facebook, render javascript
-      res.render('spacedeck', { title: 'Space' });
-    }
-  } else res.render('spacedeck', { title: 'Space' });
-});
-
-router.get('/qrcode/:id', function(req, res) {
-  Space.findOne({"_id": req.params.id}).exec(function(err, space) {
-    if (space) {
-      const url = config.get("endpoint") + "/s/"+space.edit_hash;
-      const code = qr.image(url, { type: 'svg' });
-      res.type('svg');
-      code.pipe(res);
-    } else {
-      res.status(404).json({
-        "error": "not_found"
-      });
-    }
-  });
+  res.render('spacedeck', { title: 'Space' });
 });
 
 module.exports = router;

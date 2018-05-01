@@ -25,7 +25,10 @@ router.post('/', function(req, res) {
       res.sendStatus(404);
     })
     .then(user => {
-      if (bcrypt.compareSync(password, user.password_hash)) {
+      if (!user) {
+        res.sendStatus(404);
+      }
+      else if (bcrypt.compareSync(password, user.password_hash)) {
         crypto.randomBytes(48, function(ex, buf) {
           var token = buf.toString('hex');
 

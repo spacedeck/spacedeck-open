@@ -1,5 +1,6 @@
 node_modules
-public/stylesheets/*
 javascripts/maps
 javascripts/spacedeck.js
+*.swp
+*~
 

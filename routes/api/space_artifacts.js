@@ -53,15 +53,8 @@ router.get('/', (req, res) => {
     space_id: req.space._id
   }}).then(artifacts => {
     async.map(artifacts, (a, cb) => {
-      //a = a.toObject(); TODO
+      db.unpackArtifact(a);
 
-      if (a.control_points) {
-        a.control_points = JSON.parse(a.control_points);
-      }
-      if (a.payload_alternatives) {
-        a.payload_alternatives = JSON.parse(a.payload_alternatives);
-      }
-      
       if (a.user_id) {
         // FIXME JOIN
         /*User.findOne({where: {
@@ -131,7 +124,8 @@ router.post('/:artifact_id/payload', function(req, res, next) {
     var stream = req.pipe(writeStream);
 
     var progress_callback = function(progress_msg) {
-      a.description = progress_msg;
+      a.description = progress_msg.toString();
+      db.packArtifact(a);
       a.save();
       redis.sendMessage("update", a, JSON.stringify(a), req.channelId);
     };
