@@ -1,5 +1,6 @@
 "use strict";
 var config = require('config');
+const os = require('os');
 const db = require('../../models/db');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
@@ -422,17 +423,16 @@ router.post('/:id/artifacts-pdf', function(req, res, next) {
 
     var withZones = (req.query.zones) ? req.query.zones == "true" : false;
     var fileName = (req.query.filename || "upload.bin").replace(/[^a-zA-Z0-9\.]/g, '');
-    var localFilePath = "/tmp/" + fileName;
+    var localFilePath = os.tmpdir() + "/" + fileName;
     var writeStream = fs.createWriteStream(localFilePath);
     var stream = req.pipe(writeStream);
 
     req.on('end', function() {
 
       var rawName = fileName.slice(0, fileName.length - 4);
-      var outputFolder = "/tmp/" + rawName;
-      var rights = 777;
-
-      fs.mkdir(outputFolder, function(db) {
+      var outputFolder = os.tmpdir() + "/" + rawName;
+      
+      fs.mkdir(outputFolder, function(err) {
         var images = outputFolder + "/" + rawName + "-page-%03d.jpeg";
         
         // FIXME not portable
@@ -455,7 +455,7 @@ router.post('/:id/artifacts-pdf', function(req, res, next) {
 
                 var number = parseInt(baseName.slice(baseName.length - 3, baseName.length), 10);
 
-                gm(localFilePath).size(function(err, size) {
+                gm(localFilePath).size((err, size) => {
                   var w = 350;
                   var h = w;
 
@@ -463,56 +463,51 @@ router.post('/:id/artifacts-pdf', function(req, res, next) {
                   var y = startY + ((parseInt(((number - 1) / limitPerRow), 10) + 1) * w);
 
                   var userId;
-                  if (req.user)
-                    userId = req.user._id;
+                  if (req.user) userId = req.user._id;
 
-                  var a = new Artifact({
+                  var a = db.Artifact.create({
+                    _id: uuidv4(),
                     mime: "image/jpg",
                     space_id: req.space._id,
                     user_id: userId,
                     editor_name: req.guest_name,
-                    board: {
-                      w: w,
-                      h: h,
-                      x: x,
-                      y: y,
-                      z: (number + (count + 100))
-                    }
-                  });
-
-                  payloadConverter.convert(a, fileName, localfilePath, (error, artifact) => {
-                    if (error) res.status(400).json(error);
-                    else {
-                      if (withZones) {
-                        var zone = new Artifact({
-                          mime: "x-spacedeck/zone",
-                          description: "Zone " + (number),
-                          space_id: req.space._id,
-                          user_id: userId,
-                          editor_name: req.guest_name,
-                          board: {
+                    w: w,
+                    h: h,
+                    x: x,
+                    y: y,
+                    z: (number + (count + 100))
+                  }).then(a => {
+                    payloadConverter.convert(a, fileName, localfilePath, (error, artifact) => {
+                      if (error) res.status(400).json(error);
+                      else {
+                        if (withZones) {
+                          var zone = {
+                            _id: uuidv4(),
+                            mime: "x-spacedeck/zone",
+                            description: "Zone " + (number),
+                            space_id: req.space._id,
+                            user_id: userId,
+                            editor_name: req.guest_name,
                             w: artifact.board.w + 20,
                             h: artifact.board.h + 40,
                             x: x - 10,
                             y: y - 30,
-                            z: number
-                          },
-                          style: {
+                            z: number,
                             order: number,
                             valign: "middle",
                             align: "center"
-                          }
-                        });
+                          };
 
-                        zone.save((err) => {
-                          redis.sendMessage("create", "Artifact", zone.toJSON(), req.channelId);
-                          cb(null, [artifact, zone]);
-                        });
+                          db.Artifact.create(zone,((z) => {
+                            redis.sendMessage("create", "Artifact", zone.toJSON(), req.channelId);
+                            cb(null, [artifact, zone]);
+                          }));
 
-                      } else {
-                        cb(null, [artifact]);
+                        } else {
+                          cb(null, [artifact]);
+                        }
                       }
-                    }
+                    });
                   });
 
                 });
