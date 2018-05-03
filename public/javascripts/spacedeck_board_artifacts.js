@@ -587,7 +587,7 @@ var SpacedeckBoardArtifacts = {
     var selected = this.selected_artifacts();
     if (selected.length<2) return;
 
-    var sorted = _.sortBy(selected, function(a) { return a.x+a.y*this.active_space.advanced.width }.bind(this));
+    var sorted = _.sortBy(selected, function(a) { return a.x+a.y*this.active_space.width }.bind(this));
 
     var minx = sorted[0].x;
     var miny = sorted[0].y;
@@ -596,11 +596,13 @@ var SpacedeckBoardArtifacts = {
     
     var blocks = [];
 
+    var padding = 10;
+
     for (var i=0; i<sorted.length; i++) {
       var a = sorted[i];
       blocks.push({
-        w: a.w,
-        h: a.h,
+        w: a.w+padding,
+        h: a.h+padding,
         a: a
       });
     }
