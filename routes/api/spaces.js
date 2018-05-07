@@ -488,8 +488,8 @@ router.post('/:id/artifacts-pdf', function(req, res, next) {
                             space_id: req.space._id,
                             user_id: userId,
                             editor_name: req.guest_name,
-                            w: artifact.board.w + 20,
-                            h: artifact.board.h + 40,
+                            w: artifact.w + 20,
+                            h: artifact.h + 40,
                             x: x - 10,
                             y: y - 30,
                             z: number,
@@ -498,10 +498,10 @@ router.post('/:id/artifacts-pdf', function(req, res, next) {
                             align: "center"
                           };
 
-                          db.Artifact.create(zone,((z) => {
-                            redis.sendMessage("create", "Artifact", zone.toJSON(), req.channelId);
+                          db.Artifact.create(zone).then((z) => {
+                            redis.sendMessage("create", "Artifact", z.toJSON(), req.channelId);
                             cb(null, [artifact, zone]);
-                          }));
+                          });
 
                         } else {
                           cb(null, [artifact]);
@@ -522,10 +522,10 @@ router.post('/:id/artifacts-pdf', function(req, res, next) {
 
                     if (artifact_or_artifacts instanceof Array) {
                       _.each(artifact_or_artifacts, (a) => {
-                        redis.sendMessage("create", "Artifact", a.toJSON(), req.channelId);
+                        redis.sendMessage("create", "Artifact", JSON.stringify(a), req.channelId);
                       });
                     } else  {
-                      redis.sendMessage("create", "Artifact", artifact_or_artifacts.toJSON(), req.channelId);
+                      redis.sendMessage("create", "Artifact", JSON.stringify(artifact_or_artifacts), req.channelId);
                     }
                     cb(null);
                   });
