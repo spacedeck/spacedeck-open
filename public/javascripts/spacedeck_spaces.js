@@ -71,9 +71,7 @@ var SpacedeckSpaces = {
   methods: {
     search_spaces: function() {
       var query = this.folder_spaces_search;
-      console.log("search query: ",query);
       load_spaces_search(query, function(spaces) {
-        console.log("results: ",spaces);
         this.active_profile_spaces = spaces;
       }.bind(this));
     },
@@ -85,14 +83,7 @@ var SpacedeckSpaces = {
       location.reload();
     },
     ask_guestname: function(dft, cb) {
-      console.log("ask_guestname");
-
-      var team_name = "Spacedeck";
-
-      if(subdomainTeam) {
-        team_name = subdomainTeam.name;
-      }
-      smoke.prompt(__('what_is_your_name', team_name) , function(content) {
+      smoke.prompt(__('what_is_your_name', "Spacedeck") , function(content) {
         if (!content || (content.length === 0)) {
           this.ask_guestname(dft, cb);
         } else {
@@ -101,7 +92,7 @@ var SpacedeckSpaces = {
           if ("localStorage" in window && localStorage) {
             try {
               localStorage['guest_nickname'] = this.guest_nickname;
-            }catch(e) {
+            } catch(e) {
               console.error(e);
             }
           }
@@ -172,7 +163,6 @@ var SpacedeckSpaces = {
           this.space_embed_html = "<iframe width=\"1024\" height=\"768\" seamless src=\""+ENV.webEndpoint+"/spaces/"+space._id+"?embedded=1\"></iframe>";
 
           if (!is_home) {
-            //console.log(space);
             load_members(space, function(members) {
               this.active_space_memberships = members;
             }.bind(this));
