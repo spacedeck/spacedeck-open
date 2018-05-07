@@ -123,11 +123,11 @@ router.post('/:artifact_id/payload', function(req, res, next) {
     var writeStream = fs.createWriteStream(localFilePath);
     var stream = req.pipe(writeStream);
 
-    var progress_callback = function(progress_msg) {
-      a.description = progress_msg.toString();
+    var progressCallback = function(progressMsg) {
+      a.description = progressMsg.toString();
       db.packArtifact(a);
       a.save();
-      redis.sendMessage("update", a, JSON.stringify(a), req.channelId);
+      redis.sendMessage("update", "Artifact", a, req.channelId);
     };
 
     stream.on('finish', function() {
@@ -137,7 +137,7 @@ router.post('/:artifact_id/payload', function(req, res, next) {
           db.Space.update({ updated_at: new Date() }, {where: {_id: req.space._id}});
           res.distributeUpdate("Artifact", artifact);
         }
-      }, progress_callback);
+      }, progressCallback);
     });
   } else {
     res.status(401).json({

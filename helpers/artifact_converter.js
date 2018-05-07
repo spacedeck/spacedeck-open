@@ -92,14 +92,14 @@ function createWaveform(fileName, localFilePath, callback){
   });
 }
 
-function convertVideo(fileName, filePath, codec, callback, progress_callback) {
+function convertVideo(fileName, filePath, codec, callback, progressCallback) {
   var ext = path.extname(fileName);
   var presetMime = mime.lookup(fileName);
 
   var newExt = codec == "mp4" ? "mp4" : "ogv";
   var convertedPath = filePath + "." + newExt;
 
-  console.log("converting", filePath, "to", convertedPath, "progress_cb:",progress_callback);
+  console.log("converting", filePath, "to", convertedPath);
 
   var convertArgs = (codec == "mp4") ? [
     "-i", filePath,
@@ -134,8 +134,8 @@ function convertVideo(fileName, filePath, codec, callback, progress_callback) {
 
   ff.stderr.on('data', function (data) {
     console.log('[ffmpeg-video] stderr: ' + data);
-    if (progress_callback) {
-      progress_callback(data);
+    if (progressCallback) {
+      progressCallback(data);
     }
   });
 
@@ -280,7 +280,7 @@ var resizeAndUploadImage = function(a, mimeType, size, fileName, fileNameOrg, im
 };
 
 module.exports = {
-  convert: function(a, fileName, localFilePath, payloadCallback, progress_callback) {
+  convert: function(a, fileName, localFilePath, payloadCallback, progressCallback) {
     getMime(fileName, localFilePath, function(err, mimeType){
       console.log("[convert] fn: "+fileName+" local: "+localFilePath+" mimeType:", mimeType);
 
@@ -311,8 +311,8 @@ module.exports = {
                 var s3Key = "s"+ a.space_id.toString() + "/a" + a._id.toString() + "/" + fileName;
 
                 uploader.uploadFile(s3Key, "image/gif", localFilePath, function(err, url) {
-                  if(err)callback(err);
-                  else{
+                  if (err) payloadCallback(err);
+                  else {
                     console.log(localFilePath);
                     var stats = fs.statSync(localFilePath);
 
@@ -357,8 +357,8 @@ module.exports = {
             thumbnail: function(callback) {
               createThumbnailForVideo(fileName, localFilePath, function(err, created){
                 console.log("thumbnail created: ", err, created);
-                if(err) callback(err);
-                else{
+                if (err) callback(err);
+                else {
                   var keyName = "s" + a.space_id.toString() + "/a" + a._id.toString() + "/" + fileName + ".jpg" ;
                   uploader.uploadFile(keyName, "image/jpeg", created, function(err, url){
                     if (err) callback(err);
@@ -380,7 +380,7 @@ module.exports = {
                       else callback(null, url);
                     });
                   }
-                }, progress_callback);
+                }, progressCallback);
               }
             },
             mp4: function(callback) {
@@ -396,7 +396,7 @@ module.exports = {
                       else callback(null, url);
                     });
                   }
-                }, progress_callback);
+                }, progressCallback);
               }
             },
             original: function(callback){
@@ -404,7 +404,7 @@ module.exports = {
                 callback(null, url);
               });
             }
-          }, function(err, results){
+          }, function(err, results) {
             console.log(err, results);
 
             if (err) payloadCallback(err, a);
@@ -438,19 +438,16 @@ module.exports = {
               db.packArtifact(a);
 
               a.updated_at = new Date();
-              a.save(function(err) {
-                if (err) payloadCallback(err, null);
-                else {
-                  fs.unlink(localFilePath, function (err) {
-                    if (err){
-                      console.error(err);
-                      payloadCallback(err, null);
-                    } else {
-                      console.log('successfully deleted ' + localFilePath);
-                      payloadCallback(null, a);
-                    }
-                  });
-                }
+              a.save().then(function() {
+                fs.unlink(localFilePath, function (err) {
+                  if (err) {
+                    console.error(err);
+                    payloadCallback(err, null);
+                  } else {
+                    console.log('successfully deleted ' + localFilePath);
+                    payloadCallback(null, a);
+                  }
+                });
               });
             }
           });
