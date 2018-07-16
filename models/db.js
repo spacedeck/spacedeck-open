@@ -1,5 +1,6 @@
 //'use strict';
 
+var Umzug = require('umzug');
 //var mongoose = require('mongoose');
 //const sqlite3 = require('sqlite3').verbose();
 
@@ -81,13 +82,13 @@ module.exports = {
     height: Sequelize.INTEGER,
     background_color: Sequelize.STRING,
     background_uri: Sequelize.STRING,
-    
+
     created_at: {type: Sequelize.DATE, defaultValue: Sequelize.NOW},
     updated_at: {type: Sequelize.DATE, defaultValue: Sequelize.NOW},
     thumbnail_url: Sequelize.STRING,
     thumbnail_updated_at: {type: Sequelize.DATE}
   }),
-  
+
   Membership: sequelize.define('membership', {
     _id: {type: Sequelize.STRING, primaryKey: true},
     space_id: Sequelize.STRING,
@@ -98,7 +99,7 @@ module.exports = {
     created_at: {type: Sequelize.DATE, defaultValue: Sequelize.NOW},
     updated_at: {type: Sequelize.DATE, defaultValue: Sequelize.NOW}
   }),
-  
+
   Message: sequelize.define('message', {
     _id: {type: Sequelize.STRING, primaryKey: true},
     space_id: Sequelize.STRING,
@@ -108,7 +109,7 @@ module.exports = {
     created_at: {type: Sequelize.DATE, defaultValue: Sequelize.NOW},
     updated_at: {type: Sequelize.DATE, defaultValue: Sequelize.NOW}
   }),
-  
+
   Artifact: sequelize.define('artifact', {
     _id: {type: Sequelize.STRING, primaryKey: true},
     space_id: Sequelize.STRING,
@@ -121,7 +122,7 @@ module.exports = {
     last_update_editor_name: Sequelize.STRING,
     description: Sequelize.TEXT,
     state: {type: Sequelize.STRING, default: "idle"},
-    
+
     //linked_to: Sequelize.STRING,
     title: Sequelize.STRING,
     tags: Sequelize.TEXT,
@@ -142,16 +143,16 @@ module.exports = {
     //}],
 
     control_points: Sequelize.TEXT,
-    
+
     group: Sequelize.STRING,
     locked: {type: Sequelize.BOOLEAN, default: false},
-    
+
     payload_uri: Sequelize.STRING,
     payload_thumbnail_web_uri: Sequelize.STRING,
     payload_thumbnail_medium_uri: Sequelize.STRING,
     payload_thumbnail_big_uri: Sequelize.STRING,
     payload_size: Sequelize.INTEGER, // file size in bytes
-    
+
     fill_color: {type: Sequelize.STRING, default: "transparent"},
     stroke_color: {type: Sequelize.STRING, default: "#000000"},
     text_color: Sequelize.STRING,
@@ -176,7 +177,7 @@ module.exports = {
     border_radius: Sequelize.INTEGER,
     align: {type: Sequelize.STRING, default: "left"},
     valign: {type: Sequelize.STRING, default: "top"},
-    
+
     brightness: Sequelize.DECIMAL,
     contrast: Sequelize.DECIMAL,
     saturation: Sequelize.DECIMAL,
@@ -185,7 +186,7 @@ module.exports = {
     opacity: Sequelize.DECIMAL,
 
     payload_alternatives: Sequelize.TEXT,
-    
+
     /*payload_alternatives: [{
       mime: String,
       payload_uri: String,
@@ -194,12 +195,12 @@ module.exports = {
       payload_thumbnail_big_uri: String,
       payload_size: Number
     }],*/
-    
+
     created_at: {type: Sequelize.DATE, defaultValue: Sequelize.NOW},
     updated_at: {type: Sequelize.DATE, defaultValue: Sequelize.NOW}
   }),
-    
-  init: function() {
+
+  init: async function() {
     User = this.User;
     Session = this.Session;
     Space = this.Space;
@@ -220,49 +221,69 @@ module.exports = {
       },
       as: 'user'
     });
-    
+
     Membership.belongsTo(Space, {
       foreignKey: {
         name: 'space_id'
       },
       as: 'space'
     });
-    
+
     Artifact.belongsTo(User, {
       foreignKey: {
         name: 'user_id'
       },
       as: 'user'
     });
-    
+
     Artifact.belongsTo(Space, {
       foreignKey: {
         name: 'space_id'
       },
       as: 'space'
     });
-    
+
     Message.belongsTo(User, {
       foreignKey: {
         name: 'user_id'
       },
       as: 'user'
     });
-    
+
     Message.belongsTo(Space, {
       foreignKey: {
         name: 'space_id'
       },
       as: 'space'
     });
-    
-    sequelize.sync();
+
+    await sequelize.sync();
+
+    var umzug = new Umzug({
+        storage: 'sequelize',
+        storageOptions: {
+            sequelize: sequelize
+        },
+        migrations: {
+            params: [
+                sequelize.getQueryInterface(),
+                Sequelize
+            ],
+            path: './models/migrations',
+            pattern: /\.js$/
+        }
+    });
+
+    umzug.up().then(function(migrations)  {
+      console.log('Migration complete up!');
+    });
+
   },
 
   getUserRoleInSpace: (originalSpace, user, cb) => {
     originalSpace.path = [];
     console.log("getUserRoleInSpace",originalSpace._id,user._id,user.home_folder_id);
-    
+
     if (originalSpace._id == user.home_folder_id || (originalSpace.creator_id && originalSpace.creator_id == user._id)) {
       cb("admin");
     } else {
