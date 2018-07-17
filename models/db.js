@@ -1,8 +1,4 @@
-//'use strict';
-
-var Umzug = require('umzug');
-//var mongoose = require('mongoose');
-//const sqlite3 = require('sqlite3').verbose();
+const Umzug = require('umzug');
 
 function sequel_log(a,b,c) {
   console.log(a);
