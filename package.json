@@ -40,6 +40,7 @@
     "slug": "0.9.1",
     "sqlite3": "^4.0.0",
     "swig": "1.4.2",
+    "umzug": "^2.1.0",
     "underscore": "1.8.3",
     "uuid": "^3.2.1",
     "validator": "7.0.0",
