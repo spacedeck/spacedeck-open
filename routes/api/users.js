@@ -283,7 +283,7 @@ router.post('/password_reset_requests', (req, res, next) => {
 router.post('/password_reset_requests/:confirm_token/confirm', function(req, res, next) {
   var password = req.body.password;
 
-  User
+  db.User
     .findOne({where: {"password_reset_token": req.params.confirm_token}})
     .then((user) => {
       if (user) {
