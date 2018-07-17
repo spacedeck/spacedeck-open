@@ -6,10 +6,6 @@ The spacedeck.com online service was shut down on May 1st 2018. We decided to op
 
 We appreciate filed issues, pull requests and general discussion.
 
-**Windows users:** Try the one-click release at https://github.com/spacedeck/spacedeck-open/releases/tag/v0.9
-
-Desktop releases for Linux and Mac will be published here soon. In the meantime, you have to install Node.JS to run Spacedeck.
-
 # Features
 
 - Create virtual whiteboards called *Spaces* with virtually unlimited size
