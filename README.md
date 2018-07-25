@@ -17,6 +17,12 @@ We appreciate filed issues, pull requests and general discussion.
 - Share Spaces on the web or via email
 - Export your work as printable PDF or ZIP
 
+# Use Cases
+
+- Education: Virtual classwork with multimedia
+- Creative: Mood boards, Brainstorming, Design Thinking
+- Visual note taking and planning
+
 # Data Import from Spacedeck.com
 
 Spacedeck Open has a data import feature that you can use to migrate your ZIP export from Spacedeck.com.
