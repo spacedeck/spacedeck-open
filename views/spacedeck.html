@@ -74,10 +74,6 @@
   </head>
 
   <body id="main" v-bind:class="{'present-mode':present_mode,'modal-open':active_modal}" v-on:click="handle_body_click($event)">
-    <!--[if lt IE 10]>
-        <p class="browsehappy">You are using an <strong>outdated</strong> version of Internet Explorer. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-    <![endif]-->
-
     {% include "./partials/login.html" %}
     {% include "./partials/space.html" %}
     {% include "./partials/folders.html" %}
@@ -91,7 +87,6 @@
     {% include "./partials/modal/support.html" %}
     {% include "./partials/modal/login.html" %}
     {% include "./partials/modal/pdfoptions.html" %}
-
   </body>
 
   <script type="text/javascript">
