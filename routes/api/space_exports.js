@@ -51,8 +51,7 @@ router.get('/png', function(req, res, next) {
   if (!req.space.thumbnail_updated_at || req.space.thumbnail_updated_at < req.space.updated_at || !req.space.thumbnail_url) {
     db.Space.update({ thumbnail_updated_at: triggered }, {where : {"_id": req.space._id }});
     
-    phantom.takeScreenshot(req.space, "png",
-                           function(local_path) {
+    phantom.takeScreenshot(req.space, "png", function(local_path) {
       var localResizedFilePath = local_path + ".thumb.jpg";
       gm(local_path).resize(640, 480).quality(70.0).autoOrient().write(localResizedFilePath, function(err) {
         
@@ -95,7 +94,7 @@ router.get('/png', function(req, res, next) {
     },
     function() {
       // on_error
-      console.error("phantom could not create screenshot for space " + req.space_id);
+      console.error("[space screenshot] could not create screenshot for space " + req.space_id);
       res.status(404).send("Not found");
     });
   } else {

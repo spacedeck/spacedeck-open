@@ -26,6 +26,9 @@ const serveStatic = require('serve-static');
 
 const isProduction = app.get('env') === 'production';
 
+// workaround for libssl_conf.so error triggered by phantomjs
+process.env['OPENSSL_CONF'] = '/dev/null';
+
 console.log("Booting Spacedeck Open… (environment: " + app.get('env') + ")");
 
 app.use(logger(isProduction ? 'combined' : 'dev'));
@@ -72,7 +75,7 @@ app.use(helmet.frameguard())
 app.use(helmet.xssFilter())
 app.use(helmet.hsts({
   maxAge: 7776000000,
-  includeSubdomains: true
+  includeSubDomains: true
 }))
 app.disable('x-powered-by');
 app.use(helmet.noSniff())
