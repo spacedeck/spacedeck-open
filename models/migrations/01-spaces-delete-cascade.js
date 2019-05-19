@@ -2,7 +2,7 @@
 
 module.exports = {
   up: function(migration, DataTypes) {
-    return [
+    return Promise.all([
       migration.changeColumn('memberships', 'space_id',
         {
           type: DataTypes.STRING,
@@ -36,11 +36,11 @@ module.exports = {
           onUpdate: 'CASCADE'
         }
       )
-    ]
+    ])
   },
 
   down: function(migration, DataTypes) {
-    return [
+    return Promise.all([
       migration.changeColumn('memberships', 'space_id',
         {
           type: DataTypes.STRING,
@@ -52,7 +52,6 @@ module.exports = {
           onUpdate: 'NO ACTION'
         }
       ),
-      ,
       migration.changeColumn('artifacts', 'space_id',
         {
           type: DataTypes.STRING,
@@ -75,6 +74,6 @@ module.exports = {
           onUpdate: 'NO ACTION'
         }
       )
-    ]
+    ])
   }
-};
+}
