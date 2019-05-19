@@ -23,6 +23,8 @@
     "glob": "7.1.1",
     "gm": "^1.23.1",
     "gulp": "^4.0.2",
+    "gulp-concat": "^2.6.1",
+    "gulp-sass": "^4.0.2",
     "helmet": "^3.5.0",
     "i18n-2": "0.6.3",
     "log-timestamp": "latest",
