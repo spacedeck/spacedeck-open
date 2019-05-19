@@ -23,9 +23,6 @@
   <div id="login" v-bind:class="{active : active_view == 'login'}">
     <div class="content">
       <form v-on:submit="login_submit(user_forms_email, login_password, $event)">
-
-        <span class="btn btn-xs btn-darken pull-right" v-on:click="login_google();">[[__("login_google")]]</span>
-
         <h4>[[__("login")]]</h4>
 
         <div class="tight">
@@ -55,8 +52,6 @@
   <div id="signup" v-bind:class="{active : active_view == 'signup'}">
     <div class="content">
       <form v-on:submit="signup_submit($event, user_forms_name, user_forms_email, signup_password, signup_password_confirmation)">
-        <span class="btn btn-xs btn-darken pull-right" v-on:click="login_google();">[[__("login_google")]]</span>
-
         <h4>[[__("signup")]]</h4>
 
         <div class="tight">
