@@ -113,43 +113,26 @@ select {
 
   &.input-white {
     background-color: white;
-    color: $medium;
     box-shadow: inset 0 0 1px 1px rgba(0, 0, 0, 0.05), inset 0 0px 4px rgba(0, 0, 0, 0.1);
   }
   &.input-light {
     background-color: $light;
-    color: $medium;
   }
 
   &.input-dark {
     background-color: $darker;
-    color: $medium;
   }
 
   &.input-lighten {
     background-color: rgba(255,255,255,0.05);
-    color: $medium !important;
   }
 
   &.input-darken {
     background-color: rgba(0,0,0,0.05);
-    color: $medium;
   }
 
   &.input-transparent {
     background-color: transparent;
-    color: $medium;
-  }
-
-  // &:focus {color: white; }
-
-  &:invalid {
-    // background-color: rgba(198,101,84,0.05);
-    // color: rgba(198,101,84,0.75)
-
-    &:after {
-
-    }
   }
 
   @include input-focus();

@@ -1,21 +1,24 @@
-<div class="toolbar toolbar-elements" v-bind:class="{in:toolbar_artifacts_in,out:!toolbar_artifacts_in}" v-show="!is_active_space_role('viewer') && active_space_loaded" v-bind:style="{left:toolbar_artifacts_x,top:toolbar_artifacts_y}">
+<div class="toolbar toolbar-elements" v-bind:class="{in:toolbar_artifacts_in,out:!toolbar_artifacts_in}" v-show="!is_active_space_role('viewer') && active_space_loaded">
+  
+  <div class="btn-group light vertical">
+    
+    <a class="btn btn-icon btn-transparent"
+       title="[[__("home")]]" href="/spaces"
+       v-if="(!active_space.parent_space_id && !guest_nickname)">
+      <span class="icon icon-folder"></span>
+    </a>
+      
+    <a class="btn btn-icon btn-transparent"
+       title="Parent Folder"
+       href="/folders/{{active_space.parent_space_id}}"
+       v-if="(active_space.parent_space_id && !guest_nickname)">
+      
+      <span class="icon icon-folder"></span>
+    </a>
 
-  <div class="btn-group dark">
+    <button class="btn btn-divider"></button>
 
-    <!--div id="search-dialog" class="dropdown bottom light center static" v-bind:class="{open:opened_dialog=='search'}">
-      <div class="btn-collapse in">
-        <button class="btn btn-transparent btn-icon-labeled" v-bind:class="{open:opened_dialog=='search'}"  v-on:click="open_dialog('search')" >
-          <span class="icon icon-search"></span>
-          <span class="icon-label">[[__("tool_search")]]</span>
-        </button>
-      </div>
-
-      <div class="dialog dialog-search">
-         xinclude "./search.html" 
-      </div>
-    </div-->
-
-    <div class="dropdown bottom light center" v-bind:class="{open:opened_dialog=='shapes'}">
+    <div class="dropdown top left light" v-bind:class="{open:opened_dialog=='shapes'}">
       <div class="btn-collapse in">
         <button class="btn btn-transparent btn-icon-labeled" v-bind:class="{open:opened_dialog=='shapes'}" v-on:click="open_dialog('shapes')">
           <span class="icon icon-shapes"></span>
@@ -28,9 +31,14 @@
       </div>
     </div>
 
-    <button class="btn btn-icon-labeled btn-transparent" v-on:click="start_drawing_scribble()">
+    <button class="btn btn-icon-labeled btn-transparent" v-on:click="start_drawing_scribble()" v-bind:class="{active:active_tool=='scribble'}">
       <span class="icon icon-tool-scribble"></span>
       <span class="icon-label">[[__("tool_scribble")]]</span>
+    </button>
+    
+    <button class="btn btn-icon-labeled btn-transparent" v-on:click="start_drawing_arrow()" v-bind:class="{active:active_tool=='arrow'}">
+      <span class="icon icon-tool-arrow"></span>
+      <span class="icon-label">[[__("tool_arrow")]]</span>
     </button>
     
     <div class="dropdown bottom light center">
@@ -44,14 +52,14 @@
 
     <div class="dropdown bottom light center">
       <div class="btn-collapse in">
-        <button class="btn btn-transparent btn-icon-labeled" v-on:click=" add_artifact(active_space, 'text', null, $event)">
+        <button class="btn btn-transparent btn-icon-labeled" v-on:click="active_tool='note'" v-bind:class="{active:active_tool=='note'}">
           <span class="icon icon-tool-text"></span>
           <span class="icon-label">[[__("tool_text")]]</span>
         </button>
       </div>
     </div>
 
-    <div class="dropdown bottom light center">
+    <div class="dropdown top left light">
       <div class="btn-collapse">
         <button class="btn btn-transparent btn-icon-labeled" v-bind:class="{open:opened_dialog=='image'}" v-on:click="open_dialog('image')">
           <span class="icon icon-picture"></span>
@@ -64,7 +72,7 @@
       </div>
     </div>
 
-    <div class="dropdown bottom light center" v-bind:class="{open:opened_dialog=='zones'}">
+    <div class="dropdown top left light" v-bind:class="{open:opened_dialog=='zones'}">
       <div class="btn-collapse in">
         <button class="btn btn-transparent btn-icon-labeled" v-bind:class="{open:opened_dialog=='zones'}" v-on:click="open_dialog('zones')">
           <span class="icon icon-zone"></span>
@@ -79,7 +87,7 @@
     
     <button class="btn btn-divider" v-show="logged_in"></button>
 
-    <div class="dropdown bottom light center" v-show="logged_in" v-bind:class="{open:opened_dialog=='background'}">
+    <div class="dropdown top left center" v-show="logged_in" v-bind:class="{open:opened_dialog=='background'}">
       <div class="btn-collapse in">
         <button class="btn btn-transparent btn-icon-labeled" v-bind:class="{open:opened_dialog=='background'}" v-on:click="open_dialog('background')">
           <span class="letter">bg</span>
@@ -92,6 +100,23 @@
       </div>
     </div>
 
+    <button class="btn btn-transparent btn-icon-labeled" v-on:click="activate_access()">
+      <span class="icon icon-share"></span>
+      <span class="icon-label">[[  __('share') ]]</span>
+    </button>
+    
+    <!--        
+            <li v-on:click="edit_space_title()" v-if="logged_in">
+              <span>
+                <span class="icon icon-sm icon-tag"></span>
+                <span>[[  __('rename') ]]</span>
+              </span>
+            </li>
+            -->
+    <button class="btn btn-transparent btn-icon-labeled" title="Start Presentation (others follow what you see)" v-on:click="toggle_present_mode()" v-bind:class="{open:present_mode}">
+      <span class="icon icon-presentation"></span>
+      <span class="icon-label">[[  __('present') ]]</span>
+    </button>
 
   </div>
 </div>

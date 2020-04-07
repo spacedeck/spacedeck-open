@@ -84,7 +84,7 @@ router.post('/', function(req, res, next) {
 
     } else {
       res.status(400).json({
-        "error": "user already in space"
+        "error": "This email is already included in the Space memberships."
       });
     }
 

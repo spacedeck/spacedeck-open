@@ -78,14 +78,14 @@ router.get('/png', function(req, res, next) {
                 var oldPath = url.parse(oldUrl).pathname;
                 uploader.removeFile(oldPath, function(err, res) {});
               }
-              fs.unlink(local_path);
+              fs.unlinkSync(local_path);
             } catch (e) {
               console.error(e);
             }
           });
 
           try {
-            fs.unlink(localResizedFilePath);
+            fs.unlinkSync(localResizedFilePath);
           } catch (e) {
             console.error(e);
           }

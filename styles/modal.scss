@@ -59,9 +59,9 @@
   }
   
   .close {
-    position: fixed;
-    margin: 44px 44px;
-    .icon {display: block; }
+      margin-left: 44px;
+      margin-bottom: 44px;
+      .icon {display: block; }
   }
   
   figure {
@@ -146,7 +146,6 @@
 .modal-header {
   padding: 30px 40px;
   position: relative;
-  color: $medium;
 }
 
 .close-search {

@@ -7,12 +7,6 @@
 
 .btn-group.colors {
   .btn {
-    // padding: 4px;
-    // background-clip: content-box;
-    // padding-right: 2px;
-    // &:last-child {
-    //   padding-right: 4px;
-    // }
     box-shadow: inset 0 0 30px 0px rgba(40,40,40,0.1);
   }
 }
@@ -64,7 +58,7 @@
   backface-visibility: hidden;
   cursor: pointer;
   background-color: $light;
-  color: $medium;;
+  color: $black;
 
   @include user-select(none);
   &:last-child {border: none;}
@@ -82,12 +76,9 @@
   
   &.btn-link {
     background-color: transparent;
-    color: $medium;;
+    color: $medium;
   }
   
-  &.facebook {background-color: $facebook !important; color: white !important;}
-  &.twitter {background-color: $twitter !important; color: white !important; }
-
   &.btn-round {
     border-radius: 100px !important;
   }
@@ -96,21 +87,10 @@
     border-radius: 6px !important;
   }
 
-  // &.close {
-  //   position: absolute;
-  //   top: 15px;
-  //   right: 15px;
-  //   z-index: 4000;
-  //   font-size: 40px;
-  // }
-
   &.btn-nude {
     min-width: 0 !important;
-    // font-size: inherit !important;
     padding: 0 !important;
-    // height: auto !important;    
     background-color: transparent;
-    color: $medium;
   }
 
   &.btn-nude + .btn-nude {
@@ -123,7 +103,7 @@
 
   &.btn-stroke {
     box-shadow: inset 0 0 0 1px $dark;
-    color: $dark !important;
+    color: $black;
     background-color: transparent;
     &:active {
       box-shadow: inset 0 0 0 1px white;
@@ -132,9 +112,8 @@
   }
 
   &.btn-stroke-darken {
-    //box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1);
-    border: 1px solid rgba(0,0,0,0.1);
-    color: $medium;
+    border: 1px solid $black;
+    color: $black;
     background-color: transparent;
     &:active {
       //box-shadow: inset 0 0 0 1px $dark;
@@ -263,9 +242,18 @@
   
   &.btn-transparent {
     background-color: transparent;
-    color: $medium;
-    &.active {color: $darker !important; }
-    &.open {color: white !important; }
+    color: $dark;
+    &.active {
+        //color: $black !important;
+        color: $white;
+        background-color: $black;
+    }
+    &.open {
+        //color: $black !important;
+        color: $white;
+        background-color: $black;
+        border-radius: 0;
+    }
   }
 
   &.btn-transparent-medium {
@@ -714,7 +702,6 @@
   }
 
   > * {
-    border-radius: 0 !important;
     background-clip: padding-box;
     width: 100%;
     float: left;
@@ -775,7 +762,7 @@
     }
   }
   .btn-group {
-    @include scale(0,0);
+    //@include scale(0,0);
     //@include transition( all 0.1s 0s ease-in-out);
 
     position: absolute;
@@ -787,7 +774,7 @@
     margin-left: -12px;
 
     .btn {
-      @include scale(0,0);
+      //@include scale(0,0);
       //@include transition( all 0.1s 0.05s ease-in-out);
 
 
@@ -979,31 +966,7 @@
   }
 }
 
-.btn-group.bottom-left > .btn {
-  border-radius: 0px;
-
-  &:first-child{
-    border-top-left-radius: 0px;
-    border-bottom-left-radius: 0px;
-  }
-  &.last,
-  &:last-child{
-    border-top-right-radius: 3px;
-    border-bottom-right-radius: 0px;
-  }
-}
-
-.btn-xyz {
-  position: relative;
-  display: inline-block;
-  line-height: 0px;
-  padding: 0px;
-  font-size: 0px;
-  vertical-align: middle;
-  white-space: nowrap;
-  @include clearfix;
-  min-height: 44px;
-}
+// !btn-group
 
 .btn-group {
   position: relative;
@@ -1014,13 +977,16 @@
   vertical-align: middle;
   white-space: nowrap;
   
+  border: 1px solid $dark;
+  border-radius: 5px;
+  
   &.dark {
     border-radius: $radius;
     background-color: $dark;
-    color: $lighter;
+    color: $white;
 
     .btn {
-      color: $lighter;
+      color: $white;
     }
   }
 

@@ -65,10 +65,8 @@
 html,
 body {
   height:100%;
-  -webkit-tap-highlight-color: transparent;
-  background-color: white;
   background-color: $light;
-  color: $darker;
+  color: $black;
 }
 
 *[contenteditable="true"] {
@@ -89,49 +87,13 @@ body {
   cursor: default;
 }
 
+#home {
+  background-color: white;
+}
+
 .img img {
   max-width: 100%;
   height: auto;
-}
-
-.plan {
-  color: $medium;
-  border-radius: $radius;
-  display: inline-block;
-  padding: 30px;
-
-  background-color: transparent;
-  border: 2px solid rgba(0,0,0,0.05);
-  width: 100%;
-
-  &.active {
-    background-color: white;
-    border: none;
-  }
-
-  h4 {
-    color: black;
-    margin-bottom: 0px;
-  }
-
-  p {
-    font-size: 13px;
-    line-height: 1.4;
-    margin-top: 5px;
-    margin-bottom: 5px;
-  }
-
-  ul {
-    list-style: none;
-    font-size: 10px;
-    margin: 0px;
-    padding: 0px;
-    border-top: 2px solid rgba(0,0,0,0.05);
-    padding-top: 20px;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    li {padding-top: 2px; }
-  }
 }
 
 #startup {
@@ -140,9 +102,6 @@ body {
   background-repeat: no-repeat;
 }
 
-#home {
-  background-color: white;
-}
 
 .layer {
   @include transition( all 0.2s ease-in-out);

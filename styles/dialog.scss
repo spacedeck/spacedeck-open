@@ -125,8 +125,10 @@
   @include transition( all 0.125s ease-in-out);
   pointer-events: none; 
   background-color: $light;
-  color: $medium;
-  &.dark {background-color: $dark; }
+  color: $dark;
+  &.dark {
+      background-color: $dark;
+  }
   
   border-radius: $radius*3;
   box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.05), 0 2px 7px rgba(0, 0, 0, 0.1);

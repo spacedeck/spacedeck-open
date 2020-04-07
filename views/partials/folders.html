@@ -5,11 +5,19 @@
     </a>
     <button v-if="logged_in && (active_space_role == 'editor' || active_space_role == 'admin')" class="btn btn-primary btn-md btn-round" v-on:click="create_space('space')">[[ __('create_space') ]]</button>
     <button v-if="logged_in && (active_space_role == 'editor' || active_space_role == 'admin')" class="btn btn-stroke-darken btn-md btn-round" v-on:click="create_space('folder')">
-      <span v-bind:class="{'disabled-pro':!is_pro(user)}">[[  __('create_folder') ]]</span>
+      <span>[[  __('create_folder') ]]</span>
     </button>
-  </div>
 
-  <div class="header-right pull-right">
+    <label class="relative compact-hidden">
+      <span class="icon icon-sm icon-zoom no-events absolute-top-left" style="margin: 5px;"></span>
+      <input id="folder-search"
+             type="search" name="search"
+             style="padding-left: 40px !important; margin-right: 10px;"
+             placeholder="[[  __('search') ]]"
+             class="input input-md input-white input-round no-b w-2"
+             v-model="folder_spaces_search" v-on:change="search_spaces">
+    </label>
+    
     <div class="dropdown top light m-r-20 compact-hidden" v-bind:class="{open : active_dropdown=='folder_sorting'}">
       <button class="btn btn-sm btn-nude" v-on:click="activate_dropdown('folder_sorting')">
         <span>[[  __('sort_by') ]]</span>:
@@ -33,26 +41,12 @@
               v-on:click="set_folder_sorting('space_type',false)">
             <span>[[  __('type') ]]</span>
           </li>
-
         </ul>
       </div>
     </div>
+  </div>
 
-    <label class="relative compact-hidden">
-      <span class="icon icon-sm icon-zoom no-events absolute-top-left" style="margin: 5px;"></span>
-      <input id="folder-search"
-             type="search" name="search"
-             style="padding-left: 40px !important; margin-right: 10px;"
-             placeholder="[[  __('search') ]]"
-             class="input input-md input-white input-round no-b w-2"
-             v-model="folder_spaces_search" v-on:change="search_spaces">
-    </label>
-
-    <button class="btn btn-stroke-darken btn-md btn-round" v-if="!user.confirmed_at" v-on:click="confirm_again()">
-      <span v-if="!account_confirmed_sent">[[  __('email_unconfirmed') ]]</span>
-      <span v-if="account_confirmed_sent">[[  __('confirmation_sent') ]]</span>
-    </button>
-
+  <div class="header-right pull-right">
     <div class="dropdown top right light" v-bind:class="{open: active_dropdown=='account'}">
       <button
          class="profile-avatar btn btn-md btn-icon btn-darken btn-round"
@@ -74,13 +68,6 @@
               <span class="icon icon-sm  icon-user"></span>
               <span>[[  __('edit_account') ]]</span>
             </a>
-          </li>
-
-          <li v-on:click="activate_modal('support')">
-            <span>
-              <span class="icon icon-sm  icon-info"></span>
-              <span>[[  __('support') ]]</span>
-            </span>
           </li>
 
           <li v-on:click="logout()">

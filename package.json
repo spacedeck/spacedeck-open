@@ -32,6 +32,7 @@
     "moment": "^2.19.3",
     "morgan": "^1.9.1",
     "node-phantom-simple": "2.2.4",
+    "node-server-screenshot": "^0.2.1",
     "nodemailer": "^4.6.7",
     "phantomjs-prebuilt": "^2.1.16",
     "read-chunk": "^2.1.0",

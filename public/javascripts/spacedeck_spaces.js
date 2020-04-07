@@ -273,9 +273,9 @@ var SpacedeckSpaces = {
 
               this.discover_zones();
 
-              //window.setTimeout(function() {
-              //  this.zoom_to_fit();
-              //}.bind(this),10);
+              window.setTimeout(function() {
+                this.zoom_to_fit();
+              }.bind(this),10);
 
               if (on_success) {
                 on_success();
@@ -876,10 +876,6 @@ var SpacedeckSpaces = {
       }.bind(this));
     },
     
-    emojified_comment: function(comment) {
-      return twemoji.parse(comment);
-    },
-
     set_folder_sorting: function(key,reverse) {
       this.folder_sorting = key;
       this.folder_reverse = reverse?-1:1;

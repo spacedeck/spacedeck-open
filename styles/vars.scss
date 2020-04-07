@@ -9,13 +9,6 @@ $green: #2ecc71;
 $red: #ff5955;
 $yellow: #f1c40f;
 
-$light: #f5f5f5;
-$lightish: #eee;
-
-
-$facebook: #3e5b97;
-$twitter: #2aa7de;
-
 $color-1  : #4a2f7e; // purple
 $color-2  : #9b59b6; // lilac
 $color-3  : #3498db; // blue
@@ -32,15 +25,18 @@ $black: #111; // black
 $darker: #292929;
 $dark: #222; // dark
 $medium: #888; // medium
+$light: #f5f5f5;
+$lightish: #eee; // fixme
 $lighter: #989898;
+$white: #ffffff;
 
 $sidebar-width: 280px;
 
-$main-font: Avenir W01;
-$sec-font: Avenir W01;
+$main-font: Inter;
+$sec-font: Inter;
 
-$font-size: 18px;
-$line-height: 24px;
+$font-size: 12pt;
+$line-height: 1.5em;
 
 $gutter-a: 10px;
 $gutter-b: 20px;

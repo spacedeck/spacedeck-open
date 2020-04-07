@@ -3,7 +3,7 @@
     <div class="modal-dialog">
       <div class="modal-content" style="width:760px">
         <div class="modal-header" style="padding-bottom:0">
-          <h3 class="text-left"><span class="icon icon-share icon-sm"></span> [[__("share")]]: {{access_settings_space.name}}</h3>
+          <h3 class="text-left">[[__("share")]]: {{access_settings_space.name}}</h3>
           <button type="button" class="btn btn-icon btn-light btn-round close" v-on:click=" close_modal()">
             <span class="icon icon-cross-1"></span>
           </button>
@@ -68,7 +68,7 @@
             </div>
 
             <div class="form-group">
-              <button class="btn btn-primary btn-md btn-round" v-on:click="invite_member(access_settings_space, invite_email, invite_message, invite_member_role)"> [[__("invite")]] </button>
+              <button class="btn btn-primary btn-md" v-on:click="invite_member(access_settings_space, invite_email, invite_message, invite_member_role)"> [[__("invite")]] </button>
             </div>
           </div>
 
@@ -78,7 +78,7 @@
             <h4 class="text-left"><span class="icon icon-user-group icon-sm"></span> [[__("access_current_members")]]</h4>
             <table class="table">
               <tr>
-                <th></th>
+                <th>Icon</th>
                 <th>Email / Name</th>
                 <th>Role</th>
                 <th></th>
@@ -91,7 +91,7 @@
                 <td>
                   <span class="editor-email" v-if="member.state == 'active'">{{member.user.email}}</span>
                   <span class="editor-email" v-if="member.state == 'pending'">{{member.email_invited}}</span>
-                  <span class="editor-name" v-if="member.state == 'active'">{{member.user.nickname}}</span>
+                  <span class="editor-name"  v-if="member.state == 'active'">{{member.user.nickname}}</span>
                   <span class="editor-email" v-if="member.state == 'pending'">(pending)</span>
                 </td>
                 <td>
@@ -113,7 +113,7 @@
             </p>
 
             <div class="form-group" style="padding-top: 40px">
-              <button class="btn btn-primary btn-md btn-round" v-on:click="close_modal();"> [[__("ok")]] </button>
+              <button class="btn btn-primary btn-md" v-on:click="close_modal();"> [[__("ok")]] </button>
             </div>
           </div>
 

@@ -118,7 +118,7 @@
   padding: 0 !important;
 
   .wrapper {
-    border: 1px dotted rgba(128,128,128,0.5);
+    border: 4px solid black;
 
     transition-duration: 0.25s;
     transition-property: width, height, background-color;
@@ -132,32 +132,27 @@
   max-height: 100%;
 
   position: relative;
-
   overflow: scroll;
-
-  /** {
-    -moz-user-select: none !important; // firefox has selection problems
-  }*/
 }
 
 .snap-ruler-h {
   pointer-events: none;
   position: fixed;
-  z-index: 0;
+  z-index: 2000;
   right: 0px;
   height: 1px;
-  background-color: rgba(0,0,0,0.5);
+  background-color: black;
   left: 0px;
 }
 
 .snap-ruler-v {
   pointer-events: none;
   position: fixed;
-  z-index: 0;
+  z-index: 2000;
   top: 0px;
   bottom: 0px;
   width: 1px;
-  background-color: rgba(0,0,0,0.5);
+  background-color: black;
 }
 
 .cursor {
@@ -227,28 +222,10 @@
 }
 
 #space {
-  /*-webkit-user-select: all;
-  -ms-user-select: all;
-  -moz-user-select: all;
-  user-select: all;*/
+  // user-select: all;
   position: relative;
   height: 100% !important;
-
-  //padding-top: 64px !important;
   background-color: #eee;
-}
-
-#made-with {
-  position: fixed;
-  width: 100%;
-  bottom: 0;
-  padding: 12px;
-  opacity: 0.25;
-  a {color: $dark; }
-  p {
-    text-align: center;
-    font-size: 11px;
-  }
 }
 
 #baseline {
@@ -298,8 +275,8 @@
 
 .space-bounds {
   position: absolute;
-  left: 0px;
-  top: 0px;
+  left: 0;
+  top: 0;
   pointer-events: none;
   background-size: cover;
   background-repeat: no-repeat;

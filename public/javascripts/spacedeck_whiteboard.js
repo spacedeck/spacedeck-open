@@ -80,9 +80,15 @@ function setup_whiteboard_directives() {
         evt.stopPropagation();
       }
 
-      var a = $scope.find_artifact_by_id(evt.currentTarget.id.replace("artifact-",""));
-
       if ($scope.active_tool == "zoom") return;
+
+      if (evt.which == 2) {
+        // middle mouse button
+        this.handle_mouse_down_space(evt);
+        return;
+      }
+      
+      var a = $scope.find_artifact_by_id(evt.currentTarget.id.replace("artifact-",""));
 
       if ($scope.active_tool == "eyedrop") {
         var arts = $scope.selected_artifacts();
@@ -196,8 +202,10 @@ function setup_whiteboard_directives() {
     },
 
     handle_mouse_down_space: function(evt) {
-      if (evt.target != evt.currentTarget && !_.include(["wrapper"],evt.target.className)) return;
-
+      if (evt.which != 2) {
+        if (evt.target != evt.currentTarget && !_.include(["wrapper"],evt.target.className)) return;
+      }
+      
       var $scope = this.vm.$root;
 
       $scope.opened_dialog="none";
@@ -214,7 +222,7 @@ function setup_whiteboard_directives() {
         this.deselect();
         this.mouse_state = "transform";
         $scope.mouse_state = this.mouse_state;
-        this.start_adding_note(evt);
+        this.start_drawing_note(evt);
         return;
 
       } else if ($scope.active_tool=="arrow") {
@@ -492,6 +500,7 @@ function setup_whiteboard_directives() {
       if (!xdists[0] || xdists[0][0]>TOL) {
         results.snapx = [0,x];  // distance, coordinate
       } else {
+        // FIXME snap rulers are broken
         //$scope.snap_ruler_x = xdists[0][1];
       }
       if (!ydists[0] || ydists[0][0]>TOL) {
@@ -514,6 +523,41 @@ function setup_whiteboard_directives() {
       point.x=(point.x+section_el.scrollLeft)/z;
 
       return point;
+    },
+
+    start_drawing_note: function(evt) {
+      evt.preventDefault();
+      evt.stopPropagation();
+
+      var $scope = this.vm.$root;
+      var point = this.cursor_point_to_space(evt);
+      this.offset_point_in_wrapper(point);
+      var z = $scope.highest_z()+1;
+
+      var a = {
+        space_id: $scope.active_space._id,
+        mime: "text/html",
+        description: "<p>Text</p>",
+        x: point.x,
+        y: point.y,
+        z: z,
+        w: 64,
+        h: 64,
+        align: "center",
+        valign: "middle",
+        stroke_color: "#000000",
+        fill_color: "rgb(241, 196, 15)",
+        stroke: 0
+      };
+
+      $scope.save_artifact(a, function(saved_a) {
+        $scope.update_board_artifact_viewmodel(saved_a);
+        $scope.active_space_artifacts.push(saved_a);
+        $scope.select(evt,a);
+        $scope.transform_ox = 0;
+        $scope.transform_oy = 0;
+        $scope.begin_transaction();
+      }.bind(this));
     },
 
     start_drawing_scribble: function(evt) {
@@ -851,7 +895,7 @@ function setup_whiteboard_directives() {
 
         var scale_x = lead_x ? (moved_x)/lead_x : 1;
         var scale_y = lead_y ? (moved_y)/lead_y : 1;
-        if (!$scope.transform_lock) scale_y = scale_x;
+        if ($scope.transform_lock) scale_y = scale_x;
 
         $scope.update_selected_artifacts(function(a) {
           var old_a = $scope.find_artifact_before_transaction(a);

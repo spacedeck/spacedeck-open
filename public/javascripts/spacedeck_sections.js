@@ -63,8 +63,8 @@ var SpacedeckSections = {
     active_style: {
       border_radius: 0,
       stroke: 0,
-      font_family: "Avenir W01",
-      font_size: 18,
+      font_family: "Inter",
+      font_size: 36,
       line_height: 1.5,
       letter_spacing: 0,
 
@@ -136,18 +136,8 @@ var SpacedeckSections = {
     ],
 
     fonts: [
-      "Arial",
-      "Courier",
-      "Georgia",
-      "Verdana",
-      "Comic Sans MS",
-      "Montserrat",
-      "Lato",
-      "Roboto",
-      "Crimson Text",
-      "EB Garamond",
-      "Vollkorn",
-      "Avenir W01"
+      "Inter",
+      "Courier"
     ],
 
     detected_text_formats: {},
@@ -180,7 +170,7 @@ var SpacedeckSections = {
     toolbar_props_in: false,
     toolbar_artifacts_x: "-1000px",
     toolbar_artifacts_y: "-1000px",
-    toolbar_artifacts_in: false
+    toolbar_artifacts_in: true
   },
 
   methods: {
@@ -1057,7 +1047,7 @@ var SpacedeckSections = {
         this.toolbar_props_x = pp.x+"px";
         this.toolbar_props_y = pp.y+"px";
           
-        this.hide_toolbar_artifacts();
+        //this.hide_toolbar_artifacts();
       }
 
       this.selection_metrics.x1 = sr.x1;
@@ -1125,9 +1115,12 @@ var SpacedeckSections = {
       var er = this.enclosing_rect(this.active_space_artifacts);
       if (!er) return;
 
-      this.active_space.width =Math.max(er.x2+100, window.innerWidth);
-      this.active_space.height=Math.max(er.y2+100, window.innerHeight);
+      // resize space
+      this.active_space.width =Math.max((parseInt(er.x2/window.innerWidth)+2)*window.innerWidth, window.innerWidth);
+      this.active_space.height=Math.max((parseInt(er.y2/window.innerHeight)+2)*window.innerHeight, window.innerHeight);
 
+      console.log("bounds: ",this.active_space.width,this.active_space.height);
+      
       if (this._last_bounds_width != this.active_space.width ||
         this._last_bounds_height != this.active_space.height) {
         this._last_bounds_width = this.active_space.width;
@@ -1544,7 +1537,7 @@ var SpacedeckSections = {
     add_artifact: function (space, item_type, url, evt) {
       this.active_tool = "pointer";
       this.mouse_state = "idle";
-      this.hide_toolbar_artifacts();
+      //this.hide_toolbar_artifacts();
       
       if (!url && (item_type == 'image' || item_type == 'video' || item_type == 'embed')) {
         url = prompt("URL?");
@@ -1788,9 +1781,7 @@ var SpacedeckSections = {
       if (this.active_space_role=="viewer") {
         return false;
       }
-      
-      this.hide_toolbar_artifacts();
-      
+            
       // 1. create placeholder artifact
       var w=300,h=150;
       var fill="transparent";
@@ -2578,12 +2569,11 @@ var SpacedeckSections = {
     },
     
     hide_toolbar_props: function() {
-      this.toolbar_props_in = false;
+      // FIXME test
+      //this.toolbar_props_in = false;
     },
     
     show_toolbar_artifacts: function(x,y) {
-      this.toolbar_artifacts_x = (x-175)+"px";
-      this.toolbar_artifacts_y = y+"px";
       this.toolbar_artifacts_in = true;
     },
     
@@ -2593,29 +2583,19 @@ var SpacedeckSections = {
 
     start_adding_artifact: function(evt) {
       evt = fixup_touches(evt);
-      
-      // toggle
-      if (this.toolbar_artifacts_in) {
-        this.hide_toolbar_artifacts();
-        return;
-      }
-      this.show_toolbar_artifacts(evt.pageX,evt.pageY);
     },
 
     start_drawing_scribble: function(evt) {
-      this.hide_toolbar_artifacts();
       this.active_tool = "scribble";
       this.opened_dialog = "none";
     },
 
     start_drawing_arrow: function(evt) {
-      this.hide_toolbar_artifacts();
       this.active_tool = "arrow";
       this.opened_dialog = "none";
     },
 
     start_drawing_line: function(evt) {
-      this.hide_toolbar_artifacts();
       this.active_tool = "line";
       this.opened_dialog = "none";
     },
