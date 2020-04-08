@@ -5,7 +5,6 @@
 .header-left,
 .header-right {
   position: absolute;
-  //@include transition( all 0.25s ease-in-out);
   @include backface-visibility(hidden);
   z-index: 3000;
   top: 10px;
@@ -27,17 +26,20 @@
 .home {
   margin-top: -20px;
   margin-left: -20px;
-  // .icon {color: $dark; }
 }
 
 .header-left { 
-  left: 0; 
-  padding-left: 10px; 
+    left: 0; 
+    padding-left: 10px; 
+    padding-left: 20px;
+    padding-top: 20px;
 }
 .header-right {
-  right: 0; 
-  padding-right: 20px; 
+    right: 0; 
+    padding-right: 20px;
+    padding-top: 20px;
 }
+
 .header-center {
   width: 100%;
   left: 0;
@@ -53,7 +55,7 @@
   }
 }
 .header-left > * { margin-right: 10px; }
-.header-right > * { margin-left: 5px; }
+.header-right > * { margin-left: 10px; }
 .header-right { font-size: 0;}
 
 .title {
@@ -87,21 +89,3 @@
     opacity: 0.5;
   }
 }
-
-.present-mode #space-header {
-  background-color: transparent !important;
-}
-
-#space-siblings {
-  background-color: rgba(245, 245, 245, 0.95);
-  padding: 35px;
-  max-height: 450px;
-  overflow-y: scroll;
-  margin-top: 54px;
-  border-bottom: 1px solid #eee;
-
-  .btn {
-    margin-bottom: 50px;
-  }
-}
-

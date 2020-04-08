@@ -9,36 +9,25 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <link href="[[ '/images/favicon.png' | cdn ]]" rel="icon" type="image/x-icon" />
 
-    <link href="https://fonts.googleapis.com/css?family=Inter" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="[[ '/stylesheets/style.css' | cdn ]]">
     <script> var csrf_token = '[[ csrf_token ]]'; </script>
     
-    <script src="[[ '/javascripts/jquery-2.1.4.min.js' | cdn ]]"></script>
+    <!--script src="[[ '/javascripts/jquery-2.1.4.min.js' | cdn ]]"></script-->
   </head>
 
   <body>
-    <!--[if lt IE 10]>
-        <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
     <header id="landing-header" class="header">
       <div class="header-left">
-        <a class="btn btn-transparent btn-nude" href="[[config.endpoint]]/"><img src="[[ '/images/sd5-logo.svg' | cdn ]]" width="190"></a>
+        <a class="btn btn-transparent btn-nude" href="[[config.endpoint]]/"><img src="[[ '/images/sd6-logo-black.svg' | cdn ]]" width="190"></a>
       </div>
 
       <div class="header-right pull-right">
         {% if !user %}
-          <span class="btn-group dark round">
-            {% if (locale != "de") %}<a href="/t/de" rel="alternate" hreflang="de" class="btn btn-transparent btn-md">Deutsch</a>{% endif %}
-            {% if (locale != "en") %}<a href="/t/en" rel="alternate" hreflang="en" class="btn btn-transparent btn-md">English</a>{% endif %}
-            {% if (locale != "fr") %}<a href="/t/fr" rel="alternate" hreflang="fr" class="btn btn-transparent btn-md">Français</a>{% endif %}
-          </span>
-
           <a class="btn btn-md btn-dark btn-round" href="/login">[[__("login")]]</a>
-          <a class="btn btn-md btn-blue btn-round" href="/signup">[[__("signup")]]</a>
+          <a class="btn btn-md btn-dark btn-round" href="/signup">[[__("signup")]]</a>
         {% else %}
-          <a class="btn btn-md btn-blue btn-round" href="/spaces">[[__("spaces")]]</a>
+          <a class="btn btn-md btn-dark btn-round" href="/spaces">[[__("spaces")]]</a>
           <a class="btn btn-md btn-dark btn-round" href="/logout">[[__("logout")]]</a>
-
         {% endif %}
 
       </div>
@@ -49,8 +38,11 @@
     <div class="footer">
       <p>
         <div class="col-xs-6">
-          <a href="/contact">[[ __("contact") ]]</a>
-          <span style="color:#888">&copy; 2011–2020 The Spacedeck Open Developers <a href="https://github.com/spacedeck/spacedeck-open">https://github.com/spacedeck/spacedeck-open</a></span>
+          &copy; 2020 <a href="https://mntre.com">MNT Research GmbH</a>, Fehlerstr. 8, 12161 Berlin, Germany<br>
+          &copy; 2011–2019 Spacedeck GmbH (in liquidation)<br>
+          Source Code: <a href="https://github.com/mntmn/spacedeck-open">https://github.com/mntmn/spacedeck-open</a>
+          <br>
+          Font: <a href="https://rsms.me/inter/">Inter by rsms</a>
         </div>
       </p>
     </div>

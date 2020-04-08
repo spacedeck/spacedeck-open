@@ -472,8 +472,7 @@
   font-size: 36px;
 
   &.artifact-zone {
-    border: 1px solid rgba(46,204,113,1);
-    background-color: rgba(46,204,113,0.025);
+    background-color: rgba(0,0,0,0.05);
     border-radius: 10px;
     &:after {display: none; }
     .shape {display: none; }

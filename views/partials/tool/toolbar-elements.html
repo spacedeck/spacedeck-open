@@ -8,12 +8,12 @@
       <span class="icon icon-folder"></span>
     </a>
       
-    <a class="btn btn-icon btn-transparent"
+    <a class="btn btn-icon btn-dark"
        title="Parent Folder"
        href="/folders/{{active_space.parent_space_id}}"
        v-if="(active_space.parent_space_id && !guest_nickname)">
       
-      <span class="icon icon-folder"></span>
+      <span class="icon icon-sd6 icon-svg"></span>
     </a>
 
     <button class="btn btn-divider"></button>
@@ -45,7 +45,7 @@
       <div class="btn-collapse in">
         <button class="btn btn-transparent btn-icon-labeled" v-on:click="handle_insert_image_url()" v-on:touchstart="handle_insert_image_url()">
           <span class="icon icon-upload"></span>
-          <span class="icon-label" >[[__("tool_upload")]]</span>
+          <span class="icon-label" >Media</span>
         </button>
       </div>
     </div>

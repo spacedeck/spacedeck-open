@@ -6,22 +6,18 @@
   li {
     &.checked {
 
-      &:before {background-color: $medium !important; }
       > a,
       > span {
-        color: $medium;
       }
     }
     
     &:hover {
-      &:before {background-color: $medium; }
       > a,
       > span {
         background-color: rgba(0,0,0,0.025) !important;
       }
     }
 
-    &:before {background-color: $medium; }
     > a,
     > span {
       color: $medium;
@@ -30,7 +26,7 @@
 }
 
 .select-list {
-  &:empty:before{
+  &:empty:before {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -45,17 +41,14 @@
     opacity: 0.5;
   }
 
-  -webkit-mask-image: -webkit-gradient(linear, left top, left 15px, from(rgba(0,0,0,0)), to(rgba(0,0,0,0.5)));
-
   background-clip: padding-box;
-  font-size: 15px;
-  line-height: 14px;
+  //font-size: 15px;
+  //line-height: 14px;
   list-style: none;
   margin: 0px;
   padding: 15px 0;
   text-align: left;
   // background-color: $dark;
-  color: $medium;
   border-radius: $radius;
   
   .divider + li span {border: none !important; }
@@ -90,15 +83,11 @@
     }
     
     &:hover {
-      // background-color: rgba(0,0,0,0.025);
-      &:before {
-        background-color: $medium;
-        display: block;
-      }
+        background-color: black;
+
       > a,
       > span {
-        color: $medium;
-        color: $dark;
+        color: white;
       }
     }
     
@@ -126,9 +115,8 @@
       display: block;
       cursor: pointer;
       white-space: nowrap;
-      color: $medium;
       margin: 0 25px;
-      padding: 16px 3px;
+      padding: 10px 0px;
       // line-height: 50px; 
       overflow: hidden;
       text-overflow: ellipsis;

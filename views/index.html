@@ -1,62 +1,34 @@
 {% extends 'layouts/outer.html' %}
 
-{% block title %}[[ __("welcome") ]]{% endblock %}
+{% block title %}Spacedeck{% endblock %}
 
 {% block content %}
 
 <div id="landing">
-  <div class="landing-keyvisual-wrapper">
-    <div class="landing-box">
-      <h2>[[__("landing_title")]]</h2>
-
-      <p class="lead">
-        <a href="/signup" class="btn btn-primary btn-block btn-xl">[[__("signup")]]</a>
-      </p>
-      
-      <p class="lead">
-        <a href="/login" class="btn btn-primary btn-block btn-xl">[[__("login")]]</a>
-      </p>
-
-      <p class="lead">
-        [[__("landing_claim")]]
-      </p>
-      
-      <p class="lead">
-        [[__("landing_example")]]
-      </p>
-      
-      <ul>
-        <li class="lead">
-          [[__("landing_features_1") | safe ]]
-        </li>
-
-        <li class="lead">
-          [[__("landing_features_2") | safe ]]
-        </li>
-
-        <li class="lead">
-          [[__("landing_features_3") | safe ]]
-        </li>
-
-        <li class="lead">
-          [[__("landing_features_4") | safe ]]
-        </li>
-
-        <li class="lead">
-          [[__("landing_features_5") | safe ]]
-        </li>
-
-        <li class="lead">
-          [[__("landing_features_6") | safe ]]
-        </li>
-
-        <li class="lead">
-          [[__("landing_features_7") | safe ]]
-        </li>
-      </ul>
-    </div>
-  </div>
-
+  <section>
+    <h1>Work Together, Visually.</h1>
+    <p>
+      Whenever you need to lay out pictures, text notes, video and audio clips on a blank canvas,
+      Spacedeck can help you.
+    </p>
+    <p>
+      Spacedeck is the right tool for you if you want to quickly put together a collage of your
+      idea or concept, either for yourself or to share it with teammembers, clients or students.
+    </p>
+    <p>
+      Spacedeck is not meant for creating polished designs, but it is a good fit for:
+    </p>
+    <ul>
+      <li>Moodboards</li>
+      <li>Collages</li>
+      <li>Teaching (Virtual Blackboards)</li>
+      <li>Shared Whiteboards</li>
+      <li>Design Thinking</li>
+    </ul>
+    <p>
+      The hosted version of Spacedeck 6.0 is currently in beta and invite only. You can also self-host and <a href="https://github.com/spacedeck/spacedeck-open">participate in the open source development</a>.
+    </p>
+  </section>
 </div>
 
 {% endblock %}

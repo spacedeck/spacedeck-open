@@ -96,14 +96,13 @@
   border-bottom-right-radius: $radius*3;
 }
 
+.dialog-account {
+  width: 600px;
+  margin: auto;
+  margin-top: 100px;
+}
 
 .dialog {
-
-  font-size: 13px;
-  
-  ol, ul, p {
-    font-size: inherit;
-  }
 
   > .btn-block:last-child {
     border-top-left-radius: 0px;
@@ -111,18 +110,16 @@
     border-bottom-left-radius: $radius*3;
     border-bottom-right-radius: $radius*3;
   }
-  
-  min-width: 200px;
 
-  @include backface-visibility(hidden);
-  white-space: normal;
-  z-index: 1000;
   position: absolute;
-  // white-space: normal;
+  font-size: 15px;
+  border: 1px solid black;
+  box-shadow: 0 0 30px 1px rgba(0, 0, 0, 0.15);
+  border-radius: 5px;
+  white-space: normal;
   
   opacity: 0;
-  @include user-select(none);
-  @include transition( all 0.125s ease-in-out);
+  @include transition(all 0.125s ease-in-out);
   pointer-events: none; 
   background-color: $light;
   color: $dark;
@@ -130,9 +127,6 @@
       background-color: $dark;
   }
   
-  border-radius: $radius*3;
-  box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.05), 0 2px 7px rgba(0, 0, 0, 0.1);
-
   .dialog-tabs-wrapper {
     overflow: hidden;
     border-top-left-radius: $radius*3;
@@ -152,15 +146,13 @@
       &:hover span {color: $dark; }
 
       &.open span {
-        background-color: $light;
+        background-color: white;
         color: $dark;
         opacity: 1;
-        box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.05), 0 2px 7px rgba(0, 0, 0, 0.1) !important;
         border-bottom-right-radius: 0px !important;
         border-bottom-left-radius: 0px !important;
         border-top-left-radius: $radius*3;
         border-top-right-radius: $radius*3;
-
       }
 
       &:first-child span { 
@@ -202,7 +194,6 @@
     text-align: center;
   }
 
-
   .dialog-section {
     &:first-child {border: none !important; }
     border-top: 2px solid rgba(0,0,0,0.1);
@@ -229,5 +220,14 @@
 
   h4 .icon {
     height: 38px;
+  }
+  
+  // account dialog
+  &.dialog-freestanding {
+      margin: auto;
+      position: relative;
+      top: 150px;
+      border: none;
+      width: 800px;
   }
 }

@@ -85,3 +85,12 @@
   transform: rotateZ(45deg) translateX(-8px);
 }
 
+.icon-svg {
+    background-size: 26px;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.icon-sd6 {
+    background-image: url(/images/sd6-icon-white.svg);
+}

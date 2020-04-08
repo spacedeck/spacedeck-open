@@ -118,6 +118,10 @@ $predelay: 0;
   display: inline-block;
   position: relative;
   vertical-align: middle;
+
+  a {
+      text-decoration: none;
+  }
   
   &.dropdown-block {
     display: block;

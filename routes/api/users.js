@@ -51,9 +51,15 @@ router.post('/', function(req, res) {
   var nickname = req.body["nickname"];
   var password = req.body["password"];
   var password_confirmation = req.body["password_confirmation"];
+  var invite_code = req.body["invite_code"];
 
   if (password_confirmation != password) {
     res.status(400).json({"error":"password_confirmation"});
+    return;
+  }
+  
+  if (config.invite_code && invite_code != config.invite_code) {
+    res.status(400).json({"error":"Invalid Invite Code."});
     return;
   }
   

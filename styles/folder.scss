@@ -254,7 +254,6 @@
   // word-wrap: break-word;
 
   .item {
-    box-shadow: 0 0 1pxrgba(0,0,0,0.1);
     display: inline-block;
     text-align: left;
     padding-right: $folder-gutter*2;
@@ -397,7 +396,10 @@
 
       &:active { opacity: 0.95 !important; }
 
-      box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.025), 0 2px 7px rgba(0, 0, 0, 0.025);
+      box-shadow: 0 0 30px 1px rgba(0, 0, 0, 0.15);
+      border: 1px solid black;
+
+      // ???
       @include opacity(1);
       color: $medium;
       // color: white;
@@ -476,7 +478,6 @@
       left: 0px;
       z-index: 100;
       width: auto;
-      background-color: rgba(255,255,255,1);
 
       .dropdown {
         position: absolute;
@@ -500,30 +501,6 @@
         text-overflow: ellipsis;
         color: $dark;
         text-align: left;
-      }
-
-      .item-social {
-        padding: 8px;
-        border-right: 2px solid rgba(0,0,0,0.025);
-        @include clearfix;
-        color: $medium;
-
-        .item-likes,
-        .item-comments,
-        .item-shares {
-          position: relative;
-          &:hover {
-            .icon {opacity: 0; }
-            .number {opacity: 1; }
-          }
-          .number {
-            position: absolute;
-            opacity: 0;
-            top: 0;
-            left: 0;
-          }
-          .icon {opacity: 0.5; }
-        }
       }
     }
 

@@ -110,18 +110,30 @@ var SpacedeckSections = {
     color_picker_opacity: 255,
 
     swatches: [
-      {id:0, hex:"#4a2f7e"},
-      {id:1, hex:"#9b59b6"},
-      {id:2, hex:"#3498db"},
-      {id:3, hex:"#2ecc71"},
-      {id:4, hex:"#f1c40f"},
-      {id:5, hex:"#e67e22"},
-      {id:6, hex:"#d55c4b"},
-      {id:7, hex:"#6f4021"},
-      {id:8, hex:"#ffffff"},
-      {id:9, hex:"#95a5a6"},
-      {id:10, hex:"#252525"},
-      {id:11, hex:"rgba(0,0,0,0)"},
+      {id:1, hex:"#ff00ff"},
+      {id:2, hex:"#ffff00"},
+      {id:3, hex:"#00ffff"},
+      {id:5, hex:"#ff0000"},
+      {id:6, hex:"#00ff00"},
+      {id:7, hex:"#0000ff"},
+      {id:8, hex:"#000000"},
+      {id:9, hex:"#222222"},
+      {id:10, hex:"#444444"},
+      {id:11, hex:"#888888"},
+      {id:12, hex:"#bbbbbb"},
+      {id:13, hex:"#dddddd"},
+      {id:14, hex:"#ffffff"},
+      
+      {id:20, hex:"#4a2f7e"},
+      {id:21, hex:"#9b59b6"},
+      {id:22, hex:"#3498db"},
+      {id:23, hex:"#2ecc71"},
+      {id:24, hex:"#f1c40f"},
+      {id:25, hex:"#e67e22"},
+      {id:26, hex:"#d55c4b"},
+      {id:27, hex:"#6f4021"},
+      {id:29, hex:"#95a5a6"},
+      {id:30, hex:"rgba(0,0,0,0)"},
     ],
     
     swatches_text: [
@@ -1717,7 +1729,7 @@ var SpacedeckSections = {
       var a = {
         space_id: this.active_space._id,
         mime: "x-spacedeck/shape",
-        description: "Text",
+        description: "",
         x: point.x,
         y: point.y,
         z: point.z,
@@ -1729,7 +1741,7 @@ var SpacedeckSections = {
         fill_color: "#000000",
         shape: shape_type,
         valign: "middle",
-        align: "center"
+        align: "center",
       };
 
       if (this.guest_nickname) {
@@ -2274,6 +2286,9 @@ var SpacedeckSections = {
     },
 
     handle_section_paste: function(evt) {
+      // TODO: very confusing
+      return;
+      
       if (this.editing_artifact_id) return;
       var pastedText = null;
 

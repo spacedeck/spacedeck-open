@@ -65,8 +65,15 @@
 html,
 body {
   height:100%;
-  background-color: $light;
+  background-color: white;
   color: $black;
+}
+
+body {
+  max-width: 100%;
+  padding: 0px;
+  text-rendering: optimizeLegibility;
+  cursor: default;
 }
 
 *[contenteditable="true"] {
@@ -79,31 +86,12 @@ body {
   @include box-sizing(border-box);
 }
 
-body {
-  max-width: 100%;
-  padding: 0px;
-  text-rendering: optimizeLegibility;
-  //@include user-select(none);
-  cursor: default;
-}
-
-#home {
-  background-color: white;
-}
-
 .img img {
   max-width: 100%;
   height: auto;
 }
 
-#startup {
-  background-position: center;
-  background-image:url(/images/diamond.svg);
-  background-repeat: no-repeat;
-}
-
-
-.layer {
+/*.layer {
   @include transition( all 0.2s ease-in-out);
   @include backface-visibility(hidden);
   position: absolute;
@@ -131,7 +119,7 @@ body {
     pointer-events: auto;
     opacity: 1;
   }
-}
+}*/
 
 [draggable] {
   -moz-user-select: none;

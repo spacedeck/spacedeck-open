@@ -1,16 +1,30 @@
-<div id="team" class="dialog in" style="padding:100px;z-index:20000;position:absolute;width:100%;min-height:100%;background-color:#eee" v-if="active_view == 'account' && user" v-cloak>
+<header id="dialog-header" class="header" v-if="(active_view == 'account' && user)" v-cloak>
+  <div v-cloak class="header-left pull-left">
+    <a class="btn btn-dark btn-md btn-round btn-icon" href="/spaces">
+      <span class="icon icon-svg icon-sd6"></span>
+    </a>
+    <h5>Edit Account</h5>
+  </div>
 
-  <a href="/spaces" class="btn btn-round btn-icon btn-dark btn-md pull-right" style="position:absolute;top:30px;right:30px"><span class="icon icon-cross-0"></span></a>
+  <div class="header-right pull-right">
+    <a class="btn btn-dark btn-md btn-round btn-icon" href="/spaces">
+      <span class="icon icon-cross-0"></span>
+    </a>
+  </div>
+
+</header>
+
+<div class="dialog-freestanding dialog in" v-if="active_view == 'account' && user" v-cloak>
 
   <div class="dialog-tabs" style="margin:auto">
     <div class="dialog-tab" v-bind:class="{open:account=='profile'}" v-on:click="account='profile'"><span>[[__("profile_caption")]]</span></div>
     <div class="dialog-tab" v-bind:class="{open:account=='language'}" v-on:click="account='language'"><span>[[__("language_caption")]]</span></div>
     <div class="dialog-tab" v-bind:class="{open:account=='notifications'}" v-on:click="account='notifications'"><span>[[__("notifications_caption")]]</span></div>
-    <div class="dialog-tab" v-if="user.account_type=='email'" v-bind:class="{open:account=='password'}" v-on:click="account='password'"><span>[[__("password_caption")]]</span></div>
+    <div class="dialog-tab" v-bind:class="{open:account=='password'}" v-on:click="account='password'"><span>[[__("password_caption")]]</span></div>
     <div class="dialog-tab" v-bind:class="{open:account=='terminate'}" v-on:click="account='terminate'"><span>[[__("terminate_caption")]]</span></div>
   </div>
 
-  <div class="dialog-section text-left" style="background-color:#f5f5f5;padding-top:40px;padding-bottom:40px">
+  <div class="dialog-section text-left">
     <div class="collapse" v-bind:class="{in:account=='profile'}">
       <div class="labels-inline relative" style="margin-bottom:40px">
         <div class="form-group">
@@ -64,30 +78,16 @@
           v-on:change="user.email_changed=true"
           placeholder="mail@example.com">
 
-          <button class="btn btn-md btn-darken" v-if="user.account_type=='email'" v-on:click=" save_user()" style="margin-top:20px">[[__("ok")]]</button>
+          <button class="btn btn-md btn-dark" v-on:click=" save_user()" style="margin-top:20px">Save</button>
         </div>
 
-        <div class="form-group" v-if="!user.confirmed_at">
-          <p v-if="!user.confirmed_at && !account_confirmed_sent">[[__("confirmation_sent_long")]]</p>
-
-          <span
-          class="btn btn-xs btn-stroke-darken btn-round"
-          v-on:click=" confirm_again()"
-          v-if="!user.confirmed_at && !account_confirmed_sent"
-          >[[__("send_again")]]</span>
-
-          <p v-if="account_confirmed_sent">
-            <span class="icon icon-check"></span> <span>[[__("confirmation_sent_another")]]</span>
-          </p>
-        </div>
-
-        <div class="form-group">
+        <!--div class="form-group">
           <label class="label">Spacedeck.com Data Import</label>
           <p v-if="!importables">No .ZIP files found in Spacedeck application folder.</p>
           <ul>
             <li v-for="f in importables">{{f}} <button v-on:click="start_zip_import(f)">Start Import</button></li>
           </ul>
-        </div>
+        </div-->
       </div>
     </div>
 
@@ -121,7 +121,7 @@
     </div>
 
     <div class="collapse" v-bind:class="{in:account=='password'}">
-      <h4 class="modal-title">Change Password</h4>
+      <h4>Change Password</h4>
       <div class="modal-section labels-inline">
         <div class="form-group">
           <label class="label">[[__("current_password")]]</label>
@@ -140,13 +140,11 @@
       </div>
 
       <div class="modal-footer">
-        <div class="btn-cluster">
           <button
-          class="btn btn-transparent btn-block"
-          v-on:click="save_user_password(password_change_current, password_change_new, password_change_new_confirmation);" >
+            class="btn btn-dark btn-md"
+            v-on:click="save_user_password(password_change_current, password_change_new, password_change_new_confirmation);" >
             [[__("change_password")]]
           </button>
-        </div>
       </div>
     </div>
 
@@ -156,7 +154,7 @@
         <p>[[__("terminate_warning2")]]</p>
       </div>
 
-      <div class="labels-inline" v-if="user.account_type == 'email'">
+      <div class="labels-inline">
         <div class="form-group">
           <label class="label">[[__("current_password")]]</label>
           <input v-model="account_remove_password" class="input input-white no-b" type="password">
@@ -170,7 +168,7 @@
         <div class="center alert alert-danger" v-if="account_remove_error">{{account_remove_error}}</div>
       </div>
 
-      <button class="btn btn-transparent btn-block" v-on:click="remove_account(account_remove_password, account_remove_feedback)">[[__("terminate_terminate")]]</button>
+      <button class="btn btn-stroke-darken btn-md" v-on:click="remove_account(account_remove_password, account_remove_feedback)">Terminate Account</button>
 
     </div>
   </div>

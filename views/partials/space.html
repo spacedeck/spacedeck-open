@@ -43,9 +43,8 @@
   <div class="space-empty" v-cloak v-if="active_view == 'space' && !present_mode && active_space_artifacts.length == 0">
     <div class="table-fake">
       <div class="cell">
-        <p>Click anywhere to add content.<br>
-          You can also drop images, sounds and video<br>
-          or use copy and paste.</p>
+        <p>Use the toolbar to add content.<br>
+          You can also drop images or sound and video files.</p>
       </div>
     </div>
   </div>
@@ -127,7 +126,6 @@
             <a class="link btn btn-round btn-primary btn-sm" v-if="a.view.link" v-bind:href="a.view.link" target="_blank">{{a.view.link_caption}}</a>
           </span>
 
-          <div class="btn btn-xs btn-icon btn-round btn-primary edit" v-show="editing_artifact_id!=a._id && is_selected(a)" v-on:touchstart="delayed_edit_artifact($event)"><span class="icon icon-pencil" v-on:click="toggle_selected_artifact_editing(true)" v-on:"touchstart:delayed_edit_artifact($event)"></span></div>
           <input v-show="is_selected(a)" type="text" id="ios-focuser-{{a._id}}" class="ios-focuser">
         </div>
 
@@ -338,7 +336,7 @@
     <div class="window" v-bind:style="{left: ''+(scroll_left/minimap_scale) + 'px', top: ''+(scroll_top/minimap_scale)+ 'px', width: ''+(window_width/minimap_scale)+ 'px', height: ''+(window_height/minimap_scale) + 'px'}"></div>
   </div-->
 
-  <div class="btn-group light zoom-bar" style="position:absolute;bottom:20px;right:20px;">
+  <div class="btn-group light zoom-bar">
     <button class="btn btn-icon btn-md btn-white" v-on:click="zoom_in()">
       <span class="icon icon-plus"></span>
     </button>

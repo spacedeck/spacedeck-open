@@ -1,9 +1,9 @@
 <header id="folder-header" class="header" v-if="(active_view == 'folders' && active_folder)" v-cloak>
   <div v-cloak class="header-left pull-left">
-    <a class="btn btn-stroke-darken btn-md btn-round btn-icon" href="/spaces">
-      <span class="icon icon-home"></span>
+    <a class="btn btn-dark btn-md btn-round btn-icon" href="/spaces">
+      <span class="icon icon-svg icon-sd6"></span>
     </a>
-    <button v-if="logged_in && (active_space_role == 'editor' || active_space_role == 'admin')" class="btn btn-primary btn-md btn-round" v-on:click="create_space('space')">[[ __('create_space') ]]</button>
+    <button v-if="logged_in && (active_space_role == 'editor' || active_space_role == 'admin')" class="btn btn-dark btn-md btn-round" v-on:click="create_space('space')">[[ __('create_space') ]]</button>
     <button v-if="logged_in && (active_space_role == 'editor' || active_space_role == 'admin')" class="btn btn-stroke-darken btn-md btn-round" v-on:click="create_space('folder')">
       <span>[[  __('create_folder') ]]</span>
     </button>
@@ -49,7 +49,7 @@
   <div class="header-right pull-right">
     <div class="dropdown top right light" v-bind:class="{open: active_dropdown=='account'}">
       <button
-         class="profile-avatar btn btn-md btn-icon btn-darken btn-round"
+         class="profile-avatar btn btn-md btn-icon btn-dark btn-round"
          v-bind:style="background_image_style([user.avatar_thumb_uri])"
          v-bind:class="{'has-avatar-image':!!user.avatar_thumb_uri}" v-on:click="show_account();">
         <span class="icon icon-user" v-if="logged_in && !user.avatar_thumb_uri"></span></button>
@@ -81,12 +81,12 @@
 
     </div>
 
-    <div class="btn-group dark round" id="meta-toggle" style="margin-right:10px">
+    <!--div class="btn-group dark round" id="meta-toggle" style="margin-right:10px">
       <button class="btn btn-md btn-transparent btn-icon btn-icon" v-on:click="toggle_meta()">
         <span class="jewel" style="color: white; background-color: red" v-if="meta_unseen>0">{{meta_unseen}}</span>
         <span class="icon icon-menu"></span>
       </button>
-    </div>
+    </div-->
 
   </div>
 </header>
@@ -98,10 +98,8 @@
 
     <div id="folder-breadcrumb">
 
-      <a v-for="item in active_space_path" type="button" class="btn btn-sm btn-transparent" href="/{{item.space_type}}s/{{item._id}}" v-sd-droppable="handle_folder_drop;item">
-        <span>{{item.name}}</span>
-        <span class="seperator">/</span>
-      </a>
+      <span v-for="item in active_space_path" class="btn btn-sm btn-transparent" v-sd-droppable="handle_folder_drop;item">
+        <a href="/{{item.space_type}}s/{{item._id}}">{{item.name}}</a>&nbsp; ▶</span>
 
       <a v-if="(active_space_role != 'admin')" type="button" class="btn btn-sm btn-transparent">
         <span>{{active_folder.name}}</span>

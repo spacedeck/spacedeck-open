@@ -301,7 +301,7 @@
 
   &.btn-dark {
     background-color: $dark ;
-    color: $medium;
+    color: $white;
   }
 
   &.btn-medium {
@@ -469,7 +469,6 @@
   
   &.btn-icon {
     padding: 0px !important;
-    font-weight: bold;
     max-width: 60px;
 
     &.btn-xl { max-width: 80px; }
@@ -493,30 +492,6 @@
       font-size: $font-size;
       color: $medium;
       margin-top: 10px;
-    }
-  }
-
-  &.btn-social {
-    position: relative;
-
-    &:hover .icon,
-    .number {
-      @include scale(0,0);
-      opacity: 0;
-    }
-
-    &:hover .number {
-      @include transition( all 0.1s 0.1s ease-in-out);
-      @include scale(1,1);
-      opacity: 1;
-    }
-
-    .number,
-    .icon {
-      @include transition( all 0.1s 0s ease-in-out);
-      position: absolute;
-      top: 0;
-      left: 0;
     }
   }
 
@@ -555,7 +530,6 @@
     .icon:before {line-height: 42px; }
     .icon-label {
       font-size: 11px;
-      text-transform: capitalize;
       text-align: center;
       margin: 8px 0;
       display: block;
@@ -568,7 +542,7 @@
       text-overflow: ellipsis;
       white-space: nowrap;
       padding: 0 0px;
-      font-weight: bold;
+      font-weight: 300;
     }
 
     &.hover {
@@ -977,7 +951,7 @@
   vertical-align: middle;
   white-space: nowrap;
   
-  border: 1px solid $dark;
+  //border: 1px solid $dark;
   border-radius: 5px;
   
   &.dark {

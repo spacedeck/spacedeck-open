@@ -20,11 +20,15 @@
 
   margin: auto;
   position: fixed;
-  top: 10px;
+  top: 20px;
   z-index: 3000;
   padding: 0;
   font-size: 0;
   line-height: 0;
+
+  box-shadow: 0 0 30px 1px rgba(0, 0, 0, 0.15);
+  border: 1px solid black;
+  border-radius: 5px;
 
   // FIXME questionable?
   
@@ -201,10 +205,17 @@
 }
 
 .toolbar-elements {
-    left: 10px;
+    left: 20px;
 }
 
 .toolbar-properties {
-    right: 20px;
+    right: 30px;
 }
 
+.zoom-bar {
+    position: absolute;
+    bottom: 30px;
+    right: 30px;
+    box-shadow: 0 0 30px 1px rgba(0, 0, 0, 0.15);
+    border: 1px solid black;
+}
