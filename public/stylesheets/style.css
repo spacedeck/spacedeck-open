@@ -15997,6 +15997,21 @@ body:not(.present-mode) #space .artifact.selected {
   margin-top: 100px;
   margin-bottom: 100px; }
 
+@media screen and (max-width: 1000px) {
+  #landing section {
+    margin-left: 20px;
+    margin-right: 20px; }
+  .footer {
+    margin-left: 20px;
+    margin-right: 20px; }
+  .header-right {
+    right: auto;
+    padding-left: 10px;
+    padding-right: 20px;
+    padding-top: 80px; }
+  #folder-wrapper {
+    padding-top: 128px; } }
+
 html,
 body {
   height: 100%;
