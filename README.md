@@ -1,8 +1,12 @@
 # Spacedeck Open
 
+![Spacedeck 6.0 Screenshot](/images/sd6-screenshot.png)
+
 This is the free and open source version of Spacedeck, a web based, real time, collaborative whiteboard application with rich media support. Spacedeck was developed in 6 major releases during Autumn 2011 until the end of 2016 and was originally a commercial SaaS. The developers were Lukas F. Hartmann (mntmn) and Martin Güther (magegu).
 
 The spacedeck.com online service was shut down on May 1st 2018. We decided to open-source Spacedeck to allow educational and other organizations who currently rely on Spacedeck to migrate to a self-hosted or local version.
+
+[MNT Research GmbH](https://mntre.com) has restarted development of Spacedeck Open in 2020.
 
 We appreciate filed issues, pull requests and general discussion.
 
@@ -13,9 +17,9 @@ We appreciate filed issues, pull requests and general discussion.
 - Write and format text with full control over fonts, colors and style
 - Draw, annotate and highlight with included graphical shapes
 - Turn your Space into a zooming presentation
-- Collaborate and chat in realtime with teammates, students or friends
+- Collaborate in realtime with teammates, students or friends
 - Share Spaces on the web or via email
-- Export your work as printable PDF or ZIP
+- Export your work as printable PDF or ZIP (currently being fixed, stay tuned)
 
 # Use Cases
 
@@ -23,23 +27,13 @@ We appreciate filed issues, pull requests and general discussion.
 - Creative: Mood boards, Brainstorming, Design Thinking
 - Visual note taking and planning
 
-# Data Import from Spacedeck.com
-
-Spacedeck Open has a data import feature that you can use to migrate your ZIP export from Spacedeck.com.
-
-1. Just copy your downloaded ZIP file into the spacedeck root folder. Don't extract it.
-2. Start your local Spacedeck.
-3. Navigate to *Account / Profile* (person icon in the top right corner).
-4. Click the *Import* button next to the ZIP file name. It is on the bottom of the page.
-5. Wait until console output has finished and you're done.
-
 # Requirements, Installation
 
 Spacedeck requires:
 
-- Node.js 9.x: Web Server / API. Download: https://nodejs.org
+- Node.js 10.x: Web Server / API. Download: https://nodejs.org
 
-To run Spacedeck, you only need Node.JS 9.x.
+To run Spacedeck, you only need Node.JS 10.x.
 
 To install all node dependencies, run (do this once):
 
@@ -54,10 +48,6 @@ See [config/default.json](config/default.json)
     node spacedeck.js
 
 Then open http://localhost:9666 in a web browser.
-
-# Run (desktop app with integrated web server)
-
-    electron .
 
 # Optional Dependencies
 
