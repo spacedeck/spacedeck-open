@@ -57,11 +57,6 @@ module.exports = (req, res, next) => {
     "_id": spaceId
   }}).then(function(space) {
 
-    //.populate("creator", userMapping)
-    //if (err) {
-    //  res.status(400).json(err);
-    //} else {
-
     if (space) {
       if (space.access_mode == "public") {
         if (space.password) {
