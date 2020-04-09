@@ -48,17 +48,8 @@
         <h4>[[__("signup")]]</h4>
 
         <div class="tight">
-
           <div class="form-group">
-            <input class="input" type="text" id="user-name" v-model="user_forms_name" placeholder="[[__("name")]]" v-focus autofocus>
-          </div>
-
-        </div>
-
-        <div class="tight">
-
-          <div class="form-group">
-            <input class="input" type="email" required id="user-email" v-model="user_forms_email" placeholder="[[__("email")]]">
+            <input class="input" type="email" required id="user-email" v-model="user_forms_email" placeholder="[[__("email")]]" autofocus v-focus>
           </div>
 
           <div class="form-group">
@@ -68,9 +59,14 @@
           <div class="form-group">
             <input class="input" id="user-password-confirmation" required type="password" v-model="signup_password_confirmation" placeholder="[[__("password_confirmation")]]">
           </div>
-          
+        </div>
+        
+        <div class="tight">
           <div class="form-group">
-            <input class="input" id="invite-code" required type="text" v-model="signup_invite_code" placeholder="Invite Code">
+            <input class="input" type="text" id="user-name" v-model="user_forms_name" placeholder="Pick a username">
+          </div>
+          <div class="form-group">
+            <input class="input" id="invite-code" required type="text" v-model="signup_invite_code" placeholder="Beta Invite Code">
           </div>
         </div>
 
