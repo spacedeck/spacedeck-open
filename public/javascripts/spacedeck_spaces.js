@@ -276,15 +276,6 @@ var SpacedeckSpaces = {
             // FIXME
             this.active_join_link = "";
             this.join_link_role = "viewer";
-
-            // FIXME
-            if (this.active_space_role == "admin") {
-              this.space_info_section="access";
-            } else if (this.active_space_role == "editor") {
-              //this.space_info_section="versions";
-            } else {
-              this.space_info_section="info";
-            }
           }
         }.bind(this), function(xhr) {
 
@@ -313,7 +304,7 @@ var SpacedeckSpaces = {
         userReady();
       }
 
-      if (space_auth) {
+      if (!this.user && space_auth) {
         if (this.guest_nickname) {
           userReady();
         } else {
