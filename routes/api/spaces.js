@@ -260,8 +260,17 @@ router.put('/:id', function(req, res) {
   newAttr.edit_slug = slug(newAttr['name']);
 
   delete newAttr['_id'];
-  delete newAttr['editor_name'];
   delete newAttr['creator'];
+  delete newAttr['creator_id'];
+  delete newAttr['space_type'];
+
+  if (req['spaceRole'] != "admin") {
+    delete newAttr['access_mode']
+    delete newAttr['password']
+    delete newAttr['edit_hash']
+    delete newAttr['edit_slug']
+    delete newAttr['editors_locking']
+  }
 
   db.Space.update(newAttr, {where: {
     "_id": space._id
