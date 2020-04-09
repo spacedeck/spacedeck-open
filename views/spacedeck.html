@@ -28,44 +28,40 @@
       };
     </script>
 
-    {% if process.env.NODE_ENV == "production" %}
-    <script src="[[ '/javascripts/spacedeck.js' | cdn ]]"></script>
-    {% else %}
-    <script minify src="/javascripts/jquery-2.1.4.min.js"></script>
-    <script minify src="/javascripts/i18next-1.11.2.js"></script>
-    <script minify src="/javascripts/clipboard.js"></script>
+    <script src="/javascripts/jquery-2.1.4.min.js"></script>
+    <script src="/javascripts/i18next-1.11.2.js"></script>
+    <script src="/javascripts/clipboard.js"></script>
 
-    <script minify src="/javascripts/lodash.compat.js"></script>
-    <script minify src="/javascripts/fastclick.js"></script>
-    <script minify src="/javascripts/vue.js"></script>
-    <script minify src="/javascripts/moment.js"></script>
-    <script minify src="/javascripts/medium.patched.js"></script>
-    <script minify src="/javascripts/route-recognizer.js"></script>
+    <script src="/javascripts/lodash.compat.js"></script>
+    <script src="/javascripts/fastclick.js"></script>
+    <script src="/javascripts/vue.js"></script>
+    <script src="/javascripts/moment.js"></script>
+    <script src="/javascripts/medium.patched.js"></script>
+    <script src="/javascripts/route-recognizer.js"></script>
 
-    <script minify src="/javascripts/backend.js"></script>
-    <script minify src="/javascripts/link_parser.js"></script>
-    <script minify src="/javascripts/vector-render.js"></script>
-    <script minify src="/javascripts/mousetrap.js"></script>
-    <script minify src="/javascripts/smoke.js"></script>
-    <script minify src="/javascripts/helper.js"></script>
-    <script minify src="/javascripts/packer.growing.js"></script>
+    <script src="/javascripts/backend.js"></script>
+    <script src="/javascripts/link_parser.js"></script>
+    <script src="/javascripts/vector-render.js"></script>
+    <script src="/javascripts/mousetrap.js"></script>
+    <script src="/javascripts/smoke.js"></script>
+    <script src="/javascripts/helper.js"></script>
+    <script src="/javascripts/packer.growing.js"></script>
 
-    <script minify src="/javascripts/spacedeck_routes.js"></script>
-    <script minify src="/javascripts/spacedeck_formatting.js"></script>
-    <script minify src="/javascripts/spacedeck_sections.js"></script>
-    <script minify src="/javascripts/spacedeck_spaces.js"></script>
-    <script minify src="/javascripts/spacedeck_teams.js"></script>
-    <script minify src="/javascripts/spacedeck_board_artifacts.js"></script>
-    <script minify src="/javascripts/spacedeck_users.js"></script>
-    <script minify src="/javascripts/spacedeck_account.js"></script>
-    <script minify src="/javascripts/spacedeck_modals.js"></script>
-    <script minify src="/javascripts/spacedeck_avatars.js"></script>
-    <script minify src="/javascripts/spacedeck_websockets.js"></script>
+    <script src="/javascripts/spacedeck_routes.js"></script>
+    <script src="/javascripts/spacedeck_formatting.js"></script>
+    <script src="/javascripts/spacedeck_sections.js"></script>
+    <script src="/javascripts/spacedeck_spaces.js"></script>
+    <script src="/javascripts/spacedeck_teams.js"></script>
+    <script src="/javascripts/spacedeck_board_artifacts.js"></script>
+    <script src="/javascripts/spacedeck_users.js"></script>
+    <script src="/javascripts/spacedeck_account.js"></script>
+    <script src="/javascripts/spacedeck_modals.js"></script>
+    <script src="/javascripts/spacedeck_avatars.js"></script>
+    <script src="/javascripts/spacedeck_websockets.js"></script>
 
-    <script minify src="/javascripts/spacedeck_whiteboard.js"></script>
-    <script minify src="/javascripts/spacedeck_directives.js"></script>
-    <script minify src="/javascripts/spacedeck_vue.js"></script>
-    {% endif %}
+    <script src="/javascripts/spacedeck_whiteboard.js"></script>
+    <script src="/javascripts/spacedeck_directives.js"></script>
+    <script src="/javascripts/spacedeck_vue.js"></script>
     
     <script>if (window.module) module = window.module;</script>
   </head>
@@ -83,7 +79,6 @@
     {% include "./partials/modal/folder-settings.html" %}
     {% include "./partials/modal/support.html" %}
     {% include "./partials/modal/login.html" %}
-    {% include "./partials/modal/pdfoptions.html" %}
   </body>
 
   <script type="text/javascript">
