@@ -52,7 +52,8 @@ router.get('/', function(req, res, next) {
       db.Membership.findAll({where:{
         user_id: req.user._id
       }}).then(memberships => {
-        
+        // search for spaces
+
         var validMemberships = memberships.filter(function(m) {
           if (!m.space_id || (m.space_id == "undefined"))
             return false;
@@ -80,7 +81,8 @@ router.get('/', function(req, res, next) {
       });
 
     } else if (req.query.parent_space_id && req.query.parent_space_id != req.user.home_folder_id) {
-
+      // list spaces in a folder
+      
       db.Space
         .findOne({where: {
           _id: req.query.parent_space_id
@@ -113,14 +115,17 @@ router.get('/', function(req, res, next) {
         });
 
     } else {
+      // list home folder and spaces/folders that the user is a member of
+      
       db.Membership.findAll({ where: {
         user_id: req.user._id
       }}).then(memberships => {
         if (!memberships) memberships = [];
-        
+
         var validMemberships = memberships.filter(function(m) {
           if (!m.space_id || (m.space_id == "undefined"))
             return false;
+          return true;
         });
 
         var spaceIds = validMemberships.map(function(m) {
