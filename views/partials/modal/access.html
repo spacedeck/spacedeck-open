@@ -78,21 +78,26 @@
             <h4 class="text-left"><span class="icon icon-user-group icon-sm"></span> [[__("access_current_members")]]</h4>
             <table class="table">
               <tr>
-                <th>Icon</th>
+                <th></th>
                 <th>Email / Name</th>
                 <th>Role</th>
                 <th></th>
               </tr>
               <tr v-for="member in access_settings_memberships" v-bind:class="member.state">
                 <td>
-                  <span class="editor-avatar btn btn-xs btn-round btn-icon" v-if="member.user">{{member.user.initials}}</span>
-                  <span class="editor-avatar btn btn-xs btn-round btn-icon icon-hourglass" v-if="!member.user"></span>
+                  <span class="editor-avatar btn btn-md btn-dark btn-icon btn-round"
+                        v-if="member.user"
+                        v-bind:style="background_image_style([member.user.avatar_thumb_uri])"
+                        v-bind:class="{'has-avatar-image':!!member.user.avatar_thumb_uri}">
+                    <span class="icon icon-user" v-if="!member.user.avatar_thumb_uri"></span>
+                  </span>
+                  <span class="editor-avatar btn btn-md btn-round btn-icon icon-hourglass" v-if="!member.user"></span>
                 </td>
                 <td>
-                  <span class="editor-email" v-if="member.state == 'active'">{{member.user.email}}</span>
-                  <span class="editor-email" v-if="member.state == 'pending'">{{member.email_invited}}</span>
-                  <span class="editor-name"  v-if="member.state == 'active'">{{member.user.nickname}}</span>
-                  <span class="editor-email" v-if="member.state == 'pending'">(pending)</span>
+                  <span class="editor-name"  v-if="member.user && member.state == 'active'">{{member.user.nickname}}</span>
+                  <span class="editor-email" v-if="!member.user || member.state == 'pending'">(pending)</span>
+                  <span class="editor-email" v-if="member.user && member.state == 'active'">({{member.user.email}})</span>
+                  <span class="editor-email" v-if="!member.user || member.state == 'pending'">({{member.email_invited}})</span>
                 </td>
                 <td>
                   <div class="form-group">

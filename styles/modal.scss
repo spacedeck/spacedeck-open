@@ -135,7 +135,6 @@
   outline: none;
   display: inline-block;
   text-align: left;
-  @include user-select(none);
 
   border-radius: $radius*3;
   background-color: $light !important;

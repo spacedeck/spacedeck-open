@@ -149,27 +149,27 @@
     </div>
 
     <div class="collapse" v-bind:class="{in:account=='terminate'}">
-      <div class="">
-        <p>[[__("terminate_warning")]]</p>
-        <p>[[__("terminate_warning2")]]</p>
-      </div>
-
-      <div class="labels-inline">
+      <h4>Terminate Account</h4>
+      <div class="modal-section labels-inline">
         <div class="form-group">
           <label class="label">[[__("current_password")]]</label>
           <input v-model="account_remove_password" class="input input-white no-b" type="password">
         </div>
-
+        
         <div class="form-group">
           <label class="label">[[__("terminate_reason")]]</label>
           <textarea class="input input-white no-b" v-model="account_remove_feedback"></textarea>
           <p class="message">[[__("terminate_reason_caption")]]</p>
         </div>
+      </div>
+      
+      <div class="modal-section labels-inline">
         <div class="center alert alert-danger" v-if="account_remove_error">{{account_remove_error}}</div>
       </div>
-
-      <button class="btn btn-stroke-darken btn-md" v-on:click="remove_account(account_remove_password, account_remove_feedback)">Terminate Account</button>
-
+      
+      <div class="modal-footer">
+        <button class="btn btn-stroke-darken btn-md" v-on:click="remove_account(account_remove_password, account_remove_feedback)">Terminate Account</button>
+      </div>
     </div>
   </div>
 </div>
