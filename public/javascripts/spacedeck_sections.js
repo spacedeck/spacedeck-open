@@ -2286,9 +2286,6 @@ var SpacedeckSections = {
     },
 
     handle_section_paste: function(evt) {
-      // TODO: very confusing
-      return;
-      
       if (this.editing_artifact_id) return;
       var pastedText = null;
 
@@ -2298,11 +2295,6 @@ var SpacedeckSections = {
       }
 
       if (!pastedText) return;
-      
-      if (!pastedText.match(/<[a-zA-Z]+>/g)) {
-        // crappy heuristic if this is actually HTML
-        pastedText = pastedText.replace(/\n/g,"<br>");
-      }
       
       this.insert_embedded_artifact(pastedText);
     },
@@ -2350,32 +2342,6 @@ var SpacedeckSections = {
         this.create_artifact_via_embed_url(text);
         return;
       }
-
-      var new_item = {
-        mime: "text/html",
-        description: text.replace("\n", "<br />"),
-        title: "",
-        space_id: space._id
-      };
-
-      var w = 400;
-      var h = 300;
-      var point = this.find_place_for_item(w,h);
-
-      new_item.x = point.x;
-      new_item.y = point.y;
-      new_item.w = w;
-      new_item.h = h;
-      new_item.z = point.z;
-
-      if (this.guest_nickname) {
-        new_item.editor_name = this.guest_nickname;
-      }
-
-      save_artifact(new_item, function(saved_item) {
-        this.update_board_artifact_viewmodel(saved_item);
-        this.active_space_artifacts.push(saved_item);
-      }.bind(this));
     },
 
     create_artifact_via_embed_url: function(url) {
