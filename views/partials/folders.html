@@ -113,11 +113,9 @@
           <ul class="select-list">
             <li><span class="tile-rename" v-on:click="rename_folder(active_folder)">[[__("rename")]]</span></li>
             <li v-if="active_space_role == 'admin'"><span class="tile-share" v-on:click="activate_access()">[[__("share")]]</span></li>
-            <li><a v-on:click=" open_url('[[config.endpoint]]/api/spaces/'+active_folder._id+'/list')" target="_blank">[[__("list")]]</a></li>
           </ul>
         </div>
       </div>
-
 
       <div v-if="active_folder._id == user.home_folder_id">
         <span>[[  __('home') ]]</span>
@@ -130,7 +128,6 @@
         <p>[[  __('no_spaces_yet') ]]</p>
       </div>
     </div>
-
 
     <div id="folder-empty" v-if="folder_spaces_filter">
       <div v-if="active_profile_spaces | empty?">
@@ -159,7 +156,6 @@
 
             <div class="dropdown-menu" role="menu">
               <ul class="select-list">
-                <li v-on:click="duplicate_space(item)"><span><span class="icon icon-sm icon-duplicate"></span>[[  __('duplicate') ]]</span></li>
                 <li v-on:click="rename_space(item)"><span><span class="icon icon-sm icon-tag"></span>[[  __('rename') ]]</span></li>
                 <li v-on:click="delete_space(item)"><span><span class="icon icon-sm icon-trash"></span>[[  __('delete') ]]</span></li>
               </ul>
