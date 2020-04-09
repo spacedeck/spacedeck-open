@@ -285,14 +285,14 @@ module.exports = {
     } else {
       var findMembershipsForSpace = function(space, allMemberships, prevRole) {
         Membership.findAll({ where: {
-          "space": space._id
+          "space_id": space._id
         }}).then(function(parentMemberships) {
           var currentMemberships = parentMemberships.concat(allMemberships);
 
           if (space.parent_space_id) {
             Space.findOne({ where: {
               "_id": space.parent_space_id
-            }}, function(err, parentSpace) {
+            }}).then(function(parentSpace) {
               findMembershipsForSpace(parentSpace, currentMemberships, prevRole);
             });
           } else {
