@@ -31,12 +31,6 @@ SpacedeckUsers = {
         if (on_success) {
           on_success(user);
         }
-
-        // see spacedeck_account.js
-        load_importables(this.user, function(files) {
-          this.importables = files;
-        }.bind(this));
-        
       }.bind(this), function() {
         // error
         this.loading_user = false;

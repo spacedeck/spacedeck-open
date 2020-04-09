@@ -110,7 +110,7 @@ router.post('/', function(req, res) {
                       }, {
                         where: {
                           "email_invited": u.email,
-                          "state": pending
+                          "state": "pending"
                         }
                       });
                       res.status(201).json({});          
@@ -128,7 +128,6 @@ router.post('/', function(req, res) {
   db.User.findAll({where: {email: email}})
     .then(users => {
       if (users.length == 0) {
-        //var domain = email.slice(email.lastIndexOf('@')+1);
         createUser();
       } else {
         res.status(400).json({"error":"user_email_already_used"});
@@ -261,13 +260,6 @@ router.post('/:user_id/avatar', (req, res, next) => {
   });
 });
 
-router.post('/feedback', function(req, res, next) {
-  var text = req.body.text;
-  // FIXME
-  mailer.sendMail("support@example.org", "Support Request by " + req.user.email, text, {reply_to: req.user.email});
-  res.sendStatus(201);
-});
-
 router.post('/password_reset_requests', (req, res, next) => {
   const email = req.query.email;
   db.User.findOne({where: {"email": email}}).then((user) => {
@@ -321,21 +313,6 @@ router.post('/:user_id/confirm', function(req, res, next) {
     name: req.i18n.__("confirm_action")
   }});
   res.sendStatus(201);
-});
-
-router.get('/:user_id/importables', function(req, res, next) {
-  glob('*.zip', function(err, files) {
-    res.status(200).json(files);
-  });
-});
-
-router.get('/:user_id/import', function(req, res, next) {
-  if (req.query.zip) {
-    res.send("importing");
-    importer.importZIP(req.user, req.query.zip);
-  } else {
-    res.sendStatus(400);
-  }
 });
 
 module.exports = router;

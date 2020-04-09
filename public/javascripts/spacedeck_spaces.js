@@ -108,27 +108,6 @@ var SpacedeckSpaces = {
       space_auth = get_query_param("spaceAuth");
 
       var userReady = function() {
-        if (get_query_param("embedded")) {
-          this.embedded = true;
-          this.guest_signup_enabled = true;
-          if (get_query_param("publish_cta")) {
-            this.publish_cta = get_query_param("publish_cta");
-          }
-          if (get_query_param("nosocial")) {
-            this.social_bar = false;
-          }
-        }
-
-        if (get_query_param("confirm") && this.logged_in) {
-          var token = get_query_param("confirm");
-          confirm_user(this.user, token, function() {
-            this.redirect_to("/spaces/"+space_id+"?show_access=1");
-          }.bind(this), function() {
-            alert("An error occured confirming your email with the given token.");
-          });
-          return;
-        }
-
         this.close_dropdown();
 
         this.active_space_loaded = false;
@@ -156,9 +135,7 @@ var SpacedeckSpaces = {
         load_space(space_id, function(space, role) {
           document.title = space.name;
 
-          this.active_space_role = role || "viewer"; //via req header from backend
-
-          this.space_embed_html = "<iframe width=\"1024\" height=\"768\" seamless src=\""+ENV.webEndpoint+"/spaces/"+space._id+"?embedded=1\"></iframe>";
+          this.active_space_role = role || "viewer"; // via req header from backend
 
           if (!is_home) {
             load_members(space, function(members) {

@@ -54,10 +54,6 @@ router.get('/password-confirm/:token', (req, res) => {
   res.render('spacedeck', { title: 'Signup' });
 });
 
-router.get('/team', (req, res) => {
-  res.render('spacedeck');
-});
-
 router.get('/de/*', (req, res) => {
   res.redirect("/t/de");
 });
@@ -80,10 +76,6 @@ router.get('/en/*', (req, res) => {
 
 router.get('/en', (req, res) => {
   res.redirect("/t/end");
-});
-
-router.get('/it', (req, res) => {
-  res.redirect("/t/en");
 });
 
 router.get('/account', (req, res) => {
@@ -132,15 +124,15 @@ router.get('/s/:token', (req, res) => {
   db.Space.findOne({where: {"edit_hash": token}}).then(function (space) {
     if (space) {
       if (req.accepts('text/html')){
-	res.redirect("/spaces/"+space._id + "?spaceAuth=" + token);
+	      res.redirect("/spaces/"+space._id + "?spaceAuth=" + token);
       } else {
-	res.status(200).json(space);
+	      res.status(200).json(space);
       }
     } else {
       if (req.accepts('text/html')) {
-	res.status(404).render('not_found', { title: 'Page Not Found.' });
+	      res.status(404).render('not_found', { title: 'Page Not Found.' });
       } else {
-	res.status(404).json({});
+	      res.status(404).json({});
       }
     }
   });

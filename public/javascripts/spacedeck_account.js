@@ -9,17 +9,10 @@ SpacedeckAccount = {
     account_tab: 'invoices',
     password_change_error: null,
     feedback_text: "",
-    importables: [], // spacedeck.com zip import files
   },
   methods: {
     show_account: function() {
       this.activate_dropdown('account');
-    },
-
-    start_zip_import: function(f) {
-      if (confirm("Your archive will be imported in the background. This can take a few minutes. You can continue using Spacedeck in the meantime.")) {
-        import_zip(this.user, f);
-      }
     },
 
     account_save_user_digest: function(val) {

@@ -49,7 +49,6 @@ router.get('/', function(req, res, next) {
     });
   } else {
     if (req.query.search) {
-      
       db.Membership.findAll({where:{
         user_id: req.user._id
       }}).then(memberships => {
@@ -304,43 +303,6 @@ router.post('/:id/background', function(req, res, next) {
   });
 });
 
-var handleDuplicateSpaceRequest = function(req, res, parentSpace) {
-  Space.duplicateSpace(req.space, req.user, 0, (err, newSpace) => {
-    if (err) {
-      console.error(err);
-      res.status(400).json(err);
-    } else {
-      res.status(201).json(newSpace);
-    }
-  }, parentSpace);
-}
-
-router.post('/:id/duplicate', (req, res, next) => {
-  if (req.query.parent_space_id) {
-    Space.findOne({
-      _id: req.query.parent_space_id
-    }).populate('creator', userMapping).exec((err, parentSpace) => {
-      if (!parentSpace) {
-        res.status(404).json({
-          "error": "parent space not found for duplicate"
-        });
-      } else {
-        db.getUserRoleInSpace(parentSpace, req.user, (role) => {
-          if (role == "admin" ||  role == "editor") {
-            handleDuplicateSpaceRequest(req, res, parentSpace);
-          } else {
-            res.status(403).json({
-              "error": "not authed for parent_space_id"
-            });
-          }
-        });
-      }
-    });
-  } else {
-    handleDuplicateSpaceRequest(req, res);
-  }
-});
-
 router.delete('/:id', function(req, res, next) {
   if (req.user) {
     const space = req.space;
@@ -357,138 +319,6 @@ router.delete('/:id', function(req, res, next) {
     }
   } else {
     res.sendStatus(403);
-  }
-});
-
-router.post('/:id/artifacts-pdf', function(req, res, next) {
-  if (req.spaceRole == "editor" || req.spaceRole == "admin") {
-
-    var withZones = (req.query.zones) ? req.query.zones == "true" : false;
-    var fileName = (req.query.filename || "upload.bin").replace(/[^a-zA-Z0-9\.]/g, '');
-    var localFilePath = os.tmpdir() + "/" + fileName;
-    var writeStream = fs.createWriteStream(localFilePath);
-    var stream = req.pipe(writeStream);
-
-    req.on('end', function() {
-
-      var rawName = fileName.slice(0, fileName.length - 4);
-      var outputFolder = os.tmpdir() + "/" + rawName;
-      
-      fs.mkdir(outputFolder, function(err) {
-        var images = outputFolder + "/" + rawName + "-page-%03d.jpeg";
-        
-        // FIXME not portable
-        exec.execFile("gs", ["-sDEVICE=jpeg", "-dDownScaleFactor=4", "-dDOINTERPOLATE", "-dNOPAUSE", "-dJPEGQ=80", "-dBATCH", "-sOutputFile=" + images, "-r250", "-f", localFilePath], {}, function(error, stdout, stderr) {
-          if (error === null) {
-
-            glob(outputFolder + "/*.jpeg", function(er, files) {
-              var count = files.length;
-              var delta = 10;
-
-              var limitPerRow = Math.ceil(Math.sqrt(count));
-
-              var startX = parseInt(req.query.x, delta);
-              var startY = parseInt(req.query.y, delta);
-
-              async.mapLimit(files, 20, function(localfilePath, cb) {
-
-                var fileName = path.basename(localfilePath);
-                var baseName = path.basename(localfilePath, ".jpeg");
-
-                var number = parseInt(baseName.slice(baseName.length - 3, baseName.length), 10);
-
-                gm(localFilePath).size((err, size) => {
-                  var w = 350;
-                  var h = w;
-
-                  var x = startX + (((number - 1) % limitPerRow) * w);
-                  var y = startY + ((parseInt(((number - 1) / limitPerRow), 10) + 1) * w);
-
-                  var userId;
-                  if (req.user) userId = req.user._id;
-
-                  var a = db.Artifact.create({
-                    _id: uuidv4(),
-                    mime: "image/jpg",
-                    space_id: req.space._id,
-                    user_id: userId,
-                    editor_name: req.guest_name,
-                    w: w,
-                    h: h,
-                    x: x,
-                    y: y,
-                    z: (number + (count + 100))
-                  }).then(a => {
-                    payloadConverter.convert(a, fileName, localfilePath, (error, artifact) => {
-                      if (error) res.status(400).json(error);
-                      else {
-                        if (withZones) {
-                          var zone = {
-                            _id: uuidv4(),
-                            mime: "x-spacedeck/zone",
-                            description: "Zone " + (number),
-                            space_id: req.space._id,
-                            user_id: userId,
-                            editor_name: req.guest_name,
-                            w: artifact.w + 20,
-                            h: artifact.h + 40,
-                            x: x - 10,
-                            y: y - 30,
-                            z: number,
-                            order: number,
-                            valign: "middle",
-                            align: "center"
-                          };
-
-                          db.Artifact.create(zone).then((z) => {
-                            redis.sendMessage("create", "Artifact", z.toJSON(), req.channelId);
-                            cb(null, [artifact, zone]);
-                          });
-
-                        } else {
-                          cb(null, [artifact]);
-                        }
-                      }
-                    });
-                  });
-
-                });
-
-              }, function(err, artifacts) {
-
-                // FIXME not portable
-                exec.execFile("rm", ["-r", outputFolder], function(err) {
-                  res.status(201).json(_.flatten(artifacts));
-                  
-                  async.eachLimit(artifacts, 10, (artifact_or_artifacts, cb) => {
-
-                    if (artifact_or_artifacts instanceof Array) {
-                      _.each(artifact_or_artifacts, (a) => {
-                        redis.sendMessage("create", "Artifact", JSON.stringify(a), req.channelId);
-                      });
-                    } else  {
-                      redis.sendMessage("create", "Artifact", JSON.stringify(artifact_or_artifacts), req.channelId);
-                    }
-                    cb(null);
-                  });
-                });
-              });
-            });
-          } else {
-            console.error("error:", error);
-            // FIXME not portable
-            exec.execFile("rm", ["-r", outputFolder], function(err) {
-              fs.unlink(localFilePath);
-              res.status(400).json({});
-            });
-          }
-        });
-      });
-    });
-  } else {
-    res.status(401).json({
-      "error": "no access"
-    });
   }
 });
 
