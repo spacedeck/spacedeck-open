@@ -166,6 +166,7 @@ router.post('/', function(req, res, next) {
       attrs.creator_id = req.user._id;
       attrs.edit_hash = crypto.randomBytes(64).toString('hex').substring(0, 7);
       attrs.edit_slug = slug(attrs.name);
+      attrs.access_mode = "private";
       
       db.Space.create(attrs).then(createdSpace => {
         res.status(201).json(createdSpace);
