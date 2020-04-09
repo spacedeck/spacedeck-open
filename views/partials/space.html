@@ -145,11 +145,6 @@
             <source v-for="rep in a.payload_alternatives" v-bind:src="rep.payload_uri" v-bind:type="rep.mime" />
           </video>
 
-          <a class="btn btn-md btn-icon btn-round btn-primary edit"
-            v-show="a.mime == 'application/pdf'"
-            v-bind:href="a.payload_uri" target="_blank"
-            ><span class="icon icon-link"></span></a>
-
           <span v-if="a.view.link.length>0" class="link-wrapper">
             <a class="link btn btn-round btn-primary btn-sm" v-if="a.view.link" v-bind:href="a.view.link" target="_blank">{{a.view.link_caption}}</a>
           </span>

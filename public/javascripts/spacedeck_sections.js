@@ -2500,18 +2500,9 @@ var SpacedeckSections = {
       this.opened_dialog = "none";
 
       if (files && files.length) {
-        console.log("file: ",files[0]);
-
         for (var i=0; i<files.length; i++) {
           var file = files[i];
-          if (file.type === "application/pdf") {
-            var point = {x: 100, y: 100}; //fixme, center upload?
-            this.dropped_point = point;
-            this.pending_pdf_file = file;
-            this.activate_modal('pdfoptions');
-          } else {
-            this.create_artifact_via_upload(null, file, true);
-          }
+          this.create_artifact_via_upload(null, file, true);
         }
       }
     },
@@ -2855,32 +2846,6 @@ var SpacedeckSections = {
       }.bind(this),500);
     },
 
-    approve_pdf_upload: function(evt,approve_pdf_upload, mode){
-      this.close_modal();
-      
-      if(mode == "classic"){
-        this.create_artifact_via_upload(evt, this.pending_pdf_file, false);
-      }
-
-      if(mode == "grid") {
-        this.global_spinner = true;
-        save_pdf_file(this.active_space, this.dropped_point, this.pending_pdf_file, approve_pdf_upload,  function(createdArtifacts){
-
-          this.global_spinner = false;
-
-          _.each(createdArtifacts, function(new_artifact){
-            this.update_board_artifact_viewmodel(new_artifact);
-            this.active_space_artifacts.push(new_artifact)
-          }.bind(this));
-
-        }.bind(this), function(xhr) {
-          this.global_spinner = false;
-          alert("Error PDF ("+xhr.status+")");
-        }.bind(this));
-      }
-
-    },
-
     handle_data_drop: function(evt) {
       if (this.active_space_role=="viewer") {
         return false;
@@ -2893,17 +2858,8 @@ var SpacedeckSections = {
       if (files && files.length) {
         for (var i=0; i<files.length; i++) {
           var file = files[i];
-          if (file.type === "application/pdf") {
-            var point = this.cursor_point_to_space(evt);
-            this.dropped_point = point;
-            this.pending_pdf_file = file;
-            this.activate_modal('pdfoptions');
-
-          } else {
-            this.create_artifact_via_upload(evt, file, (files.length>1));
-          }
+          this.create_artifact_via_upload(evt, file, (files.length>1));
         }
-
       } else {
         var json = evt.dataTransfer.getData('application/json');
 
