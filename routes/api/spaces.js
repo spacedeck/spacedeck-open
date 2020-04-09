@@ -48,70 +48,8 @@ router.get('/', function(req, res, next) {
       error: "auth required"
     });
   } else {
-    if (req.query.writablefolders) {
-      db.Membership.find({where: {
-        user_id: req.user._id
-      }}, (memberships) => {
-        
-        var validMemberships = memberships.filter((m) => {
-          if (!m.space_id || (m.space_id == "undefined"))
-            return false;
-          return true;
-        });
-
-        var editorMemberships = validMemberships.filter((m) => {
-          return (m.role == "editor") || (m.role == "admin")
-        });
-
-        var spaceIds = editorMemberships.map(function(m) {
-          return m.space_id;
-        });
-
-        // TODO port
-        var q = {
-          "space_type": "folder",
-          "$or": [{
-            "creator": req.user._id
-          }, {
-            "_id": {
-              "$in": spaceIds
-            },
-            "creator": {
-              "$ne": req.user._id
-            }
-          }]
-        };
-
-        db.Space
-          .findAll({where: q})
-          .then(function(spaces) {
-            var updatedSpaces = spaces.map(function(s) {
-              var spaceObj = s; //.toObject();
-              return spaceObj;
-            });
-
-            async.map(spaces, (space, cb) => {
-              Space.getRecursiveSubspacesForSpace(space, (err, spaces) => {
-                var allSpaces = spaces;
-                cb(err, allSpaces);
-              })
-            }, (err, spaces) => {
-
-              var allSpaces = _.flatten(spaces);
-
-              var onlyFolders = _.filter(allSpaces, (s) => {
-                return s.space_type == "folder";
-              })
-              var uniqueFolders = _.unique(onlyFolders, (s) => {
-                return s._id;
-              })
-
-              res.status(200).json(uniqueFolders);
-            });
-          });
-      });
-    } else if (req.query.search) {
-
+    if (req.query.search) {
+      
       db.Membership.findAll({where:{
         user_id: req.user._id
       }}).then(memberships => {

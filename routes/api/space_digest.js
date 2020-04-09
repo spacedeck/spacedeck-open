@@ -138,7 +138,6 @@ router.get('/', function(req, res, next) {
               "$exists": 1
             }
           }).populate("space").exec(function(err, memberships) {
-
             async.map(memberships, function(membership, memcb) {
               Space.getRecursiveSubspacesForSpace(membership.space, function(err, spaces) {
                 cb(null, spaces.map(function(s) {

@@ -18,8 +18,6 @@ var SpacedeckSpaces = {
     active_space_path: [],
     access_settings_space: null,
     access_settings_memberships: [],
-    duplicate_folders: [],
-    duplicate_folder_id: "",
     pending_pdf_files: [],
 
     meta_visible: false,
@@ -671,47 +669,6 @@ var SpacedeckSpaces = {
     download_space_as_list: function(space) {
       this.global_spinner = true;
       location.href = "/api/spaces/" + space._id + "/list";
-    },
-    
-    duplicate_space_into_folder: function() {
-      load_writable_folders( function(folders){
-        this.duplicate_folders = _.sortBy(folders, function (folder) { return folder.name; });
-      }.bind(this), function(xhr) { 
-        console.error(xhr); 
-      });
-    },
-
-    duplicate_folder_confirm: function() {
-      var folderId = this.duplicate_folder_id;
-      var idx = _.findIndex(this.duplicate_folders, function(s) { return s._id == folderId;});
-      if (idx<0) idx = 0;
-      var folder = this.duplicate_folders[idx];
-      console.log("df f",folder);
-      if (!folder) return;
-
-      duplicate_space(this.active_space, folder._id, function(new_space) {
-        
-        this.duplicate_folders = [];
-        this.duplicate_folder = null;
-
-        smoke.quiz(__("duplicate_success", this.active_space.name, folder.name), function(e, test){
-          if (e == __("goto_space", new_space.name)){
-            this.redirect_to("/spaces/" +  new_space._id);
-          }else if (e == __("goto_folder", folder.name)){
-            this.redirect_to("/folders/" +  folder._id);
-          }
-        }.bind(this), {
-          button_1: __("goto_space", new_space.name),
-          button_2: __("goto_folder", folder.name),
-          button_cancel:__("stay_here")
-        });
-
-      }.bind(this), function(xhr){
-        
-        console.error(xhr);
-        smoke.prompt("error: " + xhr.statusText);
-
-      }.bind(this));
     },
     
     toggle_follow_mode: function() {

@@ -141,10 +141,6 @@ function import_zip(user, filename, on_success, on_error) {
   load_resource("get", "/users/"+user._id+"/import?zip="+filename, null, on_success, on_error);
 }
 
-function load_writable_folders(on_success, on_error) {
-  load_resource("get", "/spaces?writablefolders=true", null, on_success, on_error);
-}
-
 function load_history(s, on_success, on_error) {
   load_resource("get", "/spaces/"+ s._id +"/digest", null, on_success, on_error);
 }
@@ -190,11 +186,9 @@ function delete_space(s, on_success, on_error) {
   load_resource("delete", "/spaces/"+s._id, null, on_success, on_error);
 }
 
-
 function delete_artifact(a, on_success, on_error) {
   load_resource("delete", "/spaces/"+a.space_id+"/artifacts/"+a._id);
 }
-
 
 function duplicate_space(s, to_space_id, on_success, on_error) {
   var path = "/spaces/"+s._id+"/duplicate";
