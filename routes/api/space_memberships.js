@@ -45,10 +45,12 @@ router.post('/', function(req, res, next) {
         "email": membership.email_invited
       }}).then(function(user) {
 
+        // existing user? then immediately activate membership
         if (user) {
           membership.user_id = user._id;
           membership.state = "active";
         } else {
+          // if not, invite via email and invite code
           membership.code = crypto.randomBytes(64).toString('hex').substring(0, 12);
         }
 
@@ -102,11 +104,18 @@ router.put('/:membership_id', function(req, res, next) {
         _id: req.params.membership_id
       }}).then(function(mem) {
         if (mem) {
-          var attrs = req.body;
-          mem.role = attrs.role;
-          mem.save(function() {
-            res.status(201).json(mem);
-          });
+          // is the user trying to change their own role?
+          if (mem.user_id == req.user._id) {
+            res.status(400).json({
+              "error": "Cannot change your own role."
+            });
+          } else {
+            var attrs = req.body;
+            mem.role = attrs.role;
+            mem.save(function() {
+              res.status(201).json(mem);
+            });
+          }
         }
       });
     } else {
@@ -118,13 +127,25 @@ router.put('/:membership_id', function(req, res, next) {
 });
 
 router.delete('/:membership_id', function(req, res, next) {
-  if (req.user) {
-    db.Membership.findOne({ where: {
-      _id: req.params.membership_id
-    }}).then(function(mem) {
-      mem.destroy().then(function() {
-        res.sendStatus(204);
-      });
+  if (req.user && req.spaceRole == 'admin') {
+    db.Membership.count({ where: {
+      space_id: req.space._id,
+      role: "admin"
+    }}).then(function(adminCount) {
+      db.Membership.findOne({ where: {
+        _id: req.params.membership_id
+      }}).then(function(mem) {
+        // deleting an admin? need at least 1
+        if (mem.role != "admin" || adminCount > 1) { 
+          mem.destroy().then(function() {
+            res.sendStatus(204);
+          });
+        } else {
+          res.status(400).json({
+            "error": "Space needs at least one administrator."
+          });
+        }
+      })
     });
   } else {
     res.sendStatus(403);

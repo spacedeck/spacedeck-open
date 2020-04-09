@@ -168,12 +168,15 @@ router.post('/', function(req, res, next) {
       attrs.edit_slug = slug(attrs.name);
       
       db.Space.create(attrs).then(createdSpace => {
-        //if (err) res.sendStatus(400);
+        res.status(201).json(createdSpace);
+        
+        // create initial admin membership
         var membership = {
           _id: uuidv4(),
           user_id: req.user._id,
           space_id: attrs._id,
-          role: "admin"
+          role: "admin",
+          state: "active"
         };
         
         db.Membership.create(membership).then(() => {

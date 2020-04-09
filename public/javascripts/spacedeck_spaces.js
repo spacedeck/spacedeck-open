@@ -776,9 +776,12 @@ var SpacedeckSpaces = {
             this.invite_message = "";
           }
         }.bind(this), function(xhr){
-
-          text = JSON.stringify(xhr.responseText);
-          smoke.alert("Error: "+text);
+          try {
+            var res = JSON.parse(xhr.response);
+            alert("Error: "+res.error);
+          } catch (e) {
+            console.error(e, xhr);
+          }
         }.bind(this));
       }.bind(this));
     },
@@ -786,9 +789,13 @@ var SpacedeckSpaces = {
     update_member: function(space, m, role) {
       m.role = role;
       save_membership(space, m, function() {
-        console.log("saved")
       }.bind(this), function(xhr) {
-        console.error(xhr);
+        try {
+          var res = JSON.parse(xhr.response);
+          alert("Error: "+res.error);
+        } catch (e) {
+          console.error(e, xhr);
+        }
       }.bind(this));
     },
 
@@ -797,7 +804,12 @@ var SpacedeckSpaces = {
       delete_membership(space, m, function() {
         this.access_settings_memberships.splice(this.access_settings_memberships.indexOf(m), 1);
       }.bind(this), function(xhr) {
-        console.error(xhr);
+        try {
+          var res = JSON.parse(xhr.response);
+          alert("Error: "+res.error);
+        } catch (e) {
+          console.error(e, xhr);
+        }
       }.bind(this));
     },
 

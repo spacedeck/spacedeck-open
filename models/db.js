@@ -91,7 +91,7 @@ module.exports = {
     user_id: Sequelize.STRING,
     role: Sequelize.STRING,
     code: Sequelize.STRING,
-    state: {type: Sequelize.STRING, defaultValue: "pending"},
+    state: {type: Sequelize.STRING, defaultValue: "pending"}, // valid: "pending", "active"
     email_invited: Sequelize.STRING,
     created_at: {type: Sequelize.DATE, defaultValue: Sequelize.NOW},
     updated_at: {type: Sequelize.DATE, defaultValue: Sequelize.NOW}
