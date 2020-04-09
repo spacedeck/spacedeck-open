@@ -100,7 +100,9 @@
       </div>
     </div>
 
-    <button class="btn btn-transparent btn-icon-labeled" v-on:click="activate_access()">
+    <button class="btn btn-transparent btn-icon-labeled"
+            v-if="active_space_role=='admin'"
+            v-on:click="activate_access()">
       <span class="icon icon-share"></span>
       <span class="icon-label">[[  __('share') ]]</span>
     </button>
