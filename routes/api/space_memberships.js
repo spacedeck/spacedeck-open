@@ -92,7 +92,7 @@ router.post('/', function(req, res, next) {
 
   } else {
     res.status(403).json({
-      "error": "not_permitted"
+      "error": "Only administrators can do that."
     });
   }
 });
