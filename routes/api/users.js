@@ -89,28 +89,31 @@ router.post('/', function(req, res) {
               res.sendStatus(400);
             })
             .then(u => {
-              var homeSpace = {
+              var homeFolder = {
                 _id: uuidv4(),
                 name: req.i18n.__("home"),
                 space_type: "folder",
                 creator_id: u._id
               };
-              db.Space.create(homeSpace)
+              db.Space.create(homeFolder)
                 .error(err => {
                   res.sendStatus(400);
                 })
-                .then(homeSpace => {
-                  u.home_folder_id = homeSpace._id;
+                .then(homeFolder => {
+                  u.home_folder_id = homeFolder._id;
                   u.save()
                     .then(() => {
-                      res.status(201).json({});
-                      
-                      mailer.sendMail(u.email, req.i18n.__("confirm_subject"), req.i18n.__("confirm_body"), {
-                        action: {
-                          link: config.endpoint + "/confirm/" + u.confirmation_token,
-                          name: req.i18n.__("confirm_action")
+                      // home folder created,
+                      // auto accept pending invites
+                      db.Membership.update({
+                        "state": "active"
+                      }, {
+                        where: {
+                          "email_invited": u.email,
+                          "state": pending
                         }
                       });
+                      res.status(201).json({});          
                     })
                     .error(err => {
                       res.status(400).json(err);
@@ -174,36 +177,35 @@ router.post('/:id/password', function(req, res, next) {
           });
         });
       } else {
-        res.status(403).json({"error": "old password wrong"});
+        res.status(403).json({"error": "Please enter the correct current password."});
       }
     } else {
-      res.status(403).json({"error": "wrong user"});
+      res.status(403).json({"error": "Access denied."});
     }
   } else {
-    res.status(400).json({"error": "password_to_short"});
+    res.status(400).json({"error": "Please choose a new password with at least 6 characters."});
   }
 });
 
 router.delete('/:id',  (req, res, next) => {
   const user = req.user;
-  if(user._id == req.params.id) {
-    if (user.account_type == 'email') {
-      if (bcrypt.compareSync(req.query.password, user.password_hash)) {
-        user.remove((err) => {
-          if(err)res.status(400).json(err);
-          else res.sendStatus(204);
-        });
-      } else {
-        res.bad_request("password_incorrect");
-      }
-    } else {
-      user.remove((err) => {
-        if (err) res.status(400).json(err);
+  if (user._id == req.params.id) {
+    if (bcrypt.compareSync(req.query.password, user.password_hash)) {
+
+      // TODO: this doesn't currently work.
+      // all objects (indirectly) belonging to the user have
+      // to be walked and deleted first.
+      
+      user.destroy().then(err => {
+        if(err)res.status(400).json(err);
         else res.sendStatus(204);
       });
+    } else {
+      res.bad_request("Please enter the correct current password.");
     }
+  } else {
+    res.status(403).json({error: "Access denied."});
   }
-  else res.status(403).json({error: ""});
 });
 
 router.put('/:user_id/confirm', (req, res) => {

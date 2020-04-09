@@ -61,33 +61,6 @@ module.exports = {
         }
       });
 
-    } else if (config.get('mail_provider') === 'aws') {
-      /*
-      AWS.config.update({region: 'eu-west-1'});
-      var ses = new AWS.SES();
-
-      ses.sendEmail( {
-        Source: from,
-        Destination: { ToAddresses: [to_email] },
-        ReplyToAddresses: reply_to,
-        Message: {
-          Subject: {
-            Data: subject
-          },
-          Body: {
-            Text: {
-              Data: plaintext,
-            },
-            Html: {
-              Data: htmlText
-            }
-          }
-        }
-      }, function(err, data) {
-        if (err) console.error("Error sending email:", err);
-        else console.log("Email sent.");
-      });
-      */
     }
   }
 };
