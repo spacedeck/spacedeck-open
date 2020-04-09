@@ -29,8 +29,8 @@
         </div>
 
         <button type="submit" class="btn btn-dark btn-block">
-          <span v-show="!loading_user">[[__("login")]]</span>
-          <span v-show="loading_user">[[__("logging_in")]]</span>
+          <span v-show="!loading_user">Login</span>
+          <span v-show="loading_user">Logging in…</span>
         </button>
 
         <div class="center alert alert-danger" v-if="login_error">{{login_error}}</div>
