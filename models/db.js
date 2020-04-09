@@ -279,8 +279,7 @@ module.exports = {
 
   getUserRoleInSpace: (originalSpace, user, cb) => {
     originalSpace.path = [];
-    console.log("getUserRoleInSpace",originalSpace._id,user._id,user.home_folder_id);
-
+    
     if (originalSpace._id == user.home_folder_id || (originalSpace.creator_id && originalSpace.creator_id == user._id)) {
       cb("admin");
     } else {
