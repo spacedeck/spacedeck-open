@@ -5,7 +5,10 @@
 */
 
 function setup_whiteboard_directives() {
+  var mode_touch = false;
+  
   if ('ontouchstart' in window) {
+    mode_touch = true;
     var edown = "touchstart";
     var emove = "touchmove";
     var eup = "touchend";
@@ -15,6 +18,12 @@ function setup_whiteboard_directives() {
     var eup = "mouseup";
   }
 
+  // detect first touch event
+  window.addEventListener('touchstart', function on_first_touch() {
+    mode_touch = true;
+    window.removeEventListener('touchstart', on_first_touch, false);
+  }, false);
+
   Vue.directive('sd-whiteboard', {
     bind: function () {
       var el = this.el;
@@ -23,9 +32,12 @@ function setup_whiteboard_directives() {
       $(el).on("dblclick", ".artifact", this.handle_double_click_artifact.bind(this));
       $(el).on("keyup", ".artifact", this.handle_key_up_artifact.bind(this));
       $(el).on("keydown", ".artifact", this.handle_key_down_artifact.bind(this));
-      $(el).bind(edown, this.handle_mouse_down_space.bind(this));
-      $(el).bind(emove, this.handle_mouse_move.bind(this));
-      $(el).bind(eup, this.handle_mouse_up_space.bind(this));
+      $(el).bind("touchstart", this.handle_mouse_down_space.bind(this));
+      $(el).bind("touchmove", this.handle_mouse_move.bind(this));
+      $(el).bind("touchend", this.handle_mouse_up_space.bind(this));
+      $(el).bind("mousedown", this.handle_mouse_down_space.bind(this));
+      $(el).bind("mousemove", this.handle_mouse_move.bind(this));
+      $(el).bind("mouseup", this.handle_mouse_up_space.bind(this));
       
       $(el).bind("wheel", this.handle_wheel_space.bind(this));
 
@@ -214,7 +226,7 @@ function setup_whiteboard_directives() {
       $scope.mouse_ox = cursor.x;
       $scope.mouse_oy = cursor.y;
 
-      if (evt.which == 2 || evt.buttons == 4) {
+      if ((mode_touch && $scope.active_tool=="pointer") || evt.which == 2 || evt.buttons == 4) {
         $scope.active_tool = "pan";
       }
       
