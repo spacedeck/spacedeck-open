@@ -57,7 +57,7 @@
           </div>
 
           <div class="form-group">
-            <input class="input" id="user-password-confirmation" required type="password" v-model="signup_password_confirmation" placeholder="[[__("password_confirmation")]]">
+            <input class="input" id="user-password-confirmation" required type="password" v-model="signup_password_confirmation" placeholder="Repeat Password">
           </div>
         </div>
         
@@ -98,8 +98,8 @@
       </form>
     </div>
     <div class="content" v-if="password_reset_send==true">
-      <h4>[[__("password_confirmation")]]</h4>
-      [[__("password_check_inbox")]]
+      <h4>Reset Password</h4>
+      Please check your email inbox.
     </div>
   </div>
 
@@ -110,11 +110,11 @@
 
         <div class="tight">
           <div class="form-group">
-            <input class="input" id="user-password" type="password" v-model="signup_password" placeholder="[[__("password")]]">
+            <input class="input" id="user-password" type="password" v-model="signup_password" placeholder="New Password">
           </div>
 
           <div class="form-group">
-            <input class="input" id="user-password" type="password" v-model="signup_password_confirmation" placeholder="[[__("password_confirmation")]]">
+            <input class="input" id="user-password" type="password" v-model="signup_password_confirmation" placeholder="Repeat Password">
           </div>
         </div>
 

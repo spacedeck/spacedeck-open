@@ -196,27 +196,29 @@ SpacedeckUsers = {
       this.password_reset_confirm_error = null;
       this.password_reset_send = false;
 
-      if(password != password_confirmation) {
+      if (password != password_confirmation) {
         this.password_reset_confirm_error = "Passwords do not match.";
         return;
       }
 
-      if(password.length < 5) {
+      if (password.length < 5) {
         this.password_reset_confirm_error = "Password too short (must have at least 5 characters).";
         return;
       }
 
       confirm_password_reset(password, this.reset_token, function(parsed,req) {
-        if(req.status==201){
+        if (req.status==201) {
+          alert("New password set successfully.");
           this.active_view = "login";
+        } else {
+          alert("An unknown error occured.");
         }
       }.bind(this), function(req) {
         if (req.status==404) {
-          var msg = "user not found";
+          alert("Error: Unknown user.");
         } else {
-          var msg = "error: " + req.statusText;
+          alert("Error: "+req.statusText);
         }
-        this.password_reset_confirm_error = msg;
       }.bind(this));
     },
 
