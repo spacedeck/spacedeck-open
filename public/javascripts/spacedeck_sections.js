@@ -2558,7 +2558,11 @@ var SpacedeckSections = {
     },
 
     start_drawing_scribble: function(evt) {
-      this.active_tool = "scribble";
+      if (this.active_tool == "scribble") {
+        this.active_tool = "pointer";
+      } else {
+        this.active_tool = "scribble";
+      }
       this.opened_dialog = "none";
     },
 
