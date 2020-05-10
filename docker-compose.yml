@@ -1,0 +1,12 @@
+version: "3.7"
+
+services:
+  spacedeck:
+    build: .
+    container_name: spacedeck
+    ports:
+      - "80:9666"
+    volumes:
+      - /absolute/path/to/storage:/app/storage
+      - /absolute/path/to/database.sqlite:/app/database.sqlite
+
