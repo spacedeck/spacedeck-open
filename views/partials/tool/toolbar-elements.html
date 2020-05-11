@@ -4,14 +4,14 @@
     
     <a class="btn btn-icon btn-transparent"
        title="[[__("home")]]" href="/spaces"
-       v-if="(!active_space.parent_space_id && !guest_nickname)">
+       v-if="(!active_space.parent_space_id && !guest_nickname && !embedded)">
       <span class="icon icon-folder"></span>
     </a>
       
     <a class="btn btn-icon btn-dark"
        title="Parent Folder"
        href="/folders/{{active_space.parent_space_id}}"
-       v-if="(active_space.parent_space_id && !guest_nickname)">
+       v-if="(active_space.parent_space_id && !guest_nickname && !embedded)">
       
       <span class="icon icon-sd6 icon-svg"></span>
     </a>

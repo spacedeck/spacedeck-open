@@ -14,6 +14,7 @@ function boot_spacedeck() {
     account: "profile",
     logged_in: false,
     guest_nickname: null,
+    embedded: false,
     user: {},
 
     active_profile: null,
