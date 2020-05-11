@@ -1,6 +1,7 @@
 'use strict';
 
 const db = require('../models/db');
+const { Op } = require("sequelize");
 var config = require('config');
 
 module.exports = (req, res, next) => {
@@ -53,8 +54,12 @@ module.exports = (req, res, next) => {
     'email': 1
   };
 
+  // find space by id or slug
   db.Space.findOne({where: {
-    "_id": spaceId
+                    [Op.or]: [
+                      {"_id": spaceId},
+                      {"edit_slug": spaceId}
+                    ]
   }}).then(function(space) {
 
     if (space) {
