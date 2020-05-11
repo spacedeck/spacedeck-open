@@ -55,6 +55,15 @@
       </div>
 
       <div>
+        <div class="form-group">
+          <label class="label">API Token</label>
+          <input
+          type="text"
+          id="api-token"
+          class="input input-white no-b"
+          v-model="user.api_token"
+          placeholder="secret key">
+        </div>
 
         <div class="form-group">
           <label class="label" >[[__("profile_name")]]</label>
@@ -67,18 +76,17 @@
 
         <div class="form-group">
           <label class="label">[[__("profile_email")]]</label>
-
           <input
-          id="new-email"
-          v-bind:class="{disabled: user.account_type=='google'}"
-          v-bind:disabled="user.account_type=='google'"
-          class="input input-white no-b"
           type="email"
+          id="new-email"
+          class="input input-white no-b"
           v-model="user.email"
           v-on:change="user.email_changed=true"
           placeholder="mail@example.com">
+        </div>
 
-          <button class="btn btn-md btn-dark" v-on:click=" save_user()" style="margin-top:20px">Save</button>
+        <div class="form-group">
+          <button class="btn btn-md btn-dark" v-on:click="save_user()">Save</button>
         </div>
       </div>
     </div>
