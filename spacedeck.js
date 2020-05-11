@@ -71,18 +71,18 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.use(cookieParser());
-app.use(helmet.frameguard())
-app.use(helmet.xssFilter())
-app.use(helmet.hsts({
+//app.use(helmet.frameguard())
+//app.use(helmet.xssFilter())
+/*app.use(helmet.hsts({
   maxAge: 7776000000,
   includeSubDomains: true
-}))
+}))*/
 app.disable('x-powered-by');
-app.use(helmet.noSniff())
+//app.use(helmet.noSniff())
 
 //app.use(require("./middlewares/error_helpers"));
-app.use(require("./middlewares/session"));
 //app.use(require("./middlewares/cors"));
+app.use(require("./middlewares/session"));
 app.use(require("./middlewares/i18n"));
 app.use("/api", require("./middlewares/api_helpers"));
 app.use('/api/spaces/:id', require("./middlewares/space_helpers"));
