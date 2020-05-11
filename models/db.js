@@ -51,6 +51,17 @@ module.exports = {
     updated_at: {type: Sequelize.DATE, defaultValue: Sequelize.NOW}
   }),
 
+  CreatorSafeInclude: function(db) {
+    return {
+      model: this.User,
+      as: 'creator',
+      attributes: ['_id','email','nickname',
+                   'avatar_original_uri',
+                   'avatar_thumb_uri',
+                   'created_at','updated_at']
+    };
+  },
+
   Session: sequelize.define('session', {
     token: {type: Sequelize.STRING, primaryKey: true},
     user_id: Sequelize.STRING,
