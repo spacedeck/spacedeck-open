@@ -100,12 +100,12 @@ var SpacedeckSpaces = {
     },
     
     load_space: function(space_id, on_success, on_error) {
-
-      console.log("load space: ", space_id);
       this.folder_spaces_filter="";
       this.folder_spaces_search="";
 
       space_auth = get_query_param("spaceAuth");
+
+      this.embedded = !!(get_query_param("embedded"));
 
       var userReady = function() {
         this.close_dropdown();
@@ -649,6 +649,13 @@ var SpacedeckSpaces = {
       this.present_mode = !this.present_mode;
       if (this.present_mode) {
         //this.go_to_first_zone();
+        if (this.embedded) {
+          document.documentElement.requestFullscreen();
+        }
+      } else {
+        if (this.embedded) {
+          document.exitFullscreen();
+        }
       }
     },
 
