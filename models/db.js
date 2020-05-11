@@ -42,6 +42,7 @@ module.exports = {
     avatar_thumb_uri: Sequelize.STRING,
     confirmation_token: Sequelize.STRING,
     password_reset_token: Sequelize.STRING,
+    api_token: Sequelize.STRING,
     home_folder_id: Sequelize.STRING,
     prefs_language: Sequelize.STRING,
     prefs_email_notifications: Sequelize.STRING,
