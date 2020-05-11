@@ -71,7 +71,7 @@ router.get('/', function(req, res, next) {
                    {"_id": {[Op.in]: spaceIds}},
                    {"parent_space_id": {[Op.in]: spaceIds}}],
           name: {[Op.like]: "%"+req.query.search+"%"}
-        }, include: ['creator']};
+        }, include: [db.CreatorSafeInclude(db)]};
 
         db.Space
           .findAll(q)
@@ -87,7 +87,6 @@ router.get('/', function(req, res, next) {
         .findOne({where: {
           _id: req.query.parent_space_id
         }})
-        //.populate('creator', userMapping)
         .then(function(space) {
           if (space) {
             db.getUserRoleInSpace(space, req.user, function(role) {
@@ -101,7 +100,7 @@ router.get('/', function(req, res, next) {
                 db.Space
                   .findAll({where:{
                     parent_space_id: req.query.parent_space_id
-                  }, include:['creator']})
+                  }, include:[db.CreatorSafeInclude(db)]})
                   .then(function(spaces) {
                     res.status(200).json(spaces);
                   });
@@ -147,7 +146,7 @@ router.get('/', function(req, res, next) {
         };
 
         db.Space
-          .findAll({where: q, include: ['creator']})
+          .findAll({where: q, include: [db.CreatorSafeInclude(db)]})
           .then(function(spaces) {
             var updatedSpaces = spaces.map(function(s) {
               var spaceObj = db.spaceToObject(s);
@@ -169,7 +168,7 @@ router.post('/', function(req, res, next) {
       attrs._id = uuidv4();
       attrs.creator_id = req.user._id;
       attrs.edit_hash = crypto.randomBytes(64).toString('hex').substring(0, 7);
-      attrs.edit_slug = slug(attrs.name);
+      attrs.edit_slug = attrs.edit_slug || slug(attrs.name);
       attrs.access_mode = "private";
       
       db.Space.create(attrs).then(createdSpace => {
@@ -211,6 +210,7 @@ router.post('/', function(req, res, next) {
         }
       });
     } else {
+      attrs.parent_space_id = req.user.home_folder_id;
       createSpace();
     }
 
