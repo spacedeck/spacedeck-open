@@ -4,8 +4,27 @@ const db = require('../models/db');
 var config = require('config');
 
 module.exports = (req, res, next) => {
+
+  // authentication via API token
+  const api_token = req.headers["x-spacedeck-api-token"];
+
+  if (api_token && api_token.length>7) {
+    db.User.findOne({where: {api_token: api_token}}).then(user => {
+      req.user = user;
+      next();
+    }).error(err => {
+      res.status(403).json({
+        "error": "invalid_api-token"
+      });
+      next();
+    });
+
+    return;
+  }
+
+  // authentication via session/cookie
   const token = req.cookies["sdsession"];
-  
+
   if (token && token != "null" && token != null) {
     db.Session.findOne({where: {token: token}})
       .then(session => {
@@ -28,7 +47,7 @@ module.exports = (req, res, next) => {
               } else {
                 res.send("Please clear your cookies and try again.");
               }
-              
+
             } else {
               req["token"] = token;
               req["user"] = user;
@@ -44,4 +63,3 @@ module.exports = (req, res, next) => {
     next();
   }
 }
-
