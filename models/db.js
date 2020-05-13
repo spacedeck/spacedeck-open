@@ -1,4 +1,5 @@
 const Umzug = require('umzug');
+const config = require('config')
 
 function sequel_log(a,b,c) {
   console.log(a);
@@ -17,7 +18,7 @@ const sequelize = new Sequelize('database', 'username', 'password', {
   },
 
   // SQLite only
-  storage: 'database.sqlite',
+  storage: config.get('database_storage'),
   logging: sequel_log,
 
   // http://docs.sequelizejs.com/manual/tutorial/querying.html#operators

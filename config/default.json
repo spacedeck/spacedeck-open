@@ -6,13 +6,12 @@
   "invite_code": "top-sekrit",
 
   "storage_region": "eu-central-1",
-  //"storage_bucket": "sdeck-development",
-  //"storage_cdn": "http://localhost:9123/sdeck-development",
-  //"storage_endpoint": "http://storage:9000",
 
   "storage_bucket": "my_spacedeck_bucket",
   "storage_cdn": "/storage",
   "storage_local_path": "./storage",
+
+  "database_storage": "database/database.sqlite",
 
   "redis_mock": true,
   "mongodb_host": "localhost",
@@ -23,7 +22,6 @@
   "admin_pass": "very_secret_admin_password",
   "phantom_api_secret": "very_secret_phantom_password",
 
-  // Choose "console" or "smtp"
   "mail_provider": "smtp",
   "mail_smtp_host": "your.smtp.host",
   "mail_smtp_port": 465,
