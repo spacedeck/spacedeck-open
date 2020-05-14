@@ -62,6 +62,17 @@ For advanced media conversion:
 By default, media files are uploaded to the ```storage``` folder.
 The database is stored in ```database.sqlite``` by default.
 
+# Run with Docker
+
+- configure `config/default.json`
+  - beware: no trailing `/` for the `endpoint`
+- configure `volumes` section inside `docker-compose.yml`
+  - point to local file `database.sqlite`
+  - `touch database.sqlite` if it not exists
+  - point to local folder `storage/`
+  - `mkdir storage/` if it not exists
+- start the container with `sudo docker-compose up -f docker-compose.yml -d --build`
+
 # Hacking
 
 To rebuild the frontend CSS styles:
