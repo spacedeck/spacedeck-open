@@ -17,7 +17,6 @@ SpacedeckUsers = {
     loading_user: false,
     password_reset_confirm_error: "",
     password_reset_error: "",
-    
   },
   methods:{
     load_user: function(on_success, on_error) {

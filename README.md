@@ -32,6 +32,7 @@ We appreciate filed issues, pull requests and general discussion.
 Spacedeck requires:
 
 - Node.js 10.x: Web Server / API. Download: https://nodejs.org
+- Graphicsmagick. Download: http://www.graphicsmagick.org/
 
 To run Spacedeck, you only need Node.JS 10.x.
 
