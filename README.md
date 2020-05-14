@@ -41,7 +41,7 @@ To install all node dependencies, run (do this once):
 
 # Configuration
 
-See [config/default.json](config/default.json)
+See [config/default.json](config/default.json). Set `storage_local_path` for a local sqlite database or `storage_region`, `storage_bucket`, `storage_cdn` and `storage_endpoint` for AWS S3. `mail_provider` may be one of `console` or `smtp`. Also, omit a trailing `/` for the `endpoint`.
 
 # Run (web server)
 
@@ -65,7 +65,6 @@ The database is stored in ```database.sqlite``` by default.
 # Run with Docker
 
 - configure `config/default.json`
-  - beware: no trailing `/` for the `endpoint`
 - configure `volumes` section inside `docker-compose.yml`
   - point to local file `database.sqlite`
   - `touch database.sqlite` if it not exists
