@@ -67,9 +67,9 @@ The database is stored in ```database.sqlite``` by default.
 
 - configure `config/default.json`
 - configure `volumes` section inside `docker-compose.yml`
-  - point to local file `database.sqlite`
+  - point to `database.sqlite` on the host system
   - `touch database.sqlite` if it not exists
-  - point to local folder `storage/`
+  - point to `storage/` on the host system
   - `mkdir storage/` if it not exists
 - start the container with `sudo docker-compose up -f docker-compose.yml -d --build`
 
