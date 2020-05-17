@@ -34,4 +34,5 @@ COPY . .
 # start app
 
 EXPOSE 9666
-CMD ["/app/init.sh"]
+CMD ["node", "spacedeck.js"]
+
