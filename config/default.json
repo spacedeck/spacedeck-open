@@ -10,7 +10,7 @@
   "storage_bucket": "my_spacedeck_bucket",
   "storage_cdn": "/storage",
   "storage_local_path": "./storage",
-  "storage_local_db": "database.sqlite",
+  "storage_local_db": "./database.sqlite",
 
   "redis_mock": true,
   "mongodb_host": "localhost",
