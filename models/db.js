@@ -42,6 +42,7 @@ module.exports = {
     avatar_thumb_uri: Sequelize.STRING,
     confirmation_token: Sequelize.STRING,
     password_reset_token: Sequelize.STRING,
+    api_token: Sequelize.STRING,
     home_folder_id: Sequelize.STRING,
     prefs_language: Sequelize.STRING,
     prefs_email_notifications: Sequelize.STRING,
@@ -49,6 +50,17 @@ module.exports = {
     created_at: {type: Sequelize.DATE, defaultValue: Sequelize.NOW},
     updated_at: {type: Sequelize.DATE, defaultValue: Sequelize.NOW}
   }),
+
+  CreatorSafeInclude: function(db) {
+    return {
+      model: this.User,
+      as: 'creator',
+      attributes: ['_id','email','nickname',
+                   'avatar_original_uri',
+                   'avatar_thumb_uri',
+                   'created_at','updated_at']
+    };
+  },
 
   Session: sequelize.define('session', {
     token: {type: Sequelize.STRING, primaryKey: true},
