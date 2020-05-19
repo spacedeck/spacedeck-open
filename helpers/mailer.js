@@ -34,17 +34,27 @@ module.exports = {
       console.log("Email: to " + to_email + " in production.\nreply_to: " + reply_to + "\nsubject: " + subject + "\nbody: \n" + htmlText + "\n\n plaintext:\n" + plaintext);
 
     } else if (config.get('mail_provider') === 'smtp') {
+      let transporter;
+      if (config.has('mail_smtp_user')) {
+        transporter = nodemailer.createTransport({
+          host: config.get('mail_smtp_host'),
+          port: config.get('mail_smtp_port'),
+          secure: config.get('mail_smtp_secure'),
+          requireTLS: config.get('mail_smtp_require_tls'),
+            auth: {
+              user: config.get('mail_smtp_user'),
+              pass: config.get('mail_smtp_pass'),
+            }
+        });
+      } else {
+        transporter = nodemailer.createTransport({
+          host: config.get('mail_smtp_host'),
+          port: config.get('mail_smtp_port'),
+          secure: config.get('mail_smtp_secure'),
+          requireTLS: config.get('mail_smtp_require_tls'),
+        });
+      }
 
-      const transporter = nodemailer.createTransport({
-        host: config.get('mail_smtp_host'),
-        port: config.get('mail_smtp_port'),
-        secure: config.get('mail_smtp_secure'),
-        requireTLS: config.get('mail_smtp_require_tls'),
-        auth: {
-          user: config.get('mail_smtp_user'),
-          pass: config.get('mail_smtp_pass'),
-        }
-      });
 
       transporter.sendMail({
         from: from,
