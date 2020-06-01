@@ -4,8 +4,6 @@ require('../models/db');
 var config = require('config');
 const redis = require('../helpers/redis');
 
-// FIXME TODO object.toJSON()
-
 var saveAction = (actionKey, object) => {
   if (object.constructor.modelName == "Space")
     return;

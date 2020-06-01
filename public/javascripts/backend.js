@@ -44,18 +44,14 @@ function load_resource(method, path, data, on_success, on_error, on_progress) {
   }
 
   req.withCredentials = true;
-
   req.open(method, api_endpoint+"/api"+path, true);
 
   if (api_token) {
     req.setRequestHeader("X-Spacedeck-Auth", api_token);
   }
-
   if (space_auth) {
-    console.log("set space auth", space_auth);
     req.setRequestHeader("X-Spacedeck-Space-Auth", space_auth);
   }
-
   if (channel_id) {
     req.setRequestHeader("X-Spacedeck-Channel", channel_id);
   }
