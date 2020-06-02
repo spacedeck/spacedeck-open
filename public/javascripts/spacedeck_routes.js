@@ -17,6 +17,21 @@ var SpacedeckRoutes = {
           }.bind(this)
         }
       ]);
+      
+      this.router.add([
+        {
+          path: "/s/:hash",
+          handler: function(params, on_success) {
+            var parts = params.hash.split("-");
+            if (path.length > 0) {
+              this.load_space(parts.slice(1).join("-"), on_success, null, parts[0]);
+            } else {
+              // FIXME error handling
+              on_success();
+            }
+          }.bind(this)
+        }
+      ]);
 
       this.router.add([
         {
