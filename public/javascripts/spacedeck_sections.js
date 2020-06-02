@@ -405,7 +405,12 @@ var SpacedeckSections = {
       }
       if (space.space_type == "folder") return "";
 
-      return "background-image:url('/api/spaces/"+space._id+"/png')";
+      var query_string = "";
+      if (space_auth) {
+        query_string+="?spaceAuth="+space.edit_hash;
+      }
+
+      return "background-image:url('/api/spaces/"+space._id+"/png"+query_string+"')";
     },
 
     reset_artifact_filters: function() {
