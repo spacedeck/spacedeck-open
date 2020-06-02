@@ -6,6 +6,10 @@ var websocket = null;
 var channel_id = null;
 var space_auth = null;
 
+function set_space_auth(hash) {
+  space_auth = hash;
+}
+
 function load_resource(method, path, data, on_success, on_error, on_progress) {
   var req = new XMLHttpRequest();
   req.onload = function(evt,b,c) {
@@ -44,18 +48,14 @@ function load_resource(method, path, data, on_success, on_error, on_progress) {
   }
 
   req.withCredentials = true;
-
   req.open(method, api_endpoint+"/api"+path, true);
 
   if (api_token) {
     req.setRequestHeader("X-Spacedeck-Auth", api_token);
   }
-
   if (space_auth) {
-    console.log("set space auth", space_auth);
     req.setRequestHeader("X-Spacedeck-Space-Auth", space_auth);
   }
-
   if (channel_id) {
     req.setRequestHeader("X-Spacedeck-Channel", channel_id);
   }
