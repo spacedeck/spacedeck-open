@@ -6,6 +6,10 @@ var websocket = null;
 var channel_id = null;
 var space_auth = null;
 
+function set_space_auth(hash) {
+  space_auth = hash;
+}
+
 function load_resource(method, path, data, on_success, on_error, on_progress) {
   var req = new XMLHttpRequest();
   req.onload = function(evt,b,c) {
