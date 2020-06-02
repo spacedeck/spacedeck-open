@@ -99,12 +99,16 @@ var SpacedeckSpaces = {
       }.bind(this), {value: dft || "Guest "+parseInt(10000*Math.random()), ok: __("ok"), cancel: __("cancel")});
     },
     
-    load_space: function(space_id, on_success, on_error) {
+    load_space: function(space_id, on_success, on_error, space_auth) {
       this.folder_spaces_filter="";
       this.folder_spaces_search="";
 
-      space_auth = get_query_param("spaceAuth");
-
+      if (space_auth) {
+        set_space_auth(space_auth);
+      } else {
+        set_space_auth(get_query_param("spaceAuth"));
+      }
+      
       this.embedded = !!(get_query_param("embedded"));
 
       var userReady = function() {
