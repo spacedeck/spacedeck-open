@@ -115,16 +115,16 @@ router.get('/t/:id', (req, res) => {
   res.redirect(path);
 });
 
-router.get('/s/:token', (req, res) => {
-  var token = req.params.token; 
-  if (token.split("-").length > 0) {
-    token = token.split("-")[0];
+router.get('/s/:hash', (req, res) => {
+  var hash = req.params.hash;
+  if (hash.split("-").length > 0) {
+    hash = hash.split("-")[0];
   }
 
-  db.Space.findOne({where: {"edit_hash": token}}).then(function (space) {
+  db.Space.findOne({where: {"edit_hash": hash}}).then(function (space) {
     if (space) {
       if (req.accepts('text/html')){
-	      res.redirect("/spaces/"+space._id + "?spaceAuth=" + token);
+	      res.redirect("/spaces/"+space._id + "?spaceAuth=" + hash);
       } else {
 	      res.status(200).json(space);
       }
