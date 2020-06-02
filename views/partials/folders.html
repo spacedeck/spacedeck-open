@@ -8,7 +8,7 @@
       <span>[[  __('create_folder') ]]</span>
     </button>
 
-    <label class="relative compact-hidden">
+    <label class="relative compact-hidden" v-if="logged_in">
       <span class="icon icon-sm icon-zoom no-events absolute-top-left" style="margin: 5px;"></span>
       <input id="folder-search"
              type="search" name="search"
@@ -18,7 +18,7 @@
              v-model="folder_spaces_search" v-on:change="search_spaces">
     </label>
     
-    <div class="dropdown top light m-r-20 compact-hidden" v-bind:class="{open : active_dropdown=='folder_sorting'}">
+    <div class="dropdown top light m-r-20 compact-hidden" v-bind:class="{open : active_dropdown=='folder_sorting'}" v-if="logged_in">
       <button class="btn btn-sm btn-nude" v-on:click="activate_dropdown('folder_sorting')">
         <span>[[  __('sort_by') ]]</span>:
         <b v-if="folder_sorting=='updated_at'">[[  __('last_modified') ]]</b>
@@ -49,7 +49,8 @@
   <div class="header-right pull-right">
     <div class="dropdown top right light" v-bind:class="{open: active_dropdown=='account'}">
       <button
-         class="profile-avatar btn btn-md btn-icon btn-dark btn-round"
+        class="profile-avatar btn btn-md btn-icon btn-dark btn-round"
+         v-if="logged_in"
          v-bind:style="background_image_style([user.avatar_thumb_uri])"
          v-bind:class="{'has-avatar-image':!!user.avatar_thumb_uri}" v-on:click="show_account();">
         <span class="icon icon-user" v-if="logged_in && !user.avatar_thumb_uri"></span></button>
@@ -80,14 +81,6 @@
       </div>
 
     </div>
-
-    <!--div class="btn-group dark round" id="meta-toggle" style="margin-right:10px">
-      <button class="btn btn-md btn-transparent btn-icon btn-icon" v-on:click="toggle_meta()">
-        <span class="jewel" style="color: white; background-color: red" v-if="meta_unseen>0">{{meta_unseen}}</span>
-        <span class="icon icon-menu"></span>
-      </button>
-    </div-->
-
   </div>
 </header>
 
@@ -98,14 +91,14 @@
 
     <div id="folder-breadcrumb">
 
-      <span v-for="item in active_space_path" class="btn btn-sm btn-transparent" v-sd-droppable="handle_folder_drop;item">
+      <span v-if="logged_in" v-for="item in active_space_path" class="btn btn-sm btn-transparent" v-sd-droppable="handle_folder_drop;item">
         <a href="/{{item.space_type}}s/{{item._id}}">{{item.name}}</a>&nbsp; ▶</span>
 
       <a v-if="(active_space_role != 'admin')" type="button" class="btn btn-sm btn-transparent">
         <span>{{active_folder.name}}</span>
       </a>
 
-      <div class="dropdown top light" v-bind:class="{open:active_dropdown=='breadcrumb'}" v-if="(active_folder._id != user.home_folder_id) && ((active_space_role == 'admin') || (active_space_role == 'editor'))">
+      <div class="dropdown top light" v-bind:class="{open:active_dropdown=='breadcrumb'}" v-if="(active_folder._id != user.home_folder_id) && ((active_space_role == 'admin'))">
         <button type="button" class="btn btn-sm btn-transparent btn-dropdown" data-toggle="dropdown" v-on:click=" activate_dropdown('breadcrumb')">
           <span>{{active_folder.name}}</span>
         </button>
@@ -142,8 +135,15 @@
          v-sd-droppable="handle_folder_drop;item"
          draggable="true"
          class="item" v-bind:class="item.space_type"
-         v-bind:style="{'z-index': (active_profile_spaces.length - $index)}">
-        <a href="/{{item.space_type}}s/{{item._id}}">
+        v-bind:style="{'z-index': (active_profile_spaces.length - $index)}">
+
+        <!-- anonymous editors can go edit spaces in a folder -->
+        <a href="/s/{{item.edit_hash}}-{{item.edit_slug}}" v-if="active_space_role=='editor' && !logged_in">
+          <span class="item-thumbnail thumbnail-loading" v-if="item.space_type=='space'"></span>
+          <span class="item-thumbnail" v-bind:style="space_thumbnail_style(item)"></span>
+        </a>
+        
+        <a v-if="active_space_role=='viewer' || logged_in" href="/{{item.space_type}}s/{{item._id}}">
           <span class="item-thumbnail thumbnail-loading" v-if="item.space_type=='space'"></span>
           <span class="item-thumbnail" v-bind:style="space_thumbnail_style(item)"></span>
         </a>
