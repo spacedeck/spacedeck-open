@@ -23,7 +23,7 @@ RUN cd audiowaveform/build/ && make install
 
 # install other requirements
 
-RUN apk add graphicsmagick ffmpeg-dev ghostscript
+RUN apk add graphicsmagick ffmpeg ffmpeg-dev ghostscript
 
 # install node package
 
