@@ -126,12 +126,12 @@ function render_vector_star(tips,width,height,stroke) {
   //  assuming the star is oriented with one point directly above the center.
   //  So the center of the star is at width * 1/2 and height * 0.552786 which is 1 / (1 + cos(pi/5)) (also assuming the y-axis is inverted).
   //  The inner points are at radius 0.381966 = sin(pi/10)/cos(pi/5).
-  //  Fortunately with simple transformations with matricies, we can do rotations and scales easily.
+  //  Fortunately with simple transformations with matrices, we can do rotations and scales easily.
   //  See https://en.wikipedia.org/wiki/Rotation_matrix for details.
   //  But because the stroke is done after scaling (it's not scaled), we have to adjust the points after the rotation and scaling happens.
   //A 10-pointed regular star is simpler because it is vertically symmetrical.
 
-  //NOTE: for very think stoke widths, and small stars, the star might render very strangely!
+  //NOTE: for very thick stroke widths, and small stars, the star might render very strangely!
 
   var xcenter = width/2;
   var ycenter = 0;
@@ -139,7 +139,8 @@ function render_vector_star(tips,width,height,stroke) {
   if (tips == 5) {
     ycenter = height * 0.552786;
     inner_radius = 0.381966; //scale compared to outer_radius of 1.0
-  } else { //tips == 10
+  } else {
+    //tips == 10
     ycenter = height/2;
     inner_radius = 0.7; //scale compared to outer_radius of 1.0
   }
