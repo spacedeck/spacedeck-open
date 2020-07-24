@@ -3,7 +3,7 @@
 module.exports = {
   up: function(migration, DataTypes) {
     return Promise.all([
-      migration.addColumn('users', 'api_token',
+      migration.changeColumn('users', 'api_token',
         {
           type: DataTypes.STRING
         }
@@ -13,7 +13,11 @@ module.exports = {
 
   down: function(migration, DataTypes) {
     return Promise.all([
-      migration.removeColumn('users', 'api_token')
+      migration.changeColumn('users', 'api_token',
+        {
+          type: Sequelize.STRING
+        }
+      )
     ])
   }
 }
