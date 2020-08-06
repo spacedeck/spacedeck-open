@@ -966,8 +966,8 @@ function setup_whiteboard_directives() {
         if (!$("#space").length) return;
         el = $("#space")[0];
 
-        el.scrollLeft = this.old_panx - dx*$scope.viewport_zoom;
-        el.scrollTop  = this.old_pany - dy*$scope.viewport_zoom;
+        el.scrollLeft -= dx*$scope.viewport_zoom;
+        el.scrollTop  -= dy*$scope.viewport_zoom;
 
         $scope.handle_scroll();
       }
