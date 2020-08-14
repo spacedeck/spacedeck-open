@@ -1,11 +1,10 @@
 ## Adding a new language to Spacedeck Open
 
-*Example ilustrated with Spanish (locale 'es') as new language*
-
-
 To add a new language to Spacedeck Open, follow these steps:
 
-- Including the new locale ('es') at the locale list (./spacedeck.js)
+*The steps are ilustrated with Spanish (locale 'es') as the new language*
+
+- Include the new locale ('es') at the locale list (./spacedeck.js)
 ```
     locales: ["en",..., "es"],
 ```
