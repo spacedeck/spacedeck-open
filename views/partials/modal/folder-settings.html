@@ -6,13 +6,13 @@
         <button type="button" class="btn btn-icon btn-light btn-round close" v-on:click="close_modal()">
           <span class="icon icon-cross-1"></span>
         </button>
-        <h4 class="modal-title">[[__("folder_settings")]]</h4>
+        <h4 class="modal-title"><%=__("folder_settings")%></h4>
       </div>
 
       <div class="modal-body">
         <div class="modal-section">
           <div class="form-group">
-            <label class="label">[[__("title")]]</label>
+            <label class="label"><%=__("title")%></label>
             <input type="text" class="input" v-model="active_folder.name">
           </div>
 
@@ -26,13 +26,13 @@
           <div class="form-group text-center">
             <label class="file btn btn-sm btn-round btn-stroke-darken">
               <input type="file" id="file" v-on:change="save_folder_avatar_image(this);">
-              <span>[[__("upload_cover_image")]]</span>
+              <span><%=__("upload_cover_image")%></span>
             </label>
           </div>
         </div>
 
         <div class="modal-section">
-          <h4 class="modal-title" style="padding-top:0px">[[__("access_caption")]]</h4>
+          <h4 class="modal-title" style="padding-top:0px"><%=__("access_caption")%></h4>
         </div>
 
       </div>

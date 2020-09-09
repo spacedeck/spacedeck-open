@@ -1,4 +1,4 @@
-<h4 class="dialog-title">[[__("tool_zones")]]</h4>
+<h4 class="dialog-title"><%=__("tool_zones")%></h4>
 
 <div id="zones" style="max-height:500px;overflow-y:scroll">
   <div class="dialog-section">
@@ -6,7 +6,7 @@
       Turn your Space into a zooming presentation by placing some Zones and switch through them when presenting.
     </p-->
     
-    <button v-on:click="add_zone()" class="btn btn-sm btn-dark">[[__("add_zone")]]</button>
+    <button v-on:click="add_zone()" class="btn btn-sm btn-dark"><%=__("add_zone")%></button>
   </div>
 
   <div class="dialog-section no-p" v-for="z in zones | orderBy 'order'" style="white-space: nowrap;text-align:left;cursor:pointer" v-on:click="zoom_to_zone(z)">

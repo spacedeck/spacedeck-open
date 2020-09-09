@@ -59,9 +59,6 @@ function load_resource(method, path, data, on_success, on_error, on_progress) {
   if (channel_id) {
     req.setRequestHeader("X-Spacedeck-Channel", channel_id);
   }
-  if (csrf_token) {
-    req.setRequestHeader("X-csrf-token", csrf_token);
-  }
 
   try {
     if (data) {

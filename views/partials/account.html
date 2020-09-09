@@ -17,11 +17,11 @@
 <div class="dialog-freestanding dialog in" v-if="active_view == 'account' && user" v-cloak>
 
   <div class="dialog-tabs" style="margin:auto">
-    <div class="dialog-tab" v-bind:class="{open:account=='profile'}" v-on:click="account='profile'"><span>[[__("profile_caption")]]</span></div>
-    <div class="dialog-tab" v-bind:class="{open:account=='language'}" v-on:click="account='language'"><span>[[__("language_caption")]]</span></div>
-    <div class="dialog-tab" v-bind:class="{open:account=='notifications'}" v-on:click="account='notifications'"><span>[[__("notifications_caption")]]</span></div>
-    <div class="dialog-tab" v-bind:class="{open:account=='password'}" v-on:click="account='password'"><span>[[__("password_caption")]]</span></div>
-    <div class="dialog-tab" v-bind:class="{open:account=='terminate'}" v-on:click="account='terminate'"><span>[[__("terminate_caption")]]</span></div>
+    <div class="dialog-tab" v-bind:class="{open:account=='profile'}" v-on:click="account='profile'"><span><%=__("profile_caption")%></span></div>
+    <div class="dialog-tab" v-bind:class="{open:account=='language'}" v-on:click="account='language'"><span><%=__("language_caption")%></span></div>
+    <div class="dialog-tab" v-bind:class="{open:account=='notifications'}" v-on:click="account='notifications'"><span><%=__("notifications_caption")%></span></div>
+    <div class="dialog-tab" v-bind:class="{open:account=='password'}" v-on:click="account='password'"><span><%=__("password_caption")%></span></div>
+    <div class="dialog-tab" v-bind:class="{open:account=='terminate'}" v-on:click="account='terminate'"><span><%=__("terminate_caption")%></span></div>
   </div>
 
   <div class="dialog-section text-left">
@@ -44,11 +44,11 @@
             <div class="form-group">
               <label class="file btn btn-md btn-darken" style="margin-right: 5px;">
                 <input type="file" v-on:change="save_user_avatar_image(this)">
-                <span v-if="!uploading_avatar">[[__("upload_avatar")]]</span>
-                <span v-if="uploading_avatar">[[__("uploading_avatar")]]</span>
+                <span v-if="!uploading_avatar"><%=__("upload_avatar")%></span>
+                <span v-if="uploading_avatar"><%=__("uploading_avatar")%></span>
               </label>
 
-              <p class="message">[[__("avatar_dimensions")]]</p>
+              <p class="message"><%=__("avatar_dimensions")%></p>
             </div>
           </div>
         </div>
@@ -66,7 +66,7 @@
         </div>
 
         <div class="form-group">
-          <label class="label" >[[__("profile_name")]]</label>
+          <label class="label" ><%=__("profile_name")%></label>
           <input type="text" id="user-nickname"
           pattern=".{3,}"
           required title="3 characters minimum"
@@ -75,7 +75,7 @@
         </div>
 
         <div class="form-group">
-          <label class="label">[[__("profile_email")]]</label>
+          <label class="label"><%=__("profile_email")%></label>
           <input
           type="email"
           id="new-email"
@@ -120,7 +120,7 @@
           <label class="checkbox"
             v-bind:class="{checked: user.prefs_email_notifications}"
             v-on:click="account_save_user_notifications(!user.prefs_email_notifications);">
-            <span>[[__('notifications_option_chat')]]</span>
+            <span><%=__('notifications_option_chat')%></span>
           </label>
         </div>
       </div>
@@ -130,15 +130,15 @@
       <h4>Change Password</h4>
       <div class="modal-section labels-inline">
         <div class="form-group">
-          <label class="label">[[__("current_password")]]</label>
+          <label class="label"><%=__("current_password")%></label>
           <input id="current-password" class="input input-white no-b" v-model="password_change_current" type="password">
         </div>
         <div class="form-group">
-          <label class="label">[[__("new_password")]]</label>
+          <label class="label"><%=__("new_password")%></label>
           <input id="new-password" class="input input-white no-b" v-model="password_change_new" type="password">
         </div>
         <div class="form-group">
-          <label class="label">[[__("verify_password")]]</label>
+          <label class="label"><%=__("verify_password")%></label>
           <input id="new-password-confirmation" class="input input-white no-b" v-model="password_change_new_confirmation" type="password">
         </div>
 
@@ -149,7 +149,7 @@
           <button
             class="btn btn-dark btn-md"
             v-on:click="save_user_password(password_change_current, password_change_new, password_change_new_confirmation);" >
-            [[__("change_password")]]
+            <%=__("change_password")%>
           </button>
       </div>
     </div>
@@ -158,14 +158,14 @@
       <h4>Terminate Account</h4>
       <div class="modal-section labels-inline">
         <div class="form-group">
-          <label class="label">[[__("current_password")]]</label>
+          <label class="label"><%=__("current_password")%></label>
           <input v-model="account_remove_password" class="input input-white no-b" type="password">
         </div>
         
         <div class="form-group">
-          <label class="label">[[__("terminate_reason")]]</label>
+          <label class="label"><%=__("terminate_reason")%></label>
           <textarea class="input input-white no-b" v-model="account_remove_feedback"></textarea>
-          <p class="message">[[__("terminate_reason_caption")]]</p>
+          <p class="message"><%=__("terminate_reason_caption")%></p>
         </div>
       </div>
       

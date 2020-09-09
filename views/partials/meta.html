@@ -9,8 +9,8 @@
 
     <div style="margin-bottom: 15px; margin-top: 8px" >
       <small>
-        [[__("created_by")]] <b>{{active_space.creator.nickname}}.</b><br/>
-        [[__("last_updated")]] <b>{{active_space.updated_at | date 'MMMM Do YYYY, HH:mm'}}.</b>
+        <%=__("created_by")%> <b>{{active_space.creator.nickname}}.</b><br/>
+        <%=__("last_updated")%> <b>{{active_space.updated_at | date 'MMMM Do YYYY, HH:mm'}}.</b>
       </small>
     </div-->
 
@@ -21,18 +21,18 @@
       </button>
       <button class="btn btn-sm btn-round btn-primary m-r-5"
        v-on:click="guest_logout()">
-        [[__("logout")]]
+        <%=__("logout")%>
       </button>
     </div>
   </div>
 
   <div class="sidebar-section">
-    <h5>[[__("chat")]] &nbsp; <a v-if="active_space_role!='viewer'" v-on:click="activate_access()" class="btn btn-xs btn-darken">Add People</a></h5>
+    <h5><%=__("chat")%> &nbsp; <a v-if="active_space_role!='viewer'" v-on:click="activate_access()" class="btn btn-xs btn-darken">Add People</a></h5>
 
-    <textarea id="new-comment" style="min-height:80px;padding: 5px 9px;margin-bottom:10px" class="input input-darken no-b" v-if="can_add_comment" v-model="space_comment" placeholder="[[__("chat_message_placeholder")]]" spellcheck="false"></textarea>
+    <textarea id="new-comment" style="min-height:80px;padding: 5px 9px;margin-bottom:10px" class="input input-darken no-b" v-if="can_add_comment" v-model="space_comment" placeholder="<%=__("chat_message_placeholder")%>" spellcheck="false"></textarea>
 
     <div v-if="can_add_comment">
-      <button class="btn btn-sm btn-primary" v-on:click="create_space_comment(space_comment)">[[__("post")]]</button>
+      <button class="btn btn-sm btn-primary" v-on:click="create_space_comment(space_comment)"><%=__("post")%></button>
     </div>
 
     <ul class="comments">
@@ -50,7 +50,7 @@
             class="delete pull-right"
             v-if="active_space_role!='viewer'"
             v-on:click="remove_space_comment(item)">
-            <a title="[[__("delete")]]" style="cursor:pointer">✕</a>
+            <a title="<%=__("delete")%>" style="cursor:pointer">✕</a>
           </li>
         </ul>
 

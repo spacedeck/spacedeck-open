@@ -14,27 +14,27 @@
   </span>
   
   <div class="btn-group light round" v-if="zones.length">
-    <button class="btn btn-md btn-transparent btn-icon" v-on:click="go_to_previous_zone()" title="[[__("Previous Zone")]]">
+    <button class="btn btn-md btn-transparent btn-icon" v-on:click="go_to_previous_zone()" title="<%=__("Previous Zone")%>">
       <span class="icon icon-triangle-4-left"></span>
     </button>
 
     <button class="btn btn-md btn-divider"></button>
 
-    <button class="btn btn-md btn-transparent btn-icon" v-on:click="go_to_next_zone()" title="[[__("Next Zone")]]">
+    <button class="btn btn-md btn-transparent btn-icon" v-on:click="go_to_next_zone()" title="<%=__("Next Zone")%>">
       <span class="icon icon-triangle-4-right"></span>
     </button>
   </div>
 
   <!--div class="btn-group light" id="meta-toggle" style="margin-right:10px">
-    <button class="btn btn-md btn-transparent btn-icon" v-on:click="toggle_meta()" title="[[__("chat")]]">
+    <button class="btn btn-md btn-transparent btn-icon" v-on:click="toggle_meta()" title="<%=__("chat")%>">
       <span class="jewel" style="color: white; background-color: red" v-if="meta_unseen>0">{{meta_unseen}}</span>
       <span class="icon icon-messages"></span>
     </button>
   </div-->
 </div>
 
-{% include "./tool/toolbar-elements.html" %}
-{% include "./tool/toolbar-object.html" %}
+<%- include("./tool/toolbar-elements.html") %>
+<%- include("./tool/toolbar-object.html") %>
 
 <div v-if="active_space && active_space_loaded">
   <!-- <div id="lasso"></div> -->

@@ -1,4 +1,4 @@
-<div class="toolbar toolbar-properties" v-cloak v-show="active_space_loaded && !is_active_space_role('viewer')" v-bind:class="{in:toolbar_props_in,out:!toolbar_props_in}" v-if="active_space_loaded">
+'<div class="toolbar toolbar-properties" v-cloak v-show="active_space_loaded && !is_active_space_role('viewer')" v-bind:class="{in:toolbar_props_in,out:!toolbar_props_in}" v-if="active_space_loaded">
 
   <div class="btn-group light vertical">
     <div class="dropdown top right light"
@@ -30,7 +30,7 @@
         <span class="jewel" v-bind:style="{'border-color':active_style.text_color}">{{active_style.font_size}}</span>
       </button>
       <div class="dialog">
-        {% include "./color.html" %}
+        <%- include("./color.html") %>
       </div>
     </div>
     <!--     <button class="btn btn-transparent btn-icon-labeled">
@@ -50,7 +50,7 @@
       </div>
 
       <div class="dialog">
-        {% include "./text-styles.html" %}
+        <%- include("./text-styles.html") %>
       </div>
     </div>
     
@@ -58,12 +58,12 @@
       <div class="btn-collapse" v-bind:class="{in:selection_metrics.contains_text}">
         <button class="btn btn-transparent btn-icon-labeled" v-on:click="open_dialog('type-align')" v-bind:class="{open : opened_dialog=='type-align'}">
           <span class="icon icon-text-align-left-alt"></span>
-          <span class="icon-label">[[__("tool_align")]]</span>
+          <span class="icon-label"><%=__("tool_align")%></span>
         </button>
       </div>
 
       <div class="dialog">
-        {% include "./text-align.html" %}
+        <%- include("./text-align.html") %>
       </div>
     </div>
 
@@ -72,12 +72,12 @@
       <div class="btn-collapse in">
         <button class="btn btn-transparent btn-icon-labeled" v-on:click="open_dialog('layout')"  v-bind:class="{open : opened_dialog=='layout'}">
           <span class="icon icon-cluster"></span>
-          <span class="icon-label">[[__("tool_layout")]]</span>
+          <span class="icon-label"><%=__("tool_layout")%></span>
         </button>
       </div>
 
       <div class="dialog">
-        {% include "./layout.html" %}
+        <%- include("./layout.html") %>
       </div>
     </div>
     
@@ -91,7 +91,7 @@
       </div>
 
       <div class="dialog">
-        {% include "./text-digits.html" %}
+        <%- include("./text-digits.html") %>
       </div>
     </div>
 
@@ -100,11 +100,11 @@
     <div class="dropdown top light right" v-bind:class="{open:opened_dialog=='object-options'}">
       <button class="btn btn-transparent btn-icon-labeled" v-on:click="open_dialog('object-options')" v-bind:class="{open : opened_dialog=='object-options'}">
         <span class="icon icon-cogwheel"></span>
-        <span class="icon-label">[[__("more")]]</span>
+        <span class="icon-label"><%=__("more")%></span>
       </button>
 
       <div class="dialog no-min-w">
-        {% include "./object-options.html" %}
+        <%- include("./object-options.html") %>
       </div>
     </div>
     

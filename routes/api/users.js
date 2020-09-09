@@ -11,7 +11,6 @@ var importer = require('../../helpers/importer');
 
 var bcrypt = require('bcryptjs');
 var crypto = require('crypto');
-var swig = require('swig');
 var async = require('async');
 var _ = require('underscore');
 var fs = require('fs');

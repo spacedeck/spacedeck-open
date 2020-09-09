@@ -1,8 +1,8 @@
 
 <div class="dialog-tabs-wrapper">
   <div class="dialog-tabs">
-    <div class="dialog-tab" v-bind:class="{open:background_mode=='image'}" v-on:click="background_mode='image'"><span>[[__("background_image_caption")]]</span></div>
-    <div class="dialog-tab" v-bind:class="{open:background_mode=='color'}" v-on:click="background_mode='color'"><span>[[__("background_color_caption")]]</span></div>
+    <div class="dialog-tab" v-bind:class="{open:background_mode=='image'}" v-on:click="background_mode='image'"><span><%=__("background_image_caption")%></span></div>
+    <div class="dialog-tab" v-bind:class="{open:background_mode=='color'}" v-on:click="background_mode='color'"><span><%=__("background_color_caption")%></span></div>
   </div>
 </div>
 
@@ -69,9 +69,9 @@
   <!--div class="dialog-section" v-show="background_mode=='color'">
     <div class="tab-switch round options-2"  v-bind:class="{'option-2':color_mode=='picker'}">
       <div class="options">
-        <span class="option" v-on:click="activate_color_mode('palette')">[[__("palette")]]</span>
+        <span class="option" v-on:click="activate_color_mode('palette')"><%=__("palette")%></span>
         <span class="option" v-on:click="activate_color_mode('picker')">
-          <span>[[__("picker")]]</span>
+          <span><%=__("picker")%></span>
         </span>
       </div>
       <span class="option-highlight"></span>
@@ -91,7 +91,7 @@
         <span class="icon icon-picture-upload"></span>
         <input id="background-uploader" type="file" accept="image/*" v-on:change="handle_section_background_upload($event)">
       </label>
-      <p>[[__("upload_background_caption")]]</p>
+      <p><%=__("upload_background_caption")%></p>
     </div>
 
     <div class="dialog-section no-p no-flex" v-if="active_space.background_uri">

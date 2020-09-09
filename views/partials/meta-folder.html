@@ -9,23 +9,23 @@
 
     <div style="margin-bottom: 15px; margin-top: 8px" >
       <small>
-        [[__("created_by")]] <b>{{active_folder.creator.nickname||active_folder.creator.slug}}.</b>
-        <br/>[[__("last_updated")]] <b>{{active_folder.updated_at | date 'MMMM Do YYYY, HH:mm'}}.</b>
+        <%=__("created_by")%> <b>{{active_folder.creator.nickname||active_folder.creator.slug}}.</b>
+        <br/><%=__("last_updated")%> <b>{{active_folder.updated_at | date 'MMMM Do YYYY, HH:mm'}}.</b>
       </small>
     </div>
 
     <div v-if="logged_in && user.home_folder_id!=active_folder._id">
       <button class="btn btn-sm btn-round btn-primary m-r-5" v-on:click="activate_access()">
-        <span class="icon-label">[[__("share")]]</span>
+        <span class="icon-label"><%=__("share")%></span>
       </button>
     </div>
   </div>
 
   <div class="sidebar-section" v-if="is_pro(user)">
-    <h5>[[__("history_recently_updated")]]</h5>
+    <h5><%=__("history_recently_updated")%></h5>
 
     <div v-if="active_folder_history_items.length == 0">
-      [[__("history_recently_empty")]]
+      <%=__("history_recently_empty")%>
     </div>
 
     <ul id="updates">
@@ -33,7 +33,7 @@
         <a v-bind:href="'/spaces/' +  item.space._id">{{item.space.name}}</a>
 
         <small>
-        [[__("by")]]
+        <%=__("by")%>
           <span v-for="u in item.users">{{u}}<span v-if="$index < (item.users.length-1)">, </span></span>
         </small>
       </li>
@@ -41,10 +41,10 @@
   </div>
 
   <div class="sidebar-section" v-if="!is_pro(user)">
-    <h5>[[__("history_recently_updated")]]</h5>
+    <h5><%=__("history_recently_updated")%></h5>
     
     <p>
-      [[__("pro_ad_history_headline")]]
+      <%=__("pro_ad_history_headline")%>
     </p>
 
     <p>

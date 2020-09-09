@@ -3,7 +3,7 @@
     <div class="modal-dialog">
       <div class="modal-content" style="width:760px">
         <div class="modal-header" style="padding-bottom:0">
-          <h3 class="text-left">[[__("share")]]: {{access_settings_space.name}}</h3>
+          <h3 class="text-left"><%=__("share")%>: {{access_settings_space.name}}</h3>
           <button type="button" class="btn btn-icon btn-light btn-round close" v-on:click=" close_modal()">
             <span class="icon icon-cross-1"></span>
           </button>
@@ -12,17 +12,17 @@
         <div class="modal-body">
           <div class="modal-section" style="padding-top:0;padding-bottom:20px">
             <label class="radio" v-bind:class="{checked:access_settings_space.access_mode=='private'}">
-              <input type="radio" name="access_mode" value="private" v-model="access_settings_space.access_mode" v-on:click="save_space_access_mode($event)"> [[__("mode_private")]]
+              <input type="radio" name="access_mode" value="private" v-model="access_settings_space.access_mode" v-on:click="save_space_access_mode($event)"> <%=__("mode_private")%>
             </label>
             <label class="radio" v-bind:class="{checked:access_settings_space.access_mode=='public'}">
-              <input type="radio" name="access_mode" value="public" v-model="access_settings_space.access_mode" v-on:click="save_space_access_mode($event)">[[__("mode_public")]]
+              <input type="radio" name="access_mode" value="public" v-model="access_settings_space.access_mode" v-on:click="save_space_access_mode($event)"><%=__("mode_public")%>
             </label>
           </div>
 
           <div class="modal-section" v-if="active_space" style="padding-bottom:10px">
-            <h4 class="text-left"><span class="icon icon-link icon-sm"></span> [[__("access_editor_link")]] </h4>
+            <h4 class="text-left"><span class="icon icon-link icon-sm"></span> <%=__("access_editor_link")%> </h4>
             <p class="text-left">
-              [[__("access_editor_link_desc")]]
+              <%=__("access_editor_link_desc")%>
             </p>
             
             <div class="input-group org-add-form">
@@ -30,7 +30,7 @@
 
               <span class="input-group-btn">
                 <span id="org-add-member" class="btn btn-lg btn-primary clipboard-btn" data-clipboard-target="#editorurl2" v-clipboard>
-                  [[__("copy")]]
+                  <%=__("copy")%>
                 </span>
               </span>
             </div>
@@ -41,13 +41,13 @@
                  type="checkbox"
                  v-bind:checked="access_settings_space.editors_locking"
                  v-model="access_settings_space.editors_locking" v-on:change="save_space_editors_locking($event)" />
-              [[__("access_anonymous_edit_blocking")]]
+              <%=__("access_anonymous_edit_blocking")%>
             </label>
           </div>
 
           <!-- subsection "invite" -->
           <div id="new-editor" class="modal-section" style="padding-bottom:20px">
-            <h4 class="text-left"><span class="icon icon-user-add icon-sm"></span> [[__('access_new_members')]]</h4>
+            <h4 class="text-left"><span class="icon icon-user-add icon-sm"></span> <%=__('access_new_members')%></h4>
 
             <div class="form-group">
               <span class="error-note" v-if="invite_email_error">{{invite_email_error}}</span>
@@ -55,27 +55,27 @@
                      v-bind:class="{error: !!invite_email_error}"
                      id="invitee_email"
                      v-model="invite_email"
-                     type="email" placeholder="[[__('invite_emails')]]">
+                     type="email" placeholder="<%=__('invite_emails')%>">
 
               <textarea id="invite-message"  class="input input-block input-white overflow-y-scroll"
-                        v-model="invite_message" placeholder="[[__('optional_message')]]" name="Message"></textarea>
+                        v-model="invite_message" placeholder="<%=__('optional_message')%>" name="Message"></textarea>
 
               <select class="input input-white" v-model="invite_member_role">
-                <option value="viewer">[[__("role_viewer")]]</option>
-                <option value="editor">[[__("role_editor")]]</option>
-                <option value="admin">[[__("role_admin")]]</option>
+                <option value="viewer"><%=__("role_viewer")%></option>
+                <option value="editor"><%=__("role_editor")%></option>
+                <option value="admin"><%=__("role_admin")%></option>
               </select>
             </div>
 
             <div class="form-group">
-              <button class="btn btn-primary btn-md" v-on:click="invite_member(access_settings_space, invite_email, invite_message, invite_member_role)"> [[__("invite")]] </button>
+              <button class="btn btn-primary btn-md" v-on:click="invite_member(access_settings_space, invite_email, invite_message, invite_member_role)"> <%=__("invite")%> </button>
             </div>
           </div>
 
           
           <!-- subsection "editors list" -->
           <div class="modal-section" style="padding-bottom:60px">
-            <h4 class="text-left"><span class="icon icon-user-group icon-sm"></span> [[__("access_current_members")]]</h4>
+            <h4 class="text-left"><span class="icon icon-user-group icon-sm"></span> <%=__("access_current_members")%></h4>
             <table class="table">
               <tr>
                 <th></th>
@@ -102,23 +102,23 @@
                 <td>
                   <div class="form-group">
                     <select class="input input-sm" v-model="member.role" v-on:change="update_member(access_settings_space, member, $event.currentTarget.value)" style="width:auto">
-                      <option value="viewer">[[__("role_viewer")]]</option>
-                      <option value="editor">[[__("role_editor")]]</option>
-                      <option value="admin">[[__("role_admin")]]</option>
+                      <option value="viewer"><%=__("role_viewer")%></option>
+                      <option value="editor"><%=__("role_editor")%></option>
+                      <option value="admin"><%=__("role_admin")%></option>
                     </select>
                   </div>
                 </td>
                 <td>
-                  <button class="btn btn-sm btn-stroke-darken" v-on:click="remove_member(access_settings_space, member)">[[__("delete")]]</button>
+                  <button class="btn btn-sm btn-stroke-darken" v-on:click="remove_member(access_settings_space, member)"><%=__("delete")%></button>
                 </td>
               </tr>
             </table>
             <p class="text-left" v-if="!access_settings_memberships.length">
-              [[__("access_no_members")]]
+              <%=__("access_no_members")%>
             </p>
 
             <div class="form-group" style="padding-top: 40px">
-              <button class="btn btn-primary btn-md" v-on:click="close_modal();"> [[__("ok")]] </button>
+              <button class="btn btn-primary btn-md" v-on:click="close_modal();"> <%=__("ok")%> </button>
             </div>
           </div>
 

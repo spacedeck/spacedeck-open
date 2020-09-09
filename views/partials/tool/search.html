@@ -30,7 +30,7 @@
     <!-- generic search box placeholder -->
     <div class="relative">
       <span class="icon icon-zoom absolute-top-left no-events" style="margin-top: -2px;"></span>
-      <input type="text" v-model="generic_search_query" v-focus class="input input-white input-round input-block no-b p-l-60" placeholder="[[__("search_media_placeholder")]]" v-on="keyup: search_generic(generic_search_query) | key enter">
+      <input type="text" v-model="generic_search_query" v-focus class="input input-white input-round input-block no-b p-l-60" placeholder="<%=__("search_media_placeholder")%>" v-on="keyup: search_generic(generic_search_query) | key enter">
     </div>
 
     <!-- <button type="button" class="btn btn-sm btn-icon btn-round btn-darken absolute-top-right clear-search" style="margin-right: 42px; margin-top: 40px;">

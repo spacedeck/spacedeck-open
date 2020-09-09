@@ -8,17 +8,14 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
-    <link href="[[ '/images/favicon.png' | cdn ]]" rel="icon" type="image/x-icon" />
+    <link href="/images/favicon.png" rel="icon" type="image/x-icon" />
     <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="[[ '/stylesheets/style.css' | cdn ]]">
+    <link rel="stylesheet" href="/stylesheets/style.css">
 
     <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 
     <script>
-      window.socket_auth = '[[socket_auth]]';
-      window.browser_lang = '[[locale]]';
-      window.csrf_token = '[[csrf_token]]';
-
+      //window.browser_lang = '< %= locale %>';
       var ENV = {
         name: 'development',
         webHost: location.host,
@@ -67,16 +64,15 @@
   </head>
 
   <body id="main" v-bind:class="{'present-mode':present_mode,'modal-open':active_modal}" v-on:click="handle_body_click($event)">
-    {% include "./partials/login.html" %}
-    {% include "./partials/space.html" %}
-    {% include "./partials/folders.html" %}
-    {% include "./partials/team.html" %}
-    {% include "./partials/account.html" %}
-    {% include "./partials/meta.html" %}
-    {% include "./partials/meta-folder.html" %}
-
-    {% include "./partials/modal/access.html" %}
-    {% include "./partials/modal/folder-settings.html" %}
+    <%- include("./partials/login.html") %>
+    <%- include("./partials/space.html") %>
+    <%- include("./partials/folders.html") %>
+    <%- include("./partials/team.html") %>
+    <%- include("./partials/account.html") %>
+    <%- include("./partials/meta.html") %>
+    <%- include("./partials/meta-folder.html") %>
+    <%- include("./partials/modal/access.html") %>
+    <%- include("./partials/modal/folder-settings.html") %>
   </body>
 
   <script type="text/javascript">
@@ -84,12 +80,12 @@
     window.locales.en = {};
     window.locales.de = {};
     window.locales.fr = {};
-    window.locales.oc = {};    
-    window.locales.es = {};    
-    window.locales.en.translation = {% include "./../locales/en.js" %};
-    window.locales.de.translation = {% include "./../locales/de.js" %};
-    window.locales.fr.translation = {% include "./../locales/fr.js" %};
-    window.locales.oc.translation = {% include "./../locales/oc.js" %};    
-    window.locales.es.translation = {% include "./../locales/es.js" %};        
+    window.locales.oc = {};
+    window.locales.es = {};
+    window.locales.en.translation = <%- include("./../locales/en.js") %>;
+    window.locales.de.translation = <%- include("./../locales/de.js") %>;
+    window.locales.fr.translation = <%- include("./../locales/fr.js") %>;
+    window.locales.oc.translation = <%- include("./../locales/oc.js") %>;
+    window.locales.es.translation = <%- include("./../locales/es.js") %>;        
   </script>
 </html>

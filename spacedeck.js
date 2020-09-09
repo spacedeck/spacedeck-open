@@ -16,7 +16,6 @@ const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 
-const swig = require('swig');
 const i18n = require('i18n-2');
 const helmet = require('helmet');
 
@@ -40,16 +39,7 @@ i18n.expressBind(app, {
   devMode: (app.get('env') == 'development')
 });
 
-swig.setDefaults({
-  varControls: ["[[", "]]"] // otherwise it's not compatible with vue.js
-});
-
-swig.setFilter('cdn', function(input, idx) {
-  return input;
-});
-
-app.engine('html', swig.renderFile);
-app.set('view engine', 'html');
+app.set('view engine', 'ejs');
 
 if (isProduction) {
   app.set('views', path.join(__dirname, 'build', 'views'));
@@ -114,7 +104,6 @@ if (config.get('storage_local_path')) {
 //app.use(require('./middlewares/404'));
 if (app.get('env') == 'development') {
   app.set('view cache', false);
-  swig.setDefaults({cache: false});
 } else {
   app.use(require('./middlewares/500'));
 }

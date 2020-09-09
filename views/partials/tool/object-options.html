@@ -2,35 +2,35 @@
   <div class="btn-group">
     <button class="btn btn-transparent btn-icon-labeled" v-on:click="delete_selected_artifacts()">
       <span class="icon icon-trash"></span>
-      <span class="icon-label">[[__("delete")]]</span>
+      <span class="icon-label"><%=__("delete")%></span>
     </button>
 
     <button class="btn btn-divider"></button>
 
     <button class="btn btn-transparent btn-icon-labeled" v-on:click="toggle_lock_of_selected_artifacts()" v-if="active_space_role=='admin'">
       <span class="icon icon-lock-closed"></span>
-      <span class="icon-label">[[__("lock")]]</span>
+      <span class="icon-label"><%=__("lock")%></span>
     </button>
 
     <button class="btn btn-transparent btn-icon-labeled" v-on:click="toggle_lock_of_selected_artifacts()" v-if="active_space_role=='admin'">
       <span class="icon icon-lock-open"></span>
-      <span class="icon-label">[[__("unlock")]]</span>
+      <span class="icon-label"><%=__("unlock")%></span>
     </button>
 
     <button class="btn btn-transparent btn-icon-labeled" v-on:click="duplicate_selected_artifacts()">
       <span class="icon icon-duplicate"></span>
-      <span class="icon-label">[[__("copy")]]</span>
+      <span class="icon-label"><%=__("copy")%></span>
     </button>
 
     <button class="btn btn-transparent btn-icon-labeled" v-on:click="create_link_on_selected_artifacts()">
       <span class="icon icon-link"></span>
-      <span class="icon-label">[[__("link")]]</span>
+      <span class="icon-label"><%=__("link")%></span>
     </button>
     
     <span v-if="first_selected_artifact">
       <button class="btn btn-transparent btn-icon-labeled" v-on:click="download_selected_artifacts()" v-if="selection_metrics.count==1 && first_selected_artifact.payload_uri">
         <span class="icon icon-download"></span>
-        <span class="icon-label">[[__("download")]]</span>
+        <span class="icon-label"><%=__("download")%></span>
       </button>
     </span>
   </div>

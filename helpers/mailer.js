@@ -2,8 +2,6 @@
 
 const config = require('config');
 const nodemailer = require('nodemailer');
-const swig = require('swig');
-//var AWS = require('aws-sdk');
 
 module.exports = {
   sendMail: (to_email, subject, body, options) => {
@@ -24,14 +22,9 @@ module.exports = {
       plaintext+="\n"+options.action.link+"\n\n";
     }
 
-    const htmlText = swig.renderFile('./views/emails/action.html', {
-      text: body.replace(/(?:\n)/g, '<br />'),
-      options: options
-    });
-
     if (config.get('mail_provider') === 'console') {
 
-      console.log("Email: to " + to_email + " in production.\nreply_to: " + reply_to + "\nsubject: " + subject + "\nbody: \n" + htmlText + "\n\n plaintext:\n" + plaintext);
+      console.log("Email: to " + to_email + " in production.\nreply_to: " + reply_to + "\nsubject: " + subject + "\nbody: \n" + plaintext + "\n\n plaintext:\n" + plaintext);
 
     } else if (config.get('mail_provider') === 'smtp') {
       let transporter;
@@ -55,14 +48,12 @@ module.exports = {
         });
       }
 
-
       transporter.sendMail({
         from: from,
         replyTo: reply_to,
         to: to_email,
         subject: subject,
-        text: plaintext,
-        html: htmlText,
+        text: plaintext
       }, function(err, info) {
         if (err) {
           console.error("Error sending email:", err);

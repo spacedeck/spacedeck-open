@@ -1,0 +1,29 @@
+<!doctype html>
+<html class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <title>Spacedeck Open</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <link href="/images/favicon.png" rel="icon" type="image/x-icon" />
+    <link rel="stylesheet" href="/stylesheets/style.css">
+  </head>
+  <body>
+    <header id="landing-header" class="header">
+      <div class="header-left">
+        <a class="btn btn-transparent btn-nude" href="<%= config.endpoint %>/"><img src="/images/sd6-logo-black.svg" width="190"></a>
+      </div>
+
+      <div class="header-right pull-right">
+        <% if (!user) { %>
+          <a class="btn btn-md btn-dark btn-round" href="/login"><%=__("login")%></a>
+          <a class="btn btn-md btn-dark btn-round" href="/signup"><%=__("signup")%></a>
+        <% } else { %>
+          <a class="btn btn-md btn-dark btn-round" href="/spaces"><%=__("spaces")%></a>
+          <a class="btn btn-md btn-dark btn-round" href="/logout"><%=__("logout")%></a>
+        <% } %>
+
+      </div>
+    </header>

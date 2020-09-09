@@ -3,7 +3,7 @@
   <div class="btn-group light vertical">
     
     <a class="btn btn-icon btn-transparent"
-       title="[[__("home")]]" href="/spaces"
+       title="<%=__("home")%>" href="/spaces"
        v-if="(!active_space.parent_space_id && !guest_nickname && !embedded)">
       <span class="icon icon-folder"></span>
     </a>
@@ -22,23 +22,23 @@
       <div class="btn-collapse in">
         <button class="btn btn-transparent btn-icon-labeled" v-bind:class="{open:opened_dialog=='shapes'}" v-on:click="open_dialog('shapes')">
           <span class="icon icon-shapes"></span>
-          <span class="icon-label">[[__("tool_shape")]]</span>
+          <span class="icon-label"><%=__("tool_shape")%></span>
         </button>
       </div>
 
       <div class="dialog">
-        {% include "./shapes.html" %}
+        <%- include("./shapes.html") %>
       </div>
     </div>
 
     <button class="btn btn-icon-labeled btn-transparent" v-on:click="start_drawing_scribble()" v-bind:class="{active:active_tool=='scribble'}">
       <span class="icon icon-tool-scribble"></span>
-      <span class="icon-label">[[__("tool_scribble")]]</span>
+      <span class="icon-label"><%=__("tool_scribble")%></span>
     </button>
     
     <button class="btn btn-icon-labeled btn-transparent" v-on:click="start_drawing_arrow()" v-bind:class="{active:active_tool=='arrow'}">
       <span class="icon icon-tool-arrow"></span>
-      <span class="icon-label">[[__("tool_arrow")]]</span>
+      <span class="icon-label"><%=__("tool_arrow")%></span>
     </button>
     
     <div class="dropdown bottom light center">
@@ -54,7 +54,7 @@
       <div class="btn-collapse in">
         <button class="btn btn-transparent btn-icon-labeled" v-on:click="active_tool='note'" v-bind:class="{active:active_tool=='note'}">
           <span class="icon icon-tool-text"></span>
-          <span class="icon-label">[[__("tool_text")]]</span>
+          <span class="icon-label"><%=__("tool_text")%></span>
         </button>
       </div>
     </div>
@@ -63,12 +63,12 @@
       <div class="btn-collapse">
         <button class="btn btn-transparent btn-icon-labeled" v-bind:class="{open:opened_dialog=='image'}" v-on:click="open_dialog('image')">
           <span class="icon icon-picture"></span>
-          <span class="icon-label">[[__("image")]]</span>
+          <span class="icon-label"><%=__("image")%></span>
         </button>
       </div>
 
       <div class="dialog">
-        {% include "./image.html" %}
+        <%- include("./image.html") %>
       </div>
     </div>
 
@@ -76,12 +76,12 @@
       <div class="btn-collapse in">
         <button class="btn btn-transparent btn-icon-labeled" v-bind:class="{open:opened_dialog=='zones'}" v-on:click="open_dialog('zones')">
           <span class="icon icon-zone"></span>
-          <span class="icon-label">[[__("tool_zones")]]</span>
+          <span class="icon-label"><%=__("tool_zones")%></span>
         </button>
       </div>
 
       <div class="dialog">
-        {% include "./zones.html" %}
+        <%- include("./zones.html") %>
       </div>
     </div>
     
@@ -91,12 +91,12 @@
       <div class="btn-collapse in">
         <button class="btn btn-transparent btn-icon-labeled" v-bind:class="{open:opened_dialog=='background'}" v-on:click="open_dialog('background')">
           <span class="letter">bg</span>
-          <span class="icon-label">[[__("tool_canvas")]]</span>
+          <span class="icon-label"><%=__("tool_canvas")%></span>
         </button>
       </div>
 
       <div class="dialog">
-        {% include "./background.html" %}
+        <%- include("./background.html") %>
       </div>
     </div>
 
@@ -104,20 +104,20 @@
             v-if="active_space_role=='admin'"
             v-on:click="activate_access()">
       <span class="icon icon-share"></span>
-      <span class="icon-label">[[  __('share') ]]</span>
+      <span class="icon-label"><%=  __('share') %></span>
     </button>
     
     <!--        
             <li v-on:click="edit_space_title()" v-if="logged_in">
               <span>
                 <span class="icon icon-sm icon-tag"></span>
-                <span>[[  __('rename') ]]</span>
+                <span><%=  __('rename') %></span>
               </span>
             </li>
             -->
     <button class="btn btn-transparent btn-icon-labeled" title="Start Presentation (others follow what you see)" v-on:click="toggle_present_mode()" v-bind:class="{open:present_mode}">
       <span class="icon icon-presentation"></span>
-      <span class="icon-label">[[  __('present') ]]</span>
+      <span class="icon-label"><%=  __('present') %></span>
     </button>
 
   </div>

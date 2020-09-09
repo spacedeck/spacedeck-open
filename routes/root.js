@@ -15,7 +15,7 @@ const Op = Sequelize.Op;
 const uuidv4 = require('uuid/v4');
 
 router.get('/', (req, res) => {
-  res.render('index', { title: 'Spaces' });
+  res.render('index', { config:config, user:req.user });
 });
 
 router.get('/ping', (req, res) => {
@@ -23,35 +23,35 @@ router.get('/ping', (req, res) => {
 });
 
 router.get('/spaces', (req, res) => {
-  res.render('spacedeck', { title: 'Spaces' });
+  res.render('spacedeck', { config:config, user:req.user });
 });
 
 router.get('/not_found', (req, res) => {
-  res.render('not_found', { title: 'Spaces' });
+  res.render('not_found', {});
 });
 
 router.get('/confirm/:token', (req, res) => {
-  res.render('spacedeck', { title: 'Space' });
+  res.render('spacedeck', { config:config, user:req.user });
 });
 
 router.get('/folders/:id', (req, res) => {
-  res.render('spacedeck', {});
+  res.render('spacedeck', { config:config, user:req.user });
 });
 
 router.get('/signup', (req, res) => {
-  res.render('spacedeck', {});
+  res.render('spacedeck', { config:config, user:req.user });
 });
 
 router.get('/accept/:id', (req, res) => {
-  res.render('spacedeck', {});
+  res.render('spacedeck', { config:config, user:req.user });
 });
 
 router.get('/password-reset', (req, res) => {
-  res.render('spacedeck', { title: 'Signup' });
+  res.render('spacedeck', { config:config, user:req.user });
 });
 
 router.get('/password-confirm/:token', (req, res) => {
-  res.render('spacedeck', { title: 'Signup' });
+  res.render('spacedeck', { config:config, user:req.user });
 });
 
 router.get('/de/*', (req, res) => {
@@ -69,6 +69,7 @@ router.get('/fr/*', (req, res) => {
 router.get('/fr', (req, res) => {
   res.redirect("/t/fr");
 });
+
 router.get('/oc/*', (req, res) => {
   res.redirect("/t/oc");
 });
@@ -76,6 +77,7 @@ router.get('/oc/*', (req, res) => {
 router.get('/oc', (req, res) => {
   res.redirect("/t/oc");
 });
+
 router.get('/en/*', (req, res) => {
   res.redirect("/t/en");
 });
@@ -89,27 +91,11 @@ router.get('/account', (req, res) => {
 });
 
 router.get('/login', (req, res) => {
-  res.render('spacedeck');
+  res.render('spacedeck', { config:config, user:req.user });
 });
 
 router.get('/logout', (req, res) => {
-  res.render('spacedeck');
-});
-
-router.get('/contact', (req, res) => {
-  res.render('public/contact');
-});
-
-router.get('/about', (req, res) => {
-  res.render('public/about');
-});
-
-router.get('/terms', (req, res) => {
-  res.render('public/terms');
-});
-
-router.get('/privacy', (req, res) => {
-  res.render('public/privacy');
+  res.render('spacedeck', { config:config, user:req.user });
 });
 
 router.get('/t/:id', (req, res) => {
@@ -136,7 +122,7 @@ router.get('/s/:hash', (req, res) => {
       }
     } else {
       if (req.accepts('text/html')) {
-	      res.status(404).render('not_found', { title: 'Page Not Found.' });
+	      res.status(404).render('not_found', {});
       } else {
 	      res.status(404).json({});
       }
@@ -145,7 +131,7 @@ router.get('/s/:hash', (req, res) => {
 });
 
 router.get('/spaces/:id', (req, res) => {
-  res.render('spacedeck', { title: 'Space' });
+  res.render('spacedeck', { config:config, user:req.user });
 });
 
 module.exports = router;

@@ -4,8 +4,8 @@
   </div>
 
   <div class="header-right pull-right">
-    <a v-if="active_view != 'login'" class="btn btn-md btn-dark btn-round" href="/login">[[__("login")]]</a>
-    <a v-if="active_view != 'signup'" class="btn btn-md btn-dark btn-round" href="/signup">[[__("signup")]]</a>
+    <a v-if="active_view != 'login'" class="btn btn-md btn-dark btn-round" href="/login"><%= __("login") %></a>
+    <a v-if="active_view != 'signup'" class="btn btn-md btn-dark btn-round" href="/signup"><%= __("signup") %></a>
   </div>
 </header>
 
@@ -21,10 +21,10 @@
 
         <div class="tight">
           <div class="form-group">
-            <input class="input" name="email" type="email" required v-model="user_forms_email" placeholder="[[__("email")]]">
+            <input class="input" name="email" type="email" required v-model="user_forms_email" placeholder="<%=__("email")%>">
           </div>
           <div class="form-group">
-            <input class="input" name="password" type="password" required v-model="login_password" placeholder="[[__("password")]]">
+            <input class="input" name="password" type="password" required v-model="login_password" placeholder="<%=__("password")%>">
           </div>
         </div>
 
@@ -45,15 +45,15 @@
   <div id="signup" v-bind:class="{active : active_view == 'signup'}">
     <div class="content">
       <form v-on:submit="signup_submit($event, user_forms_name, user_forms_email, signup_password, signup_password_confirmation, signup_invite_code)">
-        <h4>[[__("signup")]]</h4>
+        <h4><%=__("signup")%></h4>
 
         <div class="tight">
           <div class="form-group">
-            <input class="input" type="email" required id="user-email" v-model="user_forms_email" placeholder="[[__("email")]]" autofocus v-focus>
+            <input class="input" type="email" required id="user-email" v-model="user_forms_email" placeholder="<%=__("email")%>" autofocus v-focus>
           </div>
 
           <div class="form-group">
-            <input class="input" id="user-password" required type="password" v-model="signup_password" placeholder="[[__("password")]]">
+            <input class="input" id="user-password" required type="password" v-model="signup_password" placeholder="<%=__("password")%>">
           </div>
 
           <div class="form-group">
@@ -74,8 +74,8 @@
        </div-->
 
         <button class="btn btn-dark btn-block">
-          <span v-if="!creating_user">[[__("signup")]]</span>
-          <span v-if="creating_user">[[__("signing_up")]]</span>
+          <span v-if="!creating_user"><%=__("signup")%></span>
+          <span v-if="creating_user"><%=__("signing_up")%></span>
         </button>
 
         <div class="center alert alert-danger" style="width:100%;" v-if="signup_error">{{signup_error}}</div>
@@ -90,11 +90,11 @@
         <h4>Password Recovery</h4>
         <div class="tight">
           <div class="form-group">
-            <input class="input" type="email" id="user-email" v-model="reset_email" placeholder="[[__("email")]]">
+            <input class="input" type="email" id="user-email" v-model="reset_email" placeholder="<%=__("email")%>">
           </div>
         </div>
         <div class="text-center alert alert-danger" v-if="password_reset_error">{{password_reset_error}}</div>
-        <button class="btn btn-dark btn-block" v-on:click="password_reset_submit($event, reset_email)">[[__("reset_password")]]</button>
+        <button class="btn btn-dark btn-block" v-on:click="password_reset_submit($event, reset_email)"><%=__("reset_password")%></button>
       </form>
     </div>
     <div class="content" v-if="password_reset_send==true">
@@ -119,7 +119,7 @@
         </div>
 
         <div class="text-center alert alert-danger" v-if="password_reset_confirm_error">{{password_reset_confirm_error}}</div>
-        <button class="btn btn-dark btn-block" v-on:click="password_reset_confirm($event, signup_password, signup_password_confirmation)">[[__("save")]]</button>
+        <button class="btn btn-dark btn-block" v-on:click="password_reset_confirm($event, signup_password, signup_password_confirmation)"><%=__("save")%></button>
       </form>
     </div>
   </div>

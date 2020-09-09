@@ -3,9 +3,9 @@
     <a class="btn btn-dark btn-md btn-round btn-icon" href="/spaces">
       <span class="icon icon-svg icon-sd6"></span>
     </a>
-    <button v-if="logged_in && (active_space_role == 'editor' || active_space_role == 'admin')" class="btn btn-dark btn-md btn-round" v-on:click="create_space('space')">[[ __('create_space') ]]</button>
+    <button v-if="logged_in && (active_space_role == 'editor' || active_space_role == 'admin')" class="btn btn-dark btn-md btn-round" v-on:click="create_space('space')"><%= __('create_space') %></button>
     <button v-if="logged_in && (active_space_role == 'editor' || active_space_role == 'admin')" class="btn btn-stroke-darken btn-md btn-round" v-on:click="create_space('folder')">
-      <span>[[  __('create_folder') ]]</span>
+      <span><%=  __('create_folder') %></span>
     </button>
 
     <label class="relative compact-hidden" v-if="logged_in">
@@ -13,33 +13,33 @@
       <input id="folder-search"
              type="search" name="search"
              style="padding-left: 40px !important; margin-right: 10px;"
-             placeholder="[[  __('search') ]]"
+             placeholder="<%=  __('search') %>"
              class="input input-md input-white input-round no-b w-2"
              v-model="folder_spaces_search" v-on:change="search_spaces">
     </label>
     
     <div class="dropdown top light m-r-20 compact-hidden" v-bind:class="{open : active_dropdown=='folder_sorting'}" v-if="logged_in">
       <button class="btn btn-sm btn-nude" v-on:click="activate_dropdown('folder_sorting')">
-        <span>[[  __('sort_by') ]]</span>:
-        <b v-if="folder_sorting=='updated_at'">[[  __('last_modified') ]]</b>
-        <b v-if="folder_sorting=='name'">[[  __('title') ]]</b>
-        <b v-if="folder_sorting=='space_type'">[[  __('type') ]]</b>
+        <span><%=  __('sort_by') %></span>:
+        <b v-if="folder_sorting=='updated_at'"><%=  __('last_modified') %></b>
+        <b v-if="folder_sorting=='name'"><%=  __('title') %></b>
+        <b v-if="folder_sorting=='space_type'"><%=  __('type') %></b>
       </button>
       <div class="dropdown-menu" role="menu">
         <ul class="select-list">
           <li v-bind:class="{checked:folder_sorting=='updated_at'}"
               v-on:click="set_folder_sorting('updated_at',true)">
-            <span>[[  __('last_modified') ]]</span>
+            <span><%=  __('last_modified') %></span>
           </li>
 
           <li v-bind:class="{checked:folder_sorting=='name'}"
               v-on:click="set_folder_sorting('name',false)">
-            <span>[[  __('title') ]]</span>
+            <span><%=  __('title') %></span>
           </li>
 
           <li v-bind:class="{checked:folder_sorting=='space_type'}"
               v-on:click="set_folder_sorting('space_type',false)">
-            <span>[[  __('type') ]]</span>
+            <span><%=  __('type') %></span>
           </li>
         </ul>
       </div>
@@ -60,21 +60,21 @@
           <li v-if="user.team && is_admin(user)">
             <a href="/team">
               <span class="icon icon-sm  icon-user-group"></span>
-              <span>[[  __('edit_team') ]]</span>
+              <span><%=  __('edit_team') %></span>
             </a>
           </li>
 
           <li>
             <a href="/account">
               <span class="icon icon-sm  icon-user"></span>
-              <span>[[  __('edit_account') ]]</span>
+              <span><%=  __('edit_account') %></span>
             </a>
           </li>
 
           <li v-on:click="logout()">
             <span>
               <span class="icon icon-sm  icon-logout"></span>
-              <span>[[  __('log_out') ]]</span>
+              <span><%=  __('log_out') %></span>
             </span>
           </li>
         </ul>
@@ -104,28 +104,28 @@
         </button>
         <div class="dropdown-menu" v-if="active_folder && active_folder._id != user.home_folder_id">
           <ul class="select-list">
-            <li><span class="tile-rename" v-on:click="rename_folder(active_folder)">[[__("rename")]]</span></li>
-            <li v-if="active_space_role == 'admin'"><span class="tile-share" v-on:click="activate_access()">[[__("share")]]</span></li>
+            <li><span class="tile-rename" v-on:click="rename_folder(active_folder)"><%=__("rename")%></span></li>
+            <li v-if="active_space_role == 'admin'"><span class="tile-share" v-on:click="activate_access()"><%=__("share")%></span></li>
           </ul>
         </div>
       </div>
 
       <div v-if="active_folder._id == user.home_folder_id">
-        <span>[[  __('home') ]]</span>
+        <span><%=  __('home') %></span>
       </div>
 
     </div>
 
     <div id="folder-empty" v-if="(active_profile_spaces.length == 0)">
       <div>
-        <p>[[  __('no_spaces_yet') ]]</p>
+        <p><%=  __('no_spaces_yet') %></p>
       </div>
     </div>
 
     <div id="folder-empty" v-if="folder_spaces_filter">
       <div v-if="active_profile_spaces | empty?">
-        <p><b>"{{folder_spaces_filter}}"</b>  <br/>[[  __('search_no_results') ]]</p>
-        <button type="button" class="btn btn-md btn-round btn-stroke-darken events" v-on:click=" folder_spaces_filter = ''">[[  __('search_clear') ]]</button>
+        <p><b>"{{folder_spaces_filter}}"</b>  <br/><%=  __('search_no_results') %></p>
+        <button type="button" class="btn btn-md btn-round btn-stroke-darken events" v-on:click=" folder_spaces_filter = ''"><%=  __('search_clear') %></button>
       </div>
     </div>
     <div id="folder-grid">
@@ -156,8 +156,8 @@
 
             <div class="dropdown-menu" role="menu">
               <ul class="select-list">
-                <li v-on:click="rename_space(item)"><span><span class="icon icon-sm icon-tag"></span>[[  __('rename') ]]</span></li>
-                <li v-on:click="delete_space(item)"><span><span class="icon icon-sm icon-trash"></span>[[  __('delete') ]]</span></li>
+                <li v-on:click="rename_space(item)"><span><span class="icon icon-sm icon-tag"></span><%=  __('rename') %></span></li>
+                <li v-on:click="delete_space(item)"><span><span class="icon icon-sm icon-trash"></span><%=  __('delete') %></span></li>
               </ul>
             </div>
           </div>

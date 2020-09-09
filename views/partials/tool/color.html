@@ -77,9 +77,9 @@
 <!--div class="dialog-section no-b" style="margin-top:-10px">
   <div class="tab-switch round options-2" v-bind:class="{'option-2':color_mode=='picker'}">
     <div class="options">
-      <span class="option" v-on:click="activate_color_mode('palette')">[[__("palette")]]</span>
+      <span class="option" v-on:click="activate_color_mode('palette')"><%=__("palette")%></span>
       <span class="option" v-on:click="activate_color_mode('picker')">
-        <span>[[__("picker")]]</span>
+        <span><%=__("picker")%></span>
       </span>
     </div>
     <span class="option-highlight"></span>
@@ -123,7 +123,7 @@
 <div class="dialog-section no-p-b no-p-h" v-show="opened_dialog=='color-text'">
   <div class="input-row">
     <div class="form-group no-m">
-      <label class="label label-sm text-center">[[__("font_size")]]</label>
+      <label class="label label-sm text-center"><%=__("font_size")%></label>
       <input class="input no-b no-p text-center text-large" spellcheck="false" type="text" pattern="[0-9]" maxlength="64" v-model="active_style.font_size">
       
       <button tabindex="-1" class="input-drag btn btn-transparent btn-icon" style="cursor: ns-resize;" v-sd-fader="true" sd-fader-var-y="active_style.font_size" sd-fader-min-y="30" sd-fader-max-y="200" sd-fader-sens="5">
@@ -133,7 +133,7 @@
     </div>
     
     <!--div class="form-group no-m">
-      <label class="label label-sm text-center">[[__("line_height")]]</label>
+      <label class="label label-sm text-center"><%=__("line_height")%></label>
       <input disabled class="input no-b no-p text-center text-large" spellcheck="false" type="text" pattern="[0-9\.]" maxlength="64" v-model="active_style.line_height">
       <button tabindex="-1" class="input-drag btn btn-transparent btn-icon" style="cursor: ns-resize;" v-sd-fader="true" sd-fader-var-y="active_style.line_height" sd-fader-min-y="0.5" sd-fader-max-y="4" sd-fader-step="0.1">
         <span class="icon icon-triangles-vertical"></span>
