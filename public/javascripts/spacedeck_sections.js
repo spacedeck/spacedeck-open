@@ -797,7 +797,6 @@ var SpacedeckSections = {
     },
 
     handle_user_cursor_update: function(msg) {
-      // console.log("handle cursor", msg);
       var now = new Date().getTime();
       msg.t = now;
       var existing = false;
@@ -809,7 +808,6 @@ var SpacedeckSections = {
           u.y = msg.y;
           u.t = now;
           u.name = msg.name;
-          // console.log("updated cursor "+i);
           existing = true;
         } else {
           // hide if no updates since 2sec

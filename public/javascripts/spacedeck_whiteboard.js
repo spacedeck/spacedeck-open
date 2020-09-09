@@ -374,12 +374,10 @@ function setup_whiteboard_directives() {
       var lasso_scaled = {
         x:this.lasso.x,
         y:this.lasso.y,
-        w:this.lasso.w*$scope.viewport_zoom,
-        h:this.lasso.h*$scope.viewport_zoom
+        w:this.lasso.w,
+        h:this.lasso.h
       }
       lasso_scaled = this.abs_rect(lasso_scaled);
-      lasso_scaled.x += $scope.bounds_margin_horiz;
-      lasso_scaled.y += $scope.bounds_margin_vert;
 
       var s = "left:"  +lasso_scaled.x+"px;";
       s +=    "top:"   +lasso_scaled.y+"px;";
@@ -399,15 +397,15 @@ function setup_whiteboard_directives() {
       $("#lasso").show();
     },
 
+    // Translate the mouse cursor location from device window coordinates to virtual space coordinates
     cursor_point_to_space: function(evt) {
       var $scope = this.vm.$root;
-      var offset = {left: 0, top: 0};
 
       evt = fixup_touches(evt);
 
       return {
-        x: (parseInt(evt.pageX) - parseInt(offset.left) - $scope.bounds_margin_horiz) / this.space_zoom,
-        y: (parseInt(evt.pageY) - parseInt(offset.top) - $scope.bounds_margin_vert)   / this.space_zoom
+        x: $scope.scroll_left + (parseInt(evt.pageX) - $scope.bounds_margin_horiz) / $scope.viewport_zoom,
+        y: $scope.scroll_top  + (parseInt(evt.pageY) - $scope.bounds_margin_vert)  / $scope.viewport_zoom
       };
     },
 
@@ -524,26 +522,12 @@ function setup_whiteboard_directives() {
       return results;
     },
 
-    offset_point_in_wrapper: function(point) {
-      var $scope = this.vm.$root;
-      var section_el = $(this.el)[0];
-      var z = $scope.viewport_zoom;
-
-      var pt = parseInt($("#space").css("padding-top"));
-
-      point.y=(point.y+section_el.scrollTop-pt)/z;
-      point.x=(point.x+section_el.scrollLeft)/z;
-
-      return point;
-    },
-
     start_drawing_note: function(evt) {
       evt.preventDefault();
       evt.stopPropagation();
 
       var $scope = this.vm.$root;
       var point = this.cursor_point_to_space(evt);
-      this.offset_point_in_wrapper(point);
       var z = $scope.highest_z()+1;
 
       var a = {
@@ -577,7 +561,7 @@ function setup_whiteboard_directives() {
       evt.stopPropagation();
 
       var $scope = this.vm.$root;
-      var point = this.offset_point_in_wrapper(this.cursor_point_to_space(evt));
+      var point = this.cursor_point_to_space(evt);
       var z = $scope.highest_z()+1;
 
       $scope.deselect();
@@ -617,7 +601,6 @@ function setup_whiteboard_directives() {
 
       var $scope = this.vm.$root;
       var point = this.cursor_point_to_space(evt);
-      this.offset_point_in_wrapper(point);
       var z = $scope.highest_z()+1;
 
       var a = {
@@ -654,7 +637,6 @@ function setup_whiteboard_directives() {
 
       var $scope = this.vm.$root;
       var point = this.cursor_point_to_space(evt);
-      this.offset_point_in_wrapper(point);
       var z = $scope.highest_z()+1;
 
       var a = {
@@ -697,8 +679,7 @@ function setup_whiteboard_directives() {
       evt.preventDefault();
       
       if (this.mouse_state == "lasso") {
-        var lasso_rect = this.abs_rect(this.offset_point_in_wrapper(this.lasso));
-        // convert to space coordinates
+        var lasso_rect = this.abs_rect(this.lasso);
 
         if (lasso_rect.w>0 && lasso_rect.h>0) {
           var arts = this.artifacts_in_rect(lasso_rect);
@@ -777,17 +758,11 @@ function setup_whiteboard_directives() {
 
       $scope.handle_scroll();
 
-      var cursor = this.cursor_point_to_space(evt);
+      var cursor = this.cursor_point_to_space(evt); // takes the raw event data and finds the mouse location in virtual space
       var dx = cursor.x - $scope.mouse_ox;
       var dy = cursor.y - $scope.mouse_oy;
       var dt = (new Date()).getTime() - this.last_mouse_move_time;
       this.last_mouse_move_time = (new Date()).getTime();
-
-      var zoom = $scope.viewport_zoom||1;
-      if (zoom) {
-        dx/=zoom;
-        dy/=zoom;
-      }
 
       // send cursor
       if (dx>10 || dy>10 || dt>100) {
@@ -800,8 +775,8 @@ function setup_whiteboard_directives() {
 
         var cursor_msg = {
           action: "cursor",
-          x: cursor.x/zoom,
-          y: cursor.y/zoom,
+          x: cursor.x,
+          y: cursor.y,
           name: name,
           id: $scope.user._id||name
         };
@@ -971,7 +946,7 @@ function setup_whiteboard_directives() {
           var old_a = a;
 
           var control_points = _.cloneDeep(old_a.control_points);
-          var offset = this.offset_point_in_wrapper({x:cursor.x,y:cursor.y});
+          var offset = {x:cursor.x,y:cursor.y};
 
           control_points.push({
             dx: offset.x-old_a.x,
@@ -991,8 +966,8 @@ function setup_whiteboard_directives() {
         if (!$("#space").length) return;
         el = $("#space")[0];
 
-        el.scrollLeft = this.old_panx - dx*$scope.viewport_zoom;
-        el.scrollTop  = this.old_pany - dy*$scope.viewport_zoom;
+        el.scrollLeft -= dx*$scope.viewport_zoom;
+        el.scrollTop  -= dy*$scope.viewport_zoom;
 
         $scope.handle_scroll();
       }
