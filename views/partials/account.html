@@ -107,6 +107,9 @@
         </label>
         <label class="radio" v-bind:class="{checked: user.prefs_language=='oc'}" v-on:click="save_user_language('oc')">
           <input type="radio" id="user-preferences_language" name="language" value="oc"><span>Occitan</span>
+        </label>
+        <label class="radio" v-bind:class="{checked: user.prefs_language=='es'}" v-on:click="save_user_language('es')">
+          <input type="radio" id="user-preferences_language" name="language" value="es"><span>Español</span>
         </label>        
       </div>
     </div>
