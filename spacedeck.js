@@ -114,9 +114,10 @@ module.exports = app;
 db.init();
 
 // START WEBSERVER
-const port = 9666;
+const host = config.get('host');
+const port = config.get('port');
 
-const server = http.Server(app).listen(port, () => {
+const server = http.Server(app).listen(port, host, () => {
   
   if ("send" in process) {
     process.send('online');

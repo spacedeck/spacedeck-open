@@ -2,6 +2,8 @@
   "team_name": "My Open Spacedeck",
   "contact_email": "support@example.org",
 
+  "host": "::",
+  "port": 9666,
   "endpoint": "http://localhost:9666",
   "invite_code": "top-sekrit",
 
