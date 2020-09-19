@@ -8,7 +8,7 @@
   "invite_code": "top-sekrit",
 
   "storage_region": "eu-central-1",
-
+  "storage_endpoint": "http://localhost:4572",
   "storage_bucket": "my_spacedeck_bucket",
   "storage_cdn": "/storage",
   "storage_local_path": "./storage",
