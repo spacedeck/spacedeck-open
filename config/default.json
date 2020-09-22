@@ -2,11 +2,13 @@
   "team_name": "My Open Spacedeck",
   "contact_email": "support@example.org",
 
+  "host": "::",
+  "port": 9666,
   "endpoint": "http://localhost:9666",
   "invite_code": "top-sekrit",
 
   "storage_region": "eu-central-1",
-
+  "storage_endpoint": "http://localhost:4572",
   "storage_bucket": "my_spacedeck_bucket",
   "storage_cdn": "/storage",
   "storage_local_path": "./storage",
