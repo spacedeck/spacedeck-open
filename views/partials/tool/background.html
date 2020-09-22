@@ -79,7 +79,7 @@
   </div-->
 
   <div class="" v-show="background_mode=='image'" v-if="active_space">
-    <div class="background-image" v-bind:style="{height: '233px', 'background-image':'url('+active_space.background_uri+')', 'margin': '6px', 'border-radius': '3px'}" v-if="active_space.background_uri && !space_background_uploading">
+    <div class="background-image" v-bind:style="{height: '233px', width: '233px', 'background-image':'url('+active_space.background_uri+')', 'margin': '6px', 'border-radius': '3px'}" v-if="active_space.background_uri && !space_background_uploading">
     </div>
         
     <div class="progress state-processing" v-if="space_background_uploading"> 
