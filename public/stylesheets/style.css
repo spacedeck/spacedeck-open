@@ -14549,7 +14549,8 @@ button.close {
   overflow: scroll; }
   .board .wrapper {
     background-repeat: no-repeat;
-    background-size: cover; }
+    background-size: initial;
+    background-position: 0 0; }
 
 .snap-ruler-h {
   pointer-events: none;
