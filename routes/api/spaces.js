@@ -290,8 +290,12 @@ router.put('/:id', function(req, res) {
 
   db.Space.update(newAttr, {where: {
     "_id": space._id
-  }}).then(space => {
-    res.distributeUpdate("Space", space);
+  }}).then(rows => {
+    db.Space.findOne({ where: {
+      "_id": space._id
+    }}).then(space => {
+      res.distributeUpdate("Space", space);
+    });
   });
 });
 
@@ -310,7 +314,7 @@ router.post('/:id/background', function(req, res, next) {
         if (space.background_uri) {
           var oldPath = url.parse(req.space.background_uri).pathname;
           uploader.removeFile(oldPath, function(err) {
-            console.error("removed old bg error:", err);
+            console.error("remove old background error:", err);
           });
         }
 
@@ -318,13 +322,18 @@ router.post('/:id/background', function(req, res, next) {
           background_uri: backgroundUrl
         }, {
           where: { "_id": space._id }
-        }, function(rows) {
+        }).then(rows => {
           fs.unlink(localFilePath, function(err) {
             if (err) {
               console.error(err);
               res.status(400).json(err);
             } else {
-              res.status(200).json(space);
+              db.Space.findOne({ where: {
+                "_id": space._id
+              }}).then(space => {
+                console.log("========== space update:", space);
+                res.distributeUpdate("Space", space);
+              });
             }
           });
         });
