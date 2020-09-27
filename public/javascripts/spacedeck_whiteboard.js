@@ -530,20 +530,27 @@ function setup_whiteboard_directives() {
       var point = this.cursor_point_to_space(evt);
       var z = $scope.highest_z()+1;
 
+      var note_w = 250;
+      var note_h = 250;
+
       var a = {
         space_id: $scope.active_space._id,
         mime: "text/html",
         description: "<p>Text</p>",
-        x: point.x,
-        y: point.y,
+        x: point.x-note_w/2,
+        y: point.y-note_h/2,
         z: z,
-        w: 64,
-        h: 64,
+        w: note_w,
+        h: note_h,
         align: "center",
         valign: "middle",
         stroke_color: "#000000",
         fill_color: "rgb(241, 196, 15)",
-        stroke: 0
+        stroke: 0,
+        padding_left: 10,
+        padding_right: 10,
+        padding_top: 10,
+        padding_bottom: 10
       };
 
       $scope.save_artifact(a, function(saved_a) {

@@ -1134,8 +1134,6 @@ var SpacedeckSections = {
       this.active_space.width =Math.max((parseInt(er.x2/window.innerWidth)+2)*window.innerWidth, window.innerWidth);
       this.active_space.height=Math.max((parseInt(er.y2/window.innerHeight)+2)*window.innerHeight, window.innerHeight);
 
-      console.log("bounds: ",this.active_space.width,this.active_space.height);
-      
       if (this._last_bounds_width != this.active_space.width ||
         this._last_bounds_height != this.active_space.height) {
         this._last_bounds_width = this.active_space.width;
