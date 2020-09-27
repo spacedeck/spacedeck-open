@@ -100,6 +100,11 @@ function setup_whiteboard_directives() {
         return;
       }
       
+      if ($scope.active_tool == "note") {
+        this.handle_mouse_down_space(evt, true);
+        return;
+      }
+
       var a = $scope.find_artifact_by_id(evt.currentTarget.id.replace("artifact-",""));
 
       if ($scope.active_tool == "eyedrop") {
@@ -213,8 +218,8 @@ function setup_whiteboard_directives() {
       $scope.zoom_to_cursor(evt,amount);
     },
 
-    handle_mouse_down_space: function(evt) {
-      if (evt.which != 2) {
+    handle_mouse_down_space: function(evt, force) {
+      if (!force && evt.which != 2) {
         if (evt.target != evt.currentTarget && !_.include(["wrapper"],evt.target.className)) return;
       }
       
