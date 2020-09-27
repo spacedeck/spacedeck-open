@@ -1717,15 +1717,15 @@ var SpacedeckSections = {
         w = 400;
       }
 
-      //var point = this.find_place_for_item(w,h);
       var point = this.cursor_point_to_space(evt);
+      point.z = this.highest_z()+1;
       
       var a = {
         space_id: this.active_space._id,
         mime: "x-spacedeck/shape",
         description: "",
-        x: point.x,
-        y: point.y,
+        x: point.x+w/2,
+        y: point.y+h/2,
         z: point.z,
         w: w,
         h: h,
