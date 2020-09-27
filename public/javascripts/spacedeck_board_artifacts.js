@@ -233,7 +233,7 @@ var SpacedeckBoardArtifacts = {
   },
 
   artifact_thumbnail_uri: function(a) {
-    if (a.payload_thumbnail_big_uri && a.board) {
+    if (a.payload_thumbnail_big_uri) {
       if (a.w>800) {
         return a.payload_thumbnail_big_uri;
       }
@@ -360,7 +360,8 @@ var SpacedeckBoardArtifacts = {
     var overlapping = _.filter(this.artifacts_in_rect(rect), function(a){return !this.is_selected(a)}.bind(this));
 
     var max_z = _.max(overlapping,function(a){ return a.z; });
-    if (max_z.board) {
+
+    if (max_z.z) {
       max_z = max_z.z + 1;
     } else {
       max_z = 1;
@@ -378,13 +379,13 @@ var SpacedeckBoardArtifacts = {
     var overlapping = _.filter(this.artifacts_in_rect(rect), function(a){return !this.is_selected(a);}.bind(this));
 
     var min_z = _.min(overlapping,function(a){ return a.z; });
-    if (min_z.board) {
+    if (min_z.z) {
       min_z = min_z.z - 1;
     } else {
       min_z = 0;
     }
     var my_z = _.max(this.selected_artifacts(),function(a){ return a.z; });
-    if (my_z.board) {
+    if (my_z.z) {
       my_z = my_z.z - 1;
     } else {
       my_z = 0;
