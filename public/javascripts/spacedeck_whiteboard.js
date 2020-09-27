@@ -576,8 +576,7 @@ function setup_whiteboard_directives() {
         z: z,
         w: 64,
         h: 64,
-        // Set the color to the last selected color, fallback to black if no color was selected
-        stroke_color: "#" + $scope.color_picker_rgb || "#000000",
+        stroke_color: $scope.active_style.stroke_color,
         stroke: 2,
         shape: "scribble"
       };
@@ -613,8 +612,7 @@ function setup_whiteboard_directives() {
         z: z,
         w: 64,
         h: 64,
-        // Set the color to the last selected color, fallback to black if no color was selected
-        stroke_color: "#" + $scope.color_picker_rgb || "#000000",
+        stroke_color: $scope.active_style.stroke_color,
         stroke: 2,
         shape: "arrow"
       };
