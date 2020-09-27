@@ -197,6 +197,7 @@ var SpacedeckSections = {
 
       Mousetrap.bind('del', function(evt)             { this.if_editable(function() {this.delete_selected_artifacts(evt);}) }.bind(this));
       Mousetrap.bind('backspace', function(evt)       { this.if_editable(function() {this.delete_selected_artifacts(evt);}) }.bind(this));
+      Mousetrap.bind('esc', function(evt)             { this.deselect(); this.deactivate_tool(); }.bind(this));
       Mousetrap.bind(['command+d',      'ctrl+d'      ], function(evt) { evt.preventDefault(); evt.stopPropagation(); this.if_editable(function() {this.duplicate_selected_artifacts();}) }.bind(this));
       Mousetrap.bind(['command+z',      'ctrl+z'      ], function(evt) { this.if_editable(function() {this.undo();}) }.bind(this));
       Mousetrap.bind(['command+shift+z','ctrl+shift+z'], function(evt) { this.if_editable(function() {this.redo();}) }.bind(this));
@@ -664,14 +665,6 @@ var SpacedeckSections = {
         $("#space-clipboard > textarea")[0].focus();
         $("#space-clipboard > textarea")[0].select();
       },100);
-    },
-
-    handle_section_keydown: function(evt) {
-      if (evt.keyCode == 67 && (evt.ctrlKey || evt.metaKey)) { // c key
-        this.prepare_clipboard();
-        this.prepare_clipboard_step2();
-      }
-      return true;
     },
 
     handle_onbeforecopy: function(evt) {
@@ -2552,6 +2545,10 @@ var SpacedeckSections = {
     
     hide_toolbar_artifacts: function() {
       this.toolbar_artifacts_in = false;
+    },
+
+    deactivate_tool: function(evt) {
+      this.active_tool = "pointer";
     },
 
     start_adding_artifact: function(evt) {
