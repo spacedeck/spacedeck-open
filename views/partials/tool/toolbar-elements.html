@@ -52,7 +52,7 @@
 
     <div class="dropdown bottom light center">
       <div class="btn-collapse in">
-        <button class="btn btn-transparent btn-icon-labeled" v-on:click="active_tool='note'" v-bind:class="{active:active_tool=='note'}">
+        <button class="btn btn-transparent btn-icon-labeled" v-on:click="start_adding_note()" v-bind:class="{active:active_tool=='note'}">
           <span class="icon icon-tool-text"></span>
           <span class="icon-label"><%=__("tool_text")%></span>
         </button>

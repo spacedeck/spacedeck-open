@@ -2555,7 +2555,18 @@ var SpacedeckSections = {
       evt = fixup_touches(evt);
     },
 
+    start_adding_note: function(evt) {
+      this.deselect();
+      if (this.active_tool == "note") {
+        this.active_tool = "pointer";
+      } else {
+        this.active_tool = "note";
+      }
+      this.opened_dialog = "none";
+    },
+
     start_drawing_scribble: function(evt) {
+      this.deselect();
       if (this.active_tool == "scribble") {
         this.active_tool = "pointer";
       } else {
@@ -2565,11 +2576,13 @@ var SpacedeckSections = {
     },
 
     start_drawing_arrow: function(evt) {
+      this.deselect();
       this.active_tool = "arrow";
       this.opened_dialog = "none";
     },
 
     start_drawing_line: function(evt) {
+      this.deselect();
       this.active_tool = "line";
       this.opened_dialog = "none";
     },
