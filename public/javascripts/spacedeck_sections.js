@@ -197,6 +197,7 @@ var SpacedeckSections = {
 
       Mousetrap.bind('del', function(evt)             { this.if_editable(function() {this.delete_selected_artifacts(evt);}) }.bind(this));
       Mousetrap.bind('backspace', function(evt)       { this.if_editable(function() {this.delete_selected_artifacts(evt);}) }.bind(this));
+      Mousetrap.bind('esc', function(evt)             { this.deselect(); this.deactivate_tool(); }.bind(this));
       Mousetrap.bind(['command+d',      'ctrl+d'      ], function(evt) { evt.preventDefault(); evt.stopPropagation(); this.if_editable(function() {this.duplicate_selected_artifacts();}) }.bind(this));
       Mousetrap.bind(['command+z',      'ctrl+z'      ], function(evt) { this.if_editable(function() {this.undo();}) }.bind(this));
       Mousetrap.bind(['command+shift+z','ctrl+shift+z'], function(evt) { this.if_editable(function() {this.redo();}) }.bind(this));
@@ -666,14 +667,6 @@ var SpacedeckSections = {
       },100);
     },
 
-    handle_section_keydown: function(evt) {
-      if (evt.keyCode == 67 && (evt.ctrlKey || evt.metaKey)) { // c key
-        this.prepare_clipboard();
-        this.prepare_clipboard_step2();
-      }
-      return true;
-    },
-
     handle_onbeforecopy: function(evt) {
       if (this.editing_artifact_id) return;
 
@@ -1134,8 +1127,6 @@ var SpacedeckSections = {
       this.active_space.width =Math.max((parseInt(er.x2/window.innerWidth)+2)*window.innerWidth, window.innerWidth);
       this.active_space.height=Math.max((parseInt(er.y2/window.innerHeight)+2)*window.innerHeight, window.innerHeight);
 
-      console.log("bounds: ",this.active_space.width,this.active_space.height);
-      
       if (this._last_bounds_width != this.active_space.width ||
         this._last_bounds_height != this.active_space.height) {
         this._last_bounds_width = this.active_space.width;
@@ -1726,15 +1717,15 @@ var SpacedeckSections = {
         w = 400;
       }
 
-      //var point = this.find_place_for_item(w,h);
       var point = this.cursor_point_to_space(evt);
+      point.z = this.highest_z()+1;
       
       var a = {
         space_id: this.active_space._id,
         mime: "x-spacedeck/shape",
         description: "",
-        x: point.x,
-        y: point.y,
+        x: point.x+w/2,
+        y: point.y+h/2,
         z: point.z,
         w: w,
         h: h,
@@ -2556,11 +2547,26 @@ var SpacedeckSections = {
       this.toolbar_artifacts_in = false;
     },
 
+    deactivate_tool: function(evt) {
+      this.active_tool = "pointer";
+    },
+
     start_adding_artifact: function(evt) {
       evt = fixup_touches(evt);
     },
 
+    start_adding_note: function(evt) {
+      this.deselect();
+      if (this.active_tool == "note") {
+        this.active_tool = "pointer";
+      } else {
+        this.active_tool = "note";
+      }
+      this.opened_dialog = "none";
+    },
+
     start_drawing_scribble: function(evt) {
+      this.deselect();
       if (this.active_tool == "scribble") {
         this.active_tool = "pointer";
       } else {
@@ -2570,11 +2576,13 @@ var SpacedeckSections = {
     },
 
     start_drawing_arrow: function(evt) {
+      this.deselect();
       this.active_tool = "arrow";
       this.opened_dialog = "none";
     },
 
     start_drawing_line: function(evt) {
+      this.deselect();
       this.active_tool = "line";
       this.opened_dialog = "none";
     },

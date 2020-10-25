@@ -100,6 +100,11 @@ function setup_whiteboard_directives() {
         return;
       }
       
+      if ($scope.active_tool == "note") {
+        this.handle_mouse_down_space(evt, true);
+        return;
+      }
+
       var a = $scope.find_artifact_by_id(evt.currentTarget.id.replace("artifact-",""));
 
       if ($scope.active_tool == "eyedrop") {
@@ -213,8 +218,8 @@ function setup_whiteboard_directives() {
       $scope.zoom_to_cursor(evt,amount);
     },
 
-    handle_mouse_down_space: function(evt) {
-      if (evt.which != 2) {
+    handle_mouse_down_space: function(evt, force) {
+      if (!force && evt.which != 2) {
         if (evt.target != evt.currentTarget && !_.include(["wrapper"],evt.target.className)) return;
       }
       
@@ -530,20 +535,27 @@ function setup_whiteboard_directives() {
       var point = this.cursor_point_to_space(evt);
       var z = $scope.highest_z()+1;
 
+      var note_w = 250;
+      var note_h = 250;
+
       var a = {
         space_id: $scope.active_space._id,
         mime: "text/html",
         description: "<p>Text</p>",
-        x: point.x,
-        y: point.y,
+        x: point.x-note_w/2,
+        y: point.y-note_h/2,
         z: z,
-        w: 64,
-        h: 64,
+        w: note_w,
+        h: note_h,
         align: "center",
         valign: "middle",
         stroke_color: "#000000",
         fill_color: "rgb(241, 196, 15)",
-        stroke: 0
+        stroke: 0,
+        padding_left: 10,
+        padding_right: 10,
+        padding_top: 10,
+        padding_bottom: 10
       };
 
       $scope.save_artifact(a, function(saved_a) {
@@ -576,8 +588,7 @@ function setup_whiteboard_directives() {
         z: z,
         w: 64,
         h: 64,
-        // Set the color to the last selected color, fallback to black if no color was selected
-        stroke_color: "#" + $scope.color_picker_rgb || "#000000",
+        stroke_color: $scope.active_style.stroke_color,
         stroke: 2,
         shape: "scribble"
       };
@@ -613,8 +624,7 @@ function setup_whiteboard_directives() {
         z: z,
         w: 64,
         h: 64,
-        // Set the color to the last selected color, fallback to black if no color was selected
-        stroke_color: "#" + $scope.color_picker_rgb || "#000000",
+        stroke_color: $scope.active_style.stroke_color,
         stroke: 2,
         shape: "arrow"
       };
