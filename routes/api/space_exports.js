@@ -114,7 +114,10 @@ router.get('/pdf', function(req, res, next) {
       res.status(201).json({
         url: url
       });
-      fs.unlink(local_path);
+      fs.unlink(local_path, function(){
+        // callback added so export doesn't crash
+        // Evaluate FIX
+      });
     });
   }, (err) => {
     res.status(500).json({

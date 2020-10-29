@@ -303,6 +303,7 @@
 	"sharing": "sharing",
 	"list": "Liste",
 	"download_space": "Space Herunterladen",
+	"download_as_pdf": "Space als PDF herunterladen",
 	"duplicate_destination_folder": "Zielordner für Duplikat",
 	"type": "Typ",
 	"promote": "Befördern",
