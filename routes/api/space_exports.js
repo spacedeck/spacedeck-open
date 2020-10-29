@@ -115,8 +115,10 @@ router.get('/pdf', function(req, res, next) {
         url: url
       });
       fs.unlink(local_path, function(){
-        // callback added so export doesn't crash
-        // Evaluate FIX
+        if (err) console.log('unlink', err);
+        else {
+          console.log('unlink', local_path);
+        }
       });
     });
   }, (err) => {
