@@ -301,6 +301,7 @@
 	"goto_folder": "Aller au dossier %s",
 	"stay_here": "Reste ici",
 	"download_space": "télécharger un espace",
+	"download_as_pdf": "télécharger un espace comme PDF",
 	"type": "Type",
 	"Previous Zone": "Zone précédent",
 	"Next Zone": "Zone suivante",

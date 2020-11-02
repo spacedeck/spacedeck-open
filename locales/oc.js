@@ -308,6 +308,7 @@
     "list": "lista",
     "link": "Ligam",
     "download_space": "Telecargar espaci",
+    "download_space_as_pdf": "Telecargar espaci PDF",
     "type": "Tipe",
     "download": "Telecargar",
     "Previous Zone": "Zòna precedenta",

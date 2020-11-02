@@ -156,6 +156,7 @@
 
             <div class="dropdown-menu" role="menu">
               <ul class="select-list">
+                <li v-on:click="download_space_as_pdf(item)"><span><span class="icon icon-sm icon-clipboard"></span><%=  __('download_as_pdf') %></span></li>
                 <li v-on:click="rename_space(item)"><span><span class="icon icon-sm icon-tag"></span><%=  __('rename') %></span></li>
                 <li v-on:click="delete_space(item)"><span><span class="icon icon-sm icon-trash"></span><%=  __('delete') %></span></li>
               </ul>

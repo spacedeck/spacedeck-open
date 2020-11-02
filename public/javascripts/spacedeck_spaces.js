@@ -614,10 +614,11 @@ var SpacedeckSpaces = {
     },
 
     download_space_as_pdf: function(space) {
+      this.close_dropdown();
       this.global_spinner = true;
       get_resource("/spaces/" + space._id + "/pdf", function(o) {
         this.global_spinner = false;
-        location.href = o.url;
+        window.open(o.url, "_blank");
       }.bind(this), function(xhr) {
         this.global_spinner = false;
         alert("PDF export problem (" + xhr.status + ").");
