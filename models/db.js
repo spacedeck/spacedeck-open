@@ -175,7 +175,7 @@ module.exports = {
     crop_w: Sequelize.INTEGER,
     crop_h: Sequelize.INTEGER,
     shape: Sequelize.STRING,
-    shape_svg: Sequelize.STRING,
+    shape_svg: Sequelize.TEXT,
     padding_left: Sequelize.INTEGER,
     padding_right: Sequelize.INTEGER,
     padding_top: Sequelize.INTEGER,
