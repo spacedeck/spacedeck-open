@@ -1855,7 +1855,7 @@ var SpacedeckSections = {
           // upload progress
           var progress = e.loaded/e.total;
 
-          if (progress=1) {
+          if (progress===1) {
             a.description = "Converting Media…";
           } else {
             a.description = "Upload "+parseInt(progress*100)+"%";
