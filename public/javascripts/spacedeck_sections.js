@@ -864,7 +864,7 @@ var SpacedeckSections = {
       if (evt && !evt.shiftKey && this.is_selected(a)) return; // already selected
 
       if (!evt || !evt.shiftKey) {
-        this.deselect();
+        this.selected_artifacts_dict = {};
       }
 
       if (evt && evt.shiftKey) {
