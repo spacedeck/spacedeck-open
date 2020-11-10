@@ -593,8 +593,6 @@ var SpacedeckSections = {
         evt.preventDefault();
       }
 
-      this.active_tool = this.active_tool || "pointer";
-
       if (this.opened_dialog == id) {
         this.opened_dialog = "none";
         return;
