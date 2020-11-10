@@ -12651,13 +12651,12 @@ button.close {
         position: absolute;
         width: 100%;
         overflow: hidden;
-        background-size: cover;
         background-color: transparent;
         border-top-left-radius: 6px;
         border-top-right-radius: 6px;
         border-bottom-left-radius: 10px;
         border-bottom-right-radius: 10px;
-        background-position: center 100%;
+        background-position: left top;
         background-repeat: no-repeat; }
       #folder-grid .item > a .item-title {
         display: block;

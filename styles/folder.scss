@@ -419,14 +419,13 @@
         width: 100%;
         overflow: hidden;
 
-        background-size: cover;
         background-color: transparent;
         border-top-left-radius: $radius*2;
         border-top-right-radius: $radius*2;
 
         border-bottom-left-radius: 10px;
         border-bottom-right-radius: 10px;
-        background-position: center 100%;
+        background-position: left top;
         background-repeat: no-repeat;
       }
 
