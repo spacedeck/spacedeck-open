@@ -124,7 +124,7 @@
 	"new_password": "Nueva Contraseña",
 	"verify_password": "Verificar Contraseña",
 	"change_password": "Cambiar Contraseña",
-	"reset_password": "Reiniciar Contraseña",
+	"reset_password": "Restablecer contraseña",
 	"terminate_caption": "Borrar Cuenta",
 	"terminate_warning": "Si borras tu cuenta, todos los Espacios, Directorios y Mensajes (incluyendo todo el contenido que tú y otras personas crearon en tus Espacios) serán destruidos.",
 	"terminate_warning2": "Esta acción no puede deshacerse.",
@@ -172,6 +172,7 @@
 	"tool_styles": "Estilos",
 	"tool_bullets": "'Bullets'",
 	"tool_numbers": "Números",
+	"tool_font": "Fuente",
 	"color_fill": "Rellenar",
 	"color_stroke": "Trazo",
 	"color_text": "Texto",
@@ -321,5 +322,6 @@
 	"follow_present": "Seguir",
 	"mute_present": "Dejar de Seguir",
 	"follow_present_help": "Si alguien más está presentando este espacio, los otros miembros siguen automáticamente la presentación. Active o desactive el seguimiento con este botón.",
-	"export": "exportar"
+	"export": "exportar",
+	"media": "Media"
 }

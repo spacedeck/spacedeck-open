@@ -173,6 +173,7 @@
 	"tool_styles": "Stil",
 	"tool_bullets": "Bullets",
 	"tool_numbers": "Zahlen",
+	"tool_font": "Font",
 	"color_fill": "Füllung",
 	"color_stroke": "Strich",
 	"color_text": "Text",
@@ -318,5 +319,6 @@
 	"more": "mehr",
 	"follow_present": "Folgen",
 	"mute_present": "Entfolgen",
-  "follow_present_help": "Wenn jemand den Space präsentiert, folgen die anderen Mitglieder automatisch der Präsentation. Mit diesem Knopf lässt sich das an- oder ausschalten."
+	"follow_present_help": "Wenn jemand den Space präsentiert, folgen die anderen Mitglieder automatisch der Präsentation. Mit diesem Knopf lässt sich das an- oder ausschalten.",
+	"media": "Media"
 }
