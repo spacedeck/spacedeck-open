@@ -43,9 +43,9 @@
     
     <div class="dropdown top light right" v-bind:class="{open:opened_dialog=='text-styles'}">
       <div class="btn-collapse in">
-        <button class="btn btn-transparent btn-icon-labeled" v-on:click="open_dialog('text-styles')" v-bind:class="{open : opened_dialog=='text-styles'}">
+        <button class="btn btn-transparent btn-icon-labeled" v-on:click="open_dialog('text-styles')" v-bind:class="{open : opened_dialog=='text-styles'}" title="<%=__("tool_styles")%>">
           <span class="icon icon-text-styles"></span>
-          <span class="icon-label">Styles</span>
+          <span class="icon-label"><%=__("tool_styles")%></span>
         </button>
       </div>
 
@@ -56,7 +56,7 @@
     
     <div class="dropdown top light right" v-bind:class="{open:opened_dialog=='type-align'}">
       <div class="btn-collapse" v-bind:class="{in:selection_metrics.contains_text}">
-        <button class="btn btn-transparent btn-icon-labeled" v-on:click="open_dialog('type-align')" v-bind:class="{open : opened_dialog=='type-align'}">
+        <button class="btn btn-transparent btn-icon-labeled" v-on:click="open_dialog('type-align')" v-bind:class="{open : opened_dialog=='type-align'}" title="<%=__("tool_align")%>">
           <span class="icon icon-text-align-left-alt"></span>
           <span class="icon-label"><%=__("tool_align")%></span>
         </button>
@@ -70,7 +70,7 @@
     <div class="dropdown top light right" v-bind:class="{open:opened_dialog=='layout'}">
 
       <div class="btn-collapse in">
-        <button class="btn btn-transparent btn-icon-labeled" v-on:click="open_dialog('layout')"  v-bind:class="{open : opened_dialog=='layout'}">
+        <button class="btn btn-transparent btn-icon-labeled" v-on:click="open_dialog('layout')"  v-bind:class="{open : opened_dialog=='layout'}" title="<%=__("tool_layout")%>">
           <span class="icon icon-cluster"></span>
           <span class="icon-label"><%=__("tool_layout")%></span>
         </button>
@@ -84,9 +84,9 @@
     <div class="dropdown top light right" v-bind:class="{open:opened_dialog=='text-settings'}">
       
       <div class="btn-collapse in">
-        <button class="btn btn-transparent btn-icon-labeled" v-on:click="open_dialog('text-settings')" v-bind:class="{open : opened_dialog=='text-settings'}">
+        <button class="btn btn-transparent btn-icon-labeled" v-on:click="open_dialog('text-settings')" v-bind:class="{open : opened_dialog=='text-settings'}" title="<%=__("tool_font")%>">
           <span class="icon icon-text-typeface"></span>
-          <span class="icon-label">Font</span>
+          <span class="icon-label"><%=__("tool_font")%></span>
         </button>
       </div>
 

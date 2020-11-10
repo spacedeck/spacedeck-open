@@ -5,7 +5,7 @@
   <h4>Spacedeck Team Management</h4>
 
   <div v-if="!user.team" class="dialog-section text-left">
-    You are not in a team yet. Please upgrade first.</h2>
+    You are not in a team yet. Please upgrade first.
   </div>
 
   <div v-if="user.team">
@@ -34,7 +34,7 @@
     </div>
 
     <div class="dialog-section text-left">
-      <h4>Members</h4>
+      <h4><%=__("members")%></h4>
 
       <p>
         New members will get an invitation email. After the invitation was used, the member is active. The number of active members in your team will affect your monthly charge.

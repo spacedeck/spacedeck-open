@@ -172,6 +172,7 @@
 	"format_h3": "Titre 3",
 	"font_size": "Taille de la police",
 	"line_height": "Hauteur de ligne",
+	"tool_font": "Font",
 	"tool_align": "Align",
 	"tool_styles": "Style",
 	"tool_bullets": "Puces",
@@ -315,5 +316,6 @@
 	"more": "plus",
 	"follow_present": "Suivre",
 	"mute_present": "Pas suivre",
-	"follow_present_help": "follow_present_help"
+	"follow_present_help": "follow_present_help",
+	"media": "Media"
 }
