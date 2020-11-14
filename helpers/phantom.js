@@ -25,6 +25,7 @@ module.exports = {
 
     var on_exit = function(exit_code) {
       if (exit_code>0) {
+        console.error(exit_code);
         console.error("puppeteer abnormal exit for url "+space_url);
         if (!on_success_called && on_error) {
           on_error();
@@ -39,13 +40,9 @@ module.exports = {
         browser = await puppeteer.launch(
           {
             headless: true,
-            args: ['--disable-dev-shm-usage']
+            args: ['--disable-dev-shm-usage', '--no-sandbox']
           }
         );
-        var process = browser.process();
-        process.on('exit',function(code, signal){
-          on_exit(code);
-        });
         page = await browser.newPage();
 
         page.setDefaultTimeout(timeout);
