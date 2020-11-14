@@ -12657,7 +12657,8 @@ button.close {
         border-bottom-left-radius: 10px;
         border-bottom-right-radius: 10px;
         background-position: left top;
-        background-repeat: no-repeat; }
+        background-repeat: no-repeat;
+        background-size: cover; }
       #folder-grid .item > a .item-title {
         display: block;
         border-top: 1px solid rgba(0, 0, 0, 0.05);
