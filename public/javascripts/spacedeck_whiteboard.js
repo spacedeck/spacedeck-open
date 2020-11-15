@@ -588,8 +588,8 @@ function setup_whiteboard_directives() {
         z: z,
         w: 64,
         h: 64,
-        stroke_color: $scope.active_style.stroke_color,
-        stroke: 2,
+        stroke_color: $scope.active_style.stroke_color == "rgba(0,0,0,0)" ? "rgba(0,0,0,255)" : $scope.active_style.stroke_color,
+        stroke: $scope.active_style.stroke == 0 ? 2 : $scope.active_style.stroke,
         shape: "scribble"
       };
 
@@ -624,8 +624,8 @@ function setup_whiteboard_directives() {
         z: z,
         w: 64,
         h: 64,
-        stroke_color: $scope.active_style.stroke_color,
-        stroke: 2,
+        stroke_color: $scope.active_style.stroke_color == "rgba(0,0,0,0)" ? "rgba(0,0,0,255)" : $scope.active_style.stroke_color,
+        stroke: $scope.active_style.stroke == 0 ? 2 : $scope.active_style.stroke,
         shape: "arrow"
       };
 
