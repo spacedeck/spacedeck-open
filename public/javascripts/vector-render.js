@@ -23,6 +23,9 @@ function vec2_angle(v) {
 function render_vector_drawing(a, padding) {
   var shape = a.shape || "";
   var path = [];
+  if(typeof a.control_points == 'string'){
+    a.control_points = eval(a.control_points);
+  }
   var p = a.control_points[0];
 
   if (!p) return "";
@@ -52,8 +55,7 @@ function render_vector_drawing(a, padding) {
     var svg = tip + "<path d='" + d + "' style='stroke-width:" + a.stroke + ";' marker-end='url(#ae" + markerId + ")'/>";
 
     return svg;
-  }
-  else if (false /*shape.match("scribble")*/) {
+  /*} else if (shape.match("scribble")) {
     var idx = 0;
     while (idx < a.control_points.length - 1) {
       var prevP = a.control_points[idx];
@@ -107,7 +109,7 @@ function render_vector_drawing(a, padding) {
 
       path.push(curve);
       idx += 1;
-    }
+    }*/
   } else {
     for (var idx=0; idx<a.control_points.length; idx++) {
       var p = a.control_points[idx];
