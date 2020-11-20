@@ -162,6 +162,8 @@ var SpacedeckSections = {
     media_search_target: "google",
     search_loading: false,
 
+    fullscreen: false,
+
     viewport_zoom: 1,
     viewport_zoom_percent: 100,
     bounds_zoom: 1,
@@ -381,6 +383,15 @@ var SpacedeckSections = {
         var hsv = rgb_to_hsv(rgba.r, rgba.g, rgba.b);
         this.active_style.background_color_hsv = hsv;
       }.bind(this));
+
+      
+      document.addEventListener('fullscreenchange', (event) => {
+        if (document.fullscreenElement) {
+          this.fullscreen = true;
+        } else {
+          this.fullscreen = false;
+        }
+      });
     },
 
     if_editable: function(fn) {
@@ -585,6 +596,16 @@ var SpacedeckSections = {
 
     toggle_advanced_properties: function() {
       this.advanced_properties = !this.advanced_properties;
+    },
+
+    toggle_fullscreen: function() {
+      this.deselect();
+      this.opened_dialog = "none";
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
+      } else {
+        document.documentElement.requestFullscreen();
+      }
     },
 
     open_dialog: function(id, evt) {

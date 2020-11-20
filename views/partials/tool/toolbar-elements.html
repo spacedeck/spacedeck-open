@@ -121,5 +121,12 @@
       <span class="icon-label"><%= __('present') %></span>
     </button>
 
+    <button class="btn btn-transparent btn-icon-labeled"
+            v-on:click="toggle_fullscreen()">
+      <span class="icon" v-bind:class="{'icon-resize-small':fullscreen,'icon-resize-full':!fullscreen}"></span>
+      <span class="icon-label" v-if="!fullscreen"><%=  __('fullscreen') %></span>
+      <span class="icon-label" v-if="fullscreen"><%=  __('window') %></span>
+    </button>
+
   </div>
 </div>
