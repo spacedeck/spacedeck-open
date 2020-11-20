@@ -323,6 +323,12 @@
     height: 100%;
     background-size: cover;
 
+    &.playing {
+      video {
+        z-index: 1;
+      }
+    }
+
     .title {
       position: absolute;
       bottom: 0px;
@@ -339,15 +345,17 @@
     video {
       width: 100%;
       height: 100%;
+      position: absolute;
     }
 
     .tl-controls {
       position: absolute;
-      bottom: 10px;
+      top: 10px;
       left: 10px;
       right: 10px;
       text-align: center;
-
+      z-index: 2;
+      
       .btn {
         margin-top: 20px;
 

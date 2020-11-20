@@ -52,9 +52,18 @@ function setup_directives() {
       }
 
       var play_func = function() {
-        video.play();
-        player_state = "playing";
-        update_view();
+        var playPromise = video.play();
+        if (playPromise !== undefined) {
+          playPromise.then(_ => {
+            // Automatic playback started!
+            player_state = "playing";
+            update_view();
+          })
+          .catch(error => {
+            // Auto-play was prevented
+            // Show paused UI.
+          });
+        }
       }
 
       var pause_func = function() {
