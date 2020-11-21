@@ -2183,9 +2183,15 @@ var SpacedeckSections = {
       return copy;
     },
 
-    toggle_lock_of_selected_artifacts: function() {
+    lock_selected_artifacts: function() {
       this.update_selected_artifacts(function(a) {
-        return {locked: !a.locked};
+        return {locked: true};
+      }, true);
+    },
+
+    unlock_selected_artifacts: function() {
+      this.update_selected_artifacts(function(a) {
+        return {locked: false};
       }, true);
     },
 
