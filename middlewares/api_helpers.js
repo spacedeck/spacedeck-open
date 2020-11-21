@@ -17,9 +17,15 @@ module.exports = (req, res, next) => {
     this.status(201).json(object);
   };
 
-  res['distributeUpdate'] = function(model, object) {
+  res['distributeUpdate'] = function(model, object, sendToSelf) {
     if (!object) return;
-    redis.sendMessage("update", model, object, req.channelId);
+    if (sendToSelf) {
+      // send this update to the initiating user, for example when
+      // a conversion task has finished
+      redis.sendMessage("update-self", model, object, req.channelId);
+    } else {
+      redis.sendMessage("update", model, object, req.channelId);
+    }
     this.status(200).json(object);
   };
 

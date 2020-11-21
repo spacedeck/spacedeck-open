@@ -1602,12 +1602,8 @@ var SpacedeckSections = {
       if (this.guest_nickname) {
         new_item.editor_name = this.guest_nickname;
       }
-      // console.log("new artifact", new_item);
 
       save_artifact(new_item, function(saved_item) {
-
-        // console.log("saved artifact", saved_item);
-
         this.update_board_artifact_viewmodel(saved_item);
         this.active_space_artifacts.push(saved_item);
 
