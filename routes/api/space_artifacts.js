@@ -89,7 +89,7 @@ router.post('/', function(req, res, next) {
 
   var artifact = attrs;
   artifact._id = uuidv4();
-  
+
   if (req.user) {
     artifact.user_id = req.user._id;
     artifact.last_update_user_id = req.user._id;
@@ -114,7 +114,7 @@ router.post('/', function(req, res, next) {
 });
 
 router.post('/:artifact_id/payload', function(req, res, next) {
-  if (req.spaceRole == "editor"  ||  req.spaceRole == "admin") {
+  if (req.spaceRole == "editor" || req.spaceRole == "admin") {
     var a = req.artifact;
 
     var fileName = (req.query.filename || "upload.bin").replace(/[^a-zA-Z0-9_\-\.]/g, '');
@@ -124,10 +124,21 @@ router.post('/:artifact_id/payload', function(req, res, next) {
     var stream = req.pipe(writeStream);
 
     var progressCallback = function(progressMsg) {
-      a.description = progressMsg.toString();
-      db.packArtifact(a);
-      a.save();
-      redis.sendMessage("update", "Artifact", a, req.channelId);
+      // merge progress message with any other changes (size/location)
+      db.Artifact.findOne({where: {
+        _id: a._id
+      }}).then(a => {
+        if (a) {
+          a.description = progressMsg.toString();
+          db.packArtifact(a);
+          a.save();
+          db.unpackArtifact(a);
+          redis.sendMessage("update-self", "Artifact", a, req.channelId);
+        } else {
+          // artifact has been deleted
+          // TODO: stop conversion process!
+        }
+      });
     };
 
     stream.on('finish', function() {
@@ -135,7 +146,8 @@ router.post('/:artifact_id/payload', function(req, res, next) {
         if (error) res.status(400).json(error);
         else {
           db.Space.update({ updated_at: new Date() }, {where: {_id: req.space._id}});
-          res.distributeUpdate("Artifact", artifact);
+          db.unpackArtifact(artifact);
+          res.distributeUpdate("Artifact", artifact, true);
         }
       }, progressCallback);
     });
@@ -157,7 +169,7 @@ router.put('/:artifact_id', function(req, res, next) {
   } else {
     newAttr.last_update_editor_name = req.editor_name;
   }
-  
+
   db.packArtifact(newAttr);
 
   db.Artifact.update(newAttr, { where: {

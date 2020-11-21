@@ -15350,7 +15350,8 @@ body:not(.present-mode) #space .artifact.selected {
     padding: 10px;
     background-color: #3d9ee9;
     opacity: 0.9;
-    text-align: center; }
+    text-align: center;
+    font-size: 14px; }
   .artifact.state-processing .progress-text, .artifact.state-uploading .progress-text {
     text-align: center;
     padding: 8px;

@@ -141,8 +141,8 @@
           <div class="progress" v-bind:style="{width: a.view.progress+'%'}"></div>
           <div class="progress-text">{{a.description}}</div>
 
-          <video v-if="a.mime == 'image/gif' && a.payload_alternatives && a.payload_alternatives.length > 0" preload autoplay loop>
-            <source v-for="rep in a.payload_alternatives" v-bind:src="rep.payload_uri" v-bind:type="rep.mime" />
+          <video v-if="a.mime == 'image/gif' && a.view.payload_alternatives && a.view.payload_alternatives.length > 0" preload autoplay loop>
+            <source v-for="rep in a.view.payload_alternatives" v-bind:src="rep.payload_uri" v-bind:type="rep.mime" />
           </video>
 
           <span v-if="a.view.link.length>0" class="link-wrapper">
@@ -153,8 +153,8 @@
         <!-- video -->
         <div v-if="a.view.major_type == 'video'" v-videoplayer="a" class="video" v-bind:style="a.view.inner_style">
           <video preload="metadata" v-bind:poster="a.view.thumbnail_uri">
-            <source v-for="rep in a.payload_alternatives" v-bind:src="rep.payload_uri" v-bind:type="rep.mime" />
-            <source v-if="a.payload_uri && a.mime" v-bind:src="a.payload_uri" v-bind:type="a.mime" />
+            <source v-for="rep in a.view.payload_alternatives" v-bind:src="rep.payload_uri" v-bind:type="rep.mime" />
+            <source v-if="a.view.payload_uri && a.view.mime" v-bind:src="a.view.payload_uri" v-bind:type="a.view.mime" />
           </video>
 
           <div class="tl-controls">
@@ -181,11 +181,11 @@
         <div v-if="a.view.major_type == 'audio'" v-audioplayer="a" class="audio" v-bind:style="a.view.inner_style">
 
           <audio>
-            <source v-for="alt in a.payload_alternatives | orderBy 'mime' -1" v-bind:src="alt.payload_uri" v-bind:type="alt.mime"/>
-            <source v-bind:src="a.payload_uri" v-bind:type="a.mime" v-if="a.payload_uri"/>
+            <source v-for="alt in a.view.payload_alternatives | orderBy 'mime' -1" v-bind:src="alt.payload_uri" v-bind:type="alt.mime"/>
+            <source v-bind:src="a.view.payload_uri" v-bind:type="a.view.mime" v-if="a.view.payload_uri"/>
           </audio>
 
-          <div class="timeline" v-show="a.h>=64 && a.w>=170" v-bind:style="{'background-image': 'url(' + a.payload_thumbnail_web_uri +')'}">
+          <div class="timeline" v-show="a.h>=64 && a.w>=170" v-bind:style="{'background-image': 'url(' + a.view.thumbnail_uri +')'}">
             <div class="tl-current-time" v-bind:style="{width: a.player_view.current_time_float*100 + '%'}"></div>
             <div class="tl-inpoint" v-bind:style="{left: a.player_view.inpoint_float*100 + '%'}" v-if="a.player_view.inpoint_float>0.0"></div>
             <div class="tl-outpoint" v-bind:style="{left: a.player_view.outpoint_float*100 + '%'}"></div>

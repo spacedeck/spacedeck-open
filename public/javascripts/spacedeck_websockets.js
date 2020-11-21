@@ -40,7 +40,11 @@ SpacedeckWebsockets = {
             }
           } else console.log("artifact created in another space.");
         }
-        else if (msg.action == "update" && msg.object) {
+        else if ((msg.action == "update" || msg.action == "update-self") && msg.object) {
+          if (msg.action == "update-self") {
+            console.log(msg.object);
+          }
+
           if (this.active_space) {
             var o = msg.object;
             if (o && o._id) {
@@ -185,7 +189,7 @@ SpacedeckWebsockets = {
           return;
         }
 
-        if (msg.channel_id == channel_id) {
+        if (msg.channel_id == channel_id && !msg.action.match("-self")) {
           return;
         }
 
@@ -199,7 +203,7 @@ SpacedeckWebsockets = {
           this.handle_presenter_media_update(msg);
         }
 
-        if (msg.action == "update" || msg.action == "create" || msg.action == "delete"){
+        if (msg.action == "update" || msg.action == "update-self" || msg.action == "create" || msg.action == "delete") {
           this.handle_live_updates(msg);
         }
 
@@ -232,13 +236,13 @@ SpacedeckWebsockets = {
               return (u && (u._id != this.user._id));
             }.bind(this));
           }
-          
+
           users = _.filter(users, function(u) {
             return (u && (u._id || u.nickname));
           });
-          
+
           this.users_online[spaceId] = users;
-          
+
           if (this.active_space) {
             if (this.active_space._id == spaceId) {
               this.active_space_users = users;
