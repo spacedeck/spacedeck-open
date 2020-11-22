@@ -53,7 +53,7 @@ module.exports = {
 
         if (type=="pdf") {
           await page.pdf({path: export_path, width: space.width+'px', height: space.height+'px' });
-        }else{
+        } else {
           await page.screenshot({path: export_path});
         }
 
