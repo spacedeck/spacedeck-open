@@ -173,6 +173,7 @@
     "tool_bullets": "Bullets",
     "tool_numbers": "Nombres",
     "color_fill": "Fill",
+    "tool_font": "Font",
     "color_stroke": "Traçat",
     "color_text": "Tèxte",
     "tool_type": "Tipe",
@@ -308,6 +309,7 @@
     "list": "lista",
     "link": "Ligam",
     "download_space": "Telecargar espaci",
+    "download_space_as_pdf": "Telecargar espaci PDF",
     "type": "Tipe",
     "download": "Telecargar",
     "Previous Zone": "Zòna precedenta",
@@ -320,5 +322,6 @@
     "follow_present": "Seguir",
     "mute_present": "Quitar de seguir",
     "follow_present_help": "follow_present_help",
-    "export": "exportar"
+    "export": "exportar",
+    "media": "Media"
 }

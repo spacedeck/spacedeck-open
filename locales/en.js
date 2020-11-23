@@ -172,6 +172,7 @@
 	"tool_styles": "Styles",
 	"tool_bullets": "Bullets",
 	"tool_numbers": "Numbers",
+	"tool_font": "Font",
 	"color_fill": "Fill",
 	"color_stroke": "Stroke",
 	"color_text": "Text",
@@ -308,6 +309,7 @@
 	"list": "Export List",
 	"link": "Link",
 	"download_space": "Download Space",
+	"download_as_pdf": "Download Space as PDF",
 	"type": "Type",
 	"download": "Download",
 	"Previous Zone": "Previous Zone",
@@ -320,5 +322,6 @@
 	"follow_present": "Follow",
 	"mute_present": "Unfollow",
 	"follow_present_help": "If someone else is presenting this Space, the other members automatically follow the presentation. Switch following on or off with this button.",
-	"export": "export"
+	"export": "export",
+	"media": "Media"
 }

@@ -172,6 +172,7 @@
 	"format_h3": "Titre 3",
 	"font_size": "Taille de la police",
 	"line_height": "Hauteur de ligne",
+	"tool_font": "Font",
 	"tool_align": "Align",
 	"tool_styles": "Style",
 	"tool_bullets": "Puces",
@@ -301,6 +302,7 @@
 	"goto_folder": "Aller au dossier %s",
 	"stay_here": "Reste ici",
 	"download_space": "télécharger un espace",
+	"download_as_pdf": "télécharger un espace comme PDF",
 	"type": "Type",
 	"Previous Zone": "Zone précédent",
 	"Next Zone": "Zone suivante",
@@ -314,5 +316,6 @@
 	"more": "plus",
 	"follow_present": "Suivre",
 	"mute_present": "Pas suivre",
-	"follow_present_help": "follow_present_help"
+	"follow_present_help": "follow_present_help",
+	"media": "Media"
 }

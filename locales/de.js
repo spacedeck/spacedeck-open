@@ -173,6 +173,7 @@
 	"tool_styles": "Stil",
 	"tool_bullets": "Bullets",
 	"tool_numbers": "Zahlen",
+	"tool_font": "Font",
 	"color_fill": "Füllung",
 	"color_stroke": "Strich",
 	"color_text": "Text",
@@ -303,6 +304,7 @@
 	"sharing": "sharing",
 	"list": "Liste",
 	"download_space": "Space Herunterladen",
+	"download_as_pdf": "Space als PDF herunterladen",
 	"duplicate_destination_folder": "Zielordner für Duplikat",
 	"type": "Typ",
 	"promote": "Befördern",
@@ -317,5 +319,6 @@
 	"more": "mehr",
 	"follow_present": "Folgen",
 	"mute_present": "Entfolgen",
-  "follow_present_help": "Wenn jemand den Space präsentiert, folgen die anderen Mitglieder automatisch der Präsentation. Mit diesem Knopf lässt sich das an- oder ausschalten."
+	"follow_present_help": "Wenn jemand den Space präsentiert, folgen die anderen Mitglieder automatisch der Präsentation. Mit diesem Knopf lässt sich das an- oder ausschalten.",
+	"media": "Media"
 }

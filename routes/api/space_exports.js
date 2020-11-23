@@ -114,7 +114,12 @@ router.get('/pdf', function(req, res, next) {
       res.status(201).json({
         url: url
       });
-      fs.unlink(local_path);
+      fs.unlink(local_path, function(){
+        if (err) console.log('unlink', err);
+        else {
+          console.log('unlink', local_path);
+        }
+      });
     });
   }, (err) => {
     res.status(500).json({

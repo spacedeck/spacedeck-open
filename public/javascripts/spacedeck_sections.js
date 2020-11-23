@@ -123,7 +123,7 @@ var SpacedeckSections = {
       {id:12, hex:"#bbbbbb"},
       {id:13, hex:"#dddddd"},
       {id:14, hex:"#ffffff"},
-      
+
       {id:20, hex:"#4a2f7e"},
       {id:21, hex:"#9b59b6"},
       {id:22, hex:"#3498db"},
@@ -135,7 +135,7 @@ var SpacedeckSections = {
       {id:29, hex:"#95a5a6"},
       {id:30, hex:"rgba(0,0,0,0)"},
     ],
-    
+
     swatches_text: [
       {id:1, hex:"#9b59b6"},
       {id:2, hex:"#3498db"},
@@ -216,7 +216,7 @@ var SpacedeckSections = {
       Mousetrap.bind('shift+left', function(evt)      { this.if_editable(function() {this.nudge_selected_artifacts(-10,0,evt);}) }.bind(this));
       Mousetrap.bind('shift+right', function(evt)     { this.if_editable(function() {this.nudge_selected_artifacts(10,0,evt);}) }.bind(this));
       Mousetrap.bind('space', function(evt)           { this.activate_pan_tool(evt); }.bind(this));
-      
+
       $(document).bind("beforecopy", this.handle_onbeforecopy.bind(this));
       $(window).bind("beforeunload", this.handle_onunload.bind(this));
       $(window).bind("resize", this.handle_window_resize.bind(this));
@@ -434,7 +434,7 @@ var SpacedeckSections = {
     extract_properties_from_selection: function() {
       // stop extract->apply feedback loop
       this.skip_formatting = true;
-      
+
       var arts = this.selected_artifacts();
       window.setTimeout(function() {
         this.skip_formatting = false;
@@ -593,8 +593,6 @@ var SpacedeckSections = {
         evt.preventDefault();
       }
 
-      this.active_tool = "pointer";
-
       if (this.opened_dialog == id) {
         this.opened_dialog = "none";
         return;
@@ -603,7 +601,7 @@ var SpacedeckSections = {
       if (_.contains(["mobile","shapes","zones"],id)) {
         this.deselect();
       }
-      
+
       this.opened_dialog=id;
 
       if (id.match("color") || id.match("background")) {
@@ -721,7 +719,7 @@ var SpacedeckSections = {
 
     presenter_send_viewport: function() {
       name = this.user.nickname || this.user.email;
-      
+
       var msg = {
         action: "viewport",
         x: this.scroll_left,
@@ -736,14 +734,14 @@ var SpacedeckSections = {
       var packed = JSON.stringify(msg);
       if (packed==this._old_viewport_msg) return;
       this._old_viewport_msg = packed;
-      
+
       if (this.present_mode && this.active_space_role!="viewer")
         this.websocket_send(msg);
     },
 
     presenter_send_media_action: function(artifact_id,type,cmd,time) {
       name = this.user.nickname || this.user.email;
-      
+
       var msg = {
         action: "media",
         artifact_id: artifact_id,
@@ -822,7 +820,7 @@ var SpacedeckSections = {
         y2: msg.y+msg.h
       });
     },
-    
+
     handle_presenter_media_update: function(msg) {
       if(this.follow_mode) {
         if (msg.type=="audio") {
@@ -849,7 +847,7 @@ var SpacedeckSections = {
     may_select: function(a) {
       if (!a) return false;
       if (!this.active_space) return false;
-      
+
       if (this.active_space_role=="viewer" || (a.locked && this.active_space_role!="admin")) {
         return false;
       }
@@ -866,7 +864,7 @@ var SpacedeckSections = {
       if (evt && !evt.shiftKey && this.is_selected(a)) return; // already selected
 
       if (!evt || !evt.shiftKey) {
-        this.deselect();
+        this.selected_artifacts_dict = {};
       }
 
       if (evt && evt.shiftKey) {
@@ -1026,7 +1024,7 @@ var SpacedeckSections = {
         this.selection_metrics.count = 1;
         return;
       }
-      
+
       var sr = this.selection_rect() || {x:0,y:0,w:0,h:0,style:"display:none"};
 
       if (sr.x1 || sr.x2) {
@@ -1054,7 +1052,7 @@ var SpacedeckSections = {
         // FIXME make sure that menus fit in window
         this.toolbar_props_x = pp.x+"px";
         this.toolbar_props_y = pp.y+"px";
-          
+
         //this.hide_toolbar_artifacts();
       }
 
@@ -1343,7 +1341,7 @@ var SpacedeckSections = {
 
       this.update_selected_artifacts(function(a) {
         var c = {};
-        
+
         if (a[prop] != val) {
           //console.log("set_artifact_style_prop: ",c,val);
           c[prop]=val;
@@ -1498,7 +1496,7 @@ var SpacedeckSections = {
       var tw = window.innerWidth;
       var th = window.innerHeight;
       var el = $("#space")[0];
-      
+
       if (!el) return {x:0,y:0,z:1}; // FIXME
 
       var wrap = $(".wrapper");
@@ -1544,7 +1542,7 @@ var SpacedeckSections = {
       this.active_tool = "pointer";
       this.mouse_state = "idle";
       //this.hide_toolbar_artifacts();
-      
+
       if (!url && (item_type == 'image' || item_type == 'video' || item_type == 'embed')) {
         url = prompt("URL?");
         if (!url || !url.length) return;
@@ -1604,12 +1602,8 @@ var SpacedeckSections = {
       if (this.guest_nickname) {
         new_item.editor_name = this.guest_nickname;
       }
-      // console.log("new artifact", new_item);
 
       save_artifact(new_item, function(saved_item) {
-
-        // console.log("saved artifact", saved_item);
-
         this.update_board_artifact_viewmodel(saved_item);
         this.active_space_artifacts.push(saved_item);
 
@@ -1719,7 +1713,7 @@ var SpacedeckSections = {
 
       var point = this.cursor_point_to_space(evt);
       point.z = this.highest_z()+1;
-      
+
       var a = {
         space_id: this.active_space._id,
         mime: "x-spacedeck/shape",
@@ -1729,10 +1723,10 @@ var SpacedeckSections = {
         z: point.z,
         w: w,
         h: h,
-        stroke_color: "#ffffff",
-        text_color: "#ffffff",
+        stroke_color: this.active_style.stroke_color,
+        text_color: this.active_style.text_color,
         stroke: 0,
-        fill_color: "#000000",
+        fill_color: this.active_style.fill_color,
         shape: shape_type,
         valign: "middle",
         align: "center",
@@ -1775,7 +1769,7 @@ var SpacedeckSections = {
     space_point_to_window: function(x,y) {
       var rx = 0;
       var ry = 0;
-      
+
       var el = $("#space")[0];
       rx = x*this.viewport_zoom-el.scrollLeft+this.bounds_margin_horiz;
       ry = y*this.viewport_zoom-el.scrollTop+this.bounds_margin_vert;
@@ -1787,7 +1781,7 @@ var SpacedeckSections = {
       if (this.active_space_role=="viewer") {
         return false;
       }
-            
+
       // 1. create placeholder artifact
       var w=300,h=150;
       var fill="transparent";
@@ -1855,7 +1849,7 @@ var SpacedeckSections = {
           // upload progress
           var progress = e.loaded/e.total;
 
-          if (progress=1) {
+          if (progress===1) {
             a.description = "Converting Media…";
           } else {
             a.description = "Upload "+parseInt(progress*100)+"%";
@@ -2093,7 +2087,7 @@ var SpacedeckSections = {
             a.description = dom.innerHTML;
 
             console.log("new DOM:",dom.innerHTML);
-            
+
             this.update_board_artifact_viewmodel(a);
             this.queue_artifact_for_save(a);
 
@@ -2111,12 +2105,12 @@ var SpacedeckSections = {
         // text level selection
         var a = this.find_artifact_by_id(this.editing_artifact_id);
         var medium = this.medium_for_object[a._id];
-        
+
         if (medium && a) {
           medium.focus();
           medium.element.focus();
           medium.invokeElement(cmd);
-          
+
           a.description = medium.value();
           this.queue_artifact_for_save(a);
         }
@@ -2154,7 +2148,7 @@ var SpacedeckSections = {
           update.payload_thumbnail_medium_uri = thumb_uri;
           update.payload_thumbnail_big_uri = thumb_uri;
         }
-        
+
         return update;
       });
 
@@ -2189,9 +2183,15 @@ var SpacedeckSections = {
       return copy;
     },
 
-    toggle_lock_of_selected_artifacts: function() {
+    lock_selected_artifacts: function() {
       this.update_selected_artifacts(function(a) {
-        return {locked: !a.locked};
+        return {locked: true};
+      }, true);
+    },
+
+    unlock_selected_artifacts: function() {
+      this.update_selected_artifacts(function(a) {
+        return {locked: false};
       }, true);
     },
 
@@ -2289,7 +2289,7 @@ var SpacedeckSections = {
       }
 
       if (!pastedText) return;
-      
+
       this.insert_embedded_artifact(pastedText);
     },
 
@@ -2302,7 +2302,7 @@ var SpacedeckSections = {
         try {
           parsed = JSON.parse(text);
           if (text[0]=='{') parsed = [parsed];
-          
+
           this.deselect();
 
           for (var i=0; i<parsed.length; i++) {
@@ -2340,7 +2340,7 @@ var SpacedeckSections = {
 
     create_artifact_via_embed_url: function(url) {
       this.close_modal();
-      
+
       var point = this.find_place_for_item(200,200);
       var z = this.highest_z()+1;
 
@@ -2358,7 +2358,7 @@ var SpacedeckSections = {
       }
 
       var metadata = parse_link(url)
-      
+
       if (!metadata) {
         return;
       }
@@ -2533,16 +2533,16 @@ var SpacedeckSections = {
       }
       this.toolbar_props_in = true;
     },
-    
+
     hide_toolbar_props: function() {
       // FIXME test
       //this.toolbar_props_in = false;
     },
-    
+
     show_toolbar_artifacts: function(x,y) {
       this.toolbar_artifacts_in = true;
     },
-    
+
     hide_toolbar_artifacts: function() {
       this.toolbar_artifacts_in = false;
     },
@@ -2644,7 +2644,7 @@ var SpacedeckSections = {
         x2: (el.scrollLeft+window.innerWidth)/this.viewport_zoom,
         y2: (el.scrollTop+window.innerHeight)/this.viewport_zoom
       };
-      
+
       var pad = 10;
       er.x1-=pad;
       er.y1-=pad;
@@ -2710,7 +2710,7 @@ var SpacedeckSections = {
       var el = $("#space")[0];
       var anim_res = 20;
       if (!elapsed) elapsed = 0;
-      
+
       if (duration>elapsed) {
         window.setTimeout(function() {
           this.animate_zoom_to_rect(target_r, duration, cur_r, elapsed+anim_res);
@@ -2749,7 +2749,7 @@ var SpacedeckSections = {
 
     zoom_to_point: function(p,amount) {
       var el = $("#space")[0];
-      
+
       var sx = el.scrollLeft/this.viewport_zoom;
       var sy = el.scrollTop/this.viewport_zoom;
       var ww = window.innerWidth/(this.viewport_zoom);
@@ -2759,7 +2759,7 @@ var SpacedeckSections = {
       var oyy = (p.y-(sy+wh/2))*amount;
       var ox = -oxx;
       var oy = -oyy;
-      
+
       var r = {
         x1: p.x-(ww/2)*amount + ox,
         y1: p.y-(wh/2)*amount + oy,
@@ -2783,12 +2783,12 @@ var SpacedeckSections = {
       var adjust_scroll = function() {
         if (!$("#space").length) return;
         if (!this.active_space || !this.active_space_loaded) return;
-        
+
         var el = $("#space")[0];
 
         var eff_w = this.active_space.width*this.viewport_zoom;
         var eff_h = this.active_space.height*this.viewport_zoom;
-        
+
         var sx = el.scrollLeft;
         var sy = el.scrollTop;
 
@@ -2914,7 +2914,7 @@ var SpacedeckSections = {
         }
 
         var html = evt.dataTransfer.getData('text/html');
-        
+
         if (html) {
           var rx = /src="([^"]+)"/g;
           var m = rx.exec(html);
