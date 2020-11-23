@@ -2533,12 +2533,12 @@ var SpacedeckSections = {
       }
       arts = this.selected_artifacts();
       // check if selected artifacts are all from the same user
-      let userArts = true;
+      let same_user = true;
       for (var i=0;i<arts.length; i++) {
         if (arts[i].mime=="x-spacedeck/zone") return;
-        if (arts[i].user_id!==this.user._id) userArts = false;
+        if (arts[i].user_id!==this.user._id) same_user = false;
       }
-      this.toolbar_lock_in = userArts;
+      this.toolbar_lock_in = same_user;
       this.toolbar_props_in = true;
     },
 
