@@ -182,7 +182,8 @@ var SpacedeckSections = {
     toolbar_props_in: false,
     toolbar_artifacts_x: "-1000px",
     toolbar_artifacts_y: "-1000px",
-    toolbar_artifacts_in: true
+    toolbar_artifacts_in: true,
+    toolbar_lock_in: false
   },
 
   methods: {
@@ -848,7 +849,7 @@ var SpacedeckSections = {
       if (!a) return false;
       if (!this.active_space) return false;
 
-      if (this.active_space_role=="viewer" || (a.locked && this.active_space_role!="admin")) {
+      if (this.active_space_role=="viewer" || (a.locked && this.active_space_role=="viewer")) {
         return false;
       }
 
@@ -2526,11 +2527,18 @@ var SpacedeckSections = {
     },
 
     show_toolbar_props: function() {
-      if (this.selection_metrics.count==0) return;
+      if (this.selection_metrics.count==0) {
+        this.toolbar_lock_in = false;
+        return;
+      }
       arts = this.selected_artifacts();
+      // check if selected artifacts are all from the same user
+      let same_user = true;
       for (var i=0;i<arts.length; i++) {
         if (arts[i].mime=="x-spacedeck/zone") return;
+        if (arts[i].user_id!==this.user._id) same_user = false;
       }
+      this.toolbar_lock_in = same_user;
       this.toolbar_props_in = true;
     },
 
