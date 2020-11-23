@@ -151,28 +151,11 @@
         </div>
 
         <!-- video -->
-        <div v-if="a.view.major_type == 'video'" v-videoplayer="a" class="video" v-bind:style="a.view.inner_style">
-          <video preload="metadata" v-bind:poster="a.view.thumbnail_uri">
+        <div v-if="a.view.major_type == 'video'" class="video">
+          <video preload="metadata" controls="auto" v-bind:poster="a.view.thumbnail_uri">
             <source v-for="rep in a.view.payload_alternatives" v-bind:src="rep.payload_uri" v-bind:type="rep.mime" />
             <source v-if="a.view.payload_uri && a.view.mime" v-bind:src="a.view.payload_uri" v-bind:type="a.view.mime" />
           </video>
-
-          <div class="tl-controls">
-            <div class="btn btn-md btn-toggle btn-round" v-bind:class="{alt:a.player_view.state=='playing'}">
-              <span class="btn-option play">
-                <span class="icon icon-controls-play"></span>
-              </span>
-
-              <span class="btn-option pause">
-                <span class="icon icon-controls-pause"></span>
-              </span>
-            </div>
-
-            <span class="btn btn-md btn-round btn-icon stop" v-show="a.player_view.state=='playing' || a.player_view.state=='paused'">
-              <span class="icon icon-controls-stop"></span>
-            </span>
-
-          </div>
           <div class="spinner"></div>
           <div class="progress" v-bind:style="{width: a.view.progress+'%'}">{{a.description}}</div>
         </div>
