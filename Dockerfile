@@ -28,7 +28,7 @@ RUN apk add graphicsmagick ffmpeg ffmpeg-dev ghostscript
 # install node package
 
 COPY package*.json ./
-RUN npm install
+RUN npm install --no-dev
 COPY . .
 
 # start app
