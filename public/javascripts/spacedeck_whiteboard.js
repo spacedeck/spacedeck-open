@@ -549,8 +549,9 @@ function setup_whiteboard_directives() {
         h: note_h,
         align: "center",
         valign: "middle",
-        stroke_color: "#000000",
-        fill_color: "rgb(241, 196, 15)",
+        stroke_color: $scope.active_style.stroke_color,
+        text_color: $scope.active_style.text_color,
+        fill_color: $scope.active_style.fill_color,
         stroke: 0,
         padding_left: 10,
         padding_right: 10,
@@ -588,8 +589,8 @@ function setup_whiteboard_directives() {
         z: z,
         w: 64,
         h: 64,
-        stroke_color: $scope.active_style.stroke_color,
-        stroke: 2,
+        stroke_color: $scope.active_style.stroke_color == "rgba(0,0,0,0)" ? "rgba(0,0,0,255)" : $scope.active_style.stroke_color,
+        stroke: $scope.active_style.stroke == 0 ? 2 : $scope.active_style.stroke,
         shape: "scribble"
       };
 
@@ -624,8 +625,8 @@ function setup_whiteboard_directives() {
         z: z,
         w: 64,
         h: 64,
-        stroke_color: $scope.active_style.stroke_color,
-        stroke: 2,
+        stroke_color: $scope.active_style.stroke_color == "rgba(0,0,0,0)" ? "rgba(0,0,0,255)" : $scope.active_style.stroke_color,
+        stroke: $scope.active_style.stroke == 0 ? 2 : $scope.active_style.stroke,
         shape: "arrow"
       };
 

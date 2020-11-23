@@ -82,7 +82,7 @@ function createWaveform(fileName, localFilePath, callback){
         "-i", localFilePath, "-o", filePathImage
       ],
     {}, function(error, stdout, stderr) {
-      if(!error) {
+      if (!error) {
         callback(null, filePathImage);
       } else {
         console.log("error:", stdout, stderr);
@@ -99,7 +99,7 @@ function convertVideo(fileName, filePath, codec, callback, progressCallback) {
   var newExt = codec == "mp4" ? "mp4" : "ogv";
   var convertedPath = filePath + "." + newExt;
 
-  console.log("converting", filePath, "to", convertedPath);
+  console.log("convertVideo", filePath, "to", convertedPath);
 
   var convertArgs = (codec == "mp4") ? [
     "-i", filePath,
@@ -141,7 +141,7 @@ function convertVideo(fileName, filePath, codec, callback, progressCallback) {
 
   ff.on('close', function (code) {
     console.log('[ffmpeg-video] child process exited with code ' + code);
-    if (!code) { 
+    if (!code) {
       console.log("converted", filePath, "to", convertedPath);
       callback(null, convertedPath);
     } else {
@@ -190,7 +190,7 @@ function createThumbnailForVideo(fileName, filePath, callback) {
 function getMime(fileName, filePath, callback) {
   var ext = path.extname(fileName);
   var presetMime = mime.lookup(fileName);
-  
+
   if (presetMime) {
     callback(null, presetMime);
   } else {
@@ -228,7 +228,6 @@ function resizeAndUpload(a, size, max, fileName, localFilePath, callback) {
     callback(null, "");
   }
 }
-
 
 var resizeAndUploadImage = function(a, mimeType, size, fileName, fileNameOrg, imageFilePath, originalFilePath, payloadCallback) {
   async.parallel({
@@ -281,17 +280,17 @@ var resizeAndUploadImage = function(a, mimeType, size, fileName, fileNameOrg, im
 
 module.exports = {
   convert: function(a, fileName, localFilePath, payloadCallback, progressCallback) {
-    getMime(fileName, localFilePath, function(err, mimeType){
+    getMime(fileName, localFilePath, function(err, mimeType) {
       console.log("[convert] fn: "+fileName+" local: "+localFilePath+" mimeType:", mimeType);
 
       if (!err) {
         if (convertableImageTypes.indexOf(mimeType) > -1) {
-         
+
           gm(localFilePath).size(function (err, size) {
             console.log("[convert] gm:", err, size);
 
             if (!err) {
-              if(mimeType == "application/pdf") {
+              if (mimeType == "application/pdf") {
                 var firstImagePath =  localFilePath + ".jpeg";
                 exec.execFile("gs", ["-sDEVICE=jpeg","-dNOPAUSE", "-dJPEGQ=80", "-dBATCH", "-dFirstPage=1", "-dLastPage=1", "-sOutputFile=" + firstImagePath, "-r90", "-f", localFilePath], {}, function(error, stdout, stderr) {
                   if(error === null) {
@@ -305,7 +304,7 @@ module.exports = {
                   }
                 });
 
-              } else if(mimeType == "image/gif") {
+              } else if (mimeType == "image/gif") {
                 //gifs are buggy after convertion, so we should not convert them
 
                 var s3Key = "s"+ a.space_id.toString() + "/a" + a._id.toString() + "/" + fileName;
@@ -334,7 +333,7 @@ module.exports = {
 
                     a.save().then(function() {
                       fs.unlink(localFilePath, function (err) {
-                        if (err){
+                        if (err) {
                           console.error(err);
                           payloadCallback(err, null);
                         } else {
@@ -350,8 +349,8 @@ module.exports = {
                 resizeAndUploadImage(a, mimeType, size, fileName, fileName, localFilePath, localFilePath, payloadCallback);
               }
             } else payloadCallback(err);
-          });            
-      
+          });
+
         } else if (convertableVideoTypes.indexOf(mimeType) > -1) {
           async.parallel({
             thumbnail: function(callback) {
@@ -453,11 +452,10 @@ module.exports = {
           });
 
         } else if (convertableAudioTypes.indexOf(mimeType) > -1) {
-
           async.parallel({
             ogg: function(callback) {
               convertAudio(fileName, localFilePath, "ogg", function(err, file) {
-                if(err) callback(err);
+                if (err) callback(err);
                 else {
                   var keyName = "s" + a.space_id.toString() + "/a" + a._id.toString() + "/" + fileName + ".ogg" ;
                   uploader.uploadFile(keyName, "audio/ogg", file, function(err, url){
@@ -469,20 +467,16 @@ module.exports = {
             },
             mp3_waveform: function(callback) {
               convertAudio(fileName, localFilePath, "mp3", function(err, file) {
-                if(err) callback(err);
+                if (err) callback(err);
                 else {
-
-                  createWaveform(fileName, file, function(err, filePath){
-
+                  createWaveform(fileName, file, function(err, filePath) {
                     var keyName = "s" + a.space_id.toString() + "/a" + a._id.toString() + "/" + fileName + "-" + (new Date().getTime()) + ".png";
-                    uploader.uploadFile(keyName, "image/png", filePath, function(err, pngUrl){
-
+                    uploader.uploadFile(keyName, "image/png", filePath, function(err, pngUrl) {
                       var keyName = "s" + a.space_id.toString() + "/a" + a._id.toString() + "/" + fileName + ".mp3" ;
-                      uploader.uploadFile(keyName, "audio/mp3", file, function(err, mp3Url){
+                      uploader.uploadFile(keyName, "audio/mp3", file, function(err, mp3Url) {
                         if (err) callback(err);
                         else callback(null, {waveform: pngUrl, mp3: mp3Url});
                       });
-
                     });
                   });
                 }
@@ -490,7 +484,7 @@ module.exports = {
             },
             original: function(callback) {
               var keyName = "s" + a.space_id.toString() + "/a" + a._id.toString() + "/" + fileName;
-              uploader.uploadFile(keyName, mimeType, localFilePath, function(err, url){
+              uploader.uploadFile(keyName, mimeType, localFilePath, function(err, url) {
                 callback(null, url);
               });
             }
@@ -499,7 +493,6 @@ module.exports = {
 
             if (err) payloadCallback(err, a);
             else {
-
               a.state = "idle";
               a.mime = mimeType;
               var stats = fs.statSync(localFilePath);
@@ -515,10 +508,9 @@ module.exports = {
               ];
 
               a.updated_at = new Date();
-
               db.packArtifact(a);
-              
-              a.save().then(function(){
+
+              a.save().then(function() {
                 fs.unlink(localFilePath, function (err) {
                   if (err){
                     console.error(err);
@@ -537,13 +529,13 @@ module.exports = {
           console.log("mimeType not matched for conversion, storing file");
           var keyName = "s" + a.space_id.toString() + "/a" + a._id.toString() + "/" + fileName;
           uploader.uploadFile(keyName, mimeType, localFilePath, function(err, url) {
-            
+
             a.state = "idle";
             a.mime = mimeType;
             var stats = fs.statSync(localFilePath);
             a.payload_size = stats["size"];
             a.payload_uri = url;
-            
+
             a.updated_at = new Date();
             a.save().then(function() {
               fs.unlink(localFilePath, function (err) {
@@ -559,5 +551,3 @@ module.exports = {
     });
   }
 };
-
-

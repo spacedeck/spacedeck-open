@@ -1603,12 +1603,8 @@ var SpacedeckSections = {
       if (this.guest_nickname) {
         new_item.editor_name = this.guest_nickname;
       }
-      // console.log("new artifact", new_item);
 
       save_artifact(new_item, function(saved_item) {
-
-        // console.log("saved artifact", saved_item);
-
         this.update_board_artifact_viewmodel(saved_item);
         this.active_space_artifacts.push(saved_item);
 
@@ -1728,10 +1724,10 @@ var SpacedeckSections = {
         z: point.z,
         w: w,
         h: h,
-        stroke_color: "#ffffff",
-        text_color: "#ffffff",
+        stroke_color: this.active_style.stroke_color,
+        text_color: this.active_style.text_color,
         stroke: 0,
-        fill_color: "#000000",
+        fill_color: this.active_style.fill_color,
         shape: shape_type,
         valign: "middle",
         align: "center",
@@ -2188,9 +2184,15 @@ var SpacedeckSections = {
       return copy;
     },
 
-    toggle_lock_of_selected_artifacts: function() {
+    lock_selected_artifacts: function() {
       this.update_selected_artifacts(function(a) {
-        return {locked: !a.locked};
+        return {locked: true};
+      }, true);
+    },
+
+    unlock_selected_artifacts: function() {
+      this.update_selected_artifacts(function(a) {
+        return {locked: false};
       }, true);
     },
 
