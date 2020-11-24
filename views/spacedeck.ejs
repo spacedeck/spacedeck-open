@@ -7,15 +7,11 @@
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-
     <link href="/images/favicon.png" rel="icon" type="image/x-icon" />
-    <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="/stylesheets/style.css">
-
     <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 
     <script>
-      //window.browser_lang = '< %= locale %>';
       var ENV = {
         name: 'development',
         webHost: location.host,
@@ -59,7 +55,7 @@
     <script src="/javascripts/spacedeck_whiteboard.js"></script>
     <script src="/javascripts/spacedeck_directives.js"></script>
     <script src="/javascripts/spacedeck_vue.js"></script>
-    
+
     <script>if (window.module) module = window.module;</script>
   </head>
 
@@ -86,6 +82,6 @@
     window.locales.de.translation = <%- include("./../locales/de.js") %>;
     window.locales.fr.translation = <%- include("./../locales/fr.js") %>;
     window.locales.oc.translation = <%- include("./../locales/oc.js") %>;
-    window.locales.es.translation = <%- include("./../locales/es.js") %>;        
+    window.locales.es.translation = <%- include("./../locales/es.js") %>;
   </script>
 </html>
