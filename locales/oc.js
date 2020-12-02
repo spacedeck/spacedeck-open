@@ -321,7 +321,7 @@
     "unlock": "Desverrolhar",
     "follow_present": "Seguir",
     "mute_present": "Quitar de seguir",
-    "follow_present_help": "follow_present_help",
+    "follow_present_help": "Se qualqu’un mai presenta aqueste espaci, los demai membres seguiràn automaticament la presentacion. Basculatz l’abonament a la presentacion amb aqueste boton.",
     "export": "exportar",
     "media": "Mèdia"
 }
