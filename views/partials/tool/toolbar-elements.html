@@ -1,18 +1,18 @@
 <div class="toolbar toolbar-elements" v-bind:class="{in:toolbar_artifacts_in,out:!toolbar_artifacts_in}" v-show="!is_active_space_role('viewer') && active_space_loaded">
-  
+
   <div class="btn-group light vertical">
-    
+
     <a class="btn btn-icon btn-transparent"
        title="<%=__("home")%>" href="/spaces"
        v-if="(!active_space.parent_space_id && !guest_nickname && !embedded)">
       <span class="icon icon-folder"></span>
     </a>
-      
+
     <a class="btn btn-icon btn-dark"
        title="Parent Folder"
        href="/folders/{{active_space.parent_space_id}}"
        v-if="(active_space.parent_space_id && !guest_nickname && !embedded)">
-      
+
       <span class="icon icon-sd6 icon-svg"></span>
     </a>
 
@@ -35,15 +35,16 @@
       <span class="icon icon-tool-scribble"></span>
       <span class="icon-label"><%=__("tool_scribble")%></span>
     </button>
-    
+
     <button class="btn btn-icon-labeled btn-transparent" v-on:click="start_drawing_arrow()" v-bind:class="{active:active_tool=='arrow'}" title="<%=__("tool_arrow")%>">
       <span class="icon icon-tool-arrow"></span>
       <span class="icon-label"><%=__("tool_arrow")%></span>
     </button>
-    
+
     <div class="dropdown bottom light center">
       <div class="btn-collapse in">
-        <button class="btn btn-transparent btn-icon-labeled" v-on:click="handle_insert_image_url()" v-on:touchstart="handle_insert_image_url()" title="<%=__("media")%>">
+        <input type="file" multiple v-on:change="handle_image_file_upload($event)" id="image_file_upload" class="btn btn-transparent btn-icon-labeled" style="position: absolute; z-index: 1; opacity: 0;">
+        <button class="btn btn-transparent btn-icon-labeled" title="<%=__("media")%>">
           <span class="icon icon-upload"></span>
           <span class="icon-label" ><%=__("media")%></span>
         </button>
@@ -59,19 +60,6 @@
       </div>
     </div>
 
-    <div class="dropdown top left light">
-      <div class="btn-collapse">
-        <button class="btn btn-transparent btn-icon-labeled" v-bind:class="{open:opened_dialog=='image'}" v-on:click="open_dialog('image')" title="<%=__("image")%>">
-          <span class="icon icon-picture"></span>
-          <span class="icon-label"><%=__("image")%></span>
-        </button>
-      </div>
-
-      <div class="dialog">
-        <%- include("./image.html") %>
-      </div>
-    </div>
-
     <div class="dropdown top left light" v-bind:class="{open:opened_dialog=='zones'}">
       <div class="btn-collapse in">
         <button class="btn btn-transparent btn-icon-labeled" v-bind:class="{open:opened_dialog=='zones'}" v-on:click="open_dialog('zones')" title="<%=__("tool_zones")%>">
@@ -84,7 +72,7 @@
         <%- include("./zones.html") %>
       </div>
     </div>
-    
+
     <button class="btn btn-divider" v-show="logged_in"></button>
 
     <div class="dropdown top left center" v-show="logged_in" v-bind:class="{open:opened_dialog=='background'}">
@@ -107,8 +95,8 @@
       <span class="icon icon-share"></span>
       <span class="icon-label"><%= __('share') %></span>
     </button>
-    
-    <!--        
+
+    <!--
             <li v-on:click="edit_space_title()" v-if="logged_in">
               <span>
                 <span class="icon icon-sm icon-tag"></span>
