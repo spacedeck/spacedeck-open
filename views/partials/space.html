@@ -85,13 +85,13 @@
          v-bind:class="{text-editing:(editing_artifact_id==a._id && (a.view.major_type=='text' || a.view.major_type=='shape'))}"
          id="artifact-{{a._id}}">
 
-
       <div v-if="a.view && a.view.major_type" style="height:100%; width:100%" v-bind:title="(a.editor_name || (a.user && a.user.nickname) || '')">
-          <span v-if="a.locked && is_selected(a)" class="link-wrapper">
-            <span class="btn btn-sm btn-icon btn-round btn-primary">
-              <span class="icon icon-lock-closed"></span>
-            </span>
+        <span v-if="a.locked && is_selected(a)" class="link-wrapper">
+          <span class="btn btn-sm btn-icon btn-round btn-primary">
+            <span class="icon icon-lock-closed"></span>
           </span>
+        </span>
+
         <!-- text -->
         <div v-if="a.view.major_type == 'text'" class="text" v-bind:style="a.view.inner_style">
           <div class="text-table">

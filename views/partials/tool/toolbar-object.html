@@ -40,7 +40,7 @@
 
     <button class="btn btn-divider"></button>
     -->
-    
+
     <div class="dropdown top light right" v-bind:class="{open:opened_dialog=='text-styles'}">
       <div class="btn-collapse in">
         <button class="btn btn-transparent btn-icon-labeled" v-on:click="open_dialog('text-styles')" v-bind:class="{open : opened_dialog=='text-styles'}" title="<%=__("tool_styles")%>">
@@ -53,7 +53,7 @@
         <%- include("./text-styles.html") %>
       </div>
     </div>
-    
+
     <div class="dropdown top light right" v-bind:class="{open:opened_dialog=='type-align'}">
       <div class="btn-collapse" v-bind:class="{in:selection_metrics.contains_text}">
         <button class="btn btn-transparent btn-icon-labeled" v-on:click="open_dialog('type-align')" v-bind:class="{open : opened_dialog=='type-align'}" title="<%=__("tool_align")%>">
@@ -80,9 +80,9 @@
         <%- include("./layout.html") %>
       </div>
     </div>
-    
+
     <div class="dropdown top light right" v-bind:class="{open:opened_dialog=='text-settings'}">
-      
+
       <div class="btn-collapse in">
         <button class="btn btn-transparent btn-icon-labeled" v-on:click="open_dialog('text-settings')" v-bind:class="{open : opened_dialog=='text-settings'}" title="<%=__("tool_font")%>">
           <span class="icon icon-text-typeface"></span>
@@ -97,6 +97,17 @@
 
     <button class="btn btn-divider"></button>
 
+    <div class="dropdown bottom light center">
+      <div class="btn-collapse" v-bind:class="{in:selection_metrics.contains_text}">
+        <button
+          class="btn btn-icon-labeled btn-transparent"
+          v-on:click="delayed_edit_artifact()">
+          <span class="icon icon-pencil"></span>
+          <span class="icon-label"><%=__("tool_edit_text")%></span>
+        </button>
+      </div>
+    </div>
+
     <div class="dropdown top light right" v-bind:class="{open:opened_dialog=='object-options'}">
       <button class="btn btn-transparent btn-icon-labeled" v-on:click="open_dialog('object-options')" v-bind:class="{open : opened_dialog=='object-options'}">
         <span class="icon icon-cogwheel"></span>
@@ -107,6 +118,6 @@
         <%- include("./object-options.html") %>
       </div>
     </div>
-    
+
   </div>
 </div>

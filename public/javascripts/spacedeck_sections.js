@@ -1923,10 +1923,7 @@ var SpacedeckSections = {
       }.bind(this));
     },
 
-    delayed_edit_artifact: function(evt) {
-      evt.stopPropagation();
-      evt.preventDefault();
-
+    delayed_edit_artifact: function() {
       var a = this.selected_artifacts()[0];
 
       var el = $("#ios-focuser-"+a._id);
@@ -2086,8 +2083,6 @@ var SpacedeckSections = {
 
           if (a.description!=dom.innerHTML) {
             a.description = dom.innerHTML;
-
-            console.log("new DOM:",dom.innerHTML);
 
             this.update_board_artifact_viewmodel(a);
             this.queue_artifact_for_save(a);
