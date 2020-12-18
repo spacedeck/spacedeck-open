@@ -724,6 +724,9 @@ function setup_whiteboard_directives() {
 
           //save_artifact(ars[i], null, $scope.display_saving_error);
         }
+
+        // update vector handles
+        $scope.update_selection_metrics();
       }
 
       if (this.mouse_state == "text_editor") {
@@ -942,18 +945,14 @@ function setup_whiteboard_directives() {
 
           // special case for arrow's 3rd point
           if (a.shape == "arrow" && $scope.selected_control_point_idx!=2) {
-            /*control_points[2].dx += dx/2;
-            control_points[2].dy += dy/2; */
-
             control_points[2].dx = (control_points[0].dx+control_points[1].dx)/2;
             control_points[2].dy = (control_points[0].dy+control_points[1].dy)/2;
           }
 
           return _this.normalize_control_points(control_points, old_a);
-        });
+        }, false, true); // override_locked: false, temporary: true
 
       } else if (this.mouse_state == "scribble") {
-
         $scope.update_selected_artifacts(function(a) {
           var old_a = a;
 
