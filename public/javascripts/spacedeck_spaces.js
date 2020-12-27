@@ -99,7 +99,7 @@ var SpacedeckSpaces = {
       }.bind(this), {value: dft || "Guest "+parseInt(10000*Math.random()), ok: __("ok"), cancel: __("cancel")});
     },
     
-    load_space: function(space_id, on_success, on_error, space_auth) {
+    load_space: function(space_id, on_success, on_error) {
       this.folder_spaces_filter="";
       this.folder_spaces_search="";
 
@@ -308,7 +308,8 @@ var SpacedeckSpaces = {
         userReady();
       }
 
-      if (!this.user && space_auth) {
+      if (!this.user.nickname && space_auth) {
+        this.guest_nickname = get_query_param("nickname") || this.guest_nickname;
         if (this.guest_nickname) {
           userReady();
         } else {
