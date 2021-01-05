@@ -323,5 +323,7 @@
 	"mute_present": "Unfollow",
 	"follow_present_help": "If someone else is presenting this Space, the other members automatically follow the presentation. Switch following on or off with this button.",
 	"export": "export",
-	"media": "Media"
+	"media": "Media",
+	"fullscreen": "Fullscreen",
+	"window": "Window"
 }
