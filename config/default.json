@@ -8,12 +8,10 @@
   "invite_code": "top-sekrit",
 
   "storage_type": "postgres",
-  "storage_config": {
-    "host": "localhost",
-    "database": "spacedeck",
-    "username": "postgres",
-    "password": "postgres"
-  },
+  "storage_postgres_host": "localhost",
+  "storage_postgres_database": "spacedeck",
+  "storage_postgres_username": "postgres",
+  "storage_postgres_password": "postgres",
 
   "storage_local_path": "./storage",
   "storage_local_db": "./database.sqlite",

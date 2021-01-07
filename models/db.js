@@ -10,20 +10,24 @@ let sequelize;
 
 if(config.has('storage_type') && config.get('storage_type') === 'postgres') {
   console.log('connecting to postgres');
-  let postgresConfig = config.get('storage_config');
-  sequelize = new Sequelize(postgresConfig.database, postgresConfig.username, postgresConfig.password, {
-    host: postgresConfig.host,
-    dialect: 'postgres',
-    pool: {
-      max: 5,
-      min: 0,
-      acquire: 30000,
-      idle: 10000
-    },
-    logging: sequel_log,
-    // http://docs.sequelizejs.com/manual/tutorial/querying.html#operators
-    operatorsAliases: false
-  });
+  sequelize = new Sequelize(
+    config.get('storage_postgres_database'), 
+    config.get('storage_postgres_username'), 
+    config.get('storage_postgres_password'), 
+    {
+      host: config.get('storage_postgres_host'),
+      dialect: 'postgres',
+      pool: {
+        max: 5,
+        min: 0,
+        acquire: 30000,
+        idle: 10000
+      },
+      logging: sequel_log,
+      // http://docs.sequelizejs.com/manual/tutorial/querying.html#operators
+      operatorsAliases: false
+    }
+  );
   
 } else {
   console.log('connecting to sqlite');
