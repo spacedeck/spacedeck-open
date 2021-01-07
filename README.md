@@ -64,6 +64,26 @@ For advanced media conversion:
 By default, media files are uploaded to the ```storage``` folder.
 The database is stored in ```database.sqlite``` by default.
 
+# Other databases (Not officially supported)
+
+## Postgres
+
+Add the [pg](https://www.npmjs.com/package/pg) module and change the config/default.json to
+
+```
+"storage_dialect": "postgres",
+```
+
+Adapt the other values as needed
+
+```
+"storage_host": "localhost",
+"storage_database": "spacedeck",
+"storage_username": "username",
+"storage_password": "password",
+```
+
+
 # Run with Docker
 
 - configure `config/default.json`
