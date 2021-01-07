@@ -7,6 +7,14 @@
   "endpoint": "http://localhost:9666",
   "invite_code": "top-sekrit",
 
+  "storage_type": "postgres",
+  "storage_config": {
+    "host": "localhost",
+    "database": "spacedeck",
+    "username": "postgres",
+    "password": "postgres"
+  },
+
   "storage_local_path": "./storage",
   "storage_local_db": "./database.sqlite",
   "storage_region": "eu-central-1",

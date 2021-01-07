@@ -6,24 +6,46 @@ function sequel_log(a,b,c) {
 }
 
 const Sequelize = require('sequelize');
-const sequelize = new Sequelize('database', 'username', 'password', {
-  host: 'localhost',
-  dialect: 'sqlite',
+let sequelize;
 
-  pool: {
-    max: 5,
-    min: 0,
-    acquire: 30000,
-    idle: 10000
-  },
-
-  // SQLite only
-  storage: config.get('storage_local_db'),
-  logging: sequel_log,
-
-  // http://docs.sequelizejs.com/manual/tutorial/querying.html#operators
-  operatorsAliases: false
-});
+if(config.has('storage_type') && config.get('storage_type') === 'postgres') {
+  console.log('connecting to postgres');
+  let postgresConfig = config.get('storage_config');
+  sequelize = new Sequelize(postgresConfig.database, postgresConfig.username, postgresConfig.password, {
+    host: postgresConfig.host,
+    dialect: 'postgres',
+    pool: {
+      max: 5,
+      min: 0,
+      acquire: 30000,
+      idle: 10000
+    },
+    logging: sequel_log,
+    // http://docs.sequelizejs.com/manual/tutorial/querying.html#operators
+    operatorsAliases: false
+  });
+  
+} else {
+  console.log('connecting to sqlite');
+  sequelize = new Sequelize('database', 'username', 'password', {
+    host: 'localhost',
+    dialect: 'sqlite',
+  
+    pool: {
+      max: 5,
+      min: 0,
+      acquire: 30000,
+      idle: 10000
+    },
+  
+    // SQLite only
+    storage: config.get('storage_local_db'),
+    logging: sequel_log,
+  
+    // http://docs.sequelizejs.com/manual/tutorial/querying.html#operators
+    operatorsAliases: false
+  });
+}
 
 var User;
 var Session;
