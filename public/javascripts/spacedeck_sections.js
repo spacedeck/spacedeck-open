@@ -69,7 +69,7 @@ var SpacedeckSections = {
       letter_spacing: 0,
 
       stroke_color: "#000000",
-      fill_color: "#00000000",
+      fill_color: "#000000",
       text_color: "#000000",
       background_color: "#ffffff",
 
@@ -109,7 +109,7 @@ var SpacedeckSections = {
     color_picker_hue: 127,
     color_picker_opacity: 255,
 
-    swatches: [
+    swatches: ENV.options.swatches ? ENV.options.swatches : [
       {id:1, hex:"#ff00ff"},
       {id:2, hex:"#ffff00"},
       {id:3, hex:"#00ffff"},
@@ -133,18 +133,7 @@ var SpacedeckSections = {
       {id:26, hex:"#d55c4b"},
       {id:27, hex:"#6f4021"},
       {id:29, hex:"#95a5a6"},
-      {id:30, hex:"rgba(0,0,0,0)"},
-    ],
-
-    swatches_text: [
-      {id:1, hex:"#9b59b6"},
-      {id:2, hex:"#3498db"},
-      {id:3, hex:"#2ecc71"},
-      {id:4, hex:"#f1c40f"},
-      {id:5, hex:"#e67e22"},
-      {id:6, hex:"#d55c4b"},
-      {id:8, hex:"#ffffff"},
-      {id:10, hex:"#252525"},
+      {id:30, hex:"rgba(0,0,0,0)"}
     ],
 
     fonts: [
@@ -933,6 +922,10 @@ var SpacedeckSections = {
       }
 
       this.hide_toolbar_props();
+      // reset active_style to black for new creation of artifacts
+      this.active_style.text_color = "#000000";
+      this.active_style.stroke_color = "#000000";
+      this.active_style.fill_color = "#000000";
 
       document.getSelection().removeAllRanges();
 
