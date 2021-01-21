@@ -22,7 +22,7 @@
         webEndpoint: location.origin,
         apiEndpoint: location.origin,
         websocketsEndpoint: location.origin.replace("https:","wss:").replace("http:","ws:"),
-        options: <%- JSON.stringify(config.spacedeck) %>
+        options: <%- config.spacedeck ? JSON.stringify(config.spacedeck) : "{}" %>
       };
     </script>
 
