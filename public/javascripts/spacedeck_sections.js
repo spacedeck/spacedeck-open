@@ -68,9 +68,9 @@ var SpacedeckSections = {
       line_height: 1.5,
       letter_spacing: 0,
 
-      stroke_color: "#000000",
-      fill_color: "#000000",
-      text_color: "#000000",
+      stroke_color: ENV.options.default_stroke_color ? ENV.options.default_stroke_color : "#000000",
+      fill_color: ENV.options.default_fill_color ? ENV.options.default_fill_color : "#000000",
+      text_color: ENV.options.default_text_color ? ENV.options.default_text_color : "#000000",
       background_color: "#ffffff",
 
       padding: 0,
@@ -108,10 +108,6 @@ var SpacedeckSections = {
     color_picker_value: 255,
     color_picker_hue: 127,
     color_picker_opacity: 255,
-
-    default_text_color: ENV.options.default_text_color ? ENV.options.default_text_color : "#000000",
-    default_stroke_color: ENV.options.default_stroke_color ? ENV.options.default_stroke_color : "#000000",
-    default_fill_color: ENV.options.default_fill_color ? ENV.options.default_fill_color : "#000000",
 
     swatches: ENV.options.swatches ? ENV.options.swatches : [
       {id:1, hex:"#ff00ff"},
@@ -926,10 +922,6 @@ var SpacedeckSections = {
       }
 
       this.hide_toolbar_props();
-      // reset active_style to defaults for new creation of artifacts
-      this.active_style.text_color = this.default_text_color;
-      this.active_style.stroke_color = this.default_stroke_color;
-      this.active_style.fill_color = this.default_fill_color;
 
       document.getSelection().removeAllRanges();
 
