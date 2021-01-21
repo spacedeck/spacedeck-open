@@ -52,7 +52,10 @@ function setup_directives() {
       }
 
       var play_func = function() {
-        video.play();
+        const video_promise = video.play();
+        video_promise.then(function(){
+          video.play();
+        });
         player_state = "playing";
         update_view();
       }
