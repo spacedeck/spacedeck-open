@@ -53,11 +53,17 @@ function setup_directives() {
 
       var play_func = function() {
         const video_promise = video.play();
-        video_promise.then(function(){
-          video.play();
-        });
-        player_state = "playing";
-        update_view();
+        if (video_promise !== undefined) {
+          video_promise.then(_ => {
+            // Automatic playback started!
+            player_state = "playing";
+            update_view();
+          })
+          .catch(error => {
+            // Auto-play was prevented
+            // Show paused UI.
+          });
+        }
       }
 
       var pause_func = function() {
