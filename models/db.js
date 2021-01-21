@@ -19,7 +19,7 @@ const sequelize = new Sequelize('database', 'username', 'password', {
 
   // SQLite only
   storage: config.get('storage_local_db'),
-  logging: sequel_log,
+  logging: config.has('db_logs_disabled') ? false : sequel_log,
 
   // http://docs.sequelizejs.com/manual/tutorial/querying.html#operators
   operatorsAliases: false
