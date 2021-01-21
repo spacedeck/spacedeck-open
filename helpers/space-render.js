@@ -103,7 +103,7 @@ function render_space_as_html(space, artifacts) {
     walk(dom("#space")[0],0);
     //console.log("compiled template: \n"+compiled_js);
   }
-  
+
   // --------
   var mouse_state = "idle";
   var active_tool = "pointer";
@@ -136,14 +136,13 @@ function render_space_as_html(space, artifacts) {
   } catch (e) {
     console.error("error rendering space "+space._id+" as html: "+e);
   }
-  
+
   var style="html, body, #space { overflow: visible !important; }\n";
   style+=".wrapper { border: none !important; }\n";
 
-  h='<html>\n<head>\n<link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,700,600,800,300|Montserrat:400,700|EB+Garamond|Vollkorn|Fire+Sans|Lato|Roboto|Source+Code+Pro|Ubuntu|Raleway|Playfair+Display|Crimson+Text" rel="stylesheet" type="text/css">\n<link type="text/css" rel="stylesheet" href="https://fast.fonts.net/cssapi/ee1a3484-4d98-4f9f-9f55-020a7b37f3c5.css"/>\n<link rel="stylesheet" href="/stylesheets/style.css"><style>'+style+'</style>\n</head>\n<body id="main">\n'+h+"\n</html>\n";
+  h='<html>\n<head>\n<link rel="stylesheet" href="/stylesheets/style.css"><style>'+style+'</style>\n</head>\n<body id="main">\n'+h+"\n</html>\n";
 
   return h;
 }
 
 exports.render_space_as_html = render_space_as_html;
-

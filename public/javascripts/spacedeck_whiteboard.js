@@ -6,7 +6,7 @@
 
 function setup_whiteboard_directives() {
   var mode_touch = false;
-  
+
   if ('ontouchstart' in window) {
     mode_touch = true;
     var edown = "touchstart";
@@ -38,7 +38,7 @@ function setup_whiteboard_directives() {
       $(el).bind("mousedown", this.handle_mouse_down_space.bind(this));
       $(el).bind("mousemove", this.handle_mouse_move.bind(this));
       $(el).bind("mouseup", this.handle_mouse_up_space.bind(this));
-      
+
       $(el).bind("wheel", this.handle_wheel_space.bind(this));
 
       $(document.body).bind("mouseleave", this.handle_mouse_leave.bind(this));
@@ -99,7 +99,7 @@ function setup_whiteboard_directives() {
         this.handle_mouse_down_space(evt);
         return;
       }
-      
+
       if ($scope.active_tool == "note") {
         this.handle_mouse_down_space(evt, true);
         return;
@@ -154,7 +154,7 @@ function setup_whiteboard_directives() {
 
       var a = $scope.find_artifact_by_id(evt.currentTarget.id.replace("artifact-",""));
       if (!a) return;
-      
+
       if (a.payload_uri) {
         $scope.download_selected_artifacts();
       }
@@ -200,10 +200,10 @@ function setup_whiteboard_directives() {
       var $scope = this.vm.$root;
 
       if (!evt.ctrlKey && !evt.shiftKey) return;
-      
+
       evt.preventDefault();
       evt.stopPropagation();
-      
+
       var amount = 1;
       var dy = evt.originalEvent.deltaY;
       if (dy>0) {
@@ -222,7 +222,7 @@ function setup_whiteboard_directives() {
       if (!force && evt.which != 2) {
         if (evt.target != evt.currentTarget && !_.include(["wrapper"],evt.target.className)) return;
       }
-      
+
       var $scope = this.vm.$root;
 
       $scope.opened_dialog="none";
@@ -234,7 +234,7 @@ function setup_whiteboard_directives() {
       if ((mode_touch && $scope.active_tool=="pointer") || evt.which == 2 || evt.buttons == 4) {
         $scope.active_tool = "pan";
       }
-      
+
       if ($scope.active_tool=="note") {
         this.deselect();
         this.mouse_state = "transform";
@@ -285,6 +285,7 @@ function setup_whiteboard_directives() {
         $scope.start_adding_placeholder(evt);
         return;
       } else if ($scope.active_tool=="pan") {
+        this.deselect();
         this.start_pan(evt);
         return;
       }
@@ -305,7 +306,7 @@ function setup_whiteboard_directives() {
         this.old_panx = el.scrollLeft;
         this.old_pany = el.scrollTop;
       }
-      
+
       var cursor = this.cursor_point_to_space(evt);
       $scope.mouse_ox = cursor.x;
       $scope.mouse_oy = cursor.y;
@@ -314,7 +315,7 @@ function setup_whiteboard_directives() {
 
     deselect: function() {
       var $scope = this.vm.$root;
-      
+
       $scope.deselect();
     },
 
@@ -342,7 +343,7 @@ function setup_whiteboard_directives() {
 
     rects_intersecting: function(r1,r2) {
       if (!r1 || !r2) return false;
-      
+
       if ( (r1.x+r1.w < r2.x)
         || (r1.x > r2.x+r2.w)
         || (r1.y+r1.h < r2.y)
@@ -352,7 +353,7 @@ function setup_whiteboard_directives() {
 
     artifacts_in_rect: function(rect) {
       if (!rect) return [];
-      
+
       var $scope = this.vm.$root;
 
       return _.filter($scope.active_space_artifacts, function(a) {
@@ -549,8 +550,9 @@ function setup_whiteboard_directives() {
         h: note_h,
         align: "center",
         valign: "middle",
-        stroke_color: "#000000",
-        fill_color: "rgb(241, 196, 15)",
+        stroke_color: $scope.active_style.stroke_color,
+        text_color: $scope.active_style.text_color,
+        fill_color: $scope.active_style.fill_color,
         stroke: 0,
         padding_left: 10,
         padding_right: 10,
@@ -588,8 +590,8 @@ function setup_whiteboard_directives() {
         z: z,
         w: 64,
         h: 64,
-        stroke_color: $scope.active_style.stroke_color,
-        stroke: 2,
+        stroke_color: $scope.active_style.stroke_color == "rgba(0,0,0,0)" ? "rgba(0,0,0,255)" : $scope.active_style.stroke_color,
+        stroke: $scope.active_style.stroke == 0 ? 2 : $scope.active_style.stroke,
         shape: "scribble"
       };
 
@@ -624,8 +626,8 @@ function setup_whiteboard_directives() {
         z: z,
         w: 64,
         h: 64,
-        stroke_color: $scope.active_style.stroke_color,
-        stroke: 2,
+        stroke_color: $scope.active_style.stroke_color == "rgba(0,0,0,0)" ? "rgba(0,0,0,255)" : $scope.active_style.stroke_color,
+        stroke: $scope.active_style.stroke == 0 ? 2 : $scope.active_style.stroke,
         shape: "arrow"
       };
 
@@ -687,7 +689,7 @@ function setup_whiteboard_directives() {
       var $scope = this.vm.$root;
 
       evt.preventDefault();
-      
+
       if (this.mouse_state == "lasso") {
         var lasso_rect = this.abs_rect(this.lasso);
 
@@ -695,7 +697,7 @@ function setup_whiteboard_directives() {
           var arts = this.artifacts_in_rect(lasso_rect);
           this.multi_select(arts);
         } else {
-          
+
           if (this._no_artifact_toolbar_this_round) {
             this._no_artifact_toolbar_this_round = false;
           } else {
@@ -707,7 +709,7 @@ function setup_whiteboard_directives() {
       }
       else if (_.include(["transform","move","vector_transform","scribble"],this.mouse_state)) {
         var ars = $scope.selected_artifacts();
-        
+
         for (var i=0; i<ars.length; i++) {
 
           if (_.include(["text","placeholder"],$scope.artifact_major_type(ars[i]))) {
@@ -722,6 +724,9 @@ function setup_whiteboard_directives() {
 
           //save_artifact(ars[i], null, $scope.display_saving_error);
         }
+
+        // update vector handles
+        $scope.update_selection_metrics();
       }
 
       if (this.mouse_state == "text_editor") {
@@ -793,7 +798,7 @@ function setup_whiteboard_directives() {
 
         $scope.websocket_send(cursor_msg);
       }
-      
+
       // side effects ftw!
       $scope.snap_ruler_x = -1000;
       $scope.snap_ruler_y = -1000;
@@ -817,7 +822,7 @@ function setup_whiteboard_directives() {
 
       if (this.mouse_state == "move") {
         $scope.hide_toolbar_props();
-        
+
         var snap_dx = 0;
         var snap_dy = 0;
 
@@ -877,7 +882,7 @@ function setup_whiteboard_directives() {
         }
 
         $scope.hide_toolbar_props();
-        
+
         var ew = (edges.x2-edges.x1);
         var eh = (edges.y2-edges.y1);
 
@@ -923,7 +928,7 @@ function setup_whiteboard_directives() {
 
       } else if (this.mouse_state == "vector_transform") {
         $scope.hide_toolbar_props();
-        
+
         var _this = this;
         $scope.update_selected_artifacts(function(a) {
           var old_a = $scope.find_artifact_before_transaction(a);
@@ -940,18 +945,14 @@ function setup_whiteboard_directives() {
 
           // special case for arrow's 3rd point
           if (a.shape == "arrow" && $scope.selected_control_point_idx!=2) {
-            /*control_points[2].dx += dx/2;
-            control_points[2].dy += dy/2; */
-
             control_points[2].dx = (control_points[0].dx+control_points[1].dx)/2;
             control_points[2].dy = (control_points[0].dy+control_points[1].dy)/2;
           }
 
           return _this.normalize_control_points(control_points, old_a);
-        });
+        }, false, true); // override_locked: false, temporary: true
 
       } else if (this.mouse_state == "scribble") {
-
         $scope.update_selected_artifacts(function(a) {
           var old_a = a;
 

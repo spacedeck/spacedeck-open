@@ -12,7 +12,7 @@
 
     </button>
   </span>
-  
+
   <div class="btn-group light round" v-if="zones.length">
     <button class="btn btn-md btn-transparent btn-icon" v-on:click="go_to_previous_zone()" title="<%=__("Previous Zone")%>">
       <span class="icon icon-triangle-4-left"></span>
@@ -85,13 +85,13 @@
          v-bind:class="{text-editing:(editing_artifact_id==a._id && (a.view.major_type=='text' || a.view.major_type=='shape'))}"
          id="artifact-{{a._id}}">
 
-
       <div v-if="a.view && a.view.major_type" style="height:100%; width:100%" v-bind:title="(a.editor_name || (a.user && a.user.nickname) || '')">
-          <span v-if="a.locked && is_selected(a)" class="link-wrapper">
-            <span class="btn btn-sm btn-icon btn-round btn-primary">
-              <span class="icon icon-lock-closed"></span>
-            </span>
+        <span v-if="a.locked && is_selected(a)" class="link-wrapper">
+          <span class="btn btn-sm btn-icon btn-round btn-primary">
+            <span class="icon icon-lock-closed"></span>
           </span>
+        </span>
+
         <!-- text -->
         <div v-if="a.view.major_type == 'text'" class="text" v-bind:style="a.view.inner_style">
           <div class="text-table">
@@ -141,8 +141,8 @@
           <div class="progress" v-bind:style="{width: a.view.progress+'%'}"></div>
           <div class="progress-text">{{a.description}}</div>
 
-          <video v-if="a.mime == 'image/gif' && a.payload_alternatives && a.payload_alternatives.length > 0" preload autoplay loop>
-            <source v-for="rep in a.payload_alternatives" v-bind:src="rep.payload_uri" v-bind:type="rep.mime" />
+          <video v-if="a.mime == 'image/gif' && a.view.payload_alternatives && a.view.payload_alternatives.length > 0" preload autoplay loop>
+            <source v-for="rep in a.view.payload_alternatives" v-bind:src="rep.payload_uri" v-bind:type="rep.mime" />
           </video>
 
           <span v-if="a.view.link.length>0" class="link-wrapper">
@@ -152,13 +152,11 @@
 
         <!-- video -->
         <div v-if="a.view.major_type == 'video'" v-videoplayer="a" class="video" v-bind:style="a.view.inner_style + ';background-image: url('+a.view.thumbnail_uri+');'">
-          <video preload="metadata" v-bind:poster="a.view.thumbnail_uri">
+          <video preload="metadata" controls="auto" v-bind:poster="a.view.thumbnail_uri">
             <source v-for="rep in a.view.payload_alternatives" v-bind:src="rep.payload_uri" v-bind:type="rep.mime" />
             <source v-if="a.view.payload_uri && a.mime" v-bind:src="a.view.payload_uri" v-bind:type="a.view.mime" />
           </video>
-          
-
-          <div class="tl-controls">
+          <!-- <div class="tl-controls">
             <div class="btn btn-md btn-toggle btn-round" v-bind:class="{alt:a.player_view.state=='playing'}">
               <span class="btn-option play">
                 <span class="icon icon-controls-play"></span>
@@ -173,7 +171,7 @@
               <span class="icon icon-controls-stop"></span>
             </span>
 
-          </div>
+          </div> -->
           <div class="spinner"></div>
           <div class="progress" v-bind:style="{width: a.view.progress+'%'}">{{a.description}}</div>
         </div>
@@ -182,11 +180,11 @@
         <div v-if="a.view.major_type == 'audio'" v-audioplayer="a" class="audio" v-bind:style="a.view.inner_style">
 
           <audio>
-            <source v-for="alt in a.payload_alternatives | orderBy 'mime' -1" v-bind:src="alt.payload_uri" v-bind:type="alt.mime"/>
-            <source v-bind:src="a.payload_uri" v-bind:type="a.mime" v-if="a.payload_uri"/>
+            <source v-for="alt in a.view.payload_alternatives | orderBy 'mime' -1" v-bind:src="alt.payload_uri" v-bind:type="alt.mime"/>
+            <source v-bind:src="a.view.payload_uri" v-bind:type="a.view.mime" v-if="a.view.payload_uri"/>
           </audio>
 
-          <div class="timeline" v-show="a.h>=64 && a.w>=170" v-bind:style="{'background-image': 'url(' + a.payload_thumbnail_web_uri +')'}">
+          <div class="timeline" v-show="a.h>=64 && a.w>=170" v-bind:style="{'background-image': 'url(' + a.view.thumbnail_uri +')'}">
             <div class="tl-current-time" v-bind:style="{width: a.player_view.current_time_float*100 + '%'}"></div>
             <div class="tl-inpoint" v-bind:style="{left: a.player_view.inpoint_float*100 + '%'}" v-if="a.player_view.inpoint_float>0.0"></div>
             <div class="tl-outpoint" v-bind:style="{left: a.player_view.outpoint_float*100 + '%'}"></div>
@@ -239,8 +237,8 @@
         </div>
 
         <!-- embed -->
-        <div v-if="a.view.major_type == 'oembed'" class="oembed" 
-          v-bind:style="{'background-image': 'url('+a.view.thumbnail_uri+')'}" 
+        <div v-if="a.view.major_type == 'oembed'" class="oembed"
+          v-bind:style="{'background-image': 'url('+a.view.thumbnail_uri+')'}"
           v-bind:class="{interactive:(a.view.interactive || present_mode)}">
           {{{a.view.oembed_html}}}
           <button class="btn btn-icon btn-primary btn-round interact" v-on:click="a.view.interactive=1" v-if="!a.view.interactive && !present_mode"><span class="icon icon-tool-pointer"></span></button>

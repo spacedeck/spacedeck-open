@@ -7,12 +7,12 @@
 
     <button class="btn btn-divider"></button>
 
-    <button class="btn btn-transparent btn-icon-labeled" v-on:click="toggle_lock_of_selected_artifacts()" v-if="active_space_role=='admin'" title="<%=__("lock")%>">
+    <button class="btn btn-transparent btn-icon-labeled" v-on:click="lock_selected_artifacts()" v-if="active_space_role=='admin' || toolbar_lock_in" title="<%=__("lock")%>">
       <span class="icon icon-lock-closed"></span>
       <span class="icon-label"><%=__("lock")%></span>
     </button>
 
-    <button class="btn btn-transparent btn-icon-labeled" v-on:click="toggle_lock_of_selected_artifacts()" v-if="active_space_role=='admin'" title="<%=__("unlock")%>">
+    <button class="btn btn-transparent btn-icon-labeled" v-on:click="unlock_selected_artifacts()" v-if="active_space_role=='admin' || toolbar_lock_in" title="<%=__("unlock")%>">
       <span class="icon icon-lock-open"></span>
       <span class="icon-label"><%=__("unlock")%></span>
     </button>
@@ -26,7 +26,7 @@
       <span class="icon icon-link"></span>
       <span class="icon-label"><%=__("link")%></span>
     </button>
-    
+
     <span v-if="first_selected_artifact">
       <button class="btn btn-transparent btn-icon-labeled" v-on:click="download_selected_artifacts()" v-if="selection_metrics.count==1 && first_selected_artifact.payload_uri" title="<%=__("download")%>">
         <span class="icon icon-download"></span>

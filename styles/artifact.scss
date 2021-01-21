@@ -49,6 +49,7 @@
     max-width: 100%;
     overflow-x: hidden;
     margin-top: -3em;
+    z-index: 100;
   }
 
   .edit {
@@ -288,7 +289,7 @@
         pointer-events: none;
       }
     }
-    
+
     .title {font-size: 20px; }
     .image {
       height: auto;
@@ -323,6 +324,12 @@
     height: 100%;
     background-size: cover;
 
+    &.playing {
+      video {
+        z-index: 1;
+      }
+    }
+
     .title {
       position: absolute;
       bottom: 0px;
@@ -335,18 +342,20 @@
       padding: 10px 15px;
       font-size: 10px;
     }
-    
+
     video {
       width: 100%;
       height: 100%;
+      position: absolute;
     }
 
     .tl-controls {
       position: absolute;
-      bottom: 10px;
+      top: 10px;
       left: 10px;
       right: 10px;
       text-align: center;
+      z-index: 2;
 
       .btn {
         margin-top: 20px;
@@ -501,7 +510,7 @@ body:not(.present-mode) {
     .Medium {
       cursor: text;
     }
-    
+
     .artifact {
 
       &.selected.text-editing,
@@ -566,16 +575,17 @@ body:not(.present-mode) {
   .progress {
     height: 100%;
     padding: 10px;
-    
+
     background-color: $blue;
     opacity: 0.9;
     text-align: center;
+    font-size: 14px;
   }
   .progress-text {
     text-align: center;
     padding: 8px;
     width: 100%;
-    
+
     position: absolute;
     left: 0px;
     top: 0px;
@@ -586,8 +596,8 @@ body:not(.present-mode) {
   video, audio, .tl-controls, .timeline {
     display: none;
   }
-  
-  
+
+
   background-color: white;
 }
 
@@ -628,7 +638,7 @@ body:not(.present-mode) {
   img {
     width: 200px;
   }
-  
+
   .artifact {
     display: block;
     width: 200px;

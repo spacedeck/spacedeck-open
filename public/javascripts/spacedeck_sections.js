@@ -182,7 +182,8 @@ var SpacedeckSections = {
     toolbar_props_in: false,
     toolbar_artifacts_x: "-1000px",
     toolbar_artifacts_y: "-1000px",
-    toolbar_artifacts_in: true
+    toolbar_artifacts_in: true,
+    toolbar_lock_in: false
   },
 
   methods: {
@@ -848,7 +849,7 @@ var SpacedeckSections = {
       if (!a) return false;
       if (!this.active_space) return false;
 
-      if (this.active_space_role=="viewer" || (a.locked && this.active_space_role!="admin")) {
+      if (this.active_space_role=="viewer" || (a.locked && this.active_space_role=="viewer")) {
         return false;
       }
 
@@ -1018,8 +1019,7 @@ var SpacedeckSections = {
       };
     },
 
-    update_selection_metrics: function(arts) {
-
+    update_selection_metrics: function(arts, temporary) {
       if (this.active_tool == "scribble") {
         this.selection_metrics.count = 1;
         return;
@@ -1052,8 +1052,6 @@ var SpacedeckSections = {
         // FIXME make sure that menus fit in window
         this.toolbar_props_x = pp.x+"px";
         this.toolbar_props_y = pp.y+"px";
-
-        //this.hide_toolbar_artifacts();
       }
 
       this.selection_metrics.x1 = sr.x1;
@@ -1068,24 +1066,26 @@ var SpacedeckSections = {
 
       if (!arts) arts = this.selected_artifacts();
 
-      this.first_selected_artifact = arts[0];
-      this.selection_metrics.count=arts.length;
-      this.selection_metrics.scribble_selection = false;
-      if (arts.length == 1 && arts[0].mime == "x-spacedeck/vector") {
-        if (arts[0].shape == "scribble") {
-          this.selection_metrics.scribble_selection = true;
+      if (!temporary) {
+        this.first_selected_artifact = arts[0];
+        this.selection_metrics.count=arts.length;
+        this.selection_metrics.scribble_selection = false;
+        if (arts.length == 1 && arts[0].mime == "x-spacedeck/vector") {
+          if (arts[0].shape == "scribble") {
+            this.selection_metrics.scribble_selection = true;
+          }
+          this.selection_metrics.vector_points = arts[0].control_points;
+          this.selection_metrics.vector_selection = true;
+        } else {
+          this.selection_metrics.vector_points = [{},{}];
+          this.selection_metrics.vector_selection = false;
         }
-        this.selection_metrics.vector_points = arts[0].control_points;
-        this.selection_metrics.vector_selection = true;
-      } else {
-        this.selection_metrics.vector_points = [{},{}];
-        this.selection_metrics.vector_selection = false;
-      }
-      this.selection_metrics.has_link=false;
-      this.insert_link_url="";
-      if (arts.length == 1 && arts[0].meta && arts[0].meta.link_uri && arts[0].meta.link_uri.length>0) {
-        this.selection_metrics.has_link=true;
-        this.insert_link_url = arts[0].meta.link_uri;
+        this.selection_metrics.has_link=false;
+        this.insert_link_url="";
+        if (arts.length == 1 && arts[0].meta && arts[0].meta.link_uri && arts[0].meta.link_uri.length>0) {
+          this.selection_metrics.has_link=true;
+          this.insert_link_url = arts[0].meta.link_uri;
+        }
       }
     },
 
@@ -1435,13 +1435,13 @@ var SpacedeckSections = {
       this.color_picker_rgb = rgb_to_hex(rgba.r,rgba.g,rgba.b);
     },
 
-    update_selected_artifacts: function(change_func, override_locked) {
+    update_selected_artifacts: function(change_func, override_locked, temporary) {
       var artifacts = this.selected_artifacts(!override_locked);
 
       if (!artifacts.length) return;
 
       this.update_artifacts(artifacts, change_func);
-      this.update_selection_metrics();
+      this.update_selection_metrics(null, temporary||false);
     },
 
     nudge_selected_artifacts: function(dx, dy, event) {
@@ -1602,12 +1602,8 @@ var SpacedeckSections = {
       if (this.guest_nickname) {
         new_item.editor_name = this.guest_nickname;
       }
-      // console.log("new artifact", new_item);
 
       save_artifact(new_item, function(saved_item) {
-
-        // console.log("saved artifact", saved_item);
-
         this.update_board_artifact_viewmodel(saved_item);
         this.active_space_artifacts.push(saved_item);
 
@@ -1727,10 +1723,10 @@ var SpacedeckSections = {
         z: point.z,
         w: w,
         h: h,
-        stroke_color: "#ffffff",
-        text_color: "#ffffff",
+        stroke_color: this.active_style.stroke_color,
+        text_color: this.active_style.text_color,
         stroke: 0,
-        fill_color: "#000000",
+        fill_color: this.active_style.fill_color,
         shape: shape_type,
         valign: "middle",
         align: "center",
@@ -1926,10 +1922,7 @@ var SpacedeckSections = {
       }.bind(this));
     },
 
-    delayed_edit_artifact: function(evt) {
-      evt.stopPropagation();
-      evt.preventDefault();
-
+    delayed_edit_artifact: function() {
       var a = this.selected_artifacts()[0];
 
       var el = $("#ios-focuser-"+a._id);
@@ -2090,8 +2083,6 @@ var SpacedeckSections = {
           if (a.description!=dom.innerHTML) {
             a.description = dom.innerHTML;
 
-            console.log("new DOM:",dom.innerHTML);
-
             this.update_board_artifact_viewmodel(a);
             this.queue_artifact_for_save(a);
 
@@ -2187,9 +2178,15 @@ var SpacedeckSections = {
       return copy;
     },
 
-    toggle_lock_of_selected_artifacts: function() {
+    lock_selected_artifacts: function() {
       this.update_selected_artifacts(function(a) {
-        return {locked: !a.locked};
+        return {locked: true};
+      }, true);
+    },
+
+    unlock_selected_artifacts: function() {
+      this.update_selected_artifacts(function(a) {
+        return {locked: false};
       }, true);
     },
 
@@ -2524,11 +2521,18 @@ var SpacedeckSections = {
     },
 
     show_toolbar_props: function() {
-      if (this.selection_metrics.count==0) return;
+      if (this.selection_metrics.count==0) {
+        this.toolbar_lock_in = false;
+        return;
+      }
       arts = this.selected_artifacts();
+      // check if selected artifacts are all from the same user
+      let same_user = true;
       for (var i=0;i<arts.length; i++) {
         if (arts[i].mime=="x-spacedeck/zone") return;
+        if (arts[i].user_id!==this.user._id) same_user = false;
       }
+      this.toolbar_lock_in = same_user;
       this.toolbar_props_in = true;
     },
 
