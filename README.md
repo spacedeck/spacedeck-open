@@ -47,29 +47,37 @@ See [config/default.json](config/default.json). Set `storage_local_path` for a l
 
 ## Configure color swatches
 
-Add a custom array of swatches to your config/default.json. 
-**You need to include black (#000000) and transparent (rgba(0,0,0,0)) in your custom swatches palette.**
+Add a custom array of swatches to your config/default.json.
+
+**You should include the swatch transparent (rgba(0,0,0,0)) so users can remove the color applied.**
+
+## Configure default colors
+You can define text, stroke and fill color in your config/default.json. 
+
+**You also should include the default colors in your custom swatches palette.**
 
 ```json
 ...
 "spacedeck": {
-    "swatches": [
-      {"id":8, "hex":"#000000"},
-      {"id":30, "hex":"rgba(0,0,0,0)"},
-      {"id":31, "hex": "#E11F26"},
-      {"id":32, "hex": "#9E0F13"},
-      {"id":33, "hex": "#64BCCA"},
-      {"id":34, "hex": "#40808A"},
-      {"id":35, "hex": "#036492"},
-      {"id":36, "hex": "#005179"},
-      {"id":37, "hex": "#84427E"},
-      {"id":38, "hex": "#6C3468"},
-      {"id":39, "hex": "#F79B84"},
-      {"id":40, "hex": "#B57362"},
-      {"id":41, "hex": "#E7D45A"},
-      {"id":42, "hex": "#ACA044"}
-    ]
-  }
+  "default_text_color": "#E11F26",
+  "default_stroke_color": "#9E0F13",
+  "default_fill_color": "#64BCCA",
+  "swatches": [
+    {"id":8, "hex":"#000000"},
+    {"id":30, "hex":"rgba(0,0,0,0)"},
+    {"id":31, "hex": "#E11F26"},
+    {"id":32, "hex": "#9E0F13"},
+    {"id":33, "hex": "#64BCCA"},
+    {"id":34, "hex": "#40808A"},
+    {"id":35, "hex": "#036492"},
+    {"id":36, "hex": "#005179"},
+    {"id":37, "hex": "#84427E"},
+    {"id":38, "hex": "#6C3468"},
+    {"id":39, "hex": "#F79B84"},
+    {"id":40, "hex": "#B57362"},
+    {"id":41, "hex": "#E7D45A"},
+    {"id":42, "hex": "#ACA044"}
+  ]
 }
 ...
 ```
