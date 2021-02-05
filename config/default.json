@@ -4,12 +4,12 @@
 
   "host": "0.0.0.0",
   "port": 9666,
-  "endpoint": "http://spacedeck.kickback.live:9666",
+  "endpoint": "http://localhost:9666",
   "invite_code": "top-sekrit",
 
   "storage_local_path": "./storage",
   "storage_local_db": "./database/database.sqlite",
-  "storage_endpoint": "http://spacedeck.kickback.live:4572",
+  "storage_endpoint": "http://localhost:4572",
   "storage_bucket": "my_spacedeck_bucket",
   "storage_cdn": "/storage",
 
