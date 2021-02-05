@@ -37,9 +37,9 @@ function setup_directives() {
       var el = this.el;
       var scope = this.vm.$root;
       var video = el.querySelectorAll("video")[0];
-      var play_button = el.querySelectorAll(".play")[0];
-      var pause_button = el.querySelectorAll(".pause")[0];
-      var stop_button = el.querySelectorAll(".stop")[0];
+      // var play_button = el.querySelectorAll(".play")[0];
+      // var pause_button = el.querySelectorAll(".pause")[0];
+      // var stop_button = el.querySelectorAll(".stop")[0];
       var player_state = "stop";
 
       var update_view = function() {
@@ -52,9 +52,9 @@ function setup_directives() {
       }
 
       var play_func = function() {
-        var playPromise = video.play();
-        if (playPromise !== undefined) {
-          playPromise.then(_ => {
+        const video_promise = video.play();
+        if (video_promise !== undefined) {
+          video_promise.then(_ => {
             // Automatic playback started!
             player_state = "playing";
             update_view();
@@ -92,24 +92,24 @@ function setup_directives() {
       el.addEventListener("remote_pause",pause_func);
       el.addEventListener("remote_stop",stop_func);
 
-      play_button.addEventListener(edown, function(evt) {
-        try {
-          play_func();
-          spacedeck.presenter_send_media_action(a._id,"video","play",video.currentTime);
-        } catch (e) {
-          // catch InvalidStateError
-        }
-      }, false);
+      // play_button.addEventListener(edown, function(evt) {
+      //   try {
+      //     play_func();
+      //     spacedeck.presenter_send_media_action(a._id,"video","play",video.currentTime);
+      //   } catch (e) {
+      //     // catch InvalidStateError
+      //   }
+      // }, false);
 
-      pause_button.addEventListener(edown, function(evt) {
-        pause_func();
-        spacedeck.presenter_send_media_action(a._id,"video","pause",video.currentTime);
-      }, false);
+      // pause_button.addEventListener(edown, function(evt) {
+      //   pause_func();
+      //   spacedeck.presenter_send_media_action(a._id,"video","pause",video.currentTime);
+      // }, false);
 
-      stop_button.addEventListener(edown, function(evt) {
-        stop_func();
-        spacedeck.presenter_send_media_action(a._id,"video","stop",0);
-      }, false);
+      // stop_button.addEventListener(edown, function(evt) {
+      //   stop_func();
+      //   spacedeck.presenter_send_media_action(a._id,"video","stop",0);
+      // }, false);
     }
   });
 
