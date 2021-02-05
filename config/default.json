@@ -9,6 +9,9 @@
 
   "storage_local_path": "./storage",
   "storage_local_db": "./database/database.sqlite",
+  "storage_endpoint": "http://localhost:4572",
+  "storage_bucket": "my_spacedeck_bucket",
+  "storage_cdn": "/storage",
 
   "mongodb_host": "localhost",
   "redis_mock": true,
