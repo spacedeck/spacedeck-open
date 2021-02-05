@@ -45,6 +45,15 @@ To install all node dependencies, run (do this once):
 
 See [config/default.json](config/default.json). Set `storage_local_path` for a local sqlite database or `storage_region`, `storage_bucket`, `storage_cdn` and `storage_endpoint` for AWS S3. `mail_provider` may be one of `console` or `smtp`. Also, omit a trailing `/` for the `endpoint`.
 
+
+## Disable DB logs
+
+```json
+...
+"db_logs_disabled": true
+...
+```
+
 ## Configure color swatches
 
 Add a custom array of swatches to your config/default.json.

@@ -19,7 +19,7 @@ const sequelize = new Sequelize(
       acquire: 30000,
       idle: 10000
     },
-    logging: sequel_log,
+    logging: config.has('db_logs_disabled') ? false : sequel_log,
     // http://docs.sequelizejs.com/manual/tutorial/querying.html#operators
     operatorsAliases: false,
     // SQLite only
