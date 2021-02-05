@@ -4,7 +4,7 @@
 
   "host": "0.0.0.0",
   "port": 9666,
-  "endpoint": "https://http://srv-captain--spacedeck:9666",
+  "endpoint": "https://srv-captain--spacedeck:9666",
   "invite_code": "dantosxd",
 
   "storage_local_path": "./storage",
