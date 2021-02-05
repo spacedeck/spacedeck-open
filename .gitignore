@@ -2,7 +2,7 @@ node_modules
 javascripts/maps
 javascripts/spacedeck.js
 public/stylesheets/*.css
-/database/database.sqlite
+database.sqlite
 *.swp
 *~
 
