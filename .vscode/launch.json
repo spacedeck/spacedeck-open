@@ -1,0 +1,14 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "type": "node",
+        "request": "launch",
+        "name": "Nodemon",
+        "runtimeExecutable": "${workspaceFolder}/node_modules/nodemon/bin/nodemon.js",
+        "skipFiles": ["<node_internals>/**"],
+        "program": "${workspaceFolder}/spacedeck.js",
+        "cwd": "${workspaceFolder}"
+      }
+    ]
+  }
