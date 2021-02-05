@@ -33,5 +33,6 @@
   "mail_smtp_secure": true,
   "mail_smtp_require_tls": true,
   "mail_smtp_user": "your.smtp.user",
-  "mail_smtp_pass": "your.secret.smtp.password"
+  "mail_smtp_pass": "your.secret.smtp.password",
+  "spacedeck": {}
 }
