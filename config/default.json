@@ -4,7 +4,7 @@
 
   "host": "127.0.0.1",
   "port": 9666,
-  "endpoint": "http://localhost:9666",
+  "endpoint": "http://spacedeck.kickback.live:9666",
   "invite_code": "top-sekrit",
 
   "storage_local_path": "./storage",
