@@ -6,24 +6,28 @@ function sequel_log(a,b,c) {
 }
 
 const Sequelize = require('sequelize');
-const sequelize = new Sequelize('database', 'username', 'password', {
-  host: 'localhost',
-  dialect: 'sqlite',
-
-  pool: {
-    max: 5,
-    min: 0,
-    acquire: 30000,
-    idle: 10000
-  },
-
-  // SQLite only
-  storage: config.get('storage_local_db'),
-  logging: sequel_log,
-
-  // http://docs.sequelizejs.com/manual/tutorial/querying.html#operators
-  operatorsAliases: false
-});
+const sequelize = new Sequelize(
+  config.get('storage_database'),
+  config.get('storage_username'),
+  config.get('storage_password'),
+  {
+    host: config.get('storage_host'),
+    dialect: config.get('storage_dialect'),
+    pool: {
+      max: 5,
+      min: 0,
+      acquire: 30000,
+      idle: 10000
+    },
+    logging: sequel_log,
+    // http://docs.sequelizejs.com/manual/tutorial/querying.html#operators
+    operatorsAliases: false,
+    // SQLite only
+    storage: config.get('storage_local_db')
+  }
+);
+// https://github.com/sequelize/sequelize/issues/8019#issuecomment-384316346
+Sequelize.postgres.DECIMAL.parse = function (value) { return parseFloat(value); };
 
 var User;
 var Session;

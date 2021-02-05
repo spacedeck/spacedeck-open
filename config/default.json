@@ -7,6 +7,13 @@
   "endpoint": "http://localhost:9666",
   "invite_code": "top-sekrit",
 
+  "storage_dialect": "sqlite",
+
+  "storage_host": "localhost",
+  "storage_database": "spacedeck",
+  "storage_username": "username",
+  "storage_password": "password",
+
   "storage_local_path": "./storage",
   "storage_local_db": "./database.sqlite",
   "storage_region": "eu-central-1",
