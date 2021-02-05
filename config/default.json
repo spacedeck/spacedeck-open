@@ -8,11 +8,7 @@
   "invite_code": "top-sekrit",
 
   "storage_local_path": "./storage",
-  "storage_local_db": "./database.sqlite",
-  "storage_region": "eu-central-1",
-  "storage_endpoint": "http://localhost:4572",
-  "storage_bucket": "my_spacedeck_bucket",
-  "storage_cdn": "/storage",
+  "storage_local_db": "./database/database.sqlite",
 
   "mongodb_host": "localhost",
   "redis_mock": true,
