@@ -2,7 +2,7 @@
   "team_name": "My Open Spacedeck",
   "contact_email": "support@example.org",
 
-  "host": "127.0.0.1",
+  "host": "0.0.0.0",
   "port": 9666,
   "endpoint": "http://spacedeck.kickback.live:9666",
   "invite_code": "top-sekrit",
