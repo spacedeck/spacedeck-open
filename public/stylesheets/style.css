@@ -2688,32 +2688,40 @@ th {
   font-family: 'Inter';
   font-style: normal;
   font-weight: 400;
-  src: local(""), url("/fonts/inter-v2-latin-ext_latin-regular.woff2") format("woff2"), url("/fonts/inter-v2-latin-ext_latin-regular.woff") format("woff");
-  /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */ }
+  src: url("/fonts/inter-v2-latin-ext_latin-regular.eot");
+  /* IE9 Compat Modes */
+  src: local(""), url("/fonts/inter-v2-latin-ext_latin-regular.eot?#iefix") format("embedded-opentype"), url("/fonts/inter-v2-latin-ext_latin-regular.woff2") format("woff2"), url("/fonts/inter-v2-latin-ext_latin-regular.woff") format("woff"), url("/fonts/inter-v2-latin-ext_latin-regular.ttf") format("truetype"), url("/fonts/inter-v2-latin-ext_latin-regular.svg#Inter") format("svg");
+  /* Legacy iOS */ }
 
 /* inter-500 - latin-ext_latin */
 @font-face {
   font-family: 'Inter';
   font-style: normal;
   font-weight: 500;
-  src: local(""), url("/fonts/inter-v2-latin-ext_latin-500.woff2") format("woff2"), url("/fonts/inter-v2-latin-ext_latin-500.woff") format("woff");
-  /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */ }
+  src: url("/fonts/inter-v2-latin-ext_latin-500.eot");
+  /* IE9 Compat Modes */
+  src: local(""), url("/fonts/inter-v2-latin-ext_latin-500.eot?#iefix") format("embedded-opentype"), url("/fonts/inter-v2-latin-ext_latin-500.woff2") format("woff2"), url("/fonts/inter-v2-latin-ext_latin-500.woff") format("woff"), url("/fonts/inter-v2-latin-ext_latin-500.ttf") format("truetype"), url("/fonts/inter-v2-latin-ext_latin-500.svg#Inter") format("svg");
+  /* Legacy iOS */ }
 
 /* inter-600 - latin-ext_latin */
 @font-face {
   font-family: 'Inter';
   font-style: normal;
   font-weight: 600;
-  src: local(""), url("/fonts/inter-v2-latin-ext_latin-600.woff2") format("woff2"), url("/fonts/inter-v2-latin-ext_latin-600.woff") format("woff");
-  /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */ }
+  src: url("/fonts/inter-v2-latin-ext_latin-600.eot");
+  /* IE9 Compat Modes */
+  src: local(""), url("/fonts/inter-v2-latin-ext_latin-600.eot?#iefix") format("embedded-opentype"), url("/fonts/inter-v2-latin-ext_latin-600.woff2") format("woff2"), url("/fonts/inter-v2-latin-ext_latin-600.woff") format("woff"), url("/fonts/inter-v2-latin-ext_latin-600.ttf") format("truetype"), url("/fonts/inter-v2-latin-ext_latin-600.svg#Inter") format("svg");
+  /* Legacy iOS */ }
 
 /* inter-900 - latin-ext_latin */
 @font-face {
   font-family: 'Inter';
   font-style: normal;
   font-weight: 900;
-  src: local(""), url("/fonts/inter-v2-latin-ext_latin-900.woff2") format("woff2"), url("/fonts/inter-v2-latin-ext_latin-900.woff") format("woff");
-  /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */ }
+  src: url("/fonts/inter-v2-latin-ext_latin-900.eot");
+  /* IE9 Compat Modes */
+  src: local(""), url("/fonts/inter-v2-latin-ext_latin-900.eot?#iefix") format("embedded-opentype"), url("/fonts/inter-v2-latin-ext_latin-900.woff2") format("woff2"), url("/fonts/inter-v2-latin-ext_latin-900.woff") format("woff"), url("/fonts/inter-v2-latin-ext_latin-900.ttf") format("truetype"), url("/fonts/inter-v2-latin-ext_latin-900.svg#Inter") format("svg");
+  /* Legacy iOS */ }
 
 body {
   background-color: #f5f5f5;
@@ -15002,7 +15010,7 @@ button.close {
     top: 50%;
     left: 50%;
     margin: -22px; }
-  .artifact.artifact-text.text-blank [contentEditable=true]:not(.text-editing) p:first-child::after {
+  .artifact.artifact-text.text-blank [contentEditable="true"]:not(.text-editing) p:first-child::after {
     content: "Double click to edit";
     opacity: 0.25; }
   .artifact.artifact-text.text-blank p:first-child br {
@@ -15150,10 +15158,10 @@ button.close {
         .artifact .text-table .text-cell .text-column > * {
           display: block; }
   .artifact .oembed,
-  .artifact div[class*='oembed-'] {
+  .artifact div[class*="oembed-"] {
     height: 100%; }
     .artifact .oembed .play,
-    .artifact div[class*='oembed-'] .play {
+    .artifact div[class*="oembed-"] .play {
       position: absolute;
       top: 50%;
       left: 50%;
@@ -15162,7 +15170,7 @@ button.close {
       background-color: #f5f5f5 !important;
       color: #292929 !important; }
     .artifact .oembed .meta,
-    .artifact div[class*='oembed-'] .meta {
+    .artifact div[class*="oembed-"] .meta {
       padding-top: 10px;
       font-size: 10px;
       display: block;
@@ -15173,33 +15181,33 @@ button.close {
       color: #888;
       text-align: left; }
       .artifact .oembed .meta .link,
-      .artifact div[class*='oembed-'] .meta .link {
+      .artifact div[class*="oembed-"] .meta .link {
         position: absolute;
         left: -12px;
         bottom: -4px; }
       .artifact .oembed .meta .description,
-      .artifact div[class*='oembed-'] .meta .description {
+      .artifact div[class*="oembed-"] .meta .description {
         padding-left: 28px;
         display: block; }
     .artifact .oembed iframe,
-    .artifact div[class*='oembed-'] iframe {
+    .artifact div[class*="oembed-"] iframe {
       width: 100% !important;
       height: 100% !important; }
     .artifact .oembed:not(.interactive) iframe,
-    .artifact div[class*='oembed-']:not(.interactive) iframe {
+    .artifact div[class*="oembed-"]:not(.interactive) iframe {
       pointer-events: none; }
     .artifact .oembed .title,
-    .artifact div[class*='oembed-'] .title {
+    .artifact div[class*="oembed-"] .title {
       font-size: 20px; }
     .artifact .oembed .image,
-    .artifact div[class*='oembed-'] .image {
+    .artifact div[class*="oembed-"] .image {
       height: auto;
       top: 0;
       bottom: 0px;
       position: absolute;
       width: 100%; }
     .artifact .oembed .interact,
-    .artifact div[class*='oembed-'] .interact {
+    .artifact div[class*="oembed-"] .interact {
       position: absolute;
       top: 50%;
       left: 50%;
@@ -15216,7 +15224,8 @@ button.close {
   .artifact .video {
     width: 100%;
     height: 100%;
-    background-size: cover; }
+    background-size: cover;
+    background-color: black; }
     .artifact .video.playing video {
       z-index: 1; }
     .artifact .video .title {
@@ -15364,11 +15373,24 @@ body:not(.present-mode) #space .artifact.selected {
   body:not(.present-mode) #space .artifact.selected:not(.artifact-vector):after {
     border: 1px solid #288cd7; }
 
-.mouse-scribble, .tool-scribble, .tool-line, .tool-arrow {
+.mouse-scribble,
+.tool-scribble,
+.tool-line,
+.tool-arrow {
   cursor: crosshair !important; }
-  .mouse-scribble .artifact, .tool-scribble .artifact, .tool-line .artifact, .tool-arrow .artifact {
+  .mouse-scribble .artifact,
+  .tool-scribble .artifact,
+  .tool-line .artifact,
+  .tool-arrow .artifact {
     pointer-events: none !important; }
-  .mouse-scribble .artifact:after, .mouse-scribble .artifact:before, .tool-scribble .artifact:after, .tool-scribble .artifact:before, .tool-line .artifact:after, .tool-line .artifact:before, .tool-arrow .artifact:after, .tool-arrow .artifact:before {
+  .mouse-scribble .artifact:after,
+  .mouse-scribble .artifact:before,
+  .tool-scribble .artifact:after,
+  .tool-scribble .artifact:before,
+  .tool-line .artifact:after,
+  .tool-line .artifact:before,
+  .tool-arrow .artifact:after,
+  .tool-arrow .artifact:before {
     display: none !important; }
 
 .tool-pan {
@@ -15377,19 +15399,28 @@ body:not(.present-mode) #space .artifact.selected {
 .tool-note {
   cursor: crosshair !important; }
 
-.artifact.state-idle .progress, .artifact.state-idle .progress-text {
+.artifact.state-idle .progress,
+.artifact.state-idle .progress-text {
   display: none; }
 
-.artifact.state-processing, .artifact.state-uploading {
+.artifact.state-processing,
+.artifact.state-uploading {
   background-color: white; }
-  .artifact.state-processing .progress, .artifact.state-uploading .progress {
+  .artifact.state-processing .progress,
+  .artifact.state-uploading .progress {
     height: 100%;
-    padding: 10px;
-    background-color: #3d9ee9;
+    padding: 4px;
     opacity: 0.9;
-    text-align: center;
     font-size: 14px; }
-  .artifact.state-processing .progress-text, .artifact.state-uploading .progress-text {
+  .artifact.state-processing .progress-container,
+  .artifact.state-uploading .progress-container {
+    background: #ffffff;
+    width: 100%;
+    height: 100%;
+    padding-left: 10px;
+    padding-top: 10px; }
+  .artifact.state-processing .progress-text,
+  .artifact.state-uploading .progress-text {
     text-align: center;
     padding: 8px;
     width: 100%;
@@ -15398,7 +15429,14 @@ body:not(.present-mode) #space .artifact.selected {
     top: 0px;
     color: #888;
     font-size: 10px; }
-  .artifact.state-processing video, .artifact.state-processing audio, .artifact.state-processing .tl-controls, .artifact.state-processing .timeline, .artifact.state-uploading video, .artifact.state-uploading audio, .artifact.state-uploading .tl-controls, .artifact.state-uploading .timeline {
+  .artifact.state-processing video,
+  .artifact.state-processing audio,
+  .artifact.state-processing .tl-controls,
+  .artifact.state-processing .timeline,
+  .artifact.state-uploading video,
+  .artifact.state-uploading audio,
+  .artifact.state-uploading .tl-controls,
+  .artifact.state-uploading .timeline {
     display: none; }
 
 .state-processing .spinner {

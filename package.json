@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node spacedeck.js",
-    "dev": "nodemon spacedeck.js"
+    "dev": "nodemon spacedeck.js",
+    "styles": "gulp styles"
   },
   "engines": {
     "node": ">=10.0.0"
