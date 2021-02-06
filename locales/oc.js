@@ -173,7 +173,7 @@
     "tool_bullets": "Bullets",
     "tool_numbers": "Nombres",
     "color_fill": "Fill",
-    "tool_font": "Font",
+    "tool_font": "Poliça",
     "color_stroke": "Traçat",
     "color_text": "Tèxte",
     "tool_type": "Tipe",
@@ -253,7 +253,7 @@
     "access_anonymous_edit_blocking": "Los convidats pòdon pas modificar los elements qu’an creats.",
     "access_current_members": "Membres actuals",
     "access_new_members": "Convidar de novèls membres",
-    "access_no_members": "Los membres d’aqueste Espacii apreissaràn aquí.",
+    "access_no_members": "Los membres d’aqueste Espaci apareisseràn aquí.",
     "comments": "comentaris",
     "landing_customers": "La fisança de milièr de personas.",
     "landing_features_title": "Un jòc d'enfants d’utilizar.",
@@ -309,7 +309,7 @@
     "list": "lista",
     "link": "Ligam",
     "download_space": "Telecargar espaci",
-    "download_space_as_pdf": "Telecargar espaci PDF",
+    "download_space_as_pdf": "Telecargar espaci coma PDF",
     "type": "Tipe",
     "download": "Telecargar",
     "Previous Zone": "Zòna precedenta",
@@ -321,7 +321,7 @@
     "unlock": "Desverrolhar",
     "follow_present": "Seguir",
     "mute_present": "Quitar de seguir",
-    "follow_present_help": "follow_present_help",
+    "follow_present_help": "Se qualqu’un mai presenta aqueste espaci, los demai membres seguiràn automaticament la presentacion. Basculatz l’abonament a la presentacion amb aqueste boton.",
     "export": "exportar",
-    "media": "Media"
+    "media": "Mèdia"
 }
