@@ -18,7 +18,7 @@ build:
     - docker image push $CONTAINER_IMAGE:latest
     - docker image push $CONTAINER_IMAGE:$CI_BUILD_REF
   only:
-    - master
+    - mnt
     - custom/freiwerkb
 deploy_dev:
   stage: deploy
