@@ -1,0 +1,44 @@
+variables:
+  CONTAINER_IMAGE: git.universe.io:4567/$CI_PROJECT_PATH
+  DOCKER_HOST: tcp://docker:2376
+stages:
+  - build
+  - deploy_dev
+  - deploy
+build:
+  stage: build
+  image: docker:stable
+  services:
+    - docker:19.03.12-dind
+  variables:
+    DOCKER_TLS_CERTDIR: "/certs"
+  script:
+    - docker image build -t $CONTAINER_IMAGE:$CI_BUILD_REF -t $CONTAINER_IMAGE:latest .
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN git.universe.io:4567
+    - docker image push $CONTAINER_IMAGE:latest
+    - docker image push $CONTAINER_IMAGE:$CI_BUILD_REF
+  only:
+    - master
+    - custom/freiwerkb
+deploy_dev:
+  stage: deploy
+  image: alpine
+  script:
+    - apk add --update curl
+    - curl -XPOST $WWW_WEBHOOK
+  only:
+    - mnt
+    - custom/freiwerkb
+deploy:
+  when: manual
+  stage: deploy
+  image: alpine
+  script:
+    - apk add --update curl
+    - |
+      curl -XPOST -K - <<URL 
+        $WWW_WEBHOOKS 
+      URL
+  only:
+    - master
+    - custom/freiwerkb
