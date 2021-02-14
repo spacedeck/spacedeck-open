@@ -2,7 +2,7 @@
 
 const db = require('../models/db');
 const config = require('config');
-const phantom = require('node-phantom-simple');
+const puppeteer = require('puppeteer');
 const os = require('os');
 
 module.exports = {
@@ -25,46 +25,44 @@ module.exports = {
 
     var on_exit = function(exit_code) {
       if (exit_code>0) {
-        console.error("phantom abnormal exit for url "+space_url);
+        console.error(exit_code);
+        console.error("puppeteer abnormal exit for url "+space_url);
         if (!on_success_called && on_error) {
           on_error();
         }
       }
     };
 
-    phantom.create({ path: require('phantomjs-prebuilt').path }, function (err, browser) {
-      if (err) {
-        console.error(err);
-      } else {
-        return browser.createPage(function (err, page) {
-          console.log("page created, opening ",space_url);
-
-          if (type=="pdf") {
-            var psz = {
-              width: space.width+"px",
-              height: space.height+"px"
-            };
-            page.set('paperSize', psz);
+    (async () => {
+      let browser;
+      let page;
+      try {
+        browser = await puppeteer.launch(
+          {
+            headless: true,
+            args: ['--disable-dev-shm-usage', '--no-sandbox']
           }
+        );
+        page = await browser.newPage();
 
-          page.set('settings.resourceTimeout',timeout);
-          page.set('settings.javascriptEnabled',false);
+        page.setDefaultTimeout(timeout);
+        await page.setJavaScriptEnabled(false);
 
-          return page.open(space_url, function (err,status) {
-            page.render(export_path, function() {
-              on_success_called = true;
-              if (on_success) {
-                on_success(export_path);
-              }
-              page.close();
-              browser.exit();
-            });
-          });
-        });        
+        console.log("page created, opening ",space_url);
+        await page.goto(space_url, {waitUntil: 'networkidle0'});
+
+        if (type=="pdf") {
+          await page.pdf({path: export_path, width: space.width+'px', height: space.height+'px' });
+        }else{
+          await page.screenshot({path: export_path});
+        }
+
+        await browser.close();
+        on_success(export_path);
+      } catch (error) {
+        on_error();
       }
-
-    }, {
-      onExit: on_exit
-    });
+    
+    })();
   }
 };
