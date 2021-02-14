@@ -171,7 +171,7 @@ function convertVideo(fileName, filePath, codec, callback, progressCallback) {
   ff.stderr.on('data', function (data) {
     console.log('[ffmpeg-video] stderr: ' + data);
     if (progressCallback) {
-      progressCallback(getConversionProgress(""+data));
+      progressCallback(getConversionProgress(""+data)+"%");
     }
   });
 
