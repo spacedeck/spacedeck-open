@@ -156,10 +156,10 @@
             <source v-for="rep in a.view.payload_alternatives" v-bind:src="rep.payload_uri" v-bind:type="rep.mime" />
             <source v-if="a.view.payload_uri && a.view.mime" v-bind:src="a.view.payload_uri" v-bind:type="a.view.mime" />
           </video>
-          <div class="progress" v-bind:style="{width: a.description+'%'}">
+          <div class="progress" v-bind:style="{width: a.description}">
             <div class="progress-container">
               <h3>
-                {{a.description}}%
+                {{a.description}}
               </h3>
             </div>
           </div>
