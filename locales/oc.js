@@ -244,7 +244,7 @@
     "what_is_your_name": "La benvenguda a %s ! Mercés de causir un escais-nom.",
     "lang": "en",
     "landing_title": "Vòstre tablèu blanc sul Web.",
-    "landing_claim": "Spacedeck vos permet de facilament combinar quin que siá tipe de mèdias sus un tablèu virtual : tèxte, nòtas, ligams web, amai vidèos e enregistraments àudio. ",
+    "landing_claim": "Spacedeck vos permet de facilament combinar quin tipe que siá de mèdias sus un tablèu virtual : tèxte, nòtas, ligams web, amai vidèos e enregistraments àudio. ",
     "landing_example": "Lo monde utiliza Spacedeck per organizar  lors idèas, en equipa per veire totes los projèctes en una ulhada, a l’escòla e a l’universitat pels mai rics, experiéncia d’aprendissatge connectat.",
     "spaces": "Mos espacis",
     "access_editor_link": "Ligam de modificacion dirècta",
