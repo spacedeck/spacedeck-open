@@ -16,7 +16,7 @@ module.exports = {
     var timeout = 5000;
     if (type=="pdf") timeout = 30000;
 
-    space_url += "?api_token="+config.get("phantom_api_secret");
+    space_url += "?api_token="+config.get("export_api_secret");
 
     console.log("[space-screenshot] url: "+space_url);
     console.log("[space-screenshot] export_path: "+export_path);

@@ -30,8 +30,6 @@
     "mock-aws-s3": "^2.6.0",
     "moment": "^2.19.3",
     "morgan": "^1.9.1",
-    "node-phantom-simple": "2.2.4",
-    "node-server-screenshot": "^0.2.1",
     "nodemailer": "^4.6.7",
     "puppeteer": "3.0.0",
     "read-chunk": "^2.1.0",

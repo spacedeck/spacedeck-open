@@ -25,7 +25,7 @@
   "redis_mock": true,
   "redis_host": "localhost",
 
-  "phantom_api_secret": "very_secret_phantom_password",
+  "export_api_secret": "very_secret_export_password",
 
   "mail_provider": "smtp",
   "mail_smtp_host": "your.smtp.host",
