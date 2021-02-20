@@ -21,18 +21,6 @@ module.exports = {
     console.log("[space-screenshot] url: "+space_url);
     console.log("[space-screenshot] export_path: "+export_path);
 
-    var on_success_called = false;
-
-    var on_exit = function(exit_code) {
-      if (exit_code>0) {
-        console.error(exit_code);
-        console.error("puppeteer abnormal exit for url "+space_url);
-        if (!on_success_called && on_error) {
-          on_error();
-        }
-      }
-    };
-
     (async () => {
       let browser;
       let page;
@@ -47,19 +35,20 @@ module.exports = {
 
         page.setDefaultTimeout(timeout);
         await page.setJavaScriptEnabled(false);
-
-        console.log("page created, opening ",space_url);
-        await page.goto(space_url, {waitUntil: 'networkidle0'});
+        await page.goto(space_url, {waitUntil: 'networkidle2'});
+        await page.emulateMedia('screen');
 
         if (type=="pdf") {
-          await page.pdf({path: export_path, width: space.width+'px', height: space.height+'px' });
+          await page.pdf({path: export_path, printBackground: true, width: space.width+'px', height: space.height+'px' });
         }else{
-          await page.screenshot({path: export_path});
+          await page.screenshot({path: export_path, printBackground: true});
         }
 
         await browser.close();
         on_success(export_path);
       } catch (error) {
+        console.error(error);
+        console.error("[space-screenshot] puppeteer abnormal exit for url "+space_url);
         on_error();
       }
     

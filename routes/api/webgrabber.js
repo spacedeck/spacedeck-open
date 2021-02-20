@@ -39,16 +39,15 @@ function website_to_png(url,on_success,on_error) {
   
           page.setDefaultTimeout(timeout);
           await page.setJavaScriptEnabled(false);
-  
-          console.log("page created, opening ",url);
-          await page.goto(url, {waitUntil: 'networkidle0'});
-          await page.screenshot({path: export_path});
+          await page.goto(url, {waitUntil: 'networkidle2'});
+          await page.emulateMedia('screen');
+          await page.screenshot({path: export_path, printBackground: true});
   
           await browser.close();
           on_success(export_path);
         } catch (error) {
           console.error(error);
-          console.log("[puppeteer-webgrabber] abnormal exit for url "+url);
+          console.log("[webgrabber] puppeteer abnormal exit for url "+url);
           on_error();
         }
       
