@@ -37,7 +37,7 @@ Spacedeck requires:
 
 To run Spacedeck, you only need Node.JS 10.x.
 
-To install all node dependencies, run (do this once) after cloning repository:
+To install all node dependencies, run (do this once) after cloning the repository:
 
     npm install
 
