@@ -12,7 +12,7 @@ server {
         listen 80;
         listen [::]:80;
 
-        servername spacedeck.domain.de
+        server_name spacedeck.domain.de
 
         return 301 https://$server_name$request_uri;
 }
