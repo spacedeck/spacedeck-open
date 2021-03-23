@@ -36,7 +36,7 @@ module.exports = {
         page.setDefaultTimeout(timeout);
         await page.setJavaScriptEnabled(false);
         await page.goto(space_url, {waitUntil: 'networkidle2'});
-        await page.emulateMedia('screen');
+        await page.emulateMediaType('screen');
 
         if (type=="pdf") {
           await page.pdf({path: export_path, printBackground: true, width: space.width+'px', height: space.height+'px' });

@@ -3,11 +3,16 @@
 @import "unicode";
 
 @-webkit-keyframes appear {
-  0% { opacity: 0;}
-  30% { opacity: 0;}
-  100%   { opacity: 1; }
+  0% {
+    opacity: 0;
+  }
+  30% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
-
 
 .avatar {
   background-color: $blue;
@@ -26,7 +31,9 @@
 #user-root {
   margin-left: 5px !important;
   padding: 0px !important;
-  .btn {margin-right: 10px; }
+  .btn {
+    margin-right: 10px;
+  }
 }
 
 #sidebar.folder-sidebar {
@@ -70,7 +77,9 @@
   li {
     display: inline-block;
     line-height: 44px;
-    &.active span {color: $light; }
+    &.active span {
+      color: $light;
+    }
     span {
       color: $medium;
       display: inline-block;
@@ -81,8 +90,6 @@
     }
   }
 }
-
-
 
 #folder {
   position: absolute;
@@ -137,7 +144,7 @@
     z-index: initial;
   }
 
-  .folder  .icon {
+  .folder .icon {
     color: $yellow;
     opacity: 1;
   }
@@ -150,7 +157,7 @@
       width: 100%;
     }
     > .icon {
-      margin-left: -15px
+      margin-left: -15px;
     }
   }
 
@@ -176,30 +183,30 @@
     // margin-top: -18px;
     margin-right: -60px;
     // margin-bottom: -18px;
-    @include transition( all 0.125s ease-in-out);
+    @include transition(all 0.125s ease-in-out);
     .icon {
       left: 0px;
       top: 0px;
       line-height: 60px;
       font-size: 13px;
       position: absolute;
-      @include scale(0,0);
-      @include transition( all 0.125s ease-in-out);
+      @include scale(0, 0);
+      @include transition(all 0.125s ease-in-out);
       @include opacity(0.25);
     }
 
     &:hover {
       margin-right: -12px;
       .icon {
-        @include scale(1,1);
+        @include scale(1, 1);
       }
     }
   }
 }
 
 #folder-header {
-  background-color: rgba(41,41,41,0.95);
-  background-color: rgba(245,245,245,0.95);
+  background-color: rgba(41, 41, 41, 0.95);
+  background-color: rgba(245, 245, 245, 0.95);
 }
 
 #folder-wrapper {
@@ -212,15 +219,22 @@
   margin: auto;
 }
 
-
 #folder-grid .item {
   float: left;
   width: 100%;
 
-  @media screen and (min-width: 640px)  {width: 50%; }
-  @media screen and (min-width: 800px)  {width: 33.333333%; }
-  @media screen and (min-width: 1000px) {width: 25%; }
-  @media screen and (min-width: 1200px) {width: 20%; }
+  @media screen and (min-width: 640px) {
+    width: 50%;
+  }
+  @media screen and (min-width: 800px) {
+    width: 33.333333%;
+  }
+  @media screen and (min-width: 1000px) {
+    width: 25%;
+  }
+  @media screen and (min-width: 1200px) {
+    width: 20%;
+  }
 }
 
 .compact-hidden {
@@ -256,8 +270,8 @@
   .item {
     display: inline-block;
     text-align: left;
-    padding-right: $folder-gutter*2;
-    padding-bottom: $folder-gutter*2;
+    padding-right: $folder-gutter * 2;
+    padding-bottom: $folder-gutter * 2;
     margin-bottom: $folder-gutter;
 
     position: relative;
@@ -265,36 +279,38 @@
 
     cursor: pointer;
 
-   .folder-drop {display:none; }
+    .folder-drop {
+      display: none;
+    }
 
     &.appear > a,
     &.creating > a {
       opacity: 0;
       -webkit-animation: appear 0.25s ease-out 0.05s;
-         -moz-animation: appear 0.25s ease-out 0.05s;
-          -ms-animation: appear 0.25s ease-out 0.05s;
-           -o-animation: appear 0.25s ease-out 0.05s;
-              animation: appear 0.25s ease-out 0.05s;
+      -moz-animation: appear 0.25s ease-out 0.05s;
+      -ms-animation: appear 0.25s ease-out 0.05s;
+      -o-animation: appear 0.25s ease-out 0.05s;
+      animation: appear 0.25s ease-out 0.05s;
 
       -webkit-animation-fill-mode: forwards;
-         -moz-animation-fill-mode: forwards;
-          -ms-animation-fill-mode: forwards;
-           -o-animation-fill-mode: forwards;
-              animation-fill-mode: forwards;
+      -moz-animation-fill-mode: forwards;
+      -ms-animation-fill-mode: forwards;
+      -o-animation-fill-mode: forwards;
+      animation-fill-mode: forwards;
     }
 
     &.deleting > a {
       -webkit-animation: disappear 0.25s ease-out 0.05s;
-         -moz-animation: disappear 0.25s ease-out 0.05s;
-          -ms-animation: disappear 0.25s ease-out 0.05s;
-           -o-animation: disappear 0.25s ease-out 0.05s;
-              animation: disappear 0.25s ease-out 0.05s;
+      -moz-animation: disappear 0.25s ease-out 0.05s;
+      -ms-animation: disappear 0.25s ease-out 0.05s;
+      -o-animation: disappear 0.25s ease-out 0.05s;
+      animation: disappear 0.25s ease-out 0.05s;
 
       -webkit-animation-fill-mode: forwards;
-         -moz-animation-fill-mode: forwards;
-          -ms-animation-fill-mode: forwards;
-           -o-animation-fill-mode: forwards;
-              animation-fill-mode: forwards;
+      -moz-animation-fill-mode: forwards;
+      -ms-animation-fill-mode: forwards;
+      -o-animation-fill-mode: forwards;
+      animation-fill-mode: forwards;
     }
 
     &.tag-important > a {
@@ -308,7 +324,7 @@
 
     &.dropping {
       .folder-drop {
-        display:block;
+        display: block;
       }
     }
 
@@ -349,7 +365,13 @@
           background-color: $darker;
           position: absolute;
           bottom: 2px;
-          -webkit-mask-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,0)), to(rgba(0,0,0,0.1)));
+          -webkit-mask-image: -webkit-gradient(
+            linear,
+            left top,
+            left bottom,
+            from(rgba(0, 0, 0, 0)),
+            to(rgba(0, 0, 0, 0.1))
+          );
           background-color: black;
           pointer-events: none;
         }
@@ -360,7 +382,7 @@
       .fav-toggle {
         margin-right: -12px;
         .icon {
-          @include scale(1,1);
+          @include scale(1, 1);
           @include opacity(1);
         }
       }
@@ -384,7 +406,7 @@
 
     > a {
       /* aspect ratio without spacer image */
-      &:before{
+      &:before {
         content: "";
         display: block;
         padding-top: 100%; /* initial ratio of 1:1*/
@@ -392,9 +414,11 @@
       }
 
       background-color: white;
-      border-radius: $radius*2;
+      border-radius: $radius * 2;
 
-      &:active { opacity: 0.95 !important; }
+      &:active {
+        opacity: 0.95 !important;
+      }
 
       box-shadow: 0 0 30px 1px rgba(0, 0, 0, 0.15);
       border: 1px solid black;
@@ -406,7 +430,7 @@
       font-weight: 400;
       display: block;
       text-decoration: none;
-      border-radius: $radius*2;
+      border-radius: $radius * 2;
       position: relative;
 
       .item-thumbnail {
@@ -420,8 +444,9 @@
         overflow: hidden;
 
         background-color: transparent;
-        border-top-left-radius: $radius*2;
-        border-top-right-radius: $radius*2;
+        background-size: cover;
+        border-top-left-radius: $radius * 2;
+        border-top-right-radius: $radius * 2;
 
         border-bottom-left-radius: 10px;
         border-bottom-right-radius: 10px;
@@ -431,7 +456,7 @@
 
       .item-title {
         display: block;
-        border-top: 1px solid rgba(0,0,0,0.05);
+        border-top: 1px solid rgba(0, 0, 0, 0.05);
         background-color: white;
         font-size: 18px;
         width: 100%;
@@ -439,15 +464,15 @@
         left: 0px;
         bottom: 0px;
         position: absolute;
-        border-bottom-left-radius: $radius*2;
-        border-bottom-right-radius: $radius*2;
+        border-bottom-left-radius: $radius * 2;
+        border-bottom-right-radius: $radius * 2;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
         color: $dark;
         text-align: left;
       }
-      
+
       .thumbnail-loading {
         position: absolute;
         z-index: 0;
@@ -464,11 +489,11 @@
     }
 
     .item-meta {
-      border-top: 2px solid rgba(0,0,0,0.025);
-      border-radius: 2*$radius;
+      border-top: 2px solid rgba(0, 0, 0, 0.025);
+      border-radius: 2 * $radius;
       border-top-left-radius: 0;
       border-top-right-radius: 0;
-      
+
       @include clearfix;
       color: $medium;
       position: absolute;
@@ -493,8 +518,8 @@
         left: 0px;
         bottom: 0px;
         position: relative;
-        border-bottom-left-radius: $radius*2;
-        border-bottom-right-radius: $radius*2;
+        border-bottom-left-radius: $radius * 2;
+        border-bottom-right-radius: $radius * 2;
         //white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -509,7 +534,7 @@
       position: absolute;
       bottom: 0;
       left: 0;
-      right: $folder-gutter*2;
+      right: $folder-gutter * 2;
       color: $medium;
       font-size: 11px;
       font-family: $main-font;
