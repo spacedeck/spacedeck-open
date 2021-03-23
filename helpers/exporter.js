@@ -39,7 +39,8 @@ module.exports = {
         await page.emulateMediaType('screen');
 
         if (type=="pdf") {
-          await page.pdf({path: export_path, printBackground: true, width: space.width+'px', height: space.height+'px' });
+          let margin = 2;
+          await page.pdf({path: export_path, printBackground: true, width: space.width+margin+'px', height: space.height+margin+'px' });
         }else{
           await page.screenshot({path: export_path, printBackground: true});
         }
