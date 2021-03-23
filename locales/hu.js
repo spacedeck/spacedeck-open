@@ -69,7 +69,7 @@
 	"team_invite_membership_subject": "Csapat meghívó %-s számára",
 	"team_invite_membership_body": "Meghívták a(z) %s oldalra a Spacedeck-en. Kattintson a következő hivatkozásra a meghívás elfogadásához.",
 	"team_invite_user_body": "Meghívták a(z)%s oldalra a Spacedeck-en.\nAz ideiglenes jelszó \"%s\".\n Kérjük, kattintson a következő hivatkozásra a meghívás elfogadásához.",
-	"team_invite_admin_body": "%s meghívást kapott a csapatodba: %s. Az ideiglenes jelszó \ "% s \".",
+	"team_invite_admin_body": "%s meghívást kapott a csapatodba: %s. Az ideiglenes jelszó \"%s\".",
 	"team_invite_membership_acction": "Elfogad",
 	"team_new_member_subject": "A(z) %s új csapattagja feliratkozott",
 	"team_new_member_body": "%s most csatlakozott a(z) %s csoporthoz a Spacedeck-en.",

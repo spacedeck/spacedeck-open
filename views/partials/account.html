@@ -110,7 +110,10 @@
         </label>
         <label class="radio" v-bind:class="{checked: user.prefs_language=='es'}" v-on:click="save_user_language('es')">
           <input type="radio" id="user-preferences_language" name="language" value="es"><span>Español</span>
-        </label>        
+        </label>
+        <label class="radio" v-bind:class="{checked: user.prefs_language=='hu'}" v-on:click="save_user_language('hu')">
+          <input type="radio" id="user-preferences_language" name="language" value="hu"><span>Magyar</span>
+        </label>
       </div>
     </div>
 

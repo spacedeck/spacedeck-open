@@ -18,7 +18,7 @@
         webEndpoint: location.origin,
         apiEndpoint: location.origin,
         websocketsEndpoint: location.origin.replace("https:","wss:").replace("http:","ws:"),
-        options: <%- config.spacedeck ? JSON.stringify(config.spacedeck) : "{}" %>
+        options: <%- config && config.spacedeck ? JSON.stringify(config.spacedeck) : "{}" %>
       };
     </script>
 
@@ -79,10 +79,12 @@
     window.locales.fr = {};
     window.locales.oc = {};
     window.locales.es = {};
+    window.locales.hu = {};
     window.locales.en.translation = <%- include("./../locales/en.js") %>;
     window.locales.de.translation = <%- include("./../locales/de.js") %>;
     window.locales.fr.translation = <%- include("./../locales/fr.js") %>;
     window.locales.oc.translation = <%- include("./../locales/oc.js") %>;
     window.locales.es.translation = <%- include("./../locales/es.js") %>;
+    window.locales.hu.translation = <%- include("./../locales/hu.js") %>;
   </script>
 </html>

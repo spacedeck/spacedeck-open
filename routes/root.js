@@ -78,6 +78,22 @@ router.get('/oc', (req, res) => {
   res.redirect("/t/oc");
 });
 
+router.get('/es/*', (req, res) => {
+  res.redirect("/t/es");
+});
+
+router.get('/es', (req, res) => {
+  res.redirect("/t/es");
+});
+
+router.get('/hu/*', (req, res) => {
+  res.redirect("/t/hu");
+});
+
+router.get('/hu', (req, res) => {
+  res.redirect("/t/hu");
+});
+
 router.get('/en/*', (req, res) => {
   res.redirect("/t/en");
 });
