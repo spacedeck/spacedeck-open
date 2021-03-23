@@ -62,7 +62,7 @@ var SpacedeckSections = {
 
     active_style: {
       border_radius: 0,
-      stroke: 0,
+      stroke: 2,
       font_family: "Inter",
       font_size: 36,
       line_height: 1.5,
@@ -1356,7 +1356,7 @@ var SpacedeckSections = {
     },
 
     reset_stroke: function() {
-      this.active_style.stroke = 0;
+      this.active_style.stroke = 2;
       this.active_style.border_radius = 0;
       this.active_style.stroke_style = "solid";
     },
@@ -1714,7 +1714,7 @@ var SpacedeckSections = {
         h: h,
         stroke_color: this.active_style.stroke_color,
         text_color: this.active_style.text_color,
-        stroke: 0,
+        stroke: this.active_style.stroke,
         fill_color: this.active_style.fill_color,
         shape: shape_type,
         valign: "middle",
