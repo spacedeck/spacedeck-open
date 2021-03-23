@@ -12,7 +12,7 @@ We appreciate filed issues, pull requests and general discussion.
 
 # Features
 
-- Create virtual whiteboards called *Spaces* with virtually unlimited size
+- Create virtual whiteboards called _Spaces_ with virtually unlimited size
 - Drag & drop images, videos and audio from your computer or the web
 - Write and format text with full control over fonts, colors and style
 - Draw, annotate and highlight with included graphical shapes
@@ -45,7 +45,6 @@ To install all node dependencies, run (do this once) after cloning the repositor
 
 See [config/default.json](config/default.json). Set `storage_local_path` for a local sqlite database or `storage_region`, `storage_bucket`, `storage_cdn` and `storage_endpoint` for AWS S3. `mail_provider` may be one of `console` or `smtp`. Also, omit a trailing `/` for the `endpoint`.
 
-
 ## Disable DB logs
 
 ```json
@@ -61,7 +60,8 @@ Add a custom array of swatches to your config/default.json.
 **You should include the swatch transparent (rgba(0,0,0,0)) so users can remove the color applied.**
 
 ## Configure default colors
-You can define text, stroke and fill color in your config/default.json. 
+
+You can define text, stroke and fill color in your config/default.json.
 
 **You also should include the default colors in your custom swatches palette.**
 
@@ -107,8 +107,8 @@ For advanced media conversion:
 
 # Data Storage
 
-By default, media files are uploaded to the ```storage``` folder.
-The database is stored in ```database.sqlite``` by default.
+By default, media files are uploaded to the `storage` folder.
+The database is stored in `database.sqlite` by default.
 
 # Other databases (Not officially supported)
 
@@ -129,16 +129,12 @@ Adapt the other values as needed
 "storage_password": "password",
 ```
 
-
 # Run with Docker
 
 - configure `config/default.json`
-- configure `volumes` section inside `docker-compose.yml`
-  - point to `database.sqlite` on the host system
-  - `touch database.sqlite` if it not exists
-  - point to `storage/` on the host system
-  - `mkdir storage/` if it not exists
-- start the container with `sudo docker-compose up -f docker-compose.yml -d --build`
+- adapt your `docker-compose.yml` if needed.
+- start the container with `docker-compose up`
+  (use `-d` for background process and `--build` for rebuilding the image)
 
 # Hacking
 
@@ -155,7 +151,7 @@ Spacedeck Open source code is released under the GNU Affero General Public Licen
     Spacedeck Open - Web-based Collaborative Whiteboard For Rich Media
     Copyright (C) 2011-2018 Lukas F. Hartmann, Martin Güther
     Icons and original CSS design copyright by Thomas Helbig
-    
+
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
     published by the Free Software Foundation, either version 3 of the
