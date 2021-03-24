@@ -86,7 +86,7 @@ module.exports = (req, res, next) => {
         // space is private
         
         // special permission for screenshot/pdf export from backend
-        if (req.query['api_token'] && req.query['api_token'] == config.get('phantom_api_secret')) {
+        if (req.query['api_token'] && req.query['api_token'] == config.get('export_api_secret')) {
           finalizeReq(space, "viewer");
           return;
         }

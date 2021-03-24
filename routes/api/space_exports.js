@@ -5,7 +5,7 @@ const db = require('../../models/db');
 var mailer = require('../../helpers/mailer');
 var uploader = require('../../helpers/uploader');
 var space_render = require('../../helpers/space-render');
-var phantom = require('../../helpers/phantom');
+var exporter = require('../../helpers/exporter');
 
 var async = require('async');
 var moment = require('moment');
@@ -51,7 +51,7 @@ router.get('/png', function(req, res, next) {
   if (!req.space.thumbnail_updated_at || req.space.thumbnail_updated_at < req.space.updated_at || !req.space.thumbnail_url) {
     db.Space.update({ thumbnail_updated_at: triggered }, {where : {"_id": req.space._id }});
     
-    phantom.takeScreenshot(req.space, "png", function(local_path) {
+    exporter.takeScreenshot(req.space, "png", function(local_path) {
       var localResizedFilePath = local_path + ".thumb.jpg";
       gm(local_path).resize(640, 480).quality(70.0).autoOrient().write(localResizedFilePath, function(err) {
         
@@ -109,7 +109,7 @@ function make_export_filename(space, extension) {
 router.get('/pdf', function(req, res, next) {
   var s3_filename = make_export_filename(req.space, "pdf");
 
-  phantom.takeScreenshot(req.space, "pdf", function(local_path) {
+  exporter.takeScreenshot(req.space, "pdf", function(local_path) {
     uploader.uploadFile(s3_filename, "application/pdf", local_path, function(err, url) {
       res.status(201).json({
         url: url
