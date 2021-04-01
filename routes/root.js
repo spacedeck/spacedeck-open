@@ -103,7 +103,7 @@ router.get('/en', (req, res) => {
 });
 
 router.get('/account', (req, res) => {
-  res.render('spacedeck');
+  res.render('spacedeck', { config:config });
 });
 
 router.get('/login', (req, res) => {
