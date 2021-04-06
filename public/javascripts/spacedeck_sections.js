@@ -8,6 +8,8 @@ var SpacedeckSections = {
   data: {
     MAX_COLUMNS: 20,
 
+    isShift: false,
+
     redo_stack: [],
     undo_stack: [],
 
@@ -206,7 +208,9 @@ var SpacedeckSections = {
       Mousetrap.bind('shift+left', function(evt)      { this.if_editable(function() {this.nudge_selected_artifacts(-10,0,evt);}) }.bind(this));
       Mousetrap.bind('shift+right', function(evt)     { this.if_editable(function() {this.nudge_selected_artifacts(10,0,evt);}) }.bind(this));
       Mousetrap.bind('space', function(evt)           { this.activate_pan_tool(evt); }.bind(this));
-
+      Mousetrap.bind(['shift'], function(evt)         { this.isShift = true; }.bind(this), 'keydown');
+      Mousetrap.bind(['shift'], function(evt)         { this.isShift = false; }.bind(this), 'keyup');
+      Mousetrap.bind('shift+up', function(evt)        { this.if_editable(function() {this.nudge_selected_artifacts(0,-10,evt);}) }.bind(this));
       $(document).bind("beforecopy", this.handle_onbeforecopy.bind(this));
       $(window).bind("beforeunload", this.handle_onunload.bind(this));
       $(window).bind("resize", this.handle_window_resize.bind(this));
@@ -2292,17 +2296,19 @@ var SpacedeckSections = {
           for (var i=0; i<parsed.length; i++) {
             if (parsed[i].mime) {
               var z = this.highest_z()+1;
-              if (parsed.length==1) {
-                var w = parsed[i].w;
-                var h = parsed[i].h;
-                var point = this.find_place_for_item(w,h);
-                parsed[i].x = point.x;
-                parsed[i].y = point.y;
-                parsed[i].z = point.z;
-              } else {
-                parsed[i].x = parsed[i].x+50;
-                parsed[i].y = parsed[i].y+50;
-                parsed[i].y = parsed[i].z+z;
+              if(!this.isShift) {
+                if (parsed.length==1) {
+                  var w = parsed[i].w;
+                  var h = parsed[i].h;
+                  var point = this.find_place_for_item(w,h);
+                  parsed[i].x = point.x;
+                  parsed[i].y = point.y;
+                  parsed[i].z = point.z;
+                } else {
+                  parsed[i].x = parsed[i].x+100;
+                  parsed[i].y = parsed[i].y+100;
+                  parsed[i].y = parsed[i].z+z;
+                }
               }
               this.clone_artifact(parsed[i], 0,0, function(a) {
                 this.multi_select([a]);
