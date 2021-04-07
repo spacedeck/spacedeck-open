@@ -1,5 +1,4 @@
 version: "2.0"
-
 services:
   spacedeck:
     build: .
@@ -7,6 +6,5 @@ services:
     ports:
       - "9666:9666"
     volumes:
-      - /absolute/path/to/storage:/app/storage
-      - /absolute/path/to/database.sqlite:/app/database.sqlite
-
+      - ./storage:/app/storage
+      - ./database.sqlite:/app/database.sqlite

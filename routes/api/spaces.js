@@ -10,7 +10,7 @@ var redis = require('../../helpers/redis');
 var mailer = require('../../helpers/mailer');
 var uploader = require('../../helpers/uploader');
 var space_render = require('../../helpers/space-render');
-var phantom = require('../../helpers/phantom');
+var exporter = require('../../helpers/exporter');
 var payloadConverter = require('../../helpers/artifact_converter');
 
 var slug = require('slug');

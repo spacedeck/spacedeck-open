@@ -78,6 +78,22 @@ router.get('/oc', (req, res) => {
   res.redirect("/t/oc");
 });
 
+router.get('/es/*', (req, res) => {
+  res.redirect("/t/es");
+});
+
+router.get('/es', (req, res) => {
+  res.redirect("/t/es");
+});
+
+router.get('/hu/*', (req, res) => {
+  res.redirect("/t/hu");
+});
+
+router.get('/hu', (req, res) => {
+  res.redirect("/t/hu");
+});
+
 router.get('/en/*', (req, res) => {
   res.redirect("/t/en");
 });
@@ -87,7 +103,7 @@ router.get('/en', (req, res) => {
 });
 
 router.get('/account', (req, res) => {
-  res.render('spacedeck');
+  res.render('spacedeck', { config:config });
 });
 
 router.get('/login', (req, res) => {

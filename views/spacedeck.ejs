@@ -18,7 +18,7 @@
         webEndpoint: location.origin,
         apiEndpoint: location.origin,
         websocketsEndpoint: location.origin.replace("https:","wss:").replace("http:","ws:"),
-        options: <%- config.spacedeck ? JSON.stringify(config.spacedeck) : "{}" %>
+        options: <%- config && config.spacedeck ? JSON.stringify(config.spacedeck) : "{}" %>
       };
     </script>
 
@@ -74,15 +74,17 @@
 
   <script type="text/javascript">
     window.locales = {};
-    window.locales.en = {};
     window.locales.de = {};
-    window.locales.fr = {};
-    window.locales.oc = {};
+    window.locales.en = {};
     window.locales.es = {};
-    window.locales.en.translation = <%- include("./../locales/en.js") %>;
+    window.locales.fr = {};
+    window.locales.hu = {};
+    window.locales.oc = {};
     window.locales.de.translation = <%- include("./../locales/de.js") %>;
-    window.locales.fr.translation = <%- include("./../locales/fr.js") %>;
-    window.locales.oc.translation = <%- include("./../locales/oc.js") %>;
+    window.locales.en.translation = <%- include("./../locales/en.js") %>;
     window.locales.es.translation = <%- include("./../locales/es.js") %>;
+    window.locales.fr.translation = <%- include("./../locales/fr.js") %>;
+    window.locales.hu.translation = <%- include("./../locales/hu.js") %>;
+    window.locales.oc.translation = <%- include("./../locales/oc.js") %>;
   </script>
 </html>

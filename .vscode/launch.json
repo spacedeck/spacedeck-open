@@ -4,11 +4,26 @@
       {
         "type": "node",
         "request": "launch",
-        "name": "Nodemon",
+        "name": "Launch debug",
         "runtimeExecutable": "${workspaceFolder}/node_modules/nodemon/bin/nodemon.js",
         "skipFiles": ["<node_internals>/**"],
         "program": "${workspaceFolder}/spacedeck.js",
-        "cwd": "${workspaceFolder}"
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "NODE_APP_INSTANCE" :"dev"
+        }
+      },
+      {
+        "type": "node",
+        "request": "launch",
+        "name": "Launch ldap",
+        "runtimeExecutable": "${workspaceFolder}/node_modules/nodemon/bin/nodemon.js",
+        "skipFiles": ["<node_internals>/**"],
+        "program": "${workspaceFolder}/spacedeck.js",
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "NODE_APP_INSTANCE" :"ldap"
+        }
       }
     ]
   }

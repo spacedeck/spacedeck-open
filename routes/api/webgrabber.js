@@ -1,10 +1,10 @@
 "use strict";
 
+const puppeteer = require('puppeteer');
+
 var config = require('config');
 require('../../models/db');
-
 var fs = require('fs');
-var phantom = require('node-phantom-simple');
 var md5 = require('md5');
 
 var express = require('express');
@@ -19,40 +19,39 @@ function website_to_png(url,on_success,on_error) {
   console.log("[webgrabber] url: "+url);
   console.log("[webgrabber] export_path: "+export_path);
 
-  var on_success_called = false;
-
-  var on_exit = function(exit_code) {
-    if (exit_code>0) {
-      console.log("[phantom-webgrabber] abnormal exit for url "+url);
-      if (!on_success_called && on_error) {
-        on_error();
-      }
-    }
-  };
-  
   fs.stat(export_path, function(err, stat) {
     if (!err) {
       // file exists
       console.log("[webgrabber] serving cached snapshot of url: "+url);
       on_success(export_path);
     } else {
-      phantom.create({ path: require('phantomjs-prebuilt').path }, function (err, browser) {
-        return browser.createPage(function (err, page) {
-          page.set('settings.resourceTimeout',timeout);
-          page.set('settings.javascriptEnabled',false);
-          
-          return page.open(url, function(err, status) {
-            console.log("[webgrabber] status: "+status);
-            page.render(export_path, function() {
-              on_success_called = true;
-              on_success(export_path);
-              browser.exit();
-            });
-          });
-        });
-      }, {
-        onExit: on_exit
-      });
+      (async () => {
+        let browser;
+        let page;
+        try {
+          browser = await puppeteer.launch(
+            {
+              headless: true,
+              args: ['--disable-dev-shm-usage', '--no-sandbox']
+            }
+          );
+          page = await browser.newPage();
+  
+          page.setDefaultTimeout(timeout);
+          await page.setJavaScriptEnabled(false);
+          await page.goto(url, {waitUntil: 'networkidle2'});
+          await page.emulateMedia('screen');
+          await page.screenshot({path: export_path, printBackground: true});
+  
+          await browser.close();
+          on_success(export_path);
+        } catch (error) {
+          console.error(error);
+          console.log("[webgrabber] puppeteer abnormal exit for url "+url);
+          on_error();
+        }
+      
+      })();
     }
   });
 }
