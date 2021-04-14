@@ -10,4 +10,4 @@ services:
       - database.sqlite:/app
 volumes:
   storage:
-  databse.sqlite:
+  database.sqlite:
