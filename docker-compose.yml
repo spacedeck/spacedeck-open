@@ -6,5 +6,8 @@ services:
     ports:
       - "9666:9666"
     volumes:
-      - ./storage:/app/storage
-      - ./database.sqlite:/app/database.sqlite
+      - storage:/app/storage
+      - database.sqlite:/app
+volumes:
+  storage:
+  databse.sqlite:
