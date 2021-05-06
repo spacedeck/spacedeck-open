@@ -3,7 +3,7 @@
     <a class="btn btn-dark btn-md btn-round btn-icon" href="/spaces">
       <span class="icon icon-svg icon-sd6"></span>
     </a>
-    <h5>Edit Account</h5>
+    <h5><%=__('edit_account')%></h5>
   </div>
 
   <div class="header-right pull-right">
@@ -86,7 +86,7 @@
         </div>
 
         <div class="form-group">
-          <button class="btn btn-md btn-dark" v-on:click="save_user()">Save</button>
+          <button class="btn btn-md btn-dark" v-on:click="save_user()"><%=__('save')%></button>
         </div>
       </div>
     </div>
@@ -158,7 +158,7 @@
     </div>
 
     <div class="collapse" v-bind:class="{in:account=='terminate'}">
-      <h4>Terminate Account</h4>
+      <h4><%=__('terminate_caption')%></h4>
       <div class="modal-section labels-inline">
         <div class="form-group">
           <label class="label"><%=__("current_password")%></label>
@@ -177,7 +177,7 @@
       </div>
       
       <div class="modal-footer">
-        <button class="btn btn-stroke-darken btn-md" v-on:click="remove_account(account_remove_password, account_remove_feedback)">Terminate Account</button>
+        <button class="btn btn-stroke-darken btn-md" v-on:click="remove_account(account_remove_password, account_remove_feedback)"><%=__('terminate_caption')%></button>
       </div>
     </div>
   </div>

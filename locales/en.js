@@ -19,6 +19,7 @@
 	"logout": "Log out",
 	"email": "Email Address",
 	"password": "Password",
+	"forgot_password": "Forgot Password",
 	"width": "Width",
 	"height": "Height",
 	"nick": "Name",
@@ -324,5 +325,6 @@
 	"follow_present_help": "If someone else is presenting this Space, the other members automatically follow the presentation. Switch following on or off with this button.",
 	"export": "Export",
 	"media": "Media",
-	"tool_edit_text": "Edit Text"
+	"tool_edit_text": "Edit Text",
+	"tool_space_help": "Use the toolbar to add content. \nYou can also drop images or sound and video files."
 }

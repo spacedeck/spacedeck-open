@@ -418,7 +418,7 @@ var SpacedeckSpaces = {
       if (!space_type) space_type = "space";
 
       var s = {
-        name: space_type == "space" ? __("untitled_space") : __("untitled_folder") ,
+        name: space_type == "space" ? __("untitled_space") : __("untitled_folder"),
         artifacts: [],
         space_type: space_type,
         parent_space_id: this.active_folder._id
@@ -528,7 +528,7 @@ var SpacedeckSpaces = {
           space.name = title;
           save_space(space);
         }
-      }.bind(this), {value: space.name});
+      }.bind(this), {value: space.name, ok: __("ok"), cancel: __("cancel")});
     },
 
     rename_folder: function(folder) {
@@ -539,7 +539,7 @@ var SpacedeckSpaces = {
           folder.name = title;
           save_space(folder);
         }
-      }.bind(this), {value: folder.name});
+      }.bind(this), {value: folder.name, ok: __("ok"), cancel: __("cancel")});
     },
 
     edit_space_title: function() {
