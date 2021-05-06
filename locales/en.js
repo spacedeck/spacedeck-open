@@ -326,5 +326,6 @@
 	"export": "Export",
 	"media": "Media",
 	"tool_edit_text": "Edit Text",
-	"tool_space_help": "Use the toolbar to add content. \nYou can also drop images or sound and video files."
+	"tool_space_help": "Use the toolbar to add content. \nYou can also drop images or sound and video files.",
+	"tool_delete_space": "Really delete \"%s\"?"
 }

@@ -487,7 +487,7 @@ var SpacedeckSpaces = {
     },
 
     delete_space: function(space) {
-      smoke.confirm("Really delete "+space.name+"?", function(confirmed) {
+      smoke.confirm(__("tool_delete_space", space.name), function(confirmed) {
         if (!confirmed) return;
         var idx = this.active_folder.children.indexOf(space);
 
@@ -502,7 +502,7 @@ var SpacedeckSpaces = {
 
           this.active_folder.children.splice(idx,1);
         }.bind(this));
-      }.bind(this));
+      }.bind(this), {ok: __("ok"), cancel: __("cancel")});
     },
 
     duplicate_space: function(space) {

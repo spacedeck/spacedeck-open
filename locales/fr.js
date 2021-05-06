@@ -321,5 +321,6 @@
 	"follow_present_help": "follow_present_help",
 	"media": "Media",
 	"tool_edit_text": "Modifier le texte",
-	"tool_space_help": "Utilisez la barre d'outil pour ajouter des éléments. \nVous pouvez également déposer des fichiers images, son ou video."
+	"tool_space_help": "Utilisez la barre d'outil pour ajouter des éléments. <br>Vous pouvez également déposer des fichiers images, son ou video.",
+	"tool_delete_space": "Confirmez-vous la suppression de \"%s\" ?"
 }
