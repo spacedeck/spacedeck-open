@@ -41,7 +41,7 @@
     "slug": "^1.1.0",
     "sqlite3": "^4.0.0",
     "umzug": "^2.1.0",
-    "underscore": "1.8.3",
+    "underscore": "^1.13.1",
     "uuid": "^3.2.1",
     "validator": "7.0.0",
     "ws": "3.3.1"
