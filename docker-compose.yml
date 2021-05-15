@@ -7,4 +7,4 @@ services:
       - "9666:9666"
     volumes:
       - ./storage:/app/storage
-      - ./database.sqlite:/app/database.sqlite
+      - ./database:/app/database
