@@ -61,7 +61,7 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.use(cookieParser());
-//app.use(helmet.frameguard())
+//app.use(helmet.frameguard({ action: 'SAMEORIGIN' }));
 //app.use(helmet.xssFilter())
 /*app.use(helmet.hsts({
   maxAge: 7776000000,
