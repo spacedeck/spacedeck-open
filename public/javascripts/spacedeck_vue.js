@@ -121,20 +121,26 @@ function boot_spacedeck() {
   var lang = "en";
 
   window.refreshLocale = function() {
-    if (spacedeck && spacedeck.user && spacedeck.user.preferences) {
-      lang = spacedeck.user.preferences.language || "en";
+    var old_lang = lang;
+    if (spacedeck && spacedeck.user && spacedeck.user.prefs_language) {
+      lang = spacedeck.user.prefs_language || "en";
     } else if (window.browser_lang) {
       lang = window.browser_lang;
+    }
+    if (lang != old_lang) {
+      i18n.init({ lng: lang, resStore: window.locales }, function(err, t) {
+        console.log("i18n initialized: "+lang);
+      });
     }
   }
 
   window.refreshLocale();
-  
+
   i18n.init({ lng: lang, resStore: window.locales }, function(err, t) {
     console.log("i18n initialized: "+lang);
   });
 
-  window.__ = function() { 
+  window.__ = function() {
     var params = Array.prototype.slice.call(arguments);
     params.shift();
     window.refreshLocale();
