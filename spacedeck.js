@@ -23,6 +23,8 @@ const express = require('express');
 const app = express();
 const serveStatic = require('serve-static');
 
+const chargebee = require('chargebee');
+
 const isProduction = app.get('env') === 'production';
 
 // workaround for libssl_conf.so error triggered by phantomjs
@@ -109,6 +111,14 @@ if (app.get('env') == 'development') {
 }
 
 module.exports = app;
+
+// ChargeBee Integration (Optional)
+if (config.get('chargebee_integration')) {
+  chargebee.configure({
+    site: config.get('chargebee_site'),
+    api_key: config.get('chargebee_api_key')
+  });
+}
 
 // CONNECT TO DATABASE
 db.init();

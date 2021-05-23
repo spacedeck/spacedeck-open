@@ -23,6 +23,8 @@ var express = require('express');
 var router = express.Router();
 var glob = require('glob');
 
+var chargebee = require('chargebee');
+
 router.get('/current', function(req, res, next) {
   if (req.user) {
     var u = _.clone(req.user.dataValues);
@@ -39,6 +41,88 @@ router.get('/current', function(req, res, next) {
   }
 });
 
+function createChargebeeCheckout(req, res, plan_id, email, name, company) {
+  var nameParts = name.split(" ");
+  var firstName = nameParts.shift();
+  var lastName = nameParts.join(" ");
+
+  chargebee.hosted_page.checkout_new({
+    subscription: {
+      plan_id: plan_id
+    },
+    customer: {
+      first_name: firstName,
+      last_name: lastName,
+      email: email,
+      company: company,
+    }
+  }).request(function(error,result) {
+    if (error) {
+      console.log(error);
+      res.status(400).json({"error":error+""});
+    } else {
+      res.status(200).json({"chargebee_checkout":result.hosted_page});
+    }
+  });
+};
+
+function createUser(req, res, email, nickname, password) {
+  bcrypt.genSalt(10, function(err, salt) {
+    bcrypt.hash(password, salt, function(err, hash) {
+      crypto.randomBytes(16, function(ex, buf) {
+        var token = buf.toString('hex');
+
+        var u = {
+          _id: uuidv4(),
+          email: email,
+          account_type: "email",
+          nickname: nickname,
+          password_hash: hash,
+          prefs_language: req.i18n.locale,
+          confirmation_token: token
+        };
+
+        db.User.create(u)
+          .error(err => {
+            res.sendStatus(400);
+          })
+          .then(u => {
+            var homeFolder = {
+              _id: uuidv4(),
+              name: req.i18n.__("home"),
+              space_type: "folder",
+              creator_id: u._id
+            };
+            db.Space.create(homeFolder)
+              .error(err => {
+                res.sendStatus(400);
+              })
+              .then(homeFolder => {
+                u.home_folder_id = homeFolder._id;
+                u.save()
+                  .then(() => {
+                    // home folder created,
+                    // auto accept pending invites
+                    db.Membership.update({
+                      "state": "active"
+                    }, {
+                      where: {
+                        "email_invited": u.email,
+                        "state": "pending"
+                      }
+                    });
+                    res.status(201).json({});          
+                  })
+                  .error(err => {
+                    res.status(400).json(err);
+                  });
+              })
+          });
+      });
+    });
+  });
+};
+  
 // create user
 router.post('/', function(req, res) {
   if (!req.body["email"] || !req.body["password"]) {
@@ -51,6 +135,7 @@ router.post('/', function(req, res) {
   var password = req.body["password"];
   var password_confirmation = req.body["password_confirmation"];
   var invite_code = req.body["invite_code"];
+  var company = req.body["company"] || "";
 
   if (password_confirmation != password) {
     res.status(400).json({"error":"password_confirmation"});
@@ -67,67 +152,17 @@ router.post('/', function(req, res) {
     return;
   }
   
-  var createUser = function() {
-    bcrypt.genSalt(10, function(err, salt) {
-      bcrypt.hash(password, salt, function(err, hash) {
-        crypto.randomBytes(16, function(ex, buf) {
-          var token = buf.toString('hex');
-
-          var u = {
-            _id: uuidv4(),
-            email: email,
-            account_type: "email",
-            nickname: nickname,
-            password_hash: hash,
-            prefs_language: req.i18n.locale,
-            confirmation_token: token
-          };
-
-          db.User.create(u)
-            .error(err => {
-              res.sendStatus(400);
-            })
-            .then(u => {
-              var homeFolder = {
-                _id: uuidv4(),
-                name: req.i18n.__("home"),
-                space_type: "folder",
-                creator_id: u._id
-              };
-              db.Space.create(homeFolder)
-                .error(err => {
-                  res.sendStatus(400);
-                })
-                .then(homeFolder => {
-                  u.home_folder_id = homeFolder._id;
-                  u.save()
-                    .then(() => {
-                      // home folder created,
-                      // auto accept pending invites
-                      db.Membership.update({
-                        "state": "active"
-                      }, {
-                        where: {
-                          "email_invited": u.email,
-                          "state": "pending"
-                        }
-                      });
-                      res.status(201).json({});          
-                    })
-                    .error(err => {
-                      res.status(400).json(err);
-                    });
-                })
-            });
-        });
-      });
-    });
-  };
-  
   db.User.findAll({where: {email: email}})
     .then(users => {
       if (users.length == 0) {
-        createUser();
+        if (config.get('chargebee_integration')) {
+          // sign up via paid plan trial
+          createChargebeeCheckout(req, res, config.get('chargebee_default_plan_id'), email, nickname, company);
+          // TODO: createUser after chargebee checkout
+        }
+        else {
+          createUser(req, res, email, nickname, password);
+        }
       } else {
         res.status(400).json({"error":"user_email_already_used"});
       }

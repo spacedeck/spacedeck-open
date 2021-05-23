@@ -130,9 +130,27 @@ SpacedeckUsers = {
         $event.stopPropagation();
       }
 
-      create_user(name, email, password, password_confirmation, invite_code, function(session) {
+      create_user(name, email, password, password_confirmation, invite_code, function(res) {
         this.creating_user = false;
-        this.login_submit(email, password, null, on_success);
+
+        if (res.chargebee_checkout) {
+          var chargebeeInstance = Chargebee.init({
+            site: "spacedeck-test",
+            enableRedirectMode: true,
+            enableFriendbuyTracking: false
+          });
+          
+          chargebeeInstance.openCheckout({
+            hostedPage: function() {
+              return new Promise(function(resolve, reject) {
+                resolve(res.chargebee_checkout);
+              })
+            }
+          });
+        } else {
+          // user created, login
+          this.login_submit(email, password, null, on_success);
+        }
       }.bind(this), function(req) {
         this.creating_user = false;
         try {
