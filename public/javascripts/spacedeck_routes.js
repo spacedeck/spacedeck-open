@@ -11,6 +11,15 @@ var SpacedeckRoutes = {
 
       this.router.add([
         {
+          path: "/enter-classroom",
+          handler: function(params) {
+            this.active_view = "enter-classroom";
+          }.bind(this)
+        }
+      ]);
+
+      this.router.add([
+        {
           path: "/spaces/:id",
           handler: function(params, on_success) {
             this.load_space(params.id, on_success);

@@ -54,11 +54,12 @@ module.exports = (req, res, next) => {
     'email': 1
   };
 
-  // find space by id or slug
+  // find space by id or slug or code
   db.Space.findOne({where: {
                     [Op.or]: [
                       {"_id": spaceId},
-                      {"edit_slug": spaceId}
+                      {"edit_slug": spaceId},
+                      {"code": spaceId}
                     ]
   }}).then(function(space) {
 

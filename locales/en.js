@@ -328,5 +328,9 @@
 	"tool_edit_text": "Edit Text",
 	"tool_space_help_part_one": "Use the toolbar to add content.",
 	"tool_space_help_part_two": "You can also drop images or sound and video files.",
-	"tool_delete_space": "Really delete \"%s\"?"
+	"tool_delete_space": "Really delete \"%s\"?",
+	"enter_code": "Enter code",
+	"new_space_code": "New code for Space",
+	"enter_classroom_code": "Enter classroom code",
+	"enter_classroom_button_text": "Enter"
 }

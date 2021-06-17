@@ -26,6 +26,10 @@ router.get('/spaces', (req, res) => {
   res.render('spacedeck', { config:config, user:req.user });
 });
 
+router.get('/enter-classroom', (req, res) => {
+  res.render('spacedeck', { config:config });
+});
+
 router.get('/not_found', (req, res) => {
   res.render('not_found', {});
 });

@@ -1,0 +1,27 @@
+<header id="landing-header" class="header" v-if="(active_view == 'enter-classroom')">
+  <div class="header-left">
+    <a class="btn btn-transparent btn-nude" href="/"><img src="/images/sd6-logo-black.svg" width="190"></a>
+  </div>
+
+  <div class="header-right pull-right">
+    <a class="btn btn-md btn-dark btn-round" href="/login"><%= __("login") %></a>
+    <a class="btn btn-md btn-dark btn-round" href="/signup"><%= __("signup") %></a>
+  </div>
+</header>
+
+<div id="account-forms" v-if="(active_view == 'enter-classroom')">
+  <div class="active">
+    <div class="content">
+      <form v-on:submit="go_to_space($event)">
+        <h4>Enter classroom</h4>
+        <div class="tight">
+          <div class="form-group">
+            <input class="input" type="text" id="classroom-code" v-model="classroom_code" v-on:blur="clear_space_error" v-on:input="clear_space_error" placeholder="<%=__('enter_classroom_code')%>">
+          </div>
+        </div>
+        <div class="text-center alert alert-danger m-b-15" v-if="go_to_space_error">{{go_to_space_error}}</div>
+        <button class="btn btn-dark btn-block" v-bind:class="{'btn-disabled': classroom_code == ''}"  type="submit" :disabled="classroom_code==''"><%=__("enter_classroom_button_text")%></button>
+      </form>
+    </div>
+  </div>
+</div>

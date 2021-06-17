@@ -30,7 +30,9 @@ function boot_spacedeck() {
     password_reset_confirm_error: null,
     reset_token: null,
 
-    global_spinner: false
+    global_spinner: false,
+    classroom_code: "",
+    go_to_space_error: null
   };
 
   var methods = {
@@ -50,6 +52,18 @@ function boot_spacedeck() {
       }
 
       this.active_dropdown = "none";
+    },
+    clear_space_error: function () {
+      this.go_to_space_error = "";
+    },
+
+    go_to_space: function(event) {
+      event.preventDefault();
+      load_space(encodeURIComponent(this.classroom_code), (space) => {
+        this.redirect_to(`/spaces/${space._id}`);
+      },() => {
+        this.go_to_space_error = "Classroom not found.";
+      })
     },
 
     translate: function() {

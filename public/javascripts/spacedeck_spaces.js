@@ -520,6 +520,16 @@ var SpacedeckSpaces = {
       }.bind(this));
     },
 
+    enter_space_code: function(space) {
+      this.close_dropdown();
+      smoke.prompt(__("new_space_code"), function(code) {
+        if (code) {
+          space.code = code;
+          save_space(space); 
+        }
+      }.bind(this), {value: space.code, ok: __("ok"), cancel: __("cancel")});
+    },
+
     rename_space: function(space) {
       this.close_dropdown();
       if (space.space_type == "folder") return this.rename_folder(space);

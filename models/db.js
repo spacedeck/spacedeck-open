@@ -87,6 +87,7 @@ module.exports = {
     password: Sequelize.STRING,
     edit_hash: Sequelize.STRING,
     edit_slug: Sequelize.STRING,
+    code: {type: Sequelize.STRING, unique: true},
     editors_locking: Sequelize.BOOLEAN,
 
     thumbnail_uri: Sequelize.STRING,
