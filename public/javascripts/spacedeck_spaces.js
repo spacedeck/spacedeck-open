@@ -64,6 +64,7 @@ var SpacedeckSpaces = {
 
     // map of artifact IDs to medium rich text editor objects
     medium_for_object: {},
+    save_space_error: null
   },
 
   methods: {
@@ -522,10 +523,16 @@ var SpacedeckSpaces = {
 
     enter_space_code: function(space) {
       this.close_dropdown();
-      smoke.prompt(__("new_space_code"), function(code) {
+      smoke.prompt(__("new_space_code"), function(unparsedCode) {
+        const code = unparsedCode.trim();
         if (code) {
           space.code = code;
-          save_space(space); 
+          save_space(space, null, (xhr) => {
+            this.save_space_error = `Failed to save space: ${xhr.responseText}.`;
+            setTimeout(() => {
+              this.save_space_error = null;
+            }, 10000)
+          }); 
         }
       }.bind(this), {value: space.code, ok: __("ok"), cancel: __("cancel")});
     },

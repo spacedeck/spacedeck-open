@@ -296,6 +296,11 @@ router.put('/:id', function(req, res) {
     }}).then(space => {
       res.distributeUpdate("Space", space);
     });
+  }, function (error) {
+    if (error.errors) {
+      const message = error.errors[0].message;
+      res.status(400).send(message)
+    }
   });
 });
 

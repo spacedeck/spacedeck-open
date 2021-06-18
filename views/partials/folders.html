@@ -116,6 +116,8 @@
 
     </div>
 
+    <div class="text-center alert alert-danger m-20" v-if="save_space_error">{{save_space_error}}</div>
+
     <div id="folder-empty" v-if="(active_profile_spaces.length == 0)">
       <div>
         <p><%=  __('no_spaces_yet') %></p>
