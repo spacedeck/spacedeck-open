@@ -41,6 +41,11 @@
       <span class="icon-label"><%=__("tool_arrow")%></span>
     </button>
 
+    <button class="btn btn-icon-labeled btn-transparent" v-on:click="start_drawing_line()" v-bind:class="{active:active_tool=='line'}" title="<%=__("tool_line")%>">
+      <span class="icon icon-tool-line"></span>
+      <span class="icon-label"><%=__("tool_line")%></span>
+    </button>
+
     <div class="dropdown bottom light center">
       <div class="btn-collapse in">
         <input type="file" multiple v-on:change="handle_image_file_upload($event)" id="image_file_upload" class="btn btn-transparent btn-icon-labeled" style="position: absolute; z-index: 1; opacity: 0;">
