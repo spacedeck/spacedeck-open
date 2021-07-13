@@ -199,8 +199,7 @@ var SpacedeckBoardArtifacts = {
       "top:"   +a.y+"px",
       "width:" +a.w+"px",
       "height:"+a.h+"px",
-      "z-index:"+z,
-      "line-height: normal"
+      "z-index:"+z
     ];
 
     if (a.margin_left)   styles.push("margin-left:"+a.margin_left+"px");
