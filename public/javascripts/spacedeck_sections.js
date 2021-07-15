@@ -2580,7 +2580,11 @@ var SpacedeckSections = {
 
     start_drawing_line: function(evt) {
       this.deselect();
-      this.active_tool = "line";
+      if (this.active_tool == "line") {
+        this.active_tool = "pointer";
+      } else {
+        this.active_tool = "line";
+      }
       this.opened_dialog = "none";
     },
 
