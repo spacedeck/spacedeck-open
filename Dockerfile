@@ -4,7 +4,7 @@ WORKDIR /app
 
 # build audiowaveform from source
 
-RUN apk add git make cmake gcc g++ libmad-dev libid3tag-dev libsndfile-dev gd-dev boost-dev libgd libpng-dev zlib-dev
+RUN apk add git make cmake gcc g++ libmad-dev libid3tag-dev libsndfile-dev gd-dev boost-dev libgd libpng-dev zlib-dev opus-dev
 RUN apk add zlib-static libpng-static boost-static
 
 RUN apk add autoconf automake libtool gettext
