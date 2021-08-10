@@ -193,7 +193,7 @@ var SpacedeckBoardArtifacts = {
 
     z = a.z;
     if (z<0) z=0; // fix negative z-index
-    
+
     styles = [
       "left:"  +a.x+"px",
       "top:"   +a.y+"px",
@@ -206,7 +206,7 @@ var SpacedeckBoardArtifacts = {
     if (a.margin_right)  styles.push("margin-right:"+a.margin_right+"px");
     if (a.margin_top)    styles.push("margin-top:"+a.margin_top+"px");
     if (a.margin_bottom) styles.push("margin-bottom:"+a.margin_bottom+"px");
-    
+
     // FIXME: via class logic?
     if (a.mime.match("vector")) {
       styles.push("overflow:visible");
