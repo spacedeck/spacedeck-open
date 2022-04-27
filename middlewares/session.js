@@ -23,7 +23,12 @@ module.exports = (req, res, next) => {
   }
 
   // authentication via session/cookie
-  const token = req.cookies["sdsession"];
+  let token = req.cookies["sdsession"];
+
+  if (!token || token == null) {
+    // authentication via session/header
+    token = req.headers["x-spacedeck-auth"];
+  }
 
   if (token && token != "null" && token != null) {
     db.Session.findOne({ where: { token: token } })
