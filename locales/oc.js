@@ -19,6 +19,7 @@
     "logout": "Se desconnectar",
     "email": "Adreça electronica",
     "password": "Senhal",
+    "forgot_password": "Senhal oblidat",	    
     "width": "Largor",
     "height": "Nautor",
     "nick": "Escais",
@@ -323,5 +324,9 @@
     "mute_present": "Quitar de seguir",
     "follow_present_help": "Se qualqu’un mai presenta aqueste espaci, los demai membres seguiràn automaticament la presentacion. Basculatz l’abonament a la presentacion amb aqueste boton.",
     "export": "exportar",
-    "media": "Mèdia"
+    "media": "Mèdia",
+    "tool_edit_text": "Editar tèxt",
+    "tool_space_help_part_one": "Utilizar la barra d’aisina per apondre de contengut.",
+    "tool_space_help_part_two": "Podètz tanben lisar d’imatges o de fichièrs sons o vidèos.",
+    "tool_delete_space": "Suprimir « %s » per de bon ?"
 }
