@@ -289,7 +289,7 @@ router.post('/password_reset_requests/:confirm_token/confirm', function(req, res
         bcrypt.genSalt(10, (err, salt) => {
           bcrypt.hash(password, salt, function(err, hash) {
             user.password_hash = hash;
-            user.password_token = null;
+            user.password_reset_token = null;
             user.save().then(function(updatedUser) {
               res.sendStatus(201);
             });
