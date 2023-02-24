@@ -35,7 +35,7 @@
     "read-chunk": "^2.1.0",
     "request": "^2.88.0",
     "sanitize-html": "^2.3.3",
-    "sequelize": "^4.37.6",
+    "sequelize": "^6.29.0",
     "serve-favicon": "~2.4.2",
     "serve-static": "^1.13.1",
     "slug": "^1.1.0",
