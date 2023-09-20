@@ -12,7 +12,7 @@ const _ = require('underscore');
 const db = require('../models/db');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
-const uuidv4 = require('uuid/v4');
+const { v4: uuidv4 } = require('uuid');
 
 router.get('/', (req, res) => {
   res.render('index', { config:config, user:req.user });

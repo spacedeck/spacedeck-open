@@ -2,7 +2,8 @@
 
 var config = require('config');
 const db = require('../../models/db');
-const uuidv4 = require('uuid/v4');
+const { v4: uuidv4 } = require('uuid');
+
 const os = require('os');
 
 var mailer = require('../../helpers/mailer');

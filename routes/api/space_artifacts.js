@@ -6,7 +6,7 @@ const os = require('os');
 const db = require('../../models/db');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
-const uuidv4 = require('uuid/v4');
+const { v4: uuidv4 } = require('uuid');
 
 var payloadConverter = require('../../helpers/artifact_converter');
 var redis = require('../../helpers/redis');
