@@ -16,12 +16,12 @@ router.post('/', function(req, res) {
     res.status(400).json({});
     return;
   }
-  
+
   var email = req.body.email.toLowerCase();
   var password = req.body["password"];
 
   db.User.findOne({where: {email: email}})
-    .error(err => {
+    .catch(err => {
       res.sendStatus(404);
     })
     .then(user => {
@@ -41,7 +41,7 @@ router.post('/', function(req, res) {
           };
 
           db.Session.create(session)
-            .error(err => {
+            .catch(err => {
               console.error("Error creating Session:",err);
               res.sendStatus(500);
             })

@@ -61,7 +61,7 @@ module.exports = (req, res, next) => {
             }
           });
       })
-      .error((err) => {
+      .catch((err) => {
         console.error("Session resolve error", err);
         next();
       });
