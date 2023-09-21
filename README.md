@@ -31,7 +31,7 @@ We appreciate filed issues, pull requests and general discussion.
 
 Spacedeck requires:
 
-- Node.js 10.x: Web Server / API. Download: https://nodejs.org
+- Node.js 18.x: Web Server / API. Download: https://nodejs.org
 - Graphicsmagick. On non-Linux, Download: http://www.graphicsmagick.org/ On Linux, install via package manager.
 - Optionally ffmpeg, audiowaveform and ghostscript. See "Optional Dependencies" below.
 
