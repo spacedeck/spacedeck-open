@@ -592,8 +592,21 @@ var SpacedeckSections = {
         return;
       }
 
-      if (_.contains(["mobile","shapes","zones"],id)) {
+      if (_.contains(["shapes","zones"],id)) {
         this.deselect();
+        if (id == "zones") {
+          if (this.active_tool == "zone") {
+            this.active_tool = "pointer";
+          } else {
+            this.active_tool = "zone";
+          }
+        } else if (id == "shapes") {
+          if (this.active_tool == "shape") {
+            this.active_tool = "pointer";
+          } else {
+            this.active_tool = "shape";
+          }
+        }
       }
 
       this.opened_dialog=id;
