@@ -2585,7 +2585,11 @@ var SpacedeckSections = {
 
     start_drawing_arrow: function(evt) {
       this.deselect();
-      this.active_tool = "arrow";
+      if (this.active_tool == "arrow") {
+        this.active_tool = "pointer";
+      } else {
+        this.active_tool = "arrow";
+      }
       this.opened_dialog = "none";
     },
 
