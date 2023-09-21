@@ -199,6 +199,7 @@
 	"tool_scribble": "Scribble",
 	"tool_line": "Line",
 	"tool_arrow": "Arrow",
+	"tool_pan": "Pan",
 	"search_media_placeholder": "Search web media…",
 	"add_zone": "New Zone",
 	"palette": "Palette",

@@ -2562,6 +2562,17 @@ var SpacedeckSections = {
       this.opened_dialog = "none";
     },
 
+    start_pan: function(evt) {
+      this.deselect();
+      if (this.active_tool == "pan") {
+        this.active_tool = "pointer";
+      } else {
+        this.active_tool = "pan";
+      }
+      this.opened_dialog = "none";
+
+    },
+
     start_drawing_scribble: function(evt) {
       this.deselect();
       if (this.active_tool == "scribble") {

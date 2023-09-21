@@ -733,7 +733,7 @@ function setup_whiteboard_directives() {
         return;
       }
 
-      if (_.include(["zoom", "scribble"], $scope.active_tool)) {
+      if (_.include(["zoom", "scribble", "pan"], $scope.active_tool)) {
         // tools that stay active after use
         this.mouse_state = "idle";
         $scope.mouse_state = this.mouse_state;

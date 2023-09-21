@@ -18,6 +18,11 @@
 
     <button class="btn btn-divider"></button>
 
+    <button class="btn btn-icon-labeled btn-transparent" v-on:click="start_pan()" v-bind:class="{active:active_tool=='pan'}" title="<%=__("tool_pan")%>">
+      <span class="icon icon-move"></span>
+      <span class="icon-label"><%=__("tool_pan")%></span>
+    </button>
+
     <div class="dropdown top left light" v-bind:class="{open:opened_dialog=='shapes'}">
       <div class="btn-collapse in" title="<%=__("tool_shape")%>">
         <button class="btn btn-transparent btn-icon-labeled" v-bind:class="{open:opened_dialog=='shapes'}" v-on:click="open_dialog('shapes')">
