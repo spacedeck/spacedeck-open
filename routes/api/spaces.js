@@ -4,7 +4,7 @@ const os = require('os');
 const db = require('../../models/db');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
-const uuidv4 = require('uuid/v4');
+const { v4: uuidv4 } = require('uuid');
 
 var redis = require('../../helpers/redis');
 var mailer = require('../../helpers/mailer');
@@ -81,13 +81,13 @@ function listSpacesInFolder(req, res, parent_space_id) {
 }
 
 router.get('/', function(req, res, next) {
-  
+
   if (req.query.parent_space_id && req["spaceAuth"]) {
     // list subspaces of a space authorized anonymously
     listSpacesInFolder(req, res, req.query.parent_space_id);
     return;
   }
-  
+
   if (!req.user) {
     res.status(403).json({
       error: "auth required"
@@ -127,11 +127,11 @@ router.get('/', function(req, res, next) {
 
     } else if (req.query.parent_space_id && req.query.parent_space_id != req.user.home_folder_id) {
       // list spaces in a folder
-      
+
       listSpacesInFolder(req, res, req.query.parent_space_id);
     } else {
       // list home folder and spaces/folders that the user is a member of
-      
+
       db.Membership.findAll({ where: {
         user_id: req.user._id
       }}).then(memberships => {
@@ -186,10 +186,8 @@ router.post('/', function(req, res, next) {
       attrs.edit_hash = crypto.randomBytes(64).toString('hex').substring(0, 7);
       attrs.edit_slug = attrs.edit_slug || slug(attrs.name);
       attrs.access_mode = "private";
-      
+
       db.Space.create(attrs).then(createdSpace => {
-        res.status(201).json(createdSpace);
-        
         // create initial admin membership
         var membership = {
           _id: uuidv4(),
@@ -198,7 +196,7 @@ router.post('/', function(req, res, next) {
           role: "admin",
           state: "active"
         };
-        
+
         db.Membership.create(membership).then(() => {
           res.status(201).json(createdSpace);
         });

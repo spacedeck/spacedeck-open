@@ -2,7 +2,8 @@
 
 var config = require('config');
 const db = require('../../models/db');
-const uuidv4 = require('uuid/v4');
+const { v4: uuidv4 } = require('uuid');
+
 const os = require('os');
 
 var mailer = require('../../helpers/mailer');
@@ -32,7 +33,7 @@ router.get('/current', function(req, res, next) {
     u.token = req.cookies['sdsession'];
 
     console.log(u);
-    
+
     res.status(200).json(u);
   } else {
     res.status(401).json({"error":"user_not_found"});
@@ -45,7 +46,7 @@ router.post('/', function(req, res) {
     res.status(400).json({"error":"email or password missing"});
     return;
   }
-  
+
   var email = req.body["email"].toLowerCase();
   var nickname = req.body["nickname"];
   var password = req.body["password"];
@@ -56,17 +57,17 @@ router.post('/', function(req, res) {
     res.status(400).json({"error":"password_confirmation"});
     return;
   }
-  
+
   if (config.invite_code && invite_code != config.invite_code) {
     res.status(400).json({"error":"Invalid Invite Code."});
     return;
   }
-  
+
   if (!validator.isEmail(email)) {
     res.status(400).json({"error":"email_invalid"});
     return;
   }
-  
+
   var createUser = function() {
     bcrypt.genSalt(10, function(err, salt) {
       bcrypt.hash(password, salt, function(err, hash) {
@@ -84,7 +85,7 @@ router.post('/', function(req, res) {
           };
 
           db.User.create(u)
-            .error(err => {
+            .catch(err => {
               res.sendStatus(400);
             })
             .then(u => {
@@ -95,7 +96,7 @@ router.post('/', function(req, res) {
                 creator_id: u._id
               };
               db.Space.create(homeFolder)
-                .error(err => {
+                .catch(err => {
                   res.sendStatus(400);
                 })
                 .then(homeFolder => {
@@ -112,9 +113,9 @@ router.post('/', function(req, res) {
                           "state": "pending"
                         }
                       });
-                      res.status(201).json({});          
+                      res.status(201).json({});
                     })
-                    .error(err => {
+                    .catch(err => {
                       res.status(400).json(err);
                     });
                 })
@@ -123,7 +124,7 @@ router.post('/', function(req, res) {
       });
     });
   };
-  
+
   db.User.findAll({where: {email: email}})
     .then(users => {
       if (users.length == 0) {
@@ -193,7 +194,7 @@ router.delete('/:id',  (req, res, next) => {
       // TODO: this doesn't currently work.
       // all objects (indirectly) belonging to the user have
       // to be walked and deleted first.
-      
+
       user.destroy().then(err => {
         if(err)res.status(400).json(err);
         else res.sendStatus(204);
