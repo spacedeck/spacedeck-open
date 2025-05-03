@@ -96,7 +96,7 @@ You can define text, stroke and fill color in your config/default.json.
     node spacedeck.js
 
 Then open http://localhost:9666 in a web browser.
-
+code: top-sekrit
 # Optional Dependencies
 
 For advanced media conversion:
