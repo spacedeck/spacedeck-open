@@ -34,5 +34,25 @@
   "mail_smtp_require_tls": true,
   "mail_smtp_user": "your.smtp.user",
   "mail_smtp_pass": "your.secret.smtp.password",
-  "spacedeck": {}
+  "spacedeck": {
+  "default_text_color": "#E11F26",
+  "default_stroke_color": "#9E0F13",
+  "default_fill_color": "#64BCCA",
+  "swatches": [
+    {"id":8, "hex":"#000000"},
+    {"id":30, "hex":"rgba(0,0,0,0)"},
+    {"id":31, "hex": "#E11F26"},
+    {"id":32, "hex": "#9E0F13"},
+    {"id":33, "hex": "#64BCCA"},
+    {"id":34, "hex": "#40808A"},
+    {"id":35, "hex": "#036492"},
+    {"id":36, "hex": "#005179"},
+    {"id":37, "hex": "#84427E"},
+    {"id":38, "hex": "#6C3468"},
+    {"id":39, "hex": "#F79B84"},
+    {"id":40, "hex": "#B57362"},
+    {"id":41, "hex": "#E7D45A"},
+    {"id":42, "hex": "#ACA044"}
+  ]
+}
 }
