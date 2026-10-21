@@ -34,7 +34,7 @@
     "puppeteer": "^18",
     "read-chunk": "^3",
     "request": "^2.88.0",
-    "sanitize-html": "^2.3.3",
+    "sanitize-html": "^2.18.0",
     "sequelize": "^6.33.0",
     "serve-favicon": "~2.5.0",
     "serve-static": "^1.13.1",
